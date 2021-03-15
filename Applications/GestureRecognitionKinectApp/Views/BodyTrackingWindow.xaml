@@ -1,0 +1,35 @@
+﻿<Window x:Class="GestureRecognition.Applications.GestureRecognitionKinectApp.Views.BodyTrackingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Gesture recognition" 
+        Height="600" Width="700"
+        Loaded="BodyTrackingWindow_Loaded"
+        Closing="BodyTrackingWindow_Closing">
+
+    <Window.DataContext>
+        <Binding Source="{StaticResource Locator}" Path="BodyTracking"/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e" />
+        <SolidColorBrush x:Key="KinectPurpleBrush" Color="#ff52318f" />
+        <SolidColorBrush x:Key="KinectBlueBrush" Color="#ff00BCF2" />
+    </Window.Resources>
+    <Grid Margin="10 0 10 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Viewbox HorizontalAlignment="Center">
+            <Image Source="{Binding Image}" Stretch="UniformToFill" />
+        </Viewbox>
+
+        <StatusBar Grid.Row="1" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
+            <StatusBarItem Content="{Binding StatusText}" />
+        </StatusBar>
+    </Grid>
+</Window>

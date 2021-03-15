@@ -1,0 +1,11 @@
+﻿<Application x:Class="GestureRecognition.Applications.GestureRecognitionKinectApp.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:GestureRecognition.Applications.GestureRecognitionKinectApp"
+             xmlns:viewModels="clr-namespace:GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels"
+             StartupUri="Views/BodyTrackingWindow.xaml">
+    <Application.Resources>
+        <!-- ViewModelLocator sector (for MVVM Light) -->
+        <viewModels:ViewModelLocator x:Key="Locator"/>
+    </Application.Resources>
+</Application>
