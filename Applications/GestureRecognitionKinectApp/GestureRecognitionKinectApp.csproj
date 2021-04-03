@@ -75,7 +75,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModels\BodyTrackingViewModel.cs" />
-    <Compile Include="ViewModels\Messages\DrawingImageChangedMessage.cs" />
+    <Compile Include="ViewModels\Messages\DisplayImageChangedMessage.cs" />
     <Compile Include="ViewModels\Messages\KinectStatusChangedMessage.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\BodyTrackingWindow.xaml.cs">

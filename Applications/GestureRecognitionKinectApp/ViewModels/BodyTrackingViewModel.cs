@@ -14,11 +14,19 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		#endregion
 
 		#region Public properties
-		public DrawingImage Image
+		public ImageSource ColorImage
 		{
 			get
 			{
-				return model.Image;
+				return model.ColorImage;
+			}
+		}
+
+		public ImageSource BodyImage
+		{
+			get
+			{
+				return model.BodyImage;
 			}
 		}
 
@@ -49,7 +57,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			this.model = new BodyTrackingModel();
 			this.StartCommand = new RelayCommand(this.StartCommandAction);
 			this.CleanupCommand = new RelayCommand(this.CleanupCommandAction);
-			Messenger.Default.Register<DrawingImageChangedMessage>(this, e => RaisePropertyChanged("Image"));
+			Messenger.Default.Register<DisplayImageChangedMessage>(this, e => 
+			{
+				RaisePropertyChanged("ColorImage");
+				RaisePropertyChanged("BodyImage");
+			});
 			Messenger.Default.Register<KinectStatusChangedMessage>(this, e => RaisePropertyChanged("StatusText"));
 		}
 		#endregion

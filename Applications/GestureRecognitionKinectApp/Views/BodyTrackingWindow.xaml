@@ -25,7 +25,10 @@
         </Grid.RowDefinitions>
 
         <Viewbox HorizontalAlignment="Center">
-            <Image Source="{Binding Image}" Stretch="UniformToFill" />
+            <Image Source="{Binding ColorImage}" Stretch="UniformToFill" />
+        </Viewbox>
+        <Viewbox HorizontalAlignment="Center">
+            <Image Source="{Binding BodyImage}" Stretch="UniformToFill" />
         </Viewbox>
 
         <StatusBar Grid.Row="1" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">

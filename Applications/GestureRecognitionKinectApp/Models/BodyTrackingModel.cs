@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Microsoft.Kinect;
 using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
+using System.Linq;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 {
@@ -25,11 +27,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// Thickness of clip edge rectangles
 		/// </summary>
 		private const double ClipBoundsThickness = 10;
-
-		/// <summary>
-		/// Constant for clamping Z values of camera space points from being negative
-		/// </summary>
-		private const float InferredZPositionClamp = 0.1f;
 
 		/// <summary>
 		/// Brush used for drawing hands that are currently tracked as closed
@@ -62,49 +59,54 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		private readonly Pen inferredBonePen = new Pen(Brushes.Gray, 1);
 
 		/// <summary>
-		/// Drawing group for body rendering output
+		/// RGB image that will be displayed
 		/// </summary>
-		private DrawingGroup drawingGroup;
+		private WriteableBitmap colorImage;
 
 		/// <summary>
-		/// Drawing image that we will display
+		/// Drawing group for body rendering output
 		/// </summary>
-		private DrawingImage imageSource;
+		private DrawingGroup bodyImageDrawingGroup;
+
+		/// <summary>
+		/// Drawing image that will contain body data
+		/// </summary>
+		private DrawingImage bodyImage;
+
+		/// <summary>
+		/// Drawing images width
+		/// </summary>
+		private int displayImageWidth;
+
+		/// <summary>
+		/// Drawing images height
+		/// </summary>
+		private int displayImageHeight;
 
 		/// <summary>
 		/// Active Kinect sensor
 		/// </summary>
-		private KinectSensor kinectSensor = null;
+		private KinectSensor kinectSensor;
+
+		/// <summary>
+		/// Reader for frames from multiple sources
+		/// </summary>
+		private MultiSourceFrameReader multiSourceReader;
 
 		/// <summary>
 		/// Coordinate mapper to map one type of point to another
 		/// </summary>
-		private CoordinateMapper coordinateMapper = null;
-
-		/// <summary>
-		/// Reader for body frames
-		/// </summary>
-		private BodyFrameReader bodyFrameReader = null;
+		private CoordinateMapper coordinateMapper;
 
 		/// <summary>
 		/// Array for the bodies
 		/// </summary>
-		private Body[] bodies = null;
+		//private Body[] bodies;
 
 		/// <summary>
-		/// definition of bones
+		/// Definition of bones
 		/// </summary>
 		private List<Tuple<JointType, JointType>> bones;
-
-		/// <summary>
-		/// Width of display (depth space)
-		/// </summary>
-		private int displayWidth;
-
-		/// <summary>
-		/// Height of display (depth space)
-		/// </summary>
-		private int displayHeight;
 
 		/// <summary>
 		/// List of colors for each body tracked
@@ -114,15 +116,23 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// <summary>
 		/// Current status text to display
 		/// </summary>
-		private string statusText = null;
+		private string statusText;
 		#endregion
 
 		#region Public properties
-		public DrawingImage Image
+		public ImageSource ColorImage
 		{
 			get
 			{
-				return this.imageSource;
+				return this.colorImage;
+			}
+		}
+
+		public ImageSource BodyImage
+		{
+			get
+			{
+				return this.bodyImage;
 			}
 		}
 
@@ -182,9 +192,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			this.bones.Add(new Tuple<JointType, JointType>(JointType.KneeLeft, JointType.AnkleLeft));
 			this.bones.Add(new Tuple<JointType, JointType>(JointType.AnkleLeft, JointType.FootLeft));
 
-			// populate body colors, one for each BodyIndex
+			// Populate body colors, one for each BodyIndex
 			this.bodyColors = new List<Pen>();
-
 			this.bodyColors.Add(new Pen(Brushes.Red, 6));
 			this.bodyColors.Add(new Pen(Brushes.Orange, 6));
 			this.bodyColors.Add(new Pen(Brushes.Green, 6));
@@ -197,52 +206,49 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#region Public methods
 		public void Start()
 		{
-			// one sensor is currently supported
+			// One sensor is currently supported
 			this.kinectSensor = KinectSensor.GetDefault();
-
-			// get the coordinate mapper
-			this.coordinateMapper = this.kinectSensor.CoordinateMapper;
-
-			// get the depth (display) extents
-			FrameDescription frameDescription = this.kinectSensor.DepthFrameSource.FrameDescription;
-
-			// get size of joint space
-			this.displayWidth = frameDescription.Width;
-			this.displayHeight = frameDescription.Height;
-
-			// open the reader for the body frames
-			this.bodyFrameReader = this.kinectSensor.BodyFrameSource.OpenReader();
-
 			this.kinectSensor.IsAvailableChanged += this.Sensor_IsAvailableChanged;
 
-			// open the sensor
+			// Open the reader for the body frames
+			this.multiSourceReader = this.kinectSensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body);
+
+			// Get the coordinate mapper
+			this.coordinateMapper = this.kinectSensor.CoordinateMapper;
+
+			var colorFrameDescription = this.kinectSensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
+
+			this.displayImageWidth = colorFrameDescription.Width;
+			this.displayImageHeight = colorFrameDescription.Height;
+
+			// Create the color image
+			this.colorImage = new WriteableBitmap(this.displayImageWidth, this.displayImageHeight, 96.0, 96.0, PixelFormats.Bgra32, null);
+
+			// Create the drawing group we'll use for drawing body data
+			this.bodyImageDrawingGroup = new DrawingGroup();
+			// Create the image with body data
+			this.bodyImage = new DrawingImage(this.bodyImageDrawingGroup);
+
+			Messenger.Default.Send(new DisplayImageChangedMessage() { Changed = true });
+
+			// Open the sensor
 			this.kinectSensor.Open();
 
-			// set the status text
+			// Set the status text
 			this.StatusText = this.kinectSensor.IsAvailable ? Properties.Resources.RunningStatusText
 																											: Properties.Resources.NoSensorStatusText;
 			Messenger.Default.Send(new KinectStatusChangedMessage() { Changed = true });
 
-			// Create the drawing group we'll use for drawing
-			this.drawingGroup = new DrawingGroup();
-
-			// Create an image source that we can use in our image control
-			this.imageSource = new DrawingImage(this.drawingGroup);
-			Messenger.Default.Send(new DrawingImageChangedMessage() { Changed = true });
-
-			if (this.bodyFrameReader != null)
-			{
-				this.bodyFrameReader.FrameArrived += this.Reader_FrameArrived;
-			}
+			if (this.multiSourceReader != null)
+				this.multiSourceReader.MultiSourceFrameArrived += this.Reader_FrameArrived;
 		}
 
 		public void Cleanup()
 		{
-			if (this.bodyFrameReader != null)
+			if (this.multiSourceReader != null)
 			{
-				// BodyFrameReader is IDisposable
-				this.bodyFrameReader.Dispose();
-				this.bodyFrameReader = null;
+				this.multiSourceReader.Dispose();
+				this.multiSourceReader = null;
 			}
 
 			if (this.kinectSensor != null)
@@ -255,87 +261,113 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 		#region Private / protected methods
 		/// <summary>
-		/// Handles the body frame data arriving from the sensor
+		/// Handles the data arriving from the sensor
 		/// </summary>
-		/// <param name="sender">object sending the event</param>
-		/// <param name="e">event arguments</param>
-		private void Reader_FrameArrived(object sender, BodyFrameArrivedEventArgs e)
+		/// <param name="sender">Object sending the event</param>
+		/// <param name="e">Event arguments</param>
+		private void Reader_FrameArrived(object sender, MultiSourceFrameArrivedEventArgs e)
 		{
-			bool dataReceived = false;
+			var multiSourceFrame = e.FrameReference.AcquireFrame();
 
-			using (BodyFrame bodyFrame = e.FrameReference.AcquireFrame())
+			// If the Frame has expired by the time we process this event, return.
+			if (multiSourceFrame == null)
+				return;
+
+			bool colorImageLocked = false;
+			ColorFrame colorFrame = null;
+			BodyFrame bodyFrame = null;
+
+			try
 			{
-				if (bodyFrame != null)
+				colorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame();
+				bodyFrame = multiSourceFrame.BodyFrameReference.AcquireFrame();
+
+				if (colorFrame != null)
 				{
-					if (this.bodies == null)
+					this.colorImage.Lock();
+					colorImageLocked = true;
+
+					// Process color frame
+					var colorFrameDescription = colorFrame.FrameDescription;
+					using (var colorBuffer = colorFrame.LockRawImageBuffer())
 					{
-						this.bodies = new Body[bodyFrame.BodyCount];
-					}
-
-					// The first time GetAndRefreshBodyData is called, Kinect will allocate each Body in the array.
-					// As long as those body objects are not disposed and not set to null in the array,
-					// those body objects will be re-used.
-					bodyFrame.GetAndRefreshBodyData(this.bodies);
-					dataReceived = true;
-				}
-			}
-
-			if (dataReceived)
-			{
-				using (DrawingContext dc = this.drawingGroup.Open())
-				{
-					// Draw a transparent background to set the render size
-					dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
-
-					int penIndex = 0;
-					foreach (Body body in this.bodies)
-					{
-						Pen drawPen = this.bodyColors[penIndex++];
-
-						if (body.IsTracked)
+						// Verify data and write the new color frame data to the display bitmap
+						if ((colorFrameDescription.Width == this.displayImageWidth) && (colorFrameDescription.Height == this.displayImageHeight))
 						{
-							this.DrawClippedEdges(body, dc);
+							colorFrame.CopyConvertedFrameDataToIntPtr(
+								this.colorImage.BackBuffer,
+								(uint)(this.displayImageWidth * this.displayImageHeight * 4),
+								ColorImageFormat.Bgra);
 
-							IReadOnlyDictionary<JointType, Joint> joints = body.Joints;
-
-							// convert the joint points to depth (display) space
-							Dictionary<JointType, Point> jointPoints = new Dictionary<JointType, Point>();
-
-							foreach (JointType jointType in joints.Keys)
-							{
-								// sometimes the depth(Z) of an inferred joint may show as negative
-								// clamp down to 0.1f to prevent coordinatemapper from returning (-Infinity, -Infinity)
-								CameraSpacePoint position = joints[jointType].Position;
-								if (position.Z < 0)
-								{
-									position.Z = InferredZPositionClamp;
-								}
-
-								DepthSpacePoint depthSpacePoint = this.coordinateMapper.MapCameraPointToDepthSpace(position);
-								jointPoints[jointType] = new Point(depthSpacePoint.X, depthSpacePoint.Y);
-							}
-
-							this.DrawBody(joints, jointPoints, dc, drawPen);
-
-							this.DrawHand(body.HandLeftState, jointPoints[JointType.HandLeft], dc);
-							this.DrawHand(body.HandRightState, jointPoints[JointType.HandRight], dc);
+							this.colorImage.AddDirtyRect(new Int32Rect(0, 0, this.displayImageWidth, this.displayImageHeight));
 						}
 					}
 
-					// prevent drawing outside of our render area
-					this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
+					this.colorImage.Unlock();
+					colorImageLocked = false;
+
+					if (bodyFrame != null)
+					{
+						var bodies = new Body[bodyFrame.BodyCount];
+						// The first time GetAndRefreshBodyData is called, Kinect will allocate each Body in the array.
+						// As long as those body objects are not disposed and not set to null in the array,
+						// those body objects will be re-used.
+						bodyFrame.GetAndRefreshBodyData(bodies);
+
+						using (var dc = this.bodyImageDrawingGroup.Open())
+						{
+							// Draw a transparent background to set the render size
+							dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
+
+							// Only one user movements can be processed.
+							var trackedBody = bodies.FirstOrDefault(b => b != null && b.IsTracked);
+							// Process body data
+							if (trackedBody != null)
+							{
+								var drawPen = this.bodyColors[0];
+
+								var joints = trackedBody.Joints;
+								// Convert the joint points to display space
+								var jointPoints = new Dictionary<JointType, Point>();
+
+								foreach (JointType jointType in joints.Keys)
+								{
+									var position = joints[jointType].Position;
+									var mapSpacePoint = this.coordinateMapper.MapCameraPointToColorSpace(position);
+									jointPoints[jointType] = new Point(mapSpacePoint.X, mapSpacePoint.Y);
+								}
+
+								this.DrawBody(joints, jointPoints, dc, drawPen);
+
+								this.DrawHand(trackedBody.HandLeftState, jointPoints[JointType.HandLeft], dc);
+								this.DrawHand(trackedBody.HandRightState, jointPoints[JointType.HandRight], dc);
+
+								// prevent drawing outside of our render area
+								this.bodyImageDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
+							}
+						}
+					}
 				}
+			}
+			finally
+			{
+				if (colorImageLocked)
+					this.colorImage.Unlock();
+				if (colorFrame != null)
+					colorFrame.Dispose();
+				if (bodyFrame != null)
+					bodyFrame.Dispose();
 			}
 		}
 
 		/// <summary>
 		/// Handles the event which the sensor becomes unavailable (E.g. paused, closed, unplugged).
 		/// </summary>
-		/// <param name="sender">object sending the event</param>
-		/// <param name="e">event arguments</param>
+		/// <param name="sender">Object sending the event</param>
+		/// <param name="e">Event arguments</param>
 		private void Sensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
 		{
-			// on failure, set the status text
+			// On failure, set the status text
 			this.StatusText = this.kinectSensor.IsAvailable ? Properties.Resources.RunningStatusText
 																											: Properties.Resources.SensorNotAvailableStatusText;
 			Messenger.Default.Send(new KinectStatusChangedMessage() { Changed = true });
@@ -344,10 +376,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// <summary>
 		/// Draws a body
 		/// </summary>
-		/// <param name="joints">joints to draw</param>
-		/// <param name="jointPoints">translated positions of joints to draw</param>
-		/// <param name="drawingContext">drawing context to draw to</param>
-		/// <param name="drawingPen">specifies color to draw a specific body</param>
+		/// <param name="joints">Joints to draw</param>
+		/// <param name="jointPoints">Translated positions of joints to draw</param>
+		/// <param name="drawingContext">Drawing context to draw to</param>
+		/// <param name="drawingPen">Specifies color to draw a specific body</param>
 		private void DrawBody(IReadOnlyDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, DrawingContext drawingContext, Pen drawingPen)
 		{
 			// Draw the bones
@@ -361,7 +393,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			{
 				Brush drawBrush = null;
 
-				TrackingState trackingState = joints[jointType].TrackingState;
+				var trackingState = joints[jointType].TrackingState;
 
 				if (trackingState == TrackingState.Tracked)
 				{
@@ -382,13 +414,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// <summary>
 		/// Draws one bone of a body (joint to joint)
 		/// </summary>
-		/// <param name="joints">joints to draw</param>
-		/// <param name="jointPoints">translated positions of joints to draw</param>
-		/// <param name="jointType0">first joint of bone to draw</param>
-		/// <param name="jointType1">second joint of bone to draw</param>
-		/// <param name="drawingContext">drawing context to draw to</param>
-		/// /// <param name="drawingPen">specifies color to draw a specific bone</param>
-		private void DrawBone(IReadOnlyDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, JointType jointType0, JointType jointType1, DrawingContext drawingContext, Pen drawingPen)
+		/// <param name="joints">Joints to draw</param>
+		/// <param name="jointPoints">Translated positions of joints to draw</param>
+		/// <param name="jointType0">First joint of bone to draw</param>
+		/// <param name="jointType1">Second joint of bone to draw</param>
+		/// <param name="drawingContext">Drawing context to draw to</param>
+		/// /// <param name="drawingPen">Specifies color to draw a specific bone</param>
+		private void DrawBone(IReadOnlyDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, JointType jointType0, JointType jointType1, DrawingContext drawingContext,
+			Pen drawingPen)
 		{
 			Joint joint0 = joints[jointType0];
 			Joint joint1 = joints[jointType1];
@@ -413,9 +446,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// <summary>
 		/// Draws a hand symbol if the hand is tracked: red circle = closed, green circle = opened; blue circle = lasso
 		/// </summary>
-		/// <param name="handState">state of the hand</param>
-		/// <param name="handPosition">position of the hand</param>
-		/// <param name="drawingContext">drawing context to draw to</param>
+		/// <param name="handState">State of the hand</param>
+		/// <param name="handPosition">Position of the hand</param>
+		/// <param name="drawingContext">Drawing context to draw to</param>
 		private void DrawHand(HandState handState, Point handPosition, DrawingContext drawingContext)
 		{
 			switch (handState)
@@ -437,42 +470,42 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// <summary>
 		/// Draws indicators to show which edges are clipping body data
 		/// </summary>
-		/// <param name="body">body to draw clipping information for</param>
-		/// <param name="drawingContext">drawing context to draw to</param>
+		/// <param name="body">Body to draw clipping information for</param>
+		/// <param name="drawingContext">Drawing context to draw to</param>
 		private void DrawClippedEdges(Body body, DrawingContext drawingContext)
 		{
-			FrameEdges clippedEdges = body.ClippedEdges;
+			var clippedEdges = body.ClippedEdges;
 
 			if (clippedEdges.HasFlag(FrameEdges.Bottom))
 			{
 				drawingContext.DrawRectangle(
-						Brushes.Red,
-						null,
-						new Rect(0, this.displayHeight - ClipBoundsThickness, this.displayWidth, ClipBoundsThickness));
+					Brushes.Red,
+					null,
+					new Rect(0, this.displayImageHeight - ClipBoundsThickness, this.displayImageWidth, ClipBoundsThickness));
 			}
 
 			if (clippedEdges.HasFlag(FrameEdges.Top))
 			{
 				drawingContext.DrawRectangle(
-						Brushes.Red,
-						null,
-						new Rect(0, 0, this.displayWidth, ClipBoundsThickness));
+					Brushes.Red,
+					null,
+					new Rect(0, 0, this.displayImageWidth, ClipBoundsThickness));
 			}
 
 			if (clippedEdges.HasFlag(FrameEdges.Left))
 			{
 				drawingContext.DrawRectangle(
-						Brushes.Red,
-						null,
-						new Rect(0, 0, ClipBoundsThickness, this.displayHeight));
+					Brushes.Red,
+					null,
+					new Rect(0, 0, ClipBoundsThickness, this.displayImageHeight));
 			}
 
 			if (clippedEdges.HasFlag(FrameEdges.Right))
 			{
 				drawingContext.DrawRectangle(
-						Brushes.Red,
-						null,
-						new Rect(this.displayWidth - ClipBoundsThickness, 0, ClipBoundsThickness, this.displayHeight));
+					Brushes.Red,
+					null,
+					new Rect(this.displayImageWidth - ClipBoundsThickness, 0, ClipBoundsThickness, this.displayImageHeight));
 			}
 		}
 		#endregion

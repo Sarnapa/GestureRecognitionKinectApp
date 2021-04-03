@@ -1,6 +1,6 @@
 ﻿namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages
 {
-	public class DrawingImageChangedMessage
+	public class DisplayImageChangedMessage
 	{
 		public bool Changed
 		{
