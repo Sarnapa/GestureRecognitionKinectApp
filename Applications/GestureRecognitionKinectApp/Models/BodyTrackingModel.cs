@@ -107,6 +107,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// List of colors for each body tracked
 		/// </summary>
 		private List<Pen> bodyColors;
+
+		private DateTime lastDisplayedColorFrameTime;
 		#endregion
 
 		#region Public properties
@@ -308,6 +310,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 										IsStopped = true,
 										Text = $"Detected {bodyFrame.BodyCount} users.\nOnly one user movemenets can be tracked."
 									});
+
+									UpdateLastDisplayedColorFrameTime();
 									return;
 								}
 								else
@@ -349,6 +353,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 							}
 						}
 					}
+
+					UpdateLastDisplayedColorFrameTime();
 				}
 			}
 			finally
@@ -511,6 +517,15 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					null,
 					new Rect(this.displayImageWidth - ClipBoundsThickness, 0, ClipBoundsThickness, this.displayImageHeight));
 			}
+		}
+		#endregion
+
+		#region Others methods
+		private void UpdateLastDisplayedColorFrameTime()
+		{
+			var now = DateTime.Now;
+			Messenger.Default.Send(new FPSValueMessage() { Value = 1 / (now - this.lastDisplayedColorFrameTime).TotalSeconds });
+			this.lastDisplayedColorFrameTime = now;
 		}
 		#endregion
 

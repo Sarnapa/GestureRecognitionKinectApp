@@ -14,6 +14,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		private readonly BodyTrackingModel model;
 		private string kinectStatusText;
 		private int trackedUsersCount;
+		private string fpsValueText;
 		private Visibility stoppedBodyTrackingInfoVisibility = Visibility.Hidden;
 		private string stoppedBodyTrackingInfoText;
 		#endregion
@@ -56,6 +57,22 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			get
 			{
 				return $"Tracked users: {this.trackedUsersCount}";
+			}
+		}
+
+		public string FPSValueText
+		{
+			get
+			{
+				return this.fpsValueText;
+			}
+			set
+			{
+				if (this.fpsValueText != value)
+				{
+					this.fpsValueText = value;
+					RaisePropertyChanged("FPSValueText");
+				}
 			}
 		}
 
@@ -111,8 +128,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			this.StartCommand = new RelayCommand(this.StartCommandAction);
 			this.CleanupCommand = new RelayCommand(this.CleanupCommandAction);
 			Messenger.Default.Register<DisplayImageChangedMessage>(this, m => DisplayImageChangedMessageHandler(m));
-			Messenger.Default.Register<TrackedUsersCountChangedMessage>(this, m => TrackedUsersCountChangedMessageHandler(m));
 			Messenger.Default.Register<KinectStatusMessage>(this, m => KinectStatusChangedMessageHandler(m));
+			Messenger.Default.Register<TrackedUsersCountChangedMessage>(this, m => TrackedUsersCountChangedMessageHandler(m));
+			Messenger.Default.Register<FPSValueMessage>(this, m => FPSValueMessageHandler(m));
 			Messenger.Default.Register<StoppedBodyTrackingMessage>(this, m => StoppedBodyTrackingMessageHandler(m));
 		}
 		#endregion
@@ -153,6 +171,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		private void KinectStatusChangedMessageHandler(KinectStatusMessage m)
 		{
 			this.KinectStatusText = m.Text;
+		}
+
+		private void FPSValueMessageHandler(FPSValueMessage m)
+		{
+			this.FPSValueText = $"{string.Format("{0:0.00}", m.Value)} FPS";
 		}
 
 		private void StoppedBodyTrackingMessageHandler(StoppedBodyTrackingMessage m)
