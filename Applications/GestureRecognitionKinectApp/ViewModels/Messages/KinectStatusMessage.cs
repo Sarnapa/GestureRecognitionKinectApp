@@ -1,8 +1,8 @@
 ﻿namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages
 {
-	public class KinectStatusChangedMessage
+	public class KinectStatusMessage
 	{
-		public bool Changed
+		public string Text
 		{
 			get; set;
 		}

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Kinect;
 using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
-using System.Linq;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 {
@@ -99,11 +99,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		private CoordinateMapper coordinateMapper;
 
 		/// <summary>
-		/// Array for the bodies
-		/// </summary>
-		//private Body[] bodies;
-
-		/// <summary>
 		/// Definition of bones
 		/// </summary>
 		private List<Tuple<JointType, JointType>> bones;
@@ -112,11 +107,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// List of colors for each body tracked
 		/// </summary>
 		private List<Pen> bodyColors;
-
-		/// <summary>
-		/// Current status text to display
-		/// </summary>
-		private string statusText;
 		#endregion
 
 		#region Public properties
@@ -133,22 +123,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			get
 			{
 				return this.bodyImage;
-			}
-		}
-
-		public string StatusText
-		{
-			get
-			{
-				return this.statusText;
-			}
-
-			set
-			{
-				if (this.statusText != value)
-				{
-					this.statusText = value;
-				}
 			}
 		}
 		#endregion
@@ -217,7 +191,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			this.coordinateMapper = this.kinectSensor.CoordinateMapper;
 
 			var colorFrameDescription = this.kinectSensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
-
 			this.displayImageWidth = colorFrameDescription.Width;
 			this.displayImageHeight = colorFrameDescription.Height;
 
@@ -235,9 +208,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			this.kinectSensor.Open();
 
 			// Set the status text
-			this.StatusText = this.kinectSensor.IsAvailable ? Properties.Resources.RunningStatusText
+			string statusText = this.kinectSensor.IsAvailable ? Properties.Resources.RunningStatusText
 																											: Properties.Resources.NoSensorStatusText;
-			Messenger.Default.Send(new KinectStatusChangedMessage() { Changed = true });
+			Messenger.Default.Send(new KinectStatusMessage() { Text = statusText });
 
 			if (this.multiSourceReader != null)
 				this.multiSourceReader.MultiSourceFrameArrived += this.Reader_FrameArrived;
@@ -260,6 +233,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#endregion
 
 		#region Private / protected methods
+
+		#region Events handlers
 		/// <summary>
 		/// Handles the data arriving from the sensor
 		/// </summary>
@@ -306,7 +281,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					this.colorImage.Unlock();
 					colorImageLocked = false;
 
-					if (bodyFrame != null)
+					if (bodyFrame != null && bodyFrame.BodyCount > 0)
 					{
 						var bodies = new Body[bodyFrame.BodyCount];
 						// The first time GetAndRefreshBodyData is called, Kinect will allocate each Body in the array.
@@ -314,36 +289,63 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						// those body objects will be re-used.
 						bodyFrame.GetAndRefreshBodyData(bodies);
 
+						var trackedBodies = bodies.Where(b => b != null && b.IsTracked);
+						int trackedBodiesCount = trackedBodies.Count();
+						Messenger.Default.Send(new TrackedUsersCountChangedMessage()
+						{
+							Count = trackedBodiesCount
+						});
+
 						using (var dc = this.bodyImageDrawingGroup.Open())
 						{
-							// Draw a transparent background to set the render size
-							dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
-
-							// Only one user movements can be processed.
-							var trackedBody = bodies.FirstOrDefault(b => b != null && b.IsTracked);
-							// Process body data
-							if (trackedBody != null)
+							if (trackedBodiesCount > 0)
 							{
-								var drawPen = this.bodyColors[0];
-
-								var joints = trackedBody.Joints;
-								// Convert the joint points to display space
-								var jointPoints = new Dictionary<JointType, Point>();
-
-								foreach (JointType jointType in joints.Keys)
+								// Only one user movements can be processed.
+								if (trackedBodiesCount != 1)
 								{
-									var position = joints[jointType].Position;
-									var mapSpacePoint = this.coordinateMapper.MapCameraPointToColorSpace(position);
-									jointPoints[jointType] = new Point(mapSpacePoint.X, mapSpacePoint.Y);
+									Messenger.Default.Send(new StoppedBodyTrackingMessage()
+									{
+										IsStopped = true,
+										Text = $"Detected {bodyFrame.BodyCount} users.\nOnly one user movemenets can be tracked."
+									});
+									return;
+								}
+								else
+								{
+									Messenger.Default.Send(new StoppedBodyTrackingMessage()
+									{
+										IsStopped = false,
+									});
 								}
 
-								this.DrawBody(joints, jointPoints, dc, drawPen);
+								// Draw a transparent background to set the render size
+								dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
 
-								this.DrawHand(trackedBody.HandLeftState, jointPoints[JointType.HandLeft], dc);
-								this.DrawHand(trackedBody.HandRightState, jointPoints[JointType.HandRight], dc);
+								var trackedBody = trackedBodies.FirstOrDefault();
+								// Process body data
+								if (trackedBody != null)
+								{
+									var drawPen = this.bodyColors[0];
 
-								// prevent drawing outside of our render area
-								this.bodyImageDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
+									var joints = trackedBody.Joints;
+									// Convert the joint points to display space
+									var jointPoints = new Dictionary<JointType, Point>();
+
+									foreach (var jointType in joints.Keys)
+									{
+										var position = joints[jointType].Position;
+										var mapSpacePoint = this.coordinateMapper.MapCameraPointToColorSpace(position);
+										jointPoints[jointType] = new Point(mapSpacePoint.X, mapSpacePoint.Y);
+									}
+
+									this.DrawBody(joints, jointPoints, dc, drawPen);
+
+									this.DrawHand(trackedBody.HandLeftState, jointPoints[JointType.HandLeft], dc);
+									this.DrawHand(trackedBody.HandRightState, jointPoints[JointType.HandRight], dc);
+
+									// prevent drawing outside of our render area
+									this.bodyImageDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
+								}
 							}
 						}
 					}
@@ -361,18 +363,20 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		}
 
 		/// <summary>
-		/// Handles the event which the sensor becomes unavailable (E.g. paused, closed, unplugged).
+		/// Handles the event which the sensor becomes unavailable (E.g. paused, closed, unplugged)
 		/// </summary>
 		/// <param name="sender">Object sending the event</param>
 		/// <param name="e">Event arguments</param>
 		private void Sensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
 		{
 			// On failure, set the status text
-			this.StatusText = this.kinectSensor.IsAvailable ? Properties.Resources.RunningStatusText
-																											: Properties.Resources.SensorNotAvailableStatusText;
-			Messenger.Default.Send(new KinectStatusChangedMessage() { Changed = true });
+			string statusText = this.kinectSensor.IsAvailable ? Properties.Resources.RunningStatusText
+																											: Properties.Resources.NoSensorStatusText;
+			Messenger.Default.Send(new KinectStatusMessage() { Text = statusText });
 		}
+		#endregion
 
+		#region Drawing body parts methods
 		/// <summary>
 		/// Draws a body
 		/// </summary>
@@ -508,6 +512,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					new Rect(this.displayImageWidth - ClipBoundsThickness, 0, ClipBoundsThickness, this.displayImageHeight));
 			}
 		}
+		#endregion
+
 		#endregion
 	}
 }

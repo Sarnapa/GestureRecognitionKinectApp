@@ -76,7 +76,9 @@
     </ApplicationDefinition>
     <Compile Include="ViewModels\BodyTrackingViewModel.cs" />
     <Compile Include="ViewModels\Messages\DisplayImageChangedMessage.cs" />
-    <Compile Include="ViewModels\Messages\KinectStatusChangedMessage.cs" />
+    <Compile Include="ViewModels\Messages\KinectStatusMessage.cs" />
+    <Compile Include="ViewModels\Messages\StoppedBodyTrackingMessage.cs" />
+    <Compile Include="ViewModels\Messages\TrackedUsersCountChangedMessage.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\BodyTrackingWindow.xaml.cs">
       <DependentUpon>BodyTrackingWindow.xaml</DependentUpon>

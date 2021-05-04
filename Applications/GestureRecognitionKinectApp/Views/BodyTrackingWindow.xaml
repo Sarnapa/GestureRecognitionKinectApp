@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Gesture recognition" 
-        Height="600" Width="700"
+        Height="864" Width="1152"
         Loaded="BodyTrackingWindow_Loaded"
         Closing="BodyTrackingWindow_Closing">
 
@@ -14,6 +14,7 @@
     </Window.DataContext>
 
     <Window.Resources>
+        <SolidColorBrush x:Key="TransparentGreyBrush" Color="#ccbfbfbf"/>
         <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e" />
         <SolidColorBrush x:Key="KinectPurpleBrush" Color="#ff52318f" />
         <SolidColorBrush x:Key="KinectBlueBrush" Color="#ff00BCF2" />
@@ -30,9 +31,15 @@
         <Viewbox HorizontalAlignment="Center">
             <Image Source="{Binding BodyImage}" Stretch="UniformToFill" />
         </Viewbox>
+        <Border Background="{StaticResource TransparentGreyBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding StoppedBodyTrackingInfoVisibility}">
+            <TextBox Text="{Binding StoppedBodyTrackingInfoText}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" 
+                Background="Transparent" BorderBrush="Transparent" Focusable="False" IsReadOnly="True" TextAlignment="Center" 
+                TextWrapping="Wrap" FontSize="36" FontStretch="UltraExpanded"/>
+        </Border>
 
         <StatusBar Grid.Row="1" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
-            <StatusBarItem Content="{Binding StatusText}" />
+            <StatusBarItem Content="{Binding KinectStatusText}" />
+            <StatusBarItem Content="{Binding TrackedUsersCountText}" />
         </StatusBar>
     </Grid>
 </Window>
