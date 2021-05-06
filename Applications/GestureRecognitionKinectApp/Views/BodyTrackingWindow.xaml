@@ -33,7 +33,7 @@
         </Viewbox>
         <Border Background="{StaticResource TransparentGreyBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding StoppedBodyTrackingInfoVisibility}">
             <TextBox Text="{Binding StoppedBodyTrackingInfoText}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" 
-                Background="Transparent" BorderBrush="Transparent" Focusable="False" IsReadOnly="True" TextAlignment="Center" 
+                Background="Transparent" BorderBrush="Transparent" IsHitTestVisible="False" Focusable="False" IsReadOnly="True" TextAlignment="Center" 
                 TextWrapping="Wrap" FontSize="36" FontStretch="UltraExpanded"/>
         </Border>
 

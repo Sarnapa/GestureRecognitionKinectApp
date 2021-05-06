@@ -21,12 +21,29 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// <summary>
 		/// Thickness of drawn joint lines
 		/// </summary>
-		private const double JointThickness = 3;
+		private const double JointThickness = 10;
+
+		/// <summary>
+		/// Thickness of drawn joint lines (that joint taking part in gesture recognition processing)
+		/// </summary>
+		private const double GestureRecognitionJointThickness = 25;
 
 		/// <summary>
 		/// Thickness of clip edge rectangles
 		/// </summary>
 		private const double ClipBoundsThickness = 10;
+
+		/// <summary>
+		/// Joint taking part in gesture recognition processing
+		/// </summary>
+		private readonly JointType[] gestureRecognitionJoints = new JointType[] {JointType.ElbowLeft, JointType.ElbowRight,
+			JointType.WristLeft, JointType.WristRight, JointType.HandLeft, JointType.HandRight};
+
+		/// <summary>
+		/// Not drawn joints
+		/// </summary>
+		private readonly JointType[] jointsToIgnore = new JointType[] {JointType.KneeLeft, JointType.KneeRight, JointType.AnkleLeft,
+			JointType.AnkleRight, JointType.FootLeft, JointType.FootRight};
 
 		/// <summary>
 		/// Brush used for drawing hands that are currently tracked as closed
@@ -47,6 +64,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// Brush used for drawing joints that are currently tracked
 		/// </summary>
 		private readonly Brush trackedJointBrush = new SolidColorBrush(Color.FromArgb(255, 68, 192, 68));
+
+		/// <summary>
+		/// Brush used for drawing joints that are currently tracked (that joint taking part in gesture recognition processing)
+		/// </summary>
+		private readonly Brush trackedGestureRecognitionJointBrush = new SolidColorBrush(Color.FromArgb(255, 128, 0, 128));
 
 		/// <summary>
 		/// Brush used for drawing joints that are currently inferred
@@ -108,6 +130,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// </summary>
 		private List<Pen> bodyColors;
 
+		// TODO: Facilitate to set this option in user settings.
+		/// <summary>
+		/// Is it enabled mode to draw inferred bones and joints?
+		/// </summary>
+		private bool isInferredMode = false;
+
 		private DateTime lastDisplayedColorFrameTime;
 		#endregion
 
@@ -159,23 +187,23 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			this.bones.Add(new Tuple<JointType, JointType>(JointType.WristLeft, JointType.ThumbLeft));
 
 			// Right Leg
-			this.bones.Add(new Tuple<JointType, JointType>(JointType.HipRight, JointType.KneeRight));
-			this.bones.Add(new Tuple<JointType, JointType>(JointType.KneeRight, JointType.AnkleRight));
-			this.bones.Add(new Tuple<JointType, JointType>(JointType.AnkleRight, JointType.FootRight));
+			//this.bones.Add(new Tuple<JointType, JointType>(JointType.HipRight, JointType.KneeRight));
+			//this.bones.Add(new Tuple<JointType, JointType>(JointType.KneeRight, JointType.AnkleRight));
+			//this.bones.Add(new Tuple<JointType, JointType>(JointType.AnkleRight, JointType.FootRight));
 
 			// Left Leg
-			this.bones.Add(new Tuple<JointType, JointType>(JointType.HipLeft, JointType.KneeLeft));
-			this.bones.Add(new Tuple<JointType, JointType>(JointType.KneeLeft, JointType.AnkleLeft));
-			this.bones.Add(new Tuple<JointType, JointType>(JointType.AnkleLeft, JointType.FootLeft));
+			//this.bones.Add(new Tuple<JointType, JointType>(JointType.HipLeft, JointType.KneeLeft));
+			//this.bones.Add(new Tuple<JointType, JointType>(JointType.KneeLeft, JointType.AnkleLeft));
+			//this.bones.Add(new Tuple<JointType, JointType>(JointType.AnkleLeft, JointType.FootLeft));
 
 			// Populate body colors, one for each BodyIndex
 			this.bodyColors = new List<Pen>();
-			this.bodyColors.Add(new Pen(Brushes.Red, 6));
-			this.bodyColors.Add(new Pen(Brushes.Orange, 6));
-			this.bodyColors.Add(new Pen(Brushes.Green, 6));
-			this.bodyColors.Add(new Pen(Brushes.Blue, 6));
-			this.bodyColors.Add(new Pen(Brushes.Indigo, 6));
-			this.bodyColors.Add(new Pen(Brushes.Violet, 6));
+			this.bodyColors.Add(new Pen(Brushes.Red, 10));
+			this.bodyColors.Add(new Pen(Brushes.Orange, 10));
+			this.bodyColors.Add(new Pen(Brushes.Green, 10));
+			this.bodyColors.Add(new Pen(Brushes.Blue, 10));
+			this.bodyColors.Add(new Pen(Brushes.Indigo, 10));
+			this.bodyColors.Add(new Pen(Brushes.Violet, 10));
 		}
 		#endregion
 
@@ -308,7 +336,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 									Messenger.Default.Send(new StoppedBodyTrackingMessage()
 									{
 										IsStopped = true,
-										Text = $"Detected {bodyFrame.BodyCount} users.\nOnly one user movemenets can be tracked."
+										Text = $"Detected {trackedBodiesCount} users.\nOnly one user movemenets can be tracked."
 									});
 
 									UpdateLastDisplayedColorFrameTime();
@@ -399,24 +427,33 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			}
 
 			// Draw the joints
-			foreach (JointType jointType in joints.Keys)
+			foreach (var jointType in joints.Keys)
 			{
+				if (this.jointsToIgnore.Contains(jointType))
+					continue;
+
 				Brush drawBrush = null;
+				double drawThickness = JointThickness;
 
 				var trackingState = joints[jointType].TrackingState;
 
-				if (trackingState == TrackingState.Tracked)
+				if (this.gestureRecognitionJoints.Contains(jointType) && trackingState == TrackingState.Tracked)
+				{
+					drawBrush = this.trackedGestureRecognitionJointBrush;
+					drawThickness = GestureRecognitionJointThickness;
+				}
+				else if (trackingState == TrackingState.Tracked)
 				{
 					drawBrush = this.trackedJointBrush;
 				}
-				else if (trackingState == TrackingState.Inferred)
+				else if (this.isInferredMode && trackingState == TrackingState.Inferred)
 				{
 					drawBrush = this.inferredJointBrush;
 				}
 
 				if (drawBrush != null)
 				{
-					drawingContext.DrawEllipse(drawBrush, null, jointPoints[jointType], JointThickness, JointThickness);
+					drawingContext.DrawEllipse(drawBrush, null, jointPoints[jointType], drawThickness, drawThickness);
 				}
 			}
 		}
@@ -438,12 +475,17 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 			// If we can't find either of these joints, exit
 			if (joint0.TrackingState == TrackingState.NotTracked ||
-					joint1.TrackingState == TrackingState.NotTracked)
+				joint1.TrackingState == TrackingState.NotTracked)
 			{
 				return;
 			}
 
-			// We assume all drawn bones are inferred unless BOTH joints are tracked
+			if (!this.isInferredMode && (joint0.TrackingState == TrackingState.Inferred ||
+				joint1.TrackingState == TrackingState.Inferred))
+			{
+				return;
+			}
+
 			Pen drawPen = this.inferredBonePen;
 			if ((joint0.TrackingState == TrackingState.Tracked) && (joint1.TrackingState == TrackingState.Tracked))
 			{
