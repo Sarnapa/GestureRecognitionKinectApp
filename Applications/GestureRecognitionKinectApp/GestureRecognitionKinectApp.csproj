@@ -74,6 +74,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Presentation\DrawSkeletonManager.cs" />
     <Compile Include="ViewModels\BodyTrackingViewModel.cs" />
     <Compile Include="ViewModels\Messages\DisplayImageChangedMessage.cs" />
     <Compile Include="ViewModels\Messages\FPSValueMessage.cs" />
