@@ -1,20 +1,20 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Controls;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Views
 {
 	/// <summary>
-	/// Interaction logic for MainWindow.xaml
+	/// Interaction logic for BodyTrackingPage.xaml
 	/// </summary>
-	public partial class BodyTrackingWindow: Window
+	public partial class BodyTrackingPage : Page
 	{
-		public BodyTrackingWindow()
+		public BodyTrackingPage()
 		{
 			InitializeComponent();
 		}
 
-		private void BodyTrackingWindow_Loaded(object sender, RoutedEventArgs e)
+		private void BodyTrackingPage_Loaded(object sender, RoutedEventArgs e)
 		{
 			if (this.DataContext is BodyTrackingViewModel bodyTrackingViewModel
 				&& bodyTrackingViewModel.StartCommand.CanExecute(null))
@@ -23,7 +23,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Views
 			}
 		}
 
-		private void BodyTrackingWindow_Closing(object sender, CancelEventArgs e)
+		private void BodyTrackingPage_Unloaded(object sender, RoutedEventArgs e)
 		{
 			if (this.DataContext is BodyTrackingViewModel bodyTrackingViewModel
 				&& bodyTrackingViewModel.CleanupCommand.CanExecute(null))

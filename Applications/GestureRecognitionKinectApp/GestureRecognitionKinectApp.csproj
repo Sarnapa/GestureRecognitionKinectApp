@@ -56,6 +56,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -74,22 +75,48 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\Presentation\DrawSkeletonManager.cs" />
+    <Compile Include="Models\GestureRecordModel.cs" />
+    <Compile Include="Models\Presentation\Interfaces\Base\IAsyncCommand.cs" />
+    <Compile Include="Models\Presentation\Managers\RenderColorFrameManager.cs" />
+    <Compile Include="Models\Presentation\Managers\RenderBodyFrameManager.cs" />
+    <Compile Include="Models\Presentation\Structures\Base\AsyncCommand.cs" />
+    <Compile Include="Models\Presentation\Structures\Base\AsyncCommandBase.cs" />
+    <Compile Include="Models\Processing\Structures\Definitions.cs" />
+    <Compile Include="Models\Processing\Utilities\Utils.cs" />
     <Compile Include="ViewModels\BodyTrackingViewModel.cs" />
+    <Compile Include="ViewModels\GestureRecordViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Messages\DisplayImageChangedMessage.cs" />
     <Compile Include="ViewModels\Messages\FPSValueMessage.cs" />
+    <Compile Include="ViewModels\Messages\GestureRecordMessage.cs" />
     <Compile Include="ViewModels\Messages\KinectStatusMessage.cs" />
     <Compile Include="ViewModels\Messages\StoppedBodyTrackingMessage.cs" />
     <Compile Include="ViewModels\Messages\TrackedUsersCountChangedMessage.cs" />
+    <Compile Include="ViewModels\NavigationService\FrameNavigationService.cs" />
+    <Compile Include="ViewModels\NavigationService\IFrameNavigationService.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
-    <Compile Include="Views\BodyTrackingWindow.xaml.cs">
-      <DependentUpon>BodyTrackingWindow.xaml</DependentUpon>
+    <Compile Include="Views\BodyTrackingPage.xaml.cs">
+      <DependentUpon>BodyTrackingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GestureRecordPage.xaml.cs">
+      <DependentUpon>GestureRecordPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\BodyTrackingWindow.xaml">
+    <Page Include="Views\BodyTrackingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GestureRecordPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -143,6 +170,20 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Processing\KinectStreamRecordReplayProcUnit\KinectStreamRecordReplayProcUnit.csproj">
+      <Project>{5770279b-0942-45e9-b618-c4778f802499}</Project>
+      <Name>KinectStreamRecordReplayProcUnit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\StartRecordIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\StopRecordIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

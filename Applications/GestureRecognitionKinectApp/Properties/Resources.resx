@@ -129,4 +129,10 @@
   <data name="SensorNotAvailableStatusText" xml:space="preserve">
     <value>Kinect not available!</value>
   </data>
+  <data name="StartRecordTip" xml:space="preserve">
+    <value>Start record</value>
+  </data>
+  <data name="StopRecordTip" xml:space="preserve">
+    <value>Stop record</value>
+  </data>
 </root>

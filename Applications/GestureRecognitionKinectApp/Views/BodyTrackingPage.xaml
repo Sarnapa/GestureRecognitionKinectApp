@@ -1,0 +1,54 @@
+﻿<Page x:Class="GestureRecognition.Applications.GestureRecognitionKinectApp.Views.BodyTrackingPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:GestureRecognition.Applications.GestureRecognitionKinectApp.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="864" d:DesignWidth="1152"
+      Loaded="BodyTrackingPage_Loaded"
+      Unloaded="BodyTrackingPage_Unloaded">
+
+    <Page.DataContext>
+        <Binding Source="{StaticResource Locator}" Path="BodyTracking"/>
+    </Page.DataContext>
+
+    <Page.Resources>
+        <SolidColorBrush x:Key="TransparentGreyBrush" Color="#ccbfbfbf"/>
+        <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e" />
+        <SolidColorBrush x:Key="KinectPurpleBrush" Color="#ff52318f" />
+        <SolidColorBrush x:Key="KinectBlueBrush" Color="#ff00BCF2" />
+    </Page.Resources>
+    
+    <Grid Margin="10 0 10 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="20*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Button HorizontalAlignment="Left" IsEnabled="{Binding IsKinectAvailable}" ToolTip="{Binding StartStopRecordGestureButtonTip}" Command="{Binding StartStopRecordGestureCommand}">
+                <Image Source="{Binding StartStopRecordGestureButtonImageUri}"/>
+            </Button>
+        </Border>
+
+        <Viewbox Grid.Row="1" HorizontalAlignment="Center">
+            <Image Source="{Binding ColorImage}" Stretch="UniformToFill" />
+        </Viewbox>
+        <Viewbox Grid.Row="1" HorizontalAlignment="Center">
+            <Image Source="{Binding BodyImage}" Stretch="UniformToFill" />
+        </Viewbox>
+        <Border Grid.Row="1" Background="{StaticResource TransparentGreyBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding StoppedBodyTrackingInfoVisibility}">
+            <TextBox Text="{Binding StoppedBodyTrackingInfoText}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" 
+                Background="Transparent" BorderBrush="Transparent" IsHitTestVisible="False" Focusable="False" IsReadOnly="True" TextAlignment="Center" 
+                TextWrapping="Wrap" FontSize="36" FontStretch="UltraExpanded"/>
+        </Border>
+
+        <StatusBar Grid.Row="2" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
+            <StatusBarItem Content="{Binding KinectStatusText}" />
+            <StatusBarItem Content="{Binding TrackedUsersCountText}" />
+            <StatusBarItem Content="{Binding FPSValueText}" />
+        </StatusBar>
+    </Grid>
+</Page>

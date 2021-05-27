@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -7,17 +8,30 @@ using System.Windows.Media.Imaging;
 using Microsoft.Kinect;
 using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
-using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Helpers;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Utilities;
+using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 {
-	public class BodyTrackingModel
+	public class BodyTrackingModel : IDisposable
 	{
 		#region Private / protected fields
 		/// <summary>
+		/// Time limit for gesture record
+		/// </summary>
+		private readonly TimeSpan gestureRecordTimeLimit = TimeSpan.FromSeconds(10);
+
+		/// <summary>
 		/// Render skeleton data
 		/// </summary>
-		private readonly DrawSkeletonManager drawSkeletonManager;
+		private readonly RenderBodyFrameManager renderBodyFrameManager;
+
+		/// <summary>
+		/// Render color frame
+		/// </summary>
+		private readonly RenderColorFrameManager renderColorFrameManager;
 
 		/// <summary>
 		/// RGB image that will be displayed
@@ -59,10 +73,36 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// </summary>
 		private CoordinateMapper coordinateMapper;
 
+		/// <summary>
+		/// Records gesture (color and skeleton data)
+		/// </summary>
+		private KinectRecorder gestureRecorder;
+
+		/// <summary>
+		/// Access to file containing gesture record
+		/// </summary>
+		private FileStream gestureRecordFile;
+
+		private DateTime startGestureRecordTime;
+
 		private DateTime lastDisplayedColorFrameTime;
 		#endregion
 
 		#region Public properties
+		/// <summary>
+		/// Is Kinect sensor available?
+		/// </summary>
+		public bool IsKinectAvailable
+		{
+			get
+			{
+				return this.kinectSensor != null && this.kinectSensor.IsAvailable;
+			}
+		}
+
+		/// <summary>
+		/// RGB image that will be displayed
+		/// </summary>
 		public ImageSource ColorImage
 		{
 			get
@@ -71,6 +111,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			}
 		}
 
+		/// <summary>
+		/// Drawing image that will contain body data
+		/// </summary>
 		public ImageSource BodyImage
 		{
 			get
@@ -78,12 +121,32 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				return this.bodyImage;
 			}
 		}
+
+		/// <summary>
+		/// Represent state of body tracking process
+		/// </summary>
+		public BodyTrackingState TrackingState
+		{
+			get; set;
+		}
+
+		/// <summary>
+		/// Path to file containing gesture record
+		/// </summary>
+		public string GestureRecordFilePath
+		{
+			get
+			{
+				return this.gestureRecordFile?.Name ?? string.Empty; 
+			}
+		}
 		#endregion
 
 		#region Constructors
 		public BodyTrackingModel()
 		{
-			this.drawSkeletonManager = new DrawSkeletonManager();
+			this.renderBodyFrameManager = new RenderBodyFrameManager();
+			this.renderColorFrameManager = new RenderColorFrameManager();
 		}
 		#endregion
 
@@ -126,8 +189,26 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				this.multiSourceReader.MultiSourceFrameArrived += this.Reader_FrameArrived;
 		}
 
+		public void StartStopRecordingGesture()
+		{
+			if (this.TrackingState == BodyTrackingState.Standard)
+			{
+				CreateTemporaryRecordFile();
+				this.gestureRecorder = new KinectRecorder(KinectRecordOptions.All, this.gestureRecordFile);
+				this.startGestureRecordTime = DateTime.Now;
+				this.TrackingState = BodyTrackingState.RecordingGesture;
+			}
+			else if (this.TrackingState == BodyTrackingState.RecordingGesture)
+			{
+				this.gestureRecorder.Stop();
+				CleanGestureRecorder(false);
+			}
+		}
+
 		public void Cleanup()
 		{
+			CleanGestureRecorder();
+
 			if (this.multiSourceReader != null)
 			{
 				this.multiSourceReader.Dispose();
@@ -136,6 +217,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 			if (this.kinectSensor != null)
 			{
+				this.kinectSensor.IsAvailableChanged -= this.Sensor_IsAvailableChanged;
 				this.kinectSensor.Close();
 				this.kinectSensor = null;
 			}
@@ -172,21 +254,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					this.colorImage.Lock();
 					colorImageLocked = true;
 
-					// Process color frame
-					var colorFrameDescription = colorFrame.FrameDescription;
-					using (var colorBuffer = colorFrame.LockRawImageBuffer())
-					{
-						// Verify data and write the new color frame data to the display bitmap
-						if ((colorFrameDescription.Width == this.displayImageWidth) && (colorFrameDescription.Height == this.displayImageHeight))
-						{
-							colorFrame.CopyConvertedFrameDataToIntPtr(
-								this.colorImage.BackBuffer,
-								(uint)(this.displayImageWidth * this.displayImageHeight * 4),
-								ColorImageFormat.Bgra);
+					if (this.gestureRecorder != null && (this.gestureRecorder.Options & KinectRecordOptions.Color) != 0)
+						this.gestureRecorder.Record(colorFrame);
 
-							this.colorImage.AddDirtyRect(new Int32Rect(0, 0, this.displayImageWidth, this.displayImageHeight));
-						}
-					}
+					this.renderColorFrameManager.ProcessColorFrame(colorFrame, this.displayImageWidth, this.displayImageHeight,
+						ref this.colorImage);
 
 					this.colorImage.Unlock();
 					colorImageLocked = false;
@@ -206,6 +278,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 							Count = trackedBodiesCount
 						});
 
+						if (this.gestureRecorder != null && (this.gestureRecorder.Options & KinectRecordOptions.Bodies) != 0)
+							this.gestureRecorder.Record(bodyFrame, bodies);
+
 						using (var dc = this.bodyImageDrawingGroup.Open())
 						{
 							if (trackedBodiesCount > 0)
@@ -213,12 +288,17 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 								// Only one user movements can be processed.
 								if (trackedBodiesCount != 1)
 								{
+									string basicText = $"Detected {trackedBodiesCount} users.\nOnly one user movemenets can be tracked.";
+									string gestureRecorderText = $"Gesture recording has been cancelled.";
+
 									Messenger.Default.Send(new StoppedBodyTrackingMessage()
 									{
 										IsStopped = true,
-										Text = $"Detected {trackedBodiesCount} users.\nOnly one user movemenets can be tracked."
+										Text = this.TrackingState == BodyTrackingState.RecordingGesture ?
+											$"{basicText}\n{gestureRecorderText}" : basicText
 									});
 
+									CleanGestureRecorder();
 									UpdateLastDisplayedColorFrameTime();
 									return;
 								}
@@ -248,10 +328,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 										jointPoints[jointType] = new Point(mapSpacePoint.X, mapSpacePoint.Y);
 									}
 
-									this.drawSkeletonManager.DrawBody(joints, jointPoints, dc, 0);
+									this.renderBodyFrameManager.DrawBody(joints, jointPoints, dc, 0);
 
-									this.drawSkeletonManager.DrawHand(trackedBody.HandLeftState, jointPoints[JointType.HandLeft], dc);
-									this.drawSkeletonManager.DrawHand(trackedBody.HandRightState, jointPoints[JointType.HandRight], dc);
+									this.renderBodyFrameManager.DrawHand(trackedBody.HandLeftState, jointPoints[JointType.HandLeft], dc);
+									this.renderBodyFrameManager.DrawHand(trackedBody.HandRightState, jointPoints[JointType.HandRight], dc);
 
 									// prevent drawing outside of our render area
 									this.bodyImageDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
@@ -282,9 +362,39 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		private void Sensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
 		{
 			// On failure, set the status text
-			string statusText = this.kinectSensor.IsAvailable ? Properties.Resources.RunningStatusText
-																											: Properties.Resources.NoSensorStatusText;
-			Messenger.Default.Send(new KinectStatusMessage() { Text = statusText });
+			if (this.kinectSensor != null)
+			{
+				string statusText = this.kinectSensor.IsAvailable ? Properties.Resources.RunningStatusText
+																												: Properties.Resources.NoSensorStatusText;
+				Messenger.Default.Send(new KinectStatusMessage() { Text = statusText });
+			}
+		}
+		#endregion
+
+		#region Gesture recording methods
+		private void CreateTemporaryRecordFile()
+		{
+			string fileName = $"{Utils.RandomString(32)}.record";
+			this.gestureRecordFile = File.Create(fileName);
+			File.SetAttributes(fileName, File.GetAttributes(fileName) | FileAttributes.Hidden);
+		}
+
+		private void CleanGestureRecorder(bool deleteTemporaryRecordFile = true)
+		{
+			this.TrackingState = BodyTrackingState.Standard;
+			if (this.gestureRecorder != null)
+			{
+				this.gestureRecorder.Dispose();
+				this.gestureRecorder = null;
+			}
+			if (this.gestureRecordFile != null)
+			{
+				this.gestureRecordFile.Close();
+				if (deleteTemporaryRecordFile)
+					File.Delete(this.gestureRecordFile.Name);
+				this.gestureRecordFile.Dispose();
+				this.gestureRecordFile = null;
+			}
 		}
 		#endregion
 
@@ -297,6 +407,13 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		}
 		#endregion
 
+		#endregion
+
+		#region IDisposable implementation
+		public void Dispose()
+		{
+			CleanGestureRecorder();
+		}
 		#endregion
 	}
 }

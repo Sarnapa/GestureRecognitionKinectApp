@@ -4,14 +4,17 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.NavigationService;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 {
-	public class BodyTrackingViewModel: ViewModelBase
+	public class BodyTrackingViewModel : ViewModelBase
 	{
 		#region Private fields
 		private readonly BodyTrackingModel model;
+		private readonly IFrameNavigationService navigationService;
 		private string kinectStatusText;
 		private int trackedUsersCount;
 		private string fpsValueText;
@@ -20,19 +23,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		#endregion
 
 		#region Public properties
-		public ImageSource ColorImage
+		public bool IsKinectAvailable
 		{
 			get
 			{
-				return this.model.ColorImage;
-			}
-		}
-
-		public ImageSource BodyImage
-		{
-			get
-			{
-				return this.model.BodyImage;
+				return this.model.IsKinectAvailable;
 			}
 		}
 
@@ -49,6 +44,22 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 					this.kinectStatusText = value;
 					RaisePropertyChanged("KinectStatusText");
 				}
+			}
+		}
+
+		public ImageSource ColorImage
+		{
+			get
+			{
+				return this.model.ColorImage;
+			}
+		}
+
+		public ImageSource BodyImage
+		{
+			get
+			{
+				return this.model.BodyImage;
 			}
 		}
 
@@ -108,6 +119,24 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			}
 		}
 
+		public string StartStopRecordGestureButtonImageUri
+		{
+			get
+			{
+				return this.model.TrackingState == BodyTrackingState.RecordingGesture ? 
+					"pack://application:,,,/Resources/StopRecordIcon.png" : "pack://application:,,,/Resources/StartRecordIcon.png";
+			}
+		}
+
+		public string StartStopRecordGestureButtonTip
+		{
+			get
+			{
+				return this.model.TrackingState == BodyTrackingState.RecordingGesture ?
+					Properties.Resources.StopRecordTip : Properties.Resources.StartRecordTip;
+			}
+		}
+
 		#region Commands
 		public RelayCommand StartCommand
 		{
@@ -117,16 +146,22 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get; private set;
 		}
+		public RelayCommand StartStopRecordGestureCommand
+		{
+			get; private set;
+		}
 		#endregion
 
 		#endregion
 
 		#region Constructors
-		public BodyTrackingViewModel()
+		public BodyTrackingViewModel(IFrameNavigationService navigationService)
 		{
 			this.model = new BodyTrackingModel();
+			this.navigationService = navigationService;
 			this.StartCommand = new RelayCommand(this.StartCommandAction);
 			this.CleanupCommand = new RelayCommand(this.CleanupCommandAction);
+			this.StartStopRecordGestureCommand = new RelayCommand(this.StartStopRecordGestureCommandAction);
 			Messenger.Default.Register<DisplayImageChangedMessage>(this, m => DisplayImageChangedMessageHandler(m));
 			Messenger.Default.Register<KinectStatusMessage>(this, m => KinectStatusChangedMessageHandler(m));
 			Messenger.Default.Register<TrackedUsersCountChangedMessage>(this, m => TrackedUsersCountChangedMessageHandler(m));
@@ -147,9 +182,31 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			this.model.Cleanup();
 		}
+
+		private void StartStopRecordGestureCommandAction()
+		{
+			bool isRecording = this.model.TrackingState == BodyTrackingState.RecordingGesture;
+			string gestureRecordFilePath = this.model.GestureRecordFilePath;
+
+			this.model.StartStopRecordingGesture();
+			RaisePropertyChanged("StartStopRecordGestureButtonImageUri");
+			RaisePropertyChanged("StartStopRecordGestureButtonTip");
+
+			if (isRecording)
+			{
+				Messenger.Default.Send<GestureRecordMessage, GestureRecordViewModel>(
+					new GestureRecordMessage() { IsTemporaryFile = true, FilePath = gestureRecordFilePath });
+			}
+		}
 		#endregion
 
 		#region Messages handlers
+		private void KinectStatusChangedMessageHandler(KinectStatusMessage m)
+		{
+			RaisePropertyChanged("IsKinectAvailable");
+			this.KinectStatusText = m.Text;
+		}
+
 		private void DisplayImageChangedMessageHandler(DisplayImageChangedMessage m)
 		{
 			if (m.Changed)
@@ -166,11 +223,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				this.trackedUsersCount = m.Count;
 				RaisePropertyChanged("TrackedUsersCountText");
 			}
-		}
-
-		private void KinectStatusChangedMessageHandler(KinectStatusMessage m)
-		{
-			this.KinectStatusText = m.Text;
 		}
 
 		private void FPSValueMessageHandler(FPSValueMessage m)

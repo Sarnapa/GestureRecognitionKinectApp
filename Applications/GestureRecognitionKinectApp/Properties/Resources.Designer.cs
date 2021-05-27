@@ -95,5 +95,23 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
                 return ResourceManager.GetString("SensorNotAvailableStatusText", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start record.
+        /// </summary>
+        internal static string StartRecordTip {
+            get {
+                return ResourceManager.GetString("StartRecordTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop record.
+        /// </summary>
+        internal static string StopRecordTip {
+            get {
+                return ResourceManager.GetString("StopRecordTip", resourceCulture);
+            }
+        }
     }
 }

@@ -5,9 +5,9 @@ using System.Windows;
 using System.Windows.Media;
 using Microsoft.Kinect;
 
-namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Helpers
+namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers
 {
-	public class DrawSkeletonManager
+	public class RenderBodyFrameManager
 	{
 		#region Private fields
 		/// <summary>
@@ -91,7 +91,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Hel
 		#endregion
 
 		#region Constructors
-		public DrawSkeletonManager()
+		public RenderBodyFrameManager()
 		{
 			this.bones = new List<Tuple<JointType, JointType>>();
 

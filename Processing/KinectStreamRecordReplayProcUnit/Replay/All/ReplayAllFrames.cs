@@ -1,0 +1,36 @@
+﻿using System;
+using System.IO;
+using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies;
+using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Color;
+
+namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.All
+{
+	public class ReplayAllFrames : ReplayFrame
+	{
+		#region Public properties
+		public ReplayColorFrame ColorFrame
+		{
+			get; set;
+		}
+		public ReplayBodyFrame BodyFrame
+		{
+			get; set;
+		}
+
+		public override long TimeStamp
+		{
+			get
+			{
+				return this.ColorFrame?.TimeStamp ?? 0;
+			}
+		}
+		#endregion
+
+		#region ReplayFrame overriders
+		internal override void CreateFromReader(BinaryReader reader)
+		{
+			throw new NotImplementedException();
+		}
+		#endregion
+	}
+}

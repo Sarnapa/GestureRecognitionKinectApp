@@ -1,21 +1,39 @@
-﻿using CommonServiceLocator;
-using GalaSoft.MvvmLight;
+﻿using System;
+using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.NavigationService;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 {
 	public class ViewModelLocator
 	{
-		#region Window keys
-		public const string BodyTrackingWindow = "BodyTrackingWindow";
+		#region Page keys
+		public const string BodyTrackingPageKey = "BodyTrackingPage";
+		public const string GestureRecordPageKey = "GestureRecordPage";
 		#endregion
 
 		#region ViewModels
+		public MainViewModel Main
+		{
+			get
+			{
+				return ServiceLocator.Current.GetInstance<MainViewModel>();
+			}
+		}
+
 		public BodyTrackingViewModel BodyTracking
 		{
 			get
 			{
 				return ServiceLocator.Current.GetInstance<BodyTrackingViewModel>();
+			}
+		}
+
+		public GestureRecordViewModel GestureRecord
+		{
+			get
+			{
+				return ServiceLocator.Current.GetInstance<GestureRecordViewModel>();
 			}
 		}
 		#endregion
@@ -25,18 +43,15 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		public ViewModelLocator()
 		{
 			ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-		
-			var bodyTrackingViewModel = new BodyTrackingViewModel();
-			if (ViewModelBase.IsInDesignModeStatic)
-			{
-				// Create design time view services and models.
-			}
-			else
-			{
-				// Create run time view services and models.
-			}
-			// Register used services.
-			SimpleIoc.Default.Register<BodyTrackingViewModel>(() => bodyTrackingViewModel);
+
+			var navigationService = new FrameNavigationService();
+			navigationService.Configure(BodyTrackingPageKey, new Uri("../Views/BodyTrackingPage.xaml", UriKind.Relative));
+			navigationService.Configure(GestureRecordPageKey, new Uri("../Views/GestureRecordPage.xaml", UriKind.Relative));
+			SimpleIoc.Default.Register<IFrameNavigationService>(() => navigationService);
+
+			SimpleIoc.Default.Register<MainViewModel>();
+			SimpleIoc.Default.Register<BodyTrackingViewModel>(true);
+			SimpleIoc.Default.Register<GestureRecordViewModel>(true);
 		}
 		#endregion
 	}
