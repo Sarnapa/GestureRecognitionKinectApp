@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Kinect;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.Bodies;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.Color;
+using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Structures;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record
 {
@@ -61,8 +63,11 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record
 			Flush();
 		}
 
-		public void Record(BodyFrame frame, Body[] bodies = null)
+		public void Record(BodyFrame frame, IEnumerable<(Body, BodyJointsColorSpacePointsDict)> bodies)
 		{
+			if (bodies == null)
+				throw new ArgumentNullException(nameof(bodies));
+
 			if (this.writer == null)
 				throw new Exception("This recorder is stopped");
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using Microsoft.Kinect;
+using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers
 {
@@ -141,6 +142,37 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 		#endregion
 
 		#region Public methods
+		public void ProcessBodyFrame(ReplayBodyFrame bodyFrame, DrawingContext drawingContext)
+		{
+			if (bodyFrame == null)
+				throw new ArgumentNullException(nameof(bodyFrame));
+			if (drawingContext == null)
+				throw new ArgumentNullException(nameof(drawingContext));
+
+			if (bodyFrame.Bodies != null)
+			{
+				for (int i = 0; i < bodyFrame.Bodies.Length; i++)
+				{
+					if (i < this.bodyColors.Count)
+					{
+						var body = bodyFrame.Bodies[i];
+						var bodyColorSpacePoints = body?.JointsColorSpacePoints?.ToDictionary(
+							kv => kv.Key, kv => new Point(kv.Value.X, kv.Value.Y));
+
+						if (body != null && bodyColorSpacePoints != null)
+						{
+							DrawBody(body.Joints, bodyColorSpacePoints, drawingContext, i);
+
+							if (bodyColorSpacePoints.ContainsKey(JointType.HandLeft))
+								DrawHand(body.HandLeftState, bodyColorSpacePoints[JointType.HandLeft], drawingContext);
+							if (bodyColorSpacePoints.ContainsKey(JointType.HandRight))
+								DrawHand(body.HandRightState, bodyColorSpacePoints[JointType.HandRight], drawingContext);
+						}
+					}
+				}
+			}
+		}
+
 		/// <summary>
 		/// Draws a body
 		/// </summary>

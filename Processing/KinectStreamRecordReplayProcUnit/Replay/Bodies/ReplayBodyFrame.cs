@@ -28,6 +28,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.
 			this.TimeStamp = (long)frame.RelativeTime.TotalMilliseconds;
 			this.FloorClipPlane = frame.FloorClipPlane;
 			
+			// Without color space coordinations for bodies joints
 			var bodies = new Body[frame.BodyCount];
 			frame.GetAndRefreshBodyData(bodies);
 			this.Bodies = bodies.Map();

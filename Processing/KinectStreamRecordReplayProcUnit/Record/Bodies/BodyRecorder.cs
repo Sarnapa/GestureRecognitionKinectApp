@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Structures;
@@ -22,12 +23,14 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.
 		#endregion
 
 		#region Public methods
-		public void Record(BodyFrame frame, Body[] bodies = null)
+		public void Record(BodyFrame frame, IEnumerable<(Body, BodyJointsColorSpacePointsDict)> bodies)
 		{
 			if (frame == null)
 				throw new ArgumentNullException(nameof(frame));
 			if (frame.BodyCount <= 0)
 				throw new ArgumentException(nameof(frame.BodyCount));
+			if (bodies == null)
+				throw new ArgumentNullException(nameof(bodies));
 
 			// Header
 			this.writer.Write((int)KinectRecordOptions.Bodies);
@@ -40,13 +43,6 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.
 			this.writer.Write(frame.FloorClipPlane.Y);
 			this.writer.Write(frame.FloorClipPlane.Z);
 			this.writer.Write(frame.FloorClipPlane.W);
-
-			// Get bodies data if necessary
-			if (bodies == null)
-			{
-				bodies = new Body[frame.BodyCount];
-				frame.GetAndRefreshBodyData(bodies);
-			}
 
 			var bodiesData = bodies.Map();
 

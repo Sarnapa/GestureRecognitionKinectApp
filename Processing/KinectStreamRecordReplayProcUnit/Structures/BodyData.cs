@@ -24,6 +24,10 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Structu
 		{
 			get;
 		}
+		public BodyJointsColorSpacePointsDict JointsColorSpacePoints
+		{
+			get;
+		}
 		public IReadOnlyDictionary<JointType, JointOrientation> JointOrientations
 		{
 			get;
@@ -59,6 +63,12 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Structu
 		#endregion
 
 		#region Constructors
+		public BodyData(Body body, BodyJointsColorSpacePointsDict jointsColorSpacePoints)
+			: this(body)
+		{
+			this.JointsColorSpacePoints = jointsColorSpacePoints ?? new BodyJointsColorSpacePointsDict();
+		}
+
 		public BodyData(Body body)
 		{
 			this.IsTracked = body.IsTracked;

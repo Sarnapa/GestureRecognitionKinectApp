@@ -57,6 +57,7 @@
     <Compile Include="Replay\Bodies\ReplayBodyFrame.cs" />
     <Compile Include="Replay\Color\ReplayColorFrame.cs" />
     <Compile Include="Replay\ReplayFrame.cs" />
+    <Compile Include="Structures\BodyJointsColorSpacePointsDict.cs" />
     <Compile Include="Structures\Mappers.cs" />
   </ItemGroup>
   <ItemGroup />

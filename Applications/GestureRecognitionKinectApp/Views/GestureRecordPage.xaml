@@ -19,10 +19,10 @@
             <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
 
-        <Viewbox Grid.Row="1" HorizontalAlignment="Center">
+        <Viewbox HorizontalAlignment="Center">
             <Image Source="{Binding ColorImage}" Stretch="UniformToFill" />
         </Viewbox>
-        <Viewbox Grid.Row="1" HorizontalAlignment="Center">
+        <Viewbox HorizontalAlignment="Center">
             <Image Source="{Binding BodyImage}" Stretch="UniformToFill" />
         </Viewbox>
         

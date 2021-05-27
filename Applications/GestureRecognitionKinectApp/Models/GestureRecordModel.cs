@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight.Messaging;
@@ -89,6 +90,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 			CleanGestureReplay();
 
+			// Create the drawing group we'll use for drawing body data
+			this.bodyImageDrawingGroup = new DrawingGroup();
+			// Create the image with body data
+			this.bodyImage = new DrawingImage(this.bodyImageDrawingGroup);
+
 			try
 			{
 				this.gestureRecordFile = File.OpenRead(gestureRecordFilePath);
@@ -119,9 +125,18 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			if (colorFrame != null)
 				this.renderColorFrameManager.ProcessColorFrame(colorFrame, ref this.colorImage);
 
-			//var skeletonFrame = e.AllFrames.SkeletonFrame;
-			//if (skeletonFrame != null)
-			//	ProcessFrame(skeletonFrame);
+			var bodyFrame = e.AllFrames.BodyFrame;
+			using (var dc = this.bodyImageDrawingGroup.Open())
+			{
+				if (colorFrame != null && this.colorImage != null && bodyFrame != null)
+				{
+					dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, colorFrame.Width, colorFrame.Height));
+					this.renderBodyFrameManager.ProcessBodyFrame(bodyFrame, dc);
+					// prevent drawing outside of our render area
+					this.bodyImageDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0,
+						colorFrame.Width, colorFrame.Height));
+				}
+			}
 
 			if (colorImageSendMessage && colorFrame != null)
 				Messenger.Default.Send(new DisplayImageChangedMessage() { Changed = true });
@@ -143,6 +158,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				this.gestureRecordFile.Dispose();
 				this.gestureRecordFile = null;
 			}
+
+			this.colorImage = null;
+			this.bodyImage = null;
+			this.bodyImageDrawingGroup = null;
 		}
 
 		#endregion

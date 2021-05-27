@@ -89,7 +89,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			if (m.Changed)
 			{
 				RaisePropertyChanged("ColorImage");
-				//RaisePropertyChanged("BodyImage");
+				RaisePropertyChanged("BodyImage");
 			}
 		}
 		#endregion

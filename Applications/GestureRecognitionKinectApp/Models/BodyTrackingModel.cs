@@ -12,6 +12,7 @@ using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Present
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Utilities;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record;
+using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Structures;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 {
@@ -278,8 +279,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 							Count = trackedBodiesCount
 						});
 
+						var trackedBodiesData = ConvertToColorSpace(trackedBodies);
+
 						if (this.gestureRecorder != null && (this.gestureRecorder.Options & KinectRecordOptions.Bodies) != 0)
-							this.gestureRecorder.Record(bodyFrame, bodies);
+							this.gestureRecorder.Record(bodyFrame, trackedBodiesData);
 
 						using (var dc = this.bodyImageDrawingGroup.Open())
 						{
@@ -313,25 +316,19 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 								// Draw a transparent background to set the render size
 								dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
 
-								var trackedBody = trackedBodies.FirstOrDefault();
+								var trackedBodyData = trackedBodiesData.FirstOrDefault();
+								var trackedBody = trackedBodyData.Item1;
+								var trackedBodyColorSpacePoints = trackedBodyData.Item2?.ToDictionary(
+									kv => kv.Key, kv => new Point(kv.Value.X, kv.Value.Y));
 								// Process body data
-								if (trackedBody != null)
+								if (trackedBody != null && trackedBodyColorSpacePoints != null)
 								{
-									var joints = trackedBody.Joints;
-									// Convert the joint points to display space
-									var jointPoints = new Dictionary<JointType, Point>();
+									this.renderBodyFrameManager.DrawBody(trackedBody.Joints, trackedBodyColorSpacePoints, dc, 0);
 
-									foreach (var jointType in joints.Keys)
-									{
-										var position = joints[jointType].Position;
-										var mapSpacePoint = this.coordinateMapper.MapCameraPointToColorSpace(position);
-										jointPoints[jointType] = new Point(mapSpacePoint.X, mapSpacePoint.Y);
-									}
-
-									this.renderBodyFrameManager.DrawBody(joints, jointPoints, dc, 0);
-
-									this.renderBodyFrameManager.DrawHand(trackedBody.HandLeftState, jointPoints[JointType.HandLeft], dc);
-									this.renderBodyFrameManager.DrawHand(trackedBody.HandRightState, jointPoints[JointType.HandRight], dc);
+									if (trackedBodyColorSpacePoints.ContainsKey(JointType.HandLeft))
+										this.renderBodyFrameManager.DrawHand(trackedBody.HandLeftState, trackedBodyColorSpacePoints[JointType.HandLeft], dc);
+									if (trackedBodyColorSpacePoints.ContainsKey(JointType.HandRight))
+										this.renderBodyFrameManager.DrawHand(trackedBody.HandRightState, trackedBodyColorSpacePoints[JointType.HandRight], dc);
 
 									// prevent drawing outside of our render area
 									this.bodyImageDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
@@ -368,6 +365,32 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 																												: Properties.Resources.NoSensorStatusText;
 				Messenger.Default.Send(new KinectStatusMessage() { Text = statusText });
 			}
+		}
+		#endregion
+
+		#region Convert body joints coordinations to color coordinations methods
+		private IEnumerable<(Body, BodyJointsColorSpacePointsDict)> ConvertToColorSpace(IEnumerable<Body> bodies)
+		{
+			if (bodies == null || !bodies.Any())
+				return Enumerable.Empty<(Body, BodyJointsColorSpacePointsDict)>();
+
+			return bodies.Select(b => (b, ConvertToColorSpace(b.Joints)));
+		}
+
+		private BodyJointsColorSpacePointsDict ConvertToColorSpace(IReadOnlyDictionary<JointType, Joint> joints)
+		{
+			var jointsPoints = new BodyJointsColorSpacePointsDict();
+
+			if (joints != null)
+			{
+				foreach (var jointType in joints.Keys)
+				{
+					var position = joints[jointType].Position;
+					jointsPoints[jointType] = this.coordinateMapper.MapCameraPointToColorSpace(position);
+				}
+			}
+
+			return jointsPoints;
 		}
 		#endregion
 
