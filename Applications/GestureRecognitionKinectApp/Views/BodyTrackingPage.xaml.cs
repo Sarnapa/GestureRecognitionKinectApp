@@ -31,5 +31,18 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Views
 				bodyTrackingViewModel.CleanupCommand.Execute(null);
 			}
 		}
+
+		private void ToolBar_Loaded(object sender, RoutedEventArgs e)
+		{
+			var toolBar = sender as ToolBar;
+			if (toolBar.Template.FindName("OverflowGrid", toolBar) is FrameworkElement overflowGrid)
+			{
+				overflowGrid.Visibility = Visibility.Collapsed;
+			}
+			if (toolBar.Template.FindName("MainPanelBorder", toolBar) is FrameworkElement mainPanelBorder)
+			{
+				mainPanelBorder.Margin = new Thickness();
+			}
+		}
 	}
 }

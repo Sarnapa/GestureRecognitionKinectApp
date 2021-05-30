@@ -61,11 +61,68 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BackIcon {
+            get {
+                object obj = ResourceManager.GetObject("BackIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        internal static string BackTip {
+            get {
+                return ResourceManager.GetString("BackTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ExportRecordIcon {
+            get {
+                object obj = ResourceManager.GetObject("ExportRecordIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export record.
+        /// </summary>
+        internal static string ExportRecordTip {
+            get {
+                return ResourceManager.GetString("ExportRecordTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to write screenshot to {0}.
         /// </summary>
         internal static string FailedScreenshotStatusTextFormat {
             get {
                 return ResourceManager.GetString("FailedScreenshotStatusTextFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ImportRecordIcon {
+            get {
+                object obj = ResourceManager.GetObject("ImportRecordIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import record.
+        /// </summary>
+        internal static string ImportRecordTip {
+            get {
+                return ResourceManager.GetString("ImportRecordTip", resourceCulture);
             }
         }
         
@@ -97,11 +154,41 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SettingsIcon {
+            get {
+                object obj = ResourceManager.GetObject("SettingsIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StartRecordIcon {
+            get {
+                object obj = ResourceManager.GetObject("StartRecordIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start record.
         /// </summary>
         internal static string StartRecordTip {
             get {
                 return ResourceManager.GetString("StartRecordTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StopRecordIcon {
+            get {
+                object obj = ResourceManager.GetObject("StopRecordIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

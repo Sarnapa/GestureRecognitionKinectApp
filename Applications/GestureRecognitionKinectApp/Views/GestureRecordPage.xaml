@@ -15,14 +15,25 @@
 
     <Grid Margin="10 0 10 0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="20*" />
             <RowDefinition Height="3*" />
+            <RowDefinition Height="20*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Viewbox HorizontalAlignment="Center">
+        <ToolBar Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            ToolBarTray.IsLocked="True" Loaded="ToolBar_Loaded">
+            <Button ToolTip="{Binding ReturnButtonTip}" Command="{Binding ReturnCommand}">
+                <Image Source="{Binding ReturnButtonImageUri}"/>
+            </Button>
+            <Button Visibility="{Binding ExportGestureRecordButtonVisibility}" ToolTip="{Binding ExportGestureRecordButtonTip}" Command="{Binding ExportGestureRecordCommand}">
+                <Image Source="{Binding ExportGestureRecordButtonImageUri}"/>
+            </Button>
+        </ToolBar>
+
+        <Viewbox Grid.Row="1" HorizontalAlignment="Center">
             <Image Source="{Binding ColorImage}" Stretch="UniformToFill" />
         </Viewbox>
-        <Viewbox HorizontalAlignment="Center">
+        <Viewbox Grid.Row="1" HorizontalAlignment="Center">
             <Image Source="{Binding BodyImage}" Stretch="UniformToFill" />
         </Viewbox>
         

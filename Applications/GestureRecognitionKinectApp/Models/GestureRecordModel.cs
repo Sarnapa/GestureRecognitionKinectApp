@@ -11,7 +11,7 @@ using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.All;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 {
-	public class GestureRecordModel : IDisposable
+	public class GestureRecordModel
 	{
 		#region Private / protected fields
 		/// <summary>
@@ -88,7 +88,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			if (string.IsNullOrEmpty(gestureRecordFilePath))
 				throw new ArgumentNullException(nameof(gestureRecordFilePath));
 
-			CleanGestureReplay();
+			CleanGestureReplay(false);
 
 			// Create the drawing group we'll use for drawing body data
 			this.bodyImageDrawingGroup = new DrawingGroup();
@@ -108,9 +108,32 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			}
 		}
 
-		public void Cleanup()
+		public bool ExportGestureRecord(string filePath)
 		{
-			CleanGestureReplay();
+			if (!string.IsNullOrEmpty(filePath) && this.gestureRecordFile != null)
+			{
+				try
+				{
+					string temporaryGestureRecordFileName = this.gestureRecordFile.Name;
+					CleanGestureRecordFileAccess(false);
+					File.Move(temporaryGestureRecordFileName, filePath);
+					File.SetAttributes(filePath, File.GetAttributes(filePath) ^ FileAttributes.Hidden);
+					this.gestureRecordFile = File.OpenRead(filePath);
+					return true;
+				}
+				catch (Exception e)
+				{
+					// TODO: Handle exception in better way.
+					return false;
+				}
+			}
+
+			return false;
+		}
+
+		public void Cleanup(bool deleteGestureRecordFile = true)
+		{
+			CleanGestureReplay(deleteGestureRecordFile);
 		}
 		#endregion
 
@@ -143,7 +166,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		}
 		#endregion
 
-		private void CleanGestureReplay()
+		private void CleanGestureReplay(bool deleteGestureRecordFile = true)
 		{
 			if (this.gestureReplay != null)
 			{
@@ -152,24 +175,24 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				this.gestureReplay.Dispose();
 				this.gestureReplay = null;
 			}
-			if (this.gestureRecordFile != null)
-			{
-				this.gestureRecordFile.Close();
-				this.gestureRecordFile.Dispose();
-				this.gestureRecordFile = null;
-			}
+
+			CleanGestureRecordFileAccess(deleteGestureRecordFile);
 
 			this.colorImage = null;
 			this.bodyImage = null;
 			this.bodyImageDrawingGroup = null;
 		}
 
-		#endregion
-
-		#region IDisposable implementation
-		public void Dispose()
+		private void CleanGestureRecordFileAccess(bool deleteGestureRecordFile = true)
 		{
-			CleanGestureReplay();
+			if (this.gestureRecordFile != null)
+			{
+				this.gestureRecordFile.Close();
+				if (deleteGestureRecordFile)
+					File.Delete(this.gestureRecordFile.Name);
+				this.gestureRecordFile.Dispose();
+				this.gestureRecordFile = null;
+			}
 		}
 		#endregion
 	}

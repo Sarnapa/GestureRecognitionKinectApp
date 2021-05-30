@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
+using Microsoft.Win32;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -10,7 +12,7 @@ using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Nav
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 {
-	public class BodyTrackingViewModel : ViewModelBase
+	public class BodyTrackingViewModel : ViewModelBase, IDisposable
 	{
 		#region Private fields
 		private readonly BodyTrackingModel model;
@@ -22,15 +24,17 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		private string stoppedBodyTrackingInfoText;
 		#endregion
 
-		#region Public properties
-		public bool IsKinectAvailable
+		#region Private properties
+		private bool IsKinectAvailable
 		{
 			get
 			{
 				return this.model.IsKinectAvailable;
 			}
 		}
+		#endregion
 
+		#region Public properties
 		public string KinectStatusText
 		{
 			get
@@ -42,7 +46,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				if (this.kinectStatusText != value)
 				{
 					this.kinectStatusText = value;
-					RaisePropertyChanged("KinectStatusText");
+					RaisePropertyChanged(nameof(KinectStatusText));
 				}
 			}
 		}
@@ -82,7 +86,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				if (this.fpsValueText != value)
 				{
 					this.fpsValueText = value;
-					RaisePropertyChanged("FPSValueText");
+					RaisePropertyChanged(nameof(FPSValueText));
 				}
 			}
 		}
@@ -98,7 +102,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				if (this.stoppedBodyTrackingInfoVisibility != value)
 				{
 					this.stoppedBodyTrackingInfoVisibility = value;
-					RaisePropertyChanged("StoppedBodyTrackingInfoVisibility");
+					RaisePropertyChanged(nameof(StoppedBodyTrackingInfoVisibility));
 				}
 			}
 		}
@@ -114,17 +118,41 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				if (this.stoppedBodyTrackingInfoText != value)
 				{
 					this.stoppedBodyTrackingInfoText = value;
-					RaisePropertyChanged("StoppedBodyTrackingInfoText");
+					RaisePropertyChanged(nameof(StoppedBodyTrackingInfoText));
 				}
 			}
 		}
 
-		public string StartStopRecordGestureButtonImageUri
+		public Visibility ImportGestureRecordButtonVisibility
 		{
 			get
 			{
-				return this.model.TrackingState == BodyTrackingState.RecordingGesture ? 
-					"pack://application:,,,/Resources/StopRecordIcon.png" : "pack://application:,,,/Resources/StartRecordIcon.png";
+				return this.model.TrackingState == BodyTrackingState.Standard
+					? Visibility.Visible : Visibility.Hidden;
+			}
+		}
+
+		public string ImportGestureRecordButtonTip
+		{
+			get
+			{
+				return Properties.Resources.ImportRecordTip;
+			}
+		}
+
+		public string ImportGestureRecordButtonImageUri
+		{
+			get
+			{
+				return "pack://application:,,,/Resources/ImportRecordIcon.png";
+			}
+		}
+
+		public Visibility StartStopRecordGestureButtonVisibility
+		{
+			get
+			{
+				return this.IsKinectAvailable ? Visibility.Visible : Visibility.Hidden;
 			}
 		}
 
@@ -137,16 +165,29 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			}
 		}
 
+		public string StartStopRecordGestureButtonImageUri
+		{
+			get
+			{
+				return this.model.TrackingState == BodyTrackingState.RecordingGesture ?
+					"pack://application:,,,/Resources/StopRecordIcon.png" : "pack://application:,,,/Resources/StartRecordIcon.png";
+			}
+		}
+
 		#region Commands
 		public RelayCommand StartCommand
 		{
 			get; private set;
 		}
-		public RelayCommand CleanupCommand
+		public RelayCommand ImportGestureRecordCommand
 		{
 			get; private set;
 		}
 		public RelayCommand StartStopRecordGestureCommand
+		{
+			get; private set;
+		}
+		public RelayCommand CleanupCommand
 		{
 			get; private set;
 		}
@@ -160,8 +201,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			this.model = new BodyTrackingModel();
 			this.navigationService = navigationService;
 			this.StartCommand = new RelayCommand(this.StartCommandAction);
-			this.CleanupCommand = new RelayCommand(this.CleanupCommandAction);
+			this.ImportGestureRecordCommand = new RelayCommand(this.ImportGestureRecordCommandAction);
 			this.StartStopRecordGestureCommand = new RelayCommand(this.StartStopRecordGestureCommandAction);
+			this.CleanupCommand = new RelayCommand(this.CleanupCommandAction);
 			Messenger.Default.Register<DisplayImageChangedMessage>(this, m => DisplayImageChangedMessageHandler(m));
 			Messenger.Default.Register<KinectStatusMessage>(this, m => KinectStatusChangedMessageHandler(m));
 			Messenger.Default.Register<TrackedUsersCountChangedMessage>(this, m => TrackedUsersCountChangedMessageHandler(m));
@@ -177,10 +219,19 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			this.model.Start();
 		}
-		
-		private void CleanupCommandAction()
+
+		private void ImportGestureRecordCommandAction()
 		{
-			this.model.Cleanup();
+			var openFileDialog = new OpenFileDialog
+			{
+				Filter = $"Gesture record files (*{Consts.GestureRecordFileExtension})|*{Consts.GestureRecordFileExtension}"
+			};
+			bool? openFileDialogRes = openFileDialog.ShowDialog();
+			if (openFileDialogRes.HasValue && openFileDialogRes == true && !string.IsNullOrEmpty(openFileDialog.FileName))
+			{
+				Messenger.Default.Send<GestureRecordMessage, GestureRecordViewModel>(
+					new GestureRecordMessage() { IsTemporaryFile = false, FilePath = openFileDialog.FileName });
+			}
 		}
 
 		private void StartStopRecordGestureCommandAction()
@@ -189,8 +240,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			string gestureRecordFilePath = this.model.GestureRecordFilePath;
 
 			this.model.StartStopRecordingGesture();
-			RaisePropertyChanged("StartStopRecordGestureButtonImageUri");
-			RaisePropertyChanged("StartStopRecordGestureButtonTip");
+			RaisePropertyChanged(nameof(StartStopRecordGestureButtonImageUri));
+			RaisePropertyChanged(nameof(StartStopRecordGestureButtonTip));
 
 			if (isRecording)
 			{
@@ -198,12 +249,17 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 					new GestureRecordMessage() { IsTemporaryFile = true, FilePath = gestureRecordFilePath });
 			}
 		}
+
+		private void CleanupCommandAction()
+		{
+			this.model.Cleanup(false);
+		}
 		#endregion
 
 		#region Messages handlers
 		private void KinectStatusChangedMessageHandler(KinectStatusMessage m)
 		{
-			RaisePropertyChanged("IsKinectAvailable");
+			RaisePropertyChanged(nameof(StartStopRecordGestureButtonVisibility));
 			this.KinectStatusText = m.Text;
 		}
 
@@ -211,8 +267,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			if (m.Changed)
 			{
-				RaisePropertyChanged("ColorImage");
-				RaisePropertyChanged("BodyImage");
+				RaisePropertyChanged(nameof(ColorImage));
+				RaisePropertyChanged(nameof(BodyImage));
 			}
 		}
 
@@ -221,7 +277,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			if (this.trackedUsersCount != m.Count)
 			{
 				this.trackedUsersCount = m.Count;
-				RaisePropertyChanged("TrackedUsersCountText");
+				RaisePropertyChanged(nameof(TrackedUsersCountText));
 			}
 		}
 
@@ -237,6 +293,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		}
 		#endregion
 
+		#endregion
+
+		#region IDisposable implementation
+		public void Dispose()
+		{
+			if (this.model != null)
+				this.model.Cleanup();
+		}
 		#endregion
 	}
 }

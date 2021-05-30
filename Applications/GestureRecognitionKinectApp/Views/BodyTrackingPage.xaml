@@ -22,16 +22,20 @@
     
     <Grid Margin="10 0 10 0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="3*" />
             <RowDefinition Height="20*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Border Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Button HorizontalAlignment="Left" IsEnabled="{Binding IsKinectAvailable}" ToolTip="{Binding StartStopRecordGestureButtonTip}" Command="{Binding StartStopRecordGestureCommand}">
+        <ToolBar Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                ToolBarTray.IsLocked="True" Loaded="ToolBar_Loaded">
+            <Button Visibility="{Binding ImportGestureRecordButtonVisibility}" ToolTip="{Binding ImportGestureRecordButtonTip}" Command="{Binding ImportGestureRecordCommand}">
+                <Image Source="{Binding ImportGestureRecordButtonImageUri}"/>
+            </Button>
+            <Button Visibility="{Binding StartStopRecordGestureButtonVisibility}" ToolTip="{Binding StartStopRecordGestureButtonTip}" Command="{Binding StartStopRecordGestureCommand}">
                 <Image Source="{Binding StartStopRecordGestureButtonImageUri}"/>
             </Button>
-        </Border>
+        </ToolBar>
 
         <Viewbox Grid.Row="1" HorizontalAlignment="Center">
             <Image Source="{Binding ColorImage}" Stretch="UniformToFill" />

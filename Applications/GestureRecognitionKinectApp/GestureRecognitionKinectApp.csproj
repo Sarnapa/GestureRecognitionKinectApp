@@ -81,6 +81,7 @@
     <Compile Include="Models\Presentation\Managers\RenderBodyFrameManager.cs" />
     <Compile Include="Models\Presentation\Structures\Base\AsyncCommand.cs" />
     <Compile Include="Models\Presentation\Structures\Base\AsyncCommandBase.cs" />
+    <Compile Include="Models\Processing\Structures\Consts.cs" />
     <Compile Include="Models\Processing\Structures\Definitions.cs" />
     <Compile Include="Models\Processing\Utilities\Utils.cs" />
     <Compile Include="ViewModels\BodyTrackingViewModel.cs" />
@@ -185,6 +186,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\BackIcon.png" />
+    <Resource Include="Resources\ExportRecordIcon.png" />
+    <Resource Include="Resources\ImportRecordIcon.png" />
+    <Resource Include="Resources\SettingsIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

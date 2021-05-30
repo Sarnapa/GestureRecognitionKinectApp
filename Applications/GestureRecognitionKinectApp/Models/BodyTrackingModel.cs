@@ -16,7 +16,7 @@ using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Structures;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 {
-	public class BodyTrackingModel : IDisposable
+	public class BodyTrackingModel
 	{
 		#region Private / protected fields
 		/// <summary>
@@ -206,9 +206,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			}
 		}
 
-		public void Cleanup()
+		public void Cleanup(bool deleteGestureRecordFile = true)
 		{
-			CleanGestureRecorder();
+			CleanGestureRecorder(deleteGestureRecordFile);
 
 			if (this.multiSourceReader != null)
 			{
@@ -397,12 +397,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#region Gesture recording methods
 		private void CreateTemporaryRecordFile()
 		{
-			string fileName = $"{Utils.RandomString(32)}.record";
+			string fileName = $"{Utils.RandomString(32)}{Consts.GestureRecordFileExtension}";
 			this.gestureRecordFile = File.Create(fileName);
 			File.SetAttributes(fileName, File.GetAttributes(fileName) | FileAttributes.Hidden);
 		}
 
-		private void CleanGestureRecorder(bool deleteTemporaryRecordFile = true)
+		private void CleanGestureRecorder(bool deleteGestureRecordFile = true)
 		{
 			this.TrackingState = BodyTrackingState.Standard;
 			if (this.gestureRecorder != null)
@@ -413,7 +413,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			if (this.gestureRecordFile != null)
 			{
 				this.gestureRecordFile.Close();
-				if (deleteTemporaryRecordFile)
+				if (deleteGestureRecordFile)
 					File.Delete(this.gestureRecordFile.Name);
 				this.gestureRecordFile.Dispose();
 				this.gestureRecordFile = null;
@@ -430,13 +430,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		}
 		#endregion
 
-		#endregion
-
-		#region IDisposable implementation
-		public void Dispose()
-		{
-			CleanGestureRecorder();
-		}
 		#endregion
 	}
 }
