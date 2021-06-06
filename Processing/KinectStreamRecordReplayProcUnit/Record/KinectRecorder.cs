@@ -28,7 +28,10 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record
 		#endregion
 
 		#region Constructors
-		public KinectRecorder(KinectRecordOptions options, Stream recordStream)
+		public KinectRecorder(KinectRecordOptions options, Stream recordStream) : this(options, recordStream, 1.0f)
+		{}
+
+		public KinectRecorder(KinectRecordOptions options, Stream recordStream, float resizingCoef)
 		{
 			this.Options = options;
 
@@ -39,11 +42,11 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record
 
 			if ((this.Options & KinectRecordOptions.Color) != 0)
 			{
-				this.colorRecoder = new ColorRecorder(this.writer);
+				this.colorRecoder = new ColorRecorder(this.writer, resizingCoef);
 			}
 			if ((this.Options & KinectRecordOptions.Bodies) != 0)
 			{
-				this.bodyRecorder = new BodyRecorder(this.writer);
+				this.bodyRecorder = new BodyRecorder(this.writer, resizingCoef);
 			}
 
 			this.previousFlushDate = DateTime.Now;

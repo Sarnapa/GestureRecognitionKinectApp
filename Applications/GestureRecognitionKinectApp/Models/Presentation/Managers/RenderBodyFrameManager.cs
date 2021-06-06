@@ -14,17 +14,22 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 		/// <summary>
 		/// Radius of drawn hand circles
 		/// </summary>
-		private const double HandSize = 15;
+		private readonly double HandSize = 15;
 
 		/// <summary>
-		/// Thickness of drawn joint lines
+		/// Thickness of drawn joint
 		/// </summary>
-		private const double JointThickness = 8;
+		private readonly double JointThickness = 8;
 
 		/// <summary>
-		/// Thickness of drawn joint lines (that joint taking part in gesture recognition processing)
+		/// Thickness of drawn joint (that joint taking part in gesture recognition processing)
 		/// </summary>
-		private const double GestureRecognitionJointThickness = 12;
+		private readonly double GestureRecognitionJointThickness = 12;
+
+		/// <summary>
+		/// Thickness of lines representing user skeleton
+		/// </summary>
+		private readonly double BodySkeletonThickness = 10;
 
 		/// <summary>
 		/// Joint taking part in gesture recognition processing
@@ -92,9 +97,17 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 		#endregion
 
 		#region Constructors
-		public RenderBodyFrameManager()
+		public RenderBodyFrameManager(float resizingCoef = 1.0f)
 		{
 			this.bones = new List<Tuple<JointType, JointType>>();
+
+			if (resizingCoef != 1.0f)
+			{
+				this.HandSize *= resizingCoef;
+				this.JointThickness *= resizingCoef;
+				this.GestureRecognitionJointThickness *= resizingCoef;
+				this.BodySkeletonThickness *= resizingCoef;
+			}
 
 			// Torso
 			this.bones.Add(new Tuple<JointType, JointType>(JointType.Head, JointType.Neck));
@@ -132,12 +145,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 
 			// Populate body colors, one for each BodyIndex
 			this.bodyColors = new List<Pen>();
-			this.bodyColors.Add(new Pen(Brushes.Red, 10));
-			this.bodyColors.Add(new Pen(Brushes.Orange, 10));
-			this.bodyColors.Add(new Pen(Brushes.Green, 10));
-			this.bodyColors.Add(new Pen(Brushes.Blue, 10));
-			this.bodyColors.Add(new Pen(Brushes.Indigo, 10));
-			this.bodyColors.Add(new Pen(Brushes.Violet, 10));
+			this.bodyColors.Add(new Pen(Brushes.Red, this.BodySkeletonThickness));
+			this.bodyColors.Add(new Pen(Brushes.Orange, this.BodySkeletonThickness));
+			this.bodyColors.Add(new Pen(Brushes.Green, this.BodySkeletonThickness));
+			this.bodyColors.Add(new Pen(Brushes.Blue, this.BodySkeletonThickness));
+			this.bodyColors.Add(new Pen(Brushes.Indigo, this.BodySkeletonThickness));
+			this.bodyColors.Add(new Pen(Brushes.Violet, this.BodySkeletonThickness));
 		}
 		#endregion
 

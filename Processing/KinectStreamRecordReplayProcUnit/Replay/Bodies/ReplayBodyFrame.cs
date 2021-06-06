@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Structures;
 using Microsoft.Kinect;
+using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Structures;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies
 {
@@ -49,12 +49,13 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.
 		internal override void CreateFromReader(BinaryReader reader)
 		{
 			this.TimeStamp = reader.ReadInt64();
-			this.FloorClipPlane = new Vector4 {
-				X = reader.ReadSingle(),
-				Y = reader.ReadSingle(),
-				Z = reader.ReadSingle(),
-				W = reader.ReadSingle()
-			};
+			// This is not necessary
+			//this.FloorClipPlane = new Vector4 {
+			//	X = reader.ReadSingle(),
+			//	Y = reader.ReadSingle(),
+			//	Z = reader.ReadSingle(),
+			//	W = reader.ReadSingle()
+			//};
 
 			var formatter = new BinaryFormatter();
 			this.Bodies = (BodyData[])formatter.Deserialize(reader.BaseStream);

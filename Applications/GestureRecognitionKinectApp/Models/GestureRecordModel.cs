@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.All;
@@ -77,8 +78,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#region Constructors
 		public GestureRecordModel()
 		{
-			this.renderBodyFrameManager = new RenderBodyFrameManager();
 			this.renderColorFrameManager = new RenderColorFrameManager();
+			this.renderBodyFrameManager = new RenderBodyFrameManager(Consts.GestureRecordResizingCoef);
 		}
 		#endregion
 
@@ -94,6 +95,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			this.bodyImageDrawingGroup = new DrawingGroup();
 			// Create the image with body data
 			this.bodyImage = new DrawingImage(this.bodyImageDrawingGroup);
+
+			Messenger.Default.Send(new DisplayImageChangedMessage() { ChangedDisplayImage = ImageKind.Body });
 
 			try
 			{
@@ -162,7 +165,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			}
 
 			if (colorImageSendMessage && colorFrame != null)
-				Messenger.Default.Send(new DisplayImageChangedMessage() { Changed = true });
+				Messenger.Default.Send(new DisplayImageChangedMessage() { ChangedDisplayImage = ImageKind.Color });
 		}
 		#endregion
 

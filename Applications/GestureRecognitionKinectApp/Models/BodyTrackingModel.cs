@@ -146,8 +146,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#region Constructors
 		public BodyTrackingModel()
 		{
-			this.renderBodyFrameManager = new RenderBodyFrameManager();
 			this.renderColorFrameManager = new RenderColorFrameManager();
+			this.renderBodyFrameManager = new RenderBodyFrameManager();
 		}
 		#endregion
 
@@ -176,7 +176,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			// Create the image with body data
 			this.bodyImage = new DrawingImage(this.bodyImageDrawingGroup);
 
-			Messenger.Default.Send(new DisplayImageChangedMessage() { Changed = true });
+			Messenger.Default.Send(new DisplayImageChangedMessage() { ChangedDisplayImage = ImageKind.All });
 
 			// Open the sensor
 			this.kinectSensor.Open();
@@ -195,7 +195,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			if (this.TrackingState == BodyTrackingState.Standard)
 			{
 				CreateTemporaryRecordFile();
-				this.gestureRecorder = new KinectRecorder(KinectRecordOptions.All, this.gestureRecordFile);
+				this.gestureRecorder = new KinectRecorder(KinectRecordOptions.All, this.gestureRecordFile,
+					Consts.GestureRecordResizingCoef);
 				this.startGestureRecordTime = DateTime.Now;
 				this.TrackingState = BodyTrackingState.RecordingGesture;
 			}

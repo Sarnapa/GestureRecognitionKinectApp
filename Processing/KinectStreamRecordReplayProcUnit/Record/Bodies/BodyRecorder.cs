@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Structures;
 using Microsoft.Kinect;
+using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Structures;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.Bodies
 {
@@ -11,13 +12,15 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.
 	{
 		#region Private fields
 		private DateTime referenceTime;
+		private readonly float resizingCoef = 1.0f;
 		private readonly BinaryWriter writer;
 		#endregion
 
 		#region Constructors
-		internal BodyRecorder(BinaryWriter writer)
+		internal BodyRecorder(BinaryWriter writer, float resizingCoef)
 		{
 			this.writer = writer;
+			this.resizingCoef = resizingCoef;
 			this.referenceTime = DateTime.Now;
 		}
 		#endregion
@@ -32,6 +35,33 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.
 			if (bodies == null)
 				throw new ArgumentNullException(nameof(bodies));
 
+			if (this.resizingCoef != 1.0f && bodies.Any())
+			{
+				var newBodies = new List<(Body, BodyJointsColorSpacePointsDict)>();
+
+				foreach (var kv in bodies)
+				{
+					var body = kv.Item1;
+					var bodyJointsColorSpacePointsDict = kv.Item2;
+					var newBodyJointsColorSpacePointsDict = new BodyJointsColorSpacePointsDict();
+					if (bodyJointsColorSpacePointsDict != null && bodyJointsColorSpacePointsDict.Any())
+					{
+						foreach (var jointPoint in bodyJointsColorSpacePointsDict)
+						{
+							newBodyJointsColorSpacePointsDict[jointPoint.Key] = new ColorSpacePoint()
+							{
+								X = jointPoint.Value.X * this.resizingCoef,
+								Y = jointPoint.Value.Y * this.resizingCoef
+							};
+						}
+					}
+
+					newBodies.Add((body, newBodyJointsColorSpacePointsDict));
+				}
+
+				bodies = newBodies;
+			}
+
 			// Header
 			this.writer.Write((int)KinectRecordOptions.Bodies);
 
@@ -39,10 +69,11 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.
 			var timeSpan = DateTime.Now.Subtract(referenceTime);
 			this.referenceTime = DateTime.Now;
 			this.writer.Write((long)timeSpan.TotalMilliseconds);
-			this.writer.Write(frame.FloorClipPlane.X);
-			this.writer.Write(frame.FloorClipPlane.Y);
-			this.writer.Write(frame.FloorClipPlane.Z);
-			this.writer.Write(frame.FloorClipPlane.W);
+			// This is not necessary
+			//this.writer.Write(frame.FloorClipPlane.X);
+			//this.writer.Write(frame.FloorClipPlane.Y);
+			//this.writer.Write(frame.FloorClipPlane.Z);
+			//this.writer.Write(frame.FloorClipPlane.W);
 
 			var bodiesData = bodies.Map();
 

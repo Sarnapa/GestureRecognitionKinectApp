@@ -162,11 +162,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 
 		private void DisplayImageChangedMessageHandler(DisplayImageChangedMessage m)
 		{
-			if (m.Changed)
-			{
+			if ((m.ChangedDisplayImage & ImageKind.Color) != 0)
 				RaisePropertyChanged(nameof(ColorImage));
+			if ((m.ChangedDisplayImage & ImageKind.Body) != 0)
 				RaisePropertyChanged(nameof(BodyImage));
-			}
 		}
 		#endregion
 
