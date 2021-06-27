@@ -173,6 +173,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Processing\BaseClassLib\BaseClassLib.csproj">
+      <Project>{418DEFC6-95A7-4796-A478-45CA1095BFBF}</Project>
+      <Name>BaseClassLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Processing\GestureRecognitionFeaturesProcUnit\GestureRecognitionFeaturesProcUnit.csproj">
+      <Project>{49dd73ce-c7ad-4d29-9946-7b356fa28b0e}</Project>
+      <Name>GestureRecognitionFeaturesProcUnit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Processing\KinectStreamRecordReplayProcUnit\KinectStreamRecordReplayProcUnit.csproj">
       <Project>{5770279b-0942-45e9-b618-c4778f802499}</Project>
       <Name>KinectStreamRecordReplayProcUnit</Name>

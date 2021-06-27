@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognitionKinectApp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectStreamRecordReplayProcUnit", "..\Processing\KinectStreamRecordReplayProcUnit\KinectStreamRecordReplayProcUnit.csproj", "{5770279B-0942-45E9-B618-C4778F802499}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognitionFeaturesProcUnit", "..\Processing\GestureRecognitionFeaturesProcUnit\GestureRecognitionFeaturesProcUnit.csproj", "{49DD73CE-C7AD-4D29-9946-7B356FA28B0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseClassLib", "..\Processing\BaseClassLib\BaseClassLib.csproj", "{418DEFC6-95A7-4796-A478-45CA1095BFBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{5770279B-0942-45E9-B618-C4778F802499}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5770279B-0942-45E9-B618-C4778F802499}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5770279B-0942-45E9-B618-C4778F802499}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49DD73CE-C7AD-4D29-9946-7B356FA28B0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49DD73CE-C7AD-4D29-9946-7B356FA28B0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49DD73CE-C7AD-4D29-9946-7B356FA28B0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49DD73CE-C7AD-4D29-9946-7B356FA28B0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{418DEFC6-95A7-4796-A478-45CA1095BFBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{418DEFC6-95A7-4796-A478-45CA1095BFBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{418DEFC6-95A7-4796-A478-45CA1095BFBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{418DEFC6-95A7-4796-A478-45CA1095BFBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -34,6 +46,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{82923549-CA92-4C04-AA92-0FCCF0651BEF} = {A41A560A-D1F0-47F1-9ED1-D79118B968B7}
 		{5770279B-0942-45E9-B618-C4778F802499} = {3781FC4E-1641-4B92-B381-17C7800ECE70}
+		{49DD73CE-C7AD-4D29-9946-7B356FA28B0E} = {3781FC4E-1641-4B92-B381-17C7800ECE70}
+		{418DEFC6-95A7-4796-A478-45CA1095BFBF} = {3781FC4E-1641-4B92-B381-17C7800ECE70}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {08987FA6-B986-4650-AD85-E1111EBF06CC}

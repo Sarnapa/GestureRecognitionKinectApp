@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Kinect;
 
-namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Structures
+namespace GestureRecognition.Processing.BaseClassLib.Structures.Kinect
 {
 	[Serializable]
 	public class BodyJointsColorSpacePointsDict : IDictionary<JointType, ColorSpacePoint>

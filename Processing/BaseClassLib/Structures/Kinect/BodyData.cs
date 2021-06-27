@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Kinect;
 
-namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Structures
+namespace GestureRecognition.Processing.BaseClassLib.Structures.Kinect
 {
 	[Serializable]
 	public sealed class BodyData
@@ -11,54 +11,67 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Structu
 		public bool IsTracked
 		{
 			get;
+			private set;
 		}
 		public ulong TrackingId
 		{
 			get;
+			private set;
 		}
 		public bool IsRestricted
 		{
 			get;
+			private set;
 		}
 		public IReadOnlyDictionary<JointType, Joint> Joints
 		{
 			get;
+			private set;
 		}
 		public BodyJointsColorSpacePointsDict JointsColorSpacePoints
 		{
 			get;
+			private set;
 		}
 		public IReadOnlyDictionary<JointType, JointOrientation> JointOrientations
 		{
 			get;
+			private set;
 		}
 		public HandState HandLeftState
 		{
 			get;
+			private set;
 		}
 		public TrackingConfidence HandLeftConfidence
 		{
 			get;
+			private set;
 		}
 		public HandState HandRightState
 		{
 			get;
+			private set;
 		}
 		public TrackingConfidence HandRightConfidence
 		{
 			get;
+			private set;
 		}
 		public FrameEdges ClippedEdges
 		{
 			get;
+			private set;
 		}
 		public PointF Lean
 		{
 			get;
+			private set;
 		}
 		public TrackingState LeanTrackingState
 		{
 			get;
+			private set;
 		}
 		#endregion
 

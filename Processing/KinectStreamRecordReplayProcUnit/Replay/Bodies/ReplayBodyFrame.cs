@@ -2,7 +2,8 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.Kinect;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Structures;
+using GestureRecognition.Processing.BaseClassLib.Mappers;
+using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies
 {

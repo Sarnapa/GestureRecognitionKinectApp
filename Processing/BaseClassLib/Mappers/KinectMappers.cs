@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Kinect;
+using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
+using System.Numerics;
 
-namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Structures
+namespace GestureRecognition.Processing.BaseClassLib.Mappers
 {
-	public static class Mappers
+	public static class KinectMappers
 	{
+		#region BodyData
 		public static BodyData Map(this Body body)
 		{
 			return new BodyData(body);
@@ -25,5 +28,18 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Structu
 		{
 			return bodies.Select(b => b.Item1.Map(b.Item2)).ToArray();
 		}
+		#endregion
+
+		#region CameraSpaceJoint -> Vector3
+		public static Vector3 Map(this CameraSpacePoint point)
+		{
+			return new Vector3(point.X, point.Y, point.Z);
+		}
+
+		public static IEnumerable<Vector3> Map(this IEnumerable<CameraSpacePoint> points)
+		{
+			return points.Select(p => p.Map());
+		}
+		#endregion
 	}
 }
