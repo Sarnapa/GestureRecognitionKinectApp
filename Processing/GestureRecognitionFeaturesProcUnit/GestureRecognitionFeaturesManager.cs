@@ -33,7 +33,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#endregion
 
 		#region Public methods
-		public async Task<GestureFeatures> CalculateFeatures(Body[] bodyFrames)
+		public async Task<GestureFeatures> CalculateFeatures(BodyData[] bodyFrames)
 		{
 			if (bodyFrames == null || !bodyFrames.Any())
 				return null;
@@ -57,12 +57,12 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 
 		#region Private methods
 
-		private Task CalculateJointGestureFeaturesTask(GestureFeatures gestureFeatures, Body[] bodyFrames, JointType jointType)
+		private Task CalculateJointGestureFeaturesTask(GestureFeatures gestureFeatures, BodyData[] bodyFrames, JointType jointType)
 		{
 			return Task.Run(() => CalculateJointGestureFeatures(gestureFeatures, bodyFrames, jointType));
 		}
 
-		private void CalculateJointGestureFeatures(GestureFeatures gestureFeatures, Body[] bodyFrames, JointType jointType)
+		private void CalculateJointGestureFeatures(GestureFeatures gestureFeatures, BodyData[] bodyFrames, JointType jointType)
 		{
 			bool isHand = jointType == JointType.HandLeft || jointType == JointType.HandRight;
 
@@ -103,12 +103,12 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 			}
 		}
 
-		private Task CalculateBoneJointsAngleDataTask(GestureFeatures gestureFeatures, Body[] bodyFrames, Bone bone)
+		private Task CalculateBoneJointsAngleDataTask(GestureFeatures gestureFeatures, BodyData[] bodyFrames, Bone bone)
 		{
 			return Task.Run(() => CalculateBoneJointsAngleData(gestureFeatures, bodyFrames, bone));
 		}
 
-		private void CalculateBoneJointsAngleData(GestureFeatures gestureFeatures, Body[] bodyFrames, Bone bone)
+		private void CalculateBoneJointsAngleData(GestureFeatures gestureFeatures, BodyData[] bodyFrames, Bone bone)
 		{
 			double?[] angleVector = FeaturesHelper.CalculateAngleVector(bodyFrames, bone);
 			double? initialAngle = FeaturesHelper.GetInitialAngle(angleVector);
@@ -120,12 +120,12 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 				maximumAngle));
 		}
 
-		private Task CalculateBetweenHandJointsDistanceFeaturesTask(GestureFeatures gestureFeatures, Body[] bodyFrames)
+		private Task CalculateBetweenHandJointsDistanceFeaturesTask(GestureFeatures gestureFeatures, BodyData[] bodyFrames)
 		{
 			return Task.Run(() => CalculateBetweenHandJointsDistanceFeatures(gestureFeatures, bodyFrames));
 		}
 
-		private void CalculateBetweenHandJointsDistanceFeatures(GestureFeatures gestureFeatures, Body[] bodyFrames)
+		private void CalculateBetweenHandJointsDistanceFeatures(GestureFeatures gestureFeatures, BodyData[] bodyFrames)
 		{
 			double?[] distanceVector = FeaturesHelper.CalculateDistanceVector(bodyFrames, JointType.HandLeft, JointType.HandRight);
 			double? betweenHandJointsDistanceMax = FeaturesHelper.CalculateBetweenHandJointsDistanceMax(distanceVector);

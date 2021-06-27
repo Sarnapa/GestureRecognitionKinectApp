@@ -16,7 +16,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region Joints gesture features methods
 
 		#region Angle vector methods
-		public static double?[] CalculateAngleVector(Body[] bodyFrames, JointType jointType)
+		public static double?[] CalculateAngleVector(BodyData[] bodyFrames, JointType jointType)
 		{
 			return GetVector(bodyFrames, jointType, (v1, v2) => MathHelper.CalculateSpatialAngle(v1, v2));
 		}
@@ -67,7 +67,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#endregion
 
 		#region F1FNSpatialAngle feature methods
-		public static double? CalculateF1FNSpatialAngle(Body bodyFrame1, Body bodyFrameN, JointType jointType)
+		public static double? CalculateF1FNSpatialAngle(BodyData bodyFrame1, BodyData bodyFrameN, JointType jointType)
 		{
 			if (bodyFrame1 == null)
 				throw new ArgumentNullException(nameof(bodyFrame1));
@@ -123,7 +123,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#endregion
 
 		#region Displacement vector methods
-		public static double?[] CalculateDisplacementVector(Body[] bodyFrames, JointType jointType)
+		public static double?[] CalculateDisplacementVector(BodyData[] bodyFrames, JointType jointType)
 		{
 			return GetVector(bodyFrames, jointType, (v1, v2) => MathHelper.Distance(v1, v2));
 		}
@@ -140,7 +140,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#endregion
 
 		#region TotalVectorDisplacement feature methods
-		public static double? CalculateTotalVectorDisplacement(Body bodyFrame1, Body bodyFrameN, JointType jointType)
+		public static double? CalculateTotalVectorDisplacement(BodyData bodyFrame1, BodyData bodyFrameN, JointType jointType)
 		{
 			if (bodyFrame1 == null)
 				throw new ArgumentNullException(nameof(bodyFrame1));
@@ -186,7 +186,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#endregion
 
 		#region Bounding box methods
-		public static JointBoundingBox GetBoundingBox(Body[] bodyFrames, JointType jointType)
+		public static JointBoundingBox GetBoundingBox(BodyData[] bodyFrames, JointType jointType)
 		{
 			if (bodyFrames == null)
 				throw new ArgumentNullException(nameof(bodyFrames));
@@ -246,7 +246,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#endregion
 
 		#region HandStates feature methods
-		public static HandState[] GetHandStates(Body[] bodyFrames, JointType jointType)
+		public static HandState[] GetHandStates(BodyData[] bodyFrames, JointType jointType)
 		{
 			if (bodyFrames == null)
 				throw new ArgumentNullException(nameof(bodyFrames));
@@ -277,7 +277,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region Bone joints angle data methods
 
 		#region Angle vector methods
-		public static double?[] CalculateAngleVector(Body[] bodyFrames, Bone bone)
+		public static double?[] CalculateAngleVector(BodyData[] bodyFrames, Bone bone)
 		{
 			if (bodyFrames == null)
 				throw new ArgumentNullException(nameof(bodyFrames));
@@ -344,7 +344,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region Between hand joints distance methods
 
 		#region Distance vector methods
-		public static double?[] CalculateDistanceVector(Body[] bodyFrames, JointType jointType1, JointType jointType2)
+		public static double?[] CalculateDistanceVector(BodyData[] bodyFrames, JointType jointType1, JointType jointType2)
 		{
 			if (bodyFrames == null)
 				throw new ArgumentNullException(nameof(bodyFrames));
@@ -423,7 +423,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 			return res.ToArray();
 		}
 
-		private static double?[] GetVector(Body[] bodyFrames, JointType jointType, Func<Vector3, Vector3, double> calculationFunc)
+		private static double?[] GetVector(BodyData[] bodyFrames, JointType jointType, Func<Vector3, Vector3, double> calculationFunc)
 		{
 			if (bodyFrames == null)
 				throw new ArgumentNullException(nameof(bodyFrames));
@@ -446,7 +446,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 			return res.ToArray();
 		}
 
-		private static Joint? GetJoint(Body bodyFrame, JointType jointType)
+		private static Joint? GetJoint(BodyData bodyFrame, JointType jointType)
 		{
 			if (bodyFrame == null)
 				throw new ArgumentNullException(nameof(jointType));

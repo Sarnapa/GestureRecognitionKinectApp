@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.Kinect;
 using GestureRecognition.Processing.BaseClassLib.Mappers;
@@ -14,7 +15,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.
 		{
 			get; private set;
 		}
-		public BodyData[] Bodies
+		public BodyDataWithColorSpacePoints[] Bodies
 		{
 			get; private set;
 		}
@@ -32,7 +33,9 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.
 			// Without color space coordinations for bodies joints
 			var bodies = new Body[frame.BodyCount];
 			frame.GetAndRefreshBodyData(bodies);
-			this.Bodies = bodies.Map();
+
+			var bodiesWithJointsColorSpacePoints = bodies.Select(b => (b, new BodyJointsColorSpacePointsDict()));
+			this.Bodies = bodiesWithJointsColorSpacePoints.Map();
 		}
 
 		public ReplayBodyFrame()
@@ -59,7 +62,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.
 			//};
 
 			var formatter = new BinaryFormatter();
-			this.Bodies = (BodyData[])formatter.Deserialize(reader.BaseStream);
+			this.Bodies = (BodyDataWithColorSpacePoints[])formatter.Deserialize(reader.BaseStream);
 		}
 		#endregion
 	}

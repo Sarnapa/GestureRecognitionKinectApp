@@ -48,6 +48,7 @@
     <Compile Include="Structures\GestureRecognitionFeatures\JointBoundingBox.cs" />
     <Compile Include="Structures\GestureRecognitionFeatures\JointGestureFeatures.cs" />
     <Compile Include="Structures\Kinect\BodyData.cs" />
+    <Compile Include="Structures\Kinect\BodyDataWithColorSpacePoints.cs" />
     <Compile Include="Structures\Kinect\BodyJointsColorSpacePointsDict.cs" />
     <Compile Include="Structures\Kinect\Bone.cs" />
     <Compile Include="Structures\GestureRecognitionFeatures\BoneJointsAngleData.cs" />

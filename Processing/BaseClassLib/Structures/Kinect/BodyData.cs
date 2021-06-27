@@ -5,7 +5,7 @@ using Microsoft.Kinect;
 namespace GestureRecognition.Processing.BaseClassLib.Structures.Kinect
 {
 	[Serializable]
-	public sealed class BodyData
+	public class BodyData
 	{
 		#region Public properties
 		public bool IsTracked
@@ -24,11 +24,6 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Kinect
 			private set;
 		}
 		public IReadOnlyDictionary<JointType, Joint> Joints
-		{
-			get;
-			private set;
-		}
-		public BodyJointsColorSpacePointsDict JointsColorSpacePoints
 		{
 			get;
 			private set;
@@ -76,12 +71,6 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Kinect
 		#endregion
 
 		#region Constructors
-		public BodyData(Body body, BodyJointsColorSpacePointsDict jointsColorSpacePoints)
-			: this(body)
-		{
-			this.JointsColorSpacePoints = jointsColorSpacePoints ?? new BodyJointsColorSpacePointsDict();
-		}
-
 		public BodyData(Body body)
 		{
 			this.IsTracked = body.IsTracked;
