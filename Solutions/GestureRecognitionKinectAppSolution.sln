@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognitionFeaturesP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseClassLib", "..\Processing\BaseClassLib\BaseClassLib.csproj", "{418DEFC6-95A7-4796-A478-45CA1095BFBF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Processing", "Processing", "{96E3129E-DD6E-4CFA-80DB-DE3A14387239}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognitionFeaturesProcUnit.UnitTests", "..\Tests\Processing\GestureRecognitionFeaturesProcUnit.UnitTests\GestureRecognitionFeaturesProcUnit.UnitTests.csproj", "{8CB32729-EA42-4381-890A-92977F925952}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,10 @@ Global
 		{418DEFC6-95A7-4796-A478-45CA1095BFBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{418DEFC6-95A7-4796-A478-45CA1095BFBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{418DEFC6-95A7-4796-A478-45CA1095BFBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CB32729-EA42-4381-890A-92977F925952}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CB32729-EA42-4381-890A-92977F925952}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CB32729-EA42-4381-890A-92977F925952}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CB32729-EA42-4381-890A-92977F925952}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +56,8 @@ Global
 		{5770279B-0942-45E9-B618-C4778F802499} = {3781FC4E-1641-4B92-B381-17C7800ECE70}
 		{49DD73CE-C7AD-4D29-9946-7B356FA28B0E} = {3781FC4E-1641-4B92-B381-17C7800ECE70}
 		{418DEFC6-95A7-4796-A478-45CA1095BFBF} = {3781FC4E-1641-4B92-B381-17C7800ECE70}
+		{96E3129E-DD6E-4CFA-80DB-DE3A14387239} = {2E3C99D8-73C7-49BD-B7DE-95262CCCA450}
+		{8CB32729-EA42-4381-890A-92977F925952} = {96E3129E-DD6E-4CFA-80DB-DE3A14387239}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {08987FA6-B986-4650-AD85-E1111EBF06CC}

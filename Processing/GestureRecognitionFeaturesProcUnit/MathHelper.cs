@@ -18,7 +18,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 
 		public static double ConvertRadiansToDegrees(double radians)
 		{
-			return 180 / Math.PI * radians;
+			return radians == 0d ? 0d : 180 / Math.PI * radians;
 		}
 
 		public static double Distance(Vector3 v1, Vector3 v2)
