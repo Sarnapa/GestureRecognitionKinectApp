@@ -99,11 +99,30 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FailedIcon {
+            get {
+                object obj = ResourceManager.GetObject("FailedIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to write screenshot to {0}.
         /// </summary>
         internal static string FailedScreenshotStatusTextFormat {
             get {
                 return ResourceManager.GetString("FailedScreenshotStatusTextFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gesture features information.
+        /// </summary>
+        internal static string GestureFeaturesInformation {
+            get {
+                return ResourceManager.GetString("GestureFeaturesInformation", resourceCulture);
             }
         }
         
@@ -123,6 +142,44 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
         internal static string ImportRecordTip {
             get {
                 return ResourceManager.GetString("ImportRecordTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap InformationIcon {
+            get {
+                object obj = ResourceManager.GetObject("InformationIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NextIcon {
+            get {
+                object obj = ResourceManager.GetObject("NextIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        internal static string NextTip {
+            get {
+                return ResourceManager.GetString("NextTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gesture features calculation failed.
+        /// </summary>
+        internal static string NoGestureFeatures {
+            get {
+                return ResourceManager.GetString("NoGestureFeatures", resourceCulture);
             }
         }
         
@@ -198,6 +255,16 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
         internal static string StopRecordTip {
             get {
                 return ResourceManager.GetString("StopRecordTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SuccessIcon {
+            get {
+                object obj = ResourceManager.GetObject("SuccessIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

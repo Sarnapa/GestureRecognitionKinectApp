@@ -85,10 +85,15 @@
     <Compile Include="Models\Processing\Structures\Definitions.cs" />
     <Compile Include="Models\Processing\Utilities\Utils.cs" />
     <Compile Include="ViewModels\BodyTrackingViewModel.cs" />
+    <Compile Include="ViewModels\BoneJointsAngleDataViewModel.cs" />
+    <Compile Include="ViewModels\GestureFeaturesViewModel.cs" />
     <Compile Include="ViewModels\GestureRecordViewModel.cs" />
+    <Compile Include="ViewModels\HandJointsDistanceViewModel.cs" />
+    <Compile Include="ViewModels\JointGestureFeaturesViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Messages\DisplayImageChangedMessage.cs" />
     <Compile Include="ViewModels\Messages\FPSValueMessage.cs" />
+    <Compile Include="ViewModels\Messages\GestureFeaturesMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureRecordMessage.cs" />
     <Compile Include="ViewModels\Messages\KinectStatusMessage.cs" />
     <Compile Include="ViewModels\Messages\StoppedBodyTrackingMessage.cs" />
@@ -96,8 +101,12 @@
     <Compile Include="ViewModels\NavigationService\FrameNavigationService.cs" />
     <Compile Include="ViewModels\NavigationService\IFrameNavigationService.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="ViewModels\ViewModelsUtils.cs" />
     <Compile Include="Views\BodyTrackingPage.xaml.cs">
       <DependentUpon>BodyTrackingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GestureFeaturesPage.xaml.cs">
+      <DependentUpon>GestureFeaturesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GestureRecordPage.xaml.cs">
       <DependentUpon>GestureRecordPage.xaml</DependentUpon>
@@ -110,6 +119,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\BodyTrackingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GestureFeaturesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -199,6 +212,16 @@
     <Resource Include="Resources\ExportRecordIcon.png" />
     <Resource Include="Resources\ImportRecordIcon.png" />
     <Resource Include="Resources\SettingsIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\InformationIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\FailedIcon.png" />
+    <Resource Include="Resources\SuccessIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\NextIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

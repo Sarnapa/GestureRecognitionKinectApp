@@ -48,6 +48,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 		public event EventHandler<ReplayColorFrameReadyEventArgs> ColorFrameReady;
 		public event EventHandler<ReplayBodyFrameReadyEventArgs> BodyFrameReady;
 		public event EventHandler<ReplayAllFramesReadyEventArgs> AllFramesReady;
+		public event Action Finished;
 		#endregion
 
 		#region Constructors
@@ -106,6 +107,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 					if (this.ColorFrameReady != null)
 						this.ColorFrameReady(this, new ReplayColorFrameReadyEventArgs { ColorFrame = frame });
 				}, null);
+				this.colorReplay.Finished += ReplaySystem_Finished;
 			}
 
 			if (this.bodyReplay != null)
@@ -116,6 +118,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 					if (this.BodyFrameReady != null)
 						this.BodyFrameReady(this, new ReplayBodyFrameReadyEventArgs { BodyFrame = frame });
 				}, null);
+				this.bodyReplay.Finished += ReplaySystem_Finished;
 			}
 
 			if (allReplay != null)
@@ -126,22 +129,43 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 					if (this.AllFramesReady != null)
 						this.AllFramesReady(this, new ReplayAllFramesReadyEventArgs { AllFrames = frame });
 				}, null);
+				this.allReplay.Finished += ReplaySystem_Finished;
 			}
 		}
 
 		public void Stop()
 		{
 			if (this.colorReplay != null)
+			{
 				this.colorReplay.Stop();
+				this.colorReplay.Finished -= ReplaySystem_Finished;
+			}
 
 			if (this.bodyReplay != null)
+			{
 				this.bodyReplay.Stop();
+				this.bodyReplay.Finished -= ReplaySystem_Finished;
+			}
 
 			if (this.allReplay != null)
+			{
 				this.allReplay.Stop();
+				this.allReplay.Finished -= ReplaySystem_Finished;
+			}
 
 			this.Started = false;
 		}
+		#endregion
+
+		#region Private methods
+
+		#region Events handlers
+		private void ReplaySystem_Finished()
+		{
+			Finished();
+		}
+		#endregion
+
 		#endregion
 
 		#region IDisposable implementation

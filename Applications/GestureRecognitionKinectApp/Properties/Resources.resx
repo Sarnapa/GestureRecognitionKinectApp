@@ -130,14 +130,32 @@
   <data name="ExportRecordTip" xml:space="preserve">
     <value>Export record</value>
   </data>
+  <data name="FailedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FailedIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="FailedScreenshotStatusTextFormat" xml:space="preserve">
     <value>Failed to write screenshot to {0}</value>
+  </data>
+  <data name="GestureFeaturesInformation" xml:space="preserve">
+    <value>Gesture features information</value>
   </data>
   <data name="ImportRecordIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ImportRecordIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ImportRecordTip" xml:space="preserve">
     <value>Import record</value>
+  </data>
+  <data name="InformationIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\InformationIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NextIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NextIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NextTip" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="NoGestureFeatures" xml:space="preserve">
+    <value>Gesture features calculation failed</value>
   </data>
   <data name="NoSensorStatusText" xml:space="preserve">
     <value>No ready Kinect found!</value>
@@ -162,5 +180,8 @@
   </data>
   <data name="StopRecordTip" xml:space="preserve">
     <value>Stop record</value>
+  </data>
+  <data name="SuccessIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SuccessIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

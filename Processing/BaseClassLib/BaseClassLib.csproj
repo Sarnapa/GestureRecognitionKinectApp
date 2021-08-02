@@ -45,6 +45,7 @@
     <Compile Include="Mappers\KinectMappers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structures\GestureRecognitionFeatures\GestureFeatures.cs" />
+    <Compile Include="Structures\GestureRecognitionFeatures\GestureRecognitionDefinitions.cs" />
     <Compile Include="Structures\GestureRecognitionFeatures\JointBoundingBox.cs" />
     <Compile Include="Structures\GestureRecognitionFeatures\JointGestureFeatures.cs" />
     <Compile Include="Structures\Kinect\BodyData.cs" />

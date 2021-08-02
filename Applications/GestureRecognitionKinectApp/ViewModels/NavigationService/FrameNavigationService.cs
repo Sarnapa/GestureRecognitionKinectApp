@@ -61,7 +61,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			if (this.historic.Count > 1)
 			{
 				this.historic.RemoveAt(this.historic.Count - 1);
-				NavigateTo(this.historic.Last(), null);
+				NavigateToInternal(this.historic.Last(), null, false);
 			}
 		}
 
@@ -72,23 +72,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 
 		public virtual void NavigateTo(string pageKey, object parameter)
 		{
-			lock (this.pagesByKey)
-			{
-				if (!this.pagesByKey.ContainsKey(pageKey))
-				{
-					throw new ArgumentException(string.Format("No such page: {0} ", pageKey), "pageKey");
-				}
-
-
-				if (GetDescendantFromName(Application.Current.MainWindow, "MainFrame") is Frame frame)
-				{
-					frame.Source = this.pagesByKey[pageKey];
-				}
-
-				this.Parameter = parameter;
-				this.historic.Add(pageKey);
-				this.CurrentPageKey = pageKey;
-			}
+			NavigateToInternal(pageKey, parameter);
 		}
 
 		public void Configure(string key, Uri pageType)
@@ -117,6 +101,27 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		#endregion
 
 		#region Private methods
+		private void NavigateToInternal(string pageKey, object parameter, bool addToHistoric = true)
+		{
+			lock (this.pagesByKey)
+			{
+				if (!this.pagesByKey.ContainsKey(pageKey))
+				{
+					throw new ArgumentException(string.Format("No such page: {0} ", pageKey), "pageKey");
+				}
+
+				if (GetDescendantFromName(Application.Current.MainWindow, "MainFrame") is Frame frame)
+				{
+					frame.Source = this.pagesByKey[pageKey];
+				}
+
+				this.Parameter = parameter;
+				if (addToHistoric)
+					this.historic.Add(pageKey);
+				this.CurrentPageKey = pageKey;
+			}
+		}
+
 		private static FrameworkElement GetDescendantFromName(DependencyObject parent, string name)
 		{
 			int count = VisualTreeHelper.GetChildrenCount(parent);

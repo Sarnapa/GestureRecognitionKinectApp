@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -7,8 +10,12 @@ using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
+using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures;
+using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
+using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.All;
+using static GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures.GestureRecognitionDefinitions;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 {
@@ -49,6 +56,16 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// Access to file containing gesture record
 		/// </summary>
 		private FileStream gestureRecordFile;
+
+		/// <summary>
+		/// Loaded gesture frames
+		/// </summary>
+		private List<BodyData> gestureBodyFrames;
+
+		/// <summary>
+		/// Calculates features for gesture recognition process
+		/// </summary>
+		private GestureRecognitionFeaturesManager gestureRecognitionManager; 
 		#endregion
 
 		#region Public properties
@@ -80,6 +97,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		{
 			this.renderColorFrameManager = new RenderColorFrameManager();
 			this.renderBodyFrameManager = new RenderBodyFrameManager(Consts.GestureRecordResizingCoef);
+
+			this.gestureBodyFrames = new List<BodyData>();
+			this.gestureRecognitionManager = new GestureRecognitionFeaturesManager(GestureRecognitionJoints, GestureRecognitionBones);
 		}
 		#endregion
 
@@ -103,6 +123,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				this.gestureRecordFile = File.OpenRead(gestureRecordFilePath);
 				this.gestureReplay = new KinectReplay(this.gestureRecordFile);
 				this.gestureReplay.AllFramesReady += GestureReplay_AllFramesReady;
+				this.gestureReplay.Finished += GestureReplay_Finished;
 				this.gestureReplay.Start();
 			}
 			catch (FileNotFoundException e)
@@ -156,9 +177,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			{
 				if (colorFrame != null && this.colorImage != null && bodyFrame != null)
 				{
+					// Temporary assumption that we obtained gesture record with one user
+					var userBodyFrame = bodyFrame.Bodies.FirstOrDefault();
+					if (userBodyFrame != null && userBodyFrame.IsTracked)
+						this.gestureBodyFrames.Add(userBodyFrame);
+
 					dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, colorFrame.Width, colorFrame.Height));
 					this.renderBodyFrameManager.ProcessBodyFrame(bodyFrame, dc);
-					// prevent drawing outside of our render area
+					// Prevent drawing outside of our render area
 					this.bodyImageDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0,
 						colorFrame.Width, colorFrame.Height));
 				}
@@ -167,6 +193,23 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			if (colorImageSendMessage && colorFrame != null)
 				Messenger.Default.Send(new DisplayImageChangedMessage() { ChangedDisplayImage = ImageKind.Color });
 		}
+
+		private void GestureReplay_Finished()
+		{
+			Task.Factory.StartNew(async () =>
+			{
+				GestureFeatures gestureFeatures = null;
+				try
+				{
+					if (this.gestureBodyFrames.Any())
+						gestureFeatures = await this.gestureRecognitionManager.CalculateFeatures(this.gestureBodyFrames.ToArray());
+				}
+				finally
+				{
+					Messenger.Default.Send(new GestureFeaturesMessage() { Features = gestureFeatures, IsPresentation = false });
+				}
+			});
+		}
 		#endregion
 
 		private void CleanGestureReplay(bool deleteGestureRecordFile = true)
@@ -174,6 +217,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			if (this.gestureReplay != null)
 			{
 				this.gestureReplay.AllFramesReady -= GestureReplay_AllFramesReady;
+				this.gestureReplay.Finished -= GestureReplay_Finished;
 				this.gestureReplay.Stop();
 				this.gestureReplay.Dispose();
 				this.gestureReplay = null;

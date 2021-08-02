@@ -39,6 +39,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 
 		#region Events
 		internal virtual event Action<T> FrameReady;
+		internal event Action Finished;
 		#endregion
 
 		#region Public methods
@@ -65,6 +66,8 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 				}
 
 				this.IsFinished = true;
+				if (this.Finished != null)
+					this.Finished();
 			}, token);
 		}
 

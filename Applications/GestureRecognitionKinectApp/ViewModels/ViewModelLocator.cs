@@ -10,6 +10,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		#region Page keys
 		public const string BodyTrackingPageKey = "BodyTrackingPage";
 		public const string GestureRecordPageKey = "GestureRecordPage";
+		public const string GestureFeaturesPageKey = "GestureFeaturesPage";
 		#endregion
 
 		#region ViewModels
@@ -36,6 +37,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				return ServiceLocator.Current.GetInstance<GestureRecordViewModel>();
 			}
 		}
+
+		public GestureFeaturesViewModel GestureFeatures
+		{
+			get
+			{
+				return ServiceLocator.Current.GetInstance<GestureFeaturesViewModel>();
+			}
+		}
 		#endregion
 
 		#region Constructors
@@ -47,11 +56,13 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			var navigationService = new FrameNavigationService();
 			navigationService.Configure(BodyTrackingPageKey, new Uri("../Views/BodyTrackingPage.xaml", UriKind.Relative));
 			navigationService.Configure(GestureRecordPageKey, new Uri("../Views/GestureRecordPage.xaml", UriKind.Relative));
+			navigationService.Configure(GestureFeaturesPageKey, new Uri("../Views/GestureFeaturesPage.xaml", UriKind.Relative));
 			SimpleIoc.Default.Register<IFrameNavigationService>(() => navigationService);
 
 			SimpleIoc.Default.Register<MainViewModel>();
 			SimpleIoc.Default.Register<BodyTrackingViewModel>(true);
 			SimpleIoc.Default.Register<GestureRecordViewModel>(true);
+			SimpleIoc.Default.Register<GestureFeaturesViewModel>(true);
 		}
 		#endregion
 	}

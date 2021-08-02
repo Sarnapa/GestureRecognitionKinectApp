@@ -1,0 +1,179 @@
+﻿<Page x:Class="GestureRecognition.Applications.GestureRecognitionKinectApp.Views.GestureFeaturesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:GestureRecognition.Applications.GestureRecognitionKinectApp.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="864" d:DesignWidth="1152"
+      Title="GestureFeaturesPage">
+
+    <Page.Resources>
+        <Style x:Key="{x:Type Label}" TargetType="Label">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Label">
+                        <Border BorderBrush="DarkGray" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type Label}" x:Key="Header" BasedOn="{StaticResource {x:Type Label}}">
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        <Style x:Key="{x:Type ToolBar}" TargetType="ToolBar">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="ToolBarTray.IsLocked" Value="True"/>
+        </Style>
+    </Page.Resources>
+
+    <Page.DataContext>
+        <Binding Source="{StaticResource Locator}" Path="GestureFeatures"/>
+    </Page.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="20*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <ToolBar HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Loaded="ToolBar_Loaded">
+            <Button ToolTip="{Binding ReturnButtonTip}" Command="{Binding ReturnCommand}">
+                <Image Source="{Binding ReturnButtonImageUri}"/>
+            </Button>
+        </ToolBar>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="9*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid DataContext="{Binding CurrentJointFeatures}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Style="{StaticResource Header}" Content="Joint ID"/>
+                <Label Grid.Column="1" Content="{Binding Joint}"/>
+                <Label Grid.Row="1" Style="{StaticResource Header}" Content="F1 F2 spatial angle"/>
+                <Label Grid.Row="1" Grid.Column="1" Content="{Binding F1F2SpatialAngle}"/>
+                <Label Grid.Row="2" Style="{StaticResource Header}" Content="F(N-1) FN spatial angle"/>
+                <Label Grid.Row="2" Grid.Column="1" Content="{Binding FN_1FNSpatialAngle}"/>
+                <Label Grid.Row="3" Style="{StaticResource Header}" Content="F1 FN spatial angle"/>
+                <Label Grid.Row="3" Grid.Column="1" Content="{Binding F1FNSpatialAngle}"/>
+                <Label Grid.Row="4" Style="{StaticResource Header}" Content="Total vector angle"/>
+                <Label Grid.Row="4" Grid.Column="1" Content="{Binding TotalVectorAngle}"/>
+                <Label Grid.Row="5" Style="{StaticResource Header}" Content="Squared total vector angle"/>
+                <Label Grid.Row="5" Grid.Column="1" Content="{Binding SquaredTotalVectorAngle}"/>
+                <Label Grid.Row="6" Style="{StaticResource Header}" Content="Total vector displacement"/>
+                <Label Grid.Row="6" Grid.Column="1" Content="{Binding TotalVectorDisplacement}"/>
+                <Label Grid.Row="7" Style="{StaticResource Header}" Content="Total displacement"/>
+                <Label Grid.Row="7" Grid.Column="1" Content="{Binding TotalDisplacement}"/>
+                <Label Grid.Row="8" Style="{StaticResource Header}" Content="Maximum displacement"/>
+                <Label Grid.Row="8" Grid.Column="1" Content="{Binding MaximumDisplacement}"/>
+            </Grid>
+
+            <ToolBar Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Loaded="ToolBar_Loaded">
+                <Button ToolTip="{Binding PrevButtonTip}" Command="{Binding PrevJointFeaturesCommand}">
+                    <Image Source="{Binding PrevButtonImageUri}"/>
+                </Button>
+                <Button ToolTip="{Binding NextButtonTip}" Command="{Binding NextJointFeaturesCommand}">
+                    <Image Source="{Binding NextButtonImageUri}"/>
+                </Button>
+            </ToolBar>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="9*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid DataContext="{Binding CurrentBoneFeatures}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Style="{StaticResource Header}" Content="Bone ID"/>
+                <Label Grid.Column="1" Content="{Binding BoneId}"/>
+                <Label Grid.Row="1" Style="{StaticResource Header}" Content="Initial angle"/>
+                <Label Grid.Row="1" Grid.Column="1" Content="{Binding InitialAngle}"/>
+                <Label Grid.Row="2" Style="{StaticResource Header}" Content="Final angle"/>
+                <Label Grid.Row="2" Grid.Column="1" Content="{Binding FinalAngle}"/>
+                <Label Grid.Row="3" Style="{StaticResource Header}" Content="Mean angle"/>
+                <Label Grid.Row="3" Grid.Column="1" Content="{Binding MeanAngle}"/>
+                <Label Grid.Row="4" Style="{StaticResource Header}" Content="Maximum angle"/>
+                <Label Grid.Row="4" Grid.Column="1" Content="{Binding MaximumAngle}"/>
+            </Grid>
+
+            <ToolBar Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Loaded="ToolBar_Loaded">
+                <Button ToolTip="{Binding PrevButtonTip}" Command="{Binding PrevBoneFeaturesCommand}">
+                    <Image Source="{Binding PrevButtonImageUri}"/>
+                </Button>
+                <Button ToolTip="{Binding NextButtonTip}" Command="{Binding NextBoneFeaturesCommand}">
+                    <Image Source="{Binding NextButtonImageUri}"/>
+                </Button>
+            </ToolBar>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="9*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid DataContext="{Binding HandJointsDistances}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="3*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Style="{StaticResource Header}" Content="Max distance between hands"/>
+                <Label Grid.Column="1" Content="{Binding BetweenHandJointsDistanceMax}"/>
+                <Label Grid.Row="1" Style="{StaticResource Header}" Content="Mean distance between hands"/>
+                <Label Grid.Row="1" Grid.Column="1" Content="{Binding BetweenHandJointsDistanceMean}"/>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</Page>

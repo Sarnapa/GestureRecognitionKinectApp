@@ -35,6 +35,11 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Kinect
 		{
 			return (this.ParentJoint.GetHashCode()) ^ (this.ChildJoint.GetHashCode());
 		}
+
+		public override string ToString()
+		{
+			return $"{this.ParentJoint} -> {this.ChildJoint}";
+		}
 		#endregion
 
 		#region IEquatable implementation

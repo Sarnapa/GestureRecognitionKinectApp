@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Microsoft.Kinect;
 using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
-using System.Collections.Concurrent;
 
 namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures
 {

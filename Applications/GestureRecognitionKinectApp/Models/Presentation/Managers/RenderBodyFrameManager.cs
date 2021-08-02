@@ -7,6 +7,7 @@ using Microsoft.Kinect;
 using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies;
 using static GestureRecognition.Processing.BaseClassLib.Structures.Kinect.BonesDefinitions;
+using static GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures.GestureRecognitionDefinitions;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers
 {
@@ -32,13 +33,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 		/// Thickness of lines representing user skeleton
 		/// </summary>
 		private readonly double BodySkeletonThickness = 10;
-
-		/// <summary>
-		/// Joint taking part in gesture recognition processing
-		/// </summary>
-		private readonly JointType[] gestureRecognitionJoints = new JointType[] {JointType.ElbowLeft, JointType.ElbowRight,
-			JointType.WristLeft, JointType.WristRight, JointType.HandLeft, JointType.HandRight, JointType.ThumbLeft, JointType.ThumbRight,
-			JointType.HandTipLeft, JointType.HandTipRight};
 
 		/// <summary>
 		/// Not drawn joints
@@ -183,7 +177,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 
 				var trackingState = joints[jointType].TrackingState;
 
-				if (this.gestureRecognitionJoints.Contains(jointType) && trackingState == TrackingState.Tracked)
+				if (GestureRecognitionJoints.Contains(jointType) && trackingState == TrackingState.Tracked)
 				{
 					drawBrush = this.trackedGestureRecognitionJointBrush;
 					drawThickness = GestureRecognitionJointThickness;
