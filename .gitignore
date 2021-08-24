@@ -362,4 +362,3 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /Records
-/Applications/GestureRecognitionKinectApp/ViewModels/Messages/GestureRecordFinishedMessage.cs
