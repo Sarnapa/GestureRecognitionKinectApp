@@ -94,6 +94,7 @@
     <Compile Include="ViewModels\Messages\DisplayImageChangedMessage.cs" />
     <Compile Include="ViewModels\Messages\FPSValueMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureFeaturesMessage.cs" />
+    <Compile Include="ViewModels\Messages\GestureRecordFinishedMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureRecordMessage.cs" />
     <Compile Include="ViewModels\Messages\KinectStatusMessage.cs" />
     <Compile Include="ViewModels\Messages\StoppedBodyTrackingMessage.cs" />
@@ -222,6 +223,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\NextIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ReplayRecordIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

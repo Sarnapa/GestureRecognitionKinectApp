@@ -25,11 +25,14 @@
             <Button ToolTip="{Binding ReturnButtonTip}" Command="{Binding ReturnCommand}">
                 <Image Source="{Binding ReturnButtonImageUri}"/>
             </Button>
-            <Button Visibility="{Binding ExportGestureRecordButtonVisibility}" ToolTip="{Binding ExportGestureRecordButtonTip}" Command="{Binding ExportGestureRecordCommand}">
-                <Image Source="{Binding ExportGestureRecordButtonImageUri}"/>
+            <Button Visibility="{Binding ReplayGestureRecordButtonVisibility}" ToolTip="{Binding ReplayGestureRecordButtonTip}" Command="{Binding StartCommand}">
+                <Image Source="{Binding ReplayGestureRecordImageUri}"/>
             </Button>
             <Button Visibility="{Binding ShowGestureFeaturesInformationButtonVisibility}" ToolTip="{Binding ShowGestureFeaturesInformationButtonTip}" Command="{Binding ShowGestureInformationCommand}">
                 <Image Source="{Binding ShowGestureFeaturesInformationButtonImageUri}"/>
+            </Button>
+            <Button Visibility="{Binding ExportGestureRecordButtonVisibility}" ToolTip="{Binding ExportGestureRecordButtonTip}" Command="{Binding ExportGestureRecordCommand}">
+                <Image Source="{Binding ExportGestureRecordButtonImageUri}"/>
             </Button>
         </ToolBar>
 

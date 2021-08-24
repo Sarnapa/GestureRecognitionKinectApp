@@ -9,29 +9,27 @@ using GestureRecognition.Applications.GestureRecognitionKinectApp.Models;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.NavigationService;
-using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures;
 using static GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.ViewModelLocator;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 {
-	public class GestureRecordViewModel: ViewModelBase, IDisposable
+	public class GestureRecordViewModel : ViewModelBase, IDisposable
 	{
 		#region Private fields
 		private readonly GestureRecordModel model;
 		private readonly IFrameNavigationService navigationService;
 		private string gestureRecordFilePath;
 		private bool isTemporaryGestureRecordFile;
-		private bool gestureFeaturesCalculationDone;
-		private GestureFeatures gestureFeatures;
+		private bool isGestureRecordFinished;
 		private bool isCleanupPermission = true;
 		#endregion
 
 		#region Private properties
-		public bool IsGestureFeaturesValid
+		private bool IsGestureFeaturesValid
 		{
 			get
 			{
-				return this.gestureFeaturesCalculationDone && this.gestureFeatures != null && this.gestureFeatures.IsValid;
+				return this.model.GestureFeatures != null && this.model.GestureFeatures.IsValid;
 			}
 		}
 		#endregion
@@ -53,27 +51,43 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			}
 		}
 
-		public Visibility ExportGestureRecordButtonVisibility
+		public string ReturnButtonTip
 		{
 			get
 			{
-				return this.isTemporaryGestureRecordFile ? Visibility.Visible : Visibility.Hidden;
+				return Properties.Resources.BackTip;
 			}
 		}
 
-		public string ExportGestureRecordButtonTip
+		public string ReturnButtonImageUri
 		{
 			get
 			{
-				return Properties.Resources.ExportRecordTip;
+				return "pack://application:,,,/Resources/BackIcon.png";
 			}
 		}
 
-		public string ExportGestureRecordButtonImageUri
+		public Visibility ReplayGestureRecordButtonVisibility
 		{
 			get
 			{
-				return "pack://application:,,,/Resources/ExportRecordIcon.png";
+				return this.isGestureRecordFinished ? Visibility.Visible : Visibility.Hidden;
+			}
+		}
+
+		public string ReplayGestureRecordButtonTip
+		{
+			get
+			{
+				return Properties.Resources.ReplayRecordTip;
+			}
+		}
+
+		public string ReplayGestureRecordImageUri
+		{
+			get
+			{
+				return "pack://application:,,,/Resources/ReplayRecordIcon.png";
 			}
 		}
 
@@ -81,7 +95,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get
 			{
-				return this.gestureFeaturesCalculationDone ? Visibility.Visible : Visibility.Hidden;
+				return this.isGestureRecordFinished ? Visibility.Visible : Visibility.Hidden;
 			}
 		}
 
@@ -103,19 +117,27 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			}
 		}
 
-		public string ReturnButtonTip
+		public Visibility ExportGestureRecordButtonVisibility
 		{
 			get
 			{
-				return Properties.Resources.BackTip;
+				return this.isTemporaryGestureRecordFile && this.isGestureRecordFinished ? Visibility.Visible : Visibility.Hidden;
 			}
 		}
 
-		public string ReturnButtonImageUri
+		public string ExportGestureRecordButtonTip
 		{
 			get
 			{
-				return "pack://application:,,,/Resources/BackIcon.png";
+				return Properties.Resources.ExportRecordTip;
+			}
+		}
+
+		public string ExportGestureRecordButtonImageUri
+		{
+			get
+			{
+				return "pack://application:,,,/Resources/ExportRecordIcon.png";
 			}
 		}
 
@@ -128,11 +150,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get; private set;
 		}
-		public RelayCommand ExportGestureRecordCommand
+		public RelayCommand ShowGestureInformationCommand
 		{
 			get; private set;
 		}
-		public RelayCommand ShowGestureInformationCommand
+		public RelayCommand ExportGestureRecordCommand
 		{
 			get; private set;
 		}
@@ -151,12 +173,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			this.navigationService = navigationService;
 			this.StartCommand = new RelayCommand(this.StartCommandAction);
 			this.ReturnCommand = new RelayCommand(this.ReturnCommandAction);
-			this.ExportGestureRecordCommand = new RelayCommand(this.ExportGestureRecordCommandAction);
 			this.ShowGestureInformationCommand = new RelayCommand(this.ShowGestureInformationCommandAction);
+			this.ExportGestureRecordCommand = new RelayCommand(this.ExportGestureRecordCommandAction);
 			this.CleanupCommand = new RelayCommand(this.CleanupCommandAction);
 			Messenger.Default.Register<GestureRecordMessage>(this, m => GestureRecordMessageHandler(m));
 			Messenger.Default.Register<DisplayImageChangedMessage>(this, m => DisplayImageChangedMessageHandler(m));
-			Messenger.Default.Register<GestureFeaturesMessage>(this, m => GestureFeaturesMessageHandler(m));
+			Messenger.Default.Register<GestureRecordFinishedMessage>(this, m => GestureRecordFinishedMessageHandler(m));
 		}
 		#endregion
 
@@ -168,6 +190,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			if (!string.IsNullOrEmpty(this.gestureRecordFilePath))
 			{
 				this.isCleanupPermission = true;
+				this.isGestureRecordFinished = false;
+				RaisePropertyChanged(nameof(ReplayGestureRecordButtonVisibility));
+				RaisePropertyChanged(nameof(ShowGestureFeaturesInformationButtonVisibility));
+				RaisePropertyChanged(nameof(ExportGestureRecordButtonVisibility));
 				this.model.Start(this.gestureRecordFilePath);
 			}
 		}
@@ -190,6 +216,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				if (res)
 				{
 					this.isTemporaryGestureRecordFile = false;
+					this.gestureRecordFilePath = saveFileDialog.FileName;
 					RaisePropertyChanged(nameof(ExportGestureRecordButtonVisibility));
 				}
 			}
@@ -200,7 +227,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			if (this.IsGestureFeaturesValid)
 			{
 				this.isCleanupPermission = false;
-				Messenger.Default.Send(new GestureFeaturesMessage() { Features = this.gestureFeatures, IsPresentation = true });
+				Messenger.Default.Send(new GestureFeaturesMessage() { Features = this.model.GestureFeatures });
 			}
 		}
 
@@ -209,8 +236,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			if (this.isCleanupPermission)
 			{
 				this.model.Cleanup(this.isTemporaryGestureRecordFile);
-				this.gestureFeaturesCalculationDone = false;
-				this.gestureFeatures = null;
+				this.isGestureRecordFinished = false;
 			}
 		}
 		#endregion
@@ -231,15 +257,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				RaisePropertyChanged(nameof(BodyImage));
 		}
 
-		private void GestureFeaturesMessageHandler(GestureFeaturesMessage m)
+		private void GestureRecordFinishedMessageHandler(GestureRecordFinishedMessage m)
 		{
-			if (m?.Features != null && m.Features.IsValid && !m.IsPresentation)
-				this.gestureFeatures = m.Features;
-
-			this.gestureFeaturesCalculationDone = true;
+			this.isGestureRecordFinished = true;
+			RaisePropertyChanged(nameof(ReplayGestureRecordButtonVisibility));
 			RaisePropertyChanged(nameof(ShowGestureFeaturesInformationButtonVisibility));
 			RaisePropertyChanged(nameof(ShowGestureFeaturesInformationButtonTip));
 			RaisePropertyChanged(nameof(ShowGestureFeaturesInformationButtonImageUri));
+			RaisePropertyChanged(nameof(ExportGestureRecordButtonVisibility));
 		}
 		#endregion
 

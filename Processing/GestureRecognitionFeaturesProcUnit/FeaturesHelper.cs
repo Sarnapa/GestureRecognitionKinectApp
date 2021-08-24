@@ -91,7 +91,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region TotalVectorAngle feature methods
 		public static double? CalculateTotalVectorAngle(double?[] angleVector)
 		{
-			return angleVector?.Where(a => a.HasValue).Sum(a => a.Value);
+			return angleVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Sum(a => a.Value);
 		}
 
 		public static double CalculateTotalVectorAngle(IEnumerable<CameraSpacePoint> jointsPositions)
@@ -108,7 +108,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region SquaredTotalVectorAngle feature methods
 		public static double? CalculateSquaredTotalVectorAngle(double?[] angleVector)
 		{
-			return angleVector?.Where(a => a.HasValue).Sum(a => Math.Pow(a.Value, 2));
+			return angleVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Sum(a => Math.Pow(a.Value, 2));
 		}
 
 		public static double CalculateSquaredTotalVectorAngle(IEnumerable<CameraSpacePoint> jointsPositions)
@@ -164,7 +164,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region TotalDisplacement feature methods
 		public static double? CalculateTotalDisplacement(double?[] displacementVector)
 		{
-			return displacementVector?.Where(d => d.HasValue).Sum(d => d.Value);
+			return displacementVector?.Where(d => d.HasValue && !double.IsNaN(d.Value)).Sum(d => d.Value);
 		}
 
 		public static double CalculateTotalDisplacement(IEnumerable<CameraSpacePoint> jointsPositions)
@@ -181,7 +181,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region MaximumDisplacement feature methods
 		public static double? CalculateMaximumDisplacement(double?[] displacementVector)
 		{
-			return displacementVector?.Where(d => d.HasValue).Max(d => d.Value);
+			return displacementVector?.Where(d => d.HasValue && !double.IsNaN(d.Value)).Max(d => d.Value);
 		}
 		#endregion
 
@@ -288,6 +288,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 
 			foreach (var bodyFrame in bodyFrames)
 			{
+				// TODO: Do poprawy ten referencePoint.
 				var parentJoint = GetJoint(bodyFrame, bone.ParentJoint);
 				var childJoint = GetJoint(bodyFrame, bone.ChildJoint);
 				if (parentJoint.HasValue && childJoint.HasValue)
@@ -328,14 +329,14 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region MeanAngle feature methods
 		public static double? CalculateMeanAngle(double?[] angleVector)
 		{
-			return angleVector?.Where(a => a.HasValue).Average(a => a.Value);
+			return angleVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Average(a => a.Value);
 		}
 		#endregion
 
 		#region MaximumAngle feature methods
 		public static double? CalculateMaximumAngle(double?[] angleVector)
 		{
-			return angleVector?.Where(a => a.HasValue).Max(a => a.Value);
+			return angleVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Max(a => a.Value);
 		}
 		#endregion
 
@@ -373,14 +374,14 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region BetweenHandJointsDistanceMax feature methods
 		public static double? CalculateBetweenHandJointsDistanceMax(double?[] distanceVector)
 		{
-			return distanceVector?.Where(d => d.HasValue).Max(d => d.Value);
+			return distanceVector?.Where(d => d.HasValue && !double.IsNaN(d.Value)).Max(d => d.Value);
 		}
 		#endregion
 
 		#region BetweenHandJointsDistanceMean feature methods
 		public static double? CalculateBetweenHandJointsDistanceMean(double?[] distanceVector)
 		{
-			return distanceVector?.Where(d => d.HasValue).Average(d => d.Value);
+			return distanceVector?.Where(d => d.HasValue && !double.IsNaN(d.Value)).Average(d => d.Value);
 		}
 		#endregion
 

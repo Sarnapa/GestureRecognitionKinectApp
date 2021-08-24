@@ -171,7 +171,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		#region Messages handlers
 		private void GestureFeaturesMessageHandler(GestureFeaturesMessage m)
 		{
-			if (m != null && m.IsPresentation && m.Features != null && m.Features.IsValid)
+			if (m != null && m.Features != null && m.Features.IsValid)
 			{
 				this.jointsFeatures = m.Features.JointsGestureFeaturesDict.Select(f => new JointGestureFeaturesViewModel(f.Key, f.Value)).ToArray();
 				this.bonesFeatures = m.Features.BoneJointsAngleDataDict.Select(b => new BoneJointsAngleDataViewModel(b.Key, b.Value)).ToArray();

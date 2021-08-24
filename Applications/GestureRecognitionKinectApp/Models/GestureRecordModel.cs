@@ -65,7 +65,22 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// <summary>
 		/// Calculates features for gesture recognition process
 		/// </summary>
-		private GestureRecognitionFeaturesManager gestureRecognitionManager; 
+		private GestureRecognitionFeaturesManager gestureRecognitionManager;
+
+		/// <summary>
+		/// Calculated gesture features
+		/// </summary>
+		private GestureFeatures gestureFeatures;
+		#endregion
+
+		#region Private properties
+		private bool AreGestureFeaturesCalculated
+		{
+			get
+			{
+				return this.gestureFeatures != null;
+			}
+		}
 		#endregion
 
 		#region Public properties
@@ -90,6 +105,17 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				return this.bodyImage;
 			}
 		}
+
+		/// <summary>
+		/// Calculated gesture features
+		/// </summary>
+		public GestureFeatures GestureFeatures
+		{
+			get
+			{
+				return this.gestureFeatures;
+			}
+		}
 		#endregion
 
 		#region Constructors
@@ -110,6 +136,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				throw new ArgumentNullException(nameof(gestureRecordFilePath));
 
 			CleanGestureReplay(false);
+			CleanGestureBodyFrames();
 
 			// Create the drawing group we'll use for drawing body data
 			this.bodyImageDrawingGroup = new DrawingGroup();
@@ -158,6 +185,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		public void Cleanup(bool deleteGestureRecordFile = true)
 		{
 			CleanGestureReplay(deleteGestureRecordFile);
+			CleanGestureBodyFrames();
+			CleanGestureFeatures();
 		}
 		#endregion
 
@@ -179,7 +208,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				{
 					// Temporary assumption that we obtained gesture record with one user
 					var userBodyFrame = bodyFrame.Bodies.FirstOrDefault();
-					if (userBodyFrame != null && userBodyFrame.IsTracked)
+					if (userBodyFrame != null && userBodyFrame.IsTracked && !this.AreGestureFeaturesCalculated)
 						this.gestureBodyFrames.Add(userBodyFrame);
 
 					dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, colorFrame.Width, colorFrame.Height));
@@ -196,19 +225,23 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 		private void GestureReplay_Finished()
 		{
-			Task.Factory.StartNew(async () =>
+			if (!this.AreGestureFeaturesCalculated && this.gestureBodyFrames.Any())
 			{
-				GestureFeatures gestureFeatures = null;
-				try
+				Task.Factory.StartNew(async () =>
 				{
-					if (this.gestureBodyFrames.Any())
-						gestureFeatures = await this.gestureRecognitionManager.CalculateFeatures(this.gestureBodyFrames.ToArray());
-				}
-				finally
-				{
-					Messenger.Default.Send(new GestureFeaturesMessage() { Features = gestureFeatures, IsPresentation = false });
-				}
-			});
+					try
+					{
+						this.gestureFeatures = await this.gestureRecognitionManager.CalculateFeatures(this.gestureBodyFrames.ToArray());
+					}
+					finally
+					{
+						CleanGestureBodyFrames();
+						Messenger.Default.Send(new GestureRecordFinishedMessage());
+					}
+				});
+			}
+			else
+				Messenger.Default.Send(new GestureRecordFinishedMessage());
 		}
 		#endregion
 
@@ -240,6 +273,17 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				this.gestureRecordFile.Dispose();
 				this.gestureRecordFile = null;
 			}
+		}
+
+		private void CleanGestureBodyFrames()
+		{
+			if (this.gestureBodyFrames.Any())
+				this.gestureBodyFrames.Clear();
+		}
+
+		private void CleanGestureFeatures()
+		{
+			this.gestureFeatures = null;
 		}
 		#endregion
 	}
