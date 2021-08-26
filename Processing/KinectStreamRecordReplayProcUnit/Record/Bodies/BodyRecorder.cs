@@ -36,6 +36,34 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.
 			if (bodies == null)
 				throw new ArgumentNullException(nameof(bodies));
 
+			bodies = GetResizingBodies(bodies);
+
+			// Header
+			this.writer.Write((int)KinectRecordOptions.Bodies);
+
+			// Data
+			var timeSpan = DateTime.Now.Subtract(referenceTime);
+			this.referenceTime = DateTime.Now;
+			this.writer.Write((long)timeSpan.TotalMilliseconds);
+			// This is not necessary
+			//this.writer.Write(frame.FloorClipPlane.X);
+			//this.writer.Write(frame.FloorClipPlane.Y);
+			//this.writer.Write(frame.FloorClipPlane.Z);
+			//this.writer.Write(frame.FloorClipPlane.W);
+
+			var bodiesData = bodies.Map();
+
+			var formatter = new BinaryFormatter();
+			formatter.Serialize(this.writer.BaseStream, bodiesData);
+		}
+		#endregion
+
+		#region Private methods
+		private IEnumerable<(Body, BodyJointsColorSpacePointsDict)> GetResizingBodies(IEnumerable<(Body, BodyJointsColorSpacePointsDict)> bodies)
+		{
+			if (bodies == null)
+				throw new ArgumentNullException(nameof(bodies));
+
 			if (this.resizingCoef != 1.0f && bodies.Any())
 			{
 				var newBodies = new List<(Body, BodyJointsColorSpacePointsDict)>();
@@ -60,26 +88,10 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.
 					newBodies.Add((body, newBodyJointsColorSpacePointsDict));
 				}
 
-				bodies = newBodies;
+				return newBodies;
 			}
 
-			// Header
-			this.writer.Write((int)KinectRecordOptions.Bodies);
-
-			// Data
-			var timeSpan = DateTime.Now.Subtract(referenceTime);
-			this.referenceTime = DateTime.Now;
-			this.writer.Write((long)timeSpan.TotalMilliseconds);
-			// This is not necessary
-			//this.writer.Write(frame.FloorClipPlane.X);
-			//this.writer.Write(frame.FloorClipPlane.Y);
-			//this.writer.Write(frame.FloorClipPlane.Z);
-			//this.writer.Write(frame.FloorClipPlane.W);
-
-			var bodiesData = bodies.Map();
-
-			var formatter = new BinaryFormatter();
-			formatter.Serialize(this.writer.BaseStream, bodiesData);
+			return bodies;
 		}
 		#endregion
 	}

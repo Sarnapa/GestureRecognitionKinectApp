@@ -288,14 +288,14 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 
 			foreach (var bodyFrame in bodyFrames)
 			{
-				// TODO: Do poprawy ten referencePoint.
 				var parentJoint = GetJoint(bodyFrame, bone.ParentJoint);
 				var childJoint = GetJoint(bodyFrame, bone.ChildJoint);
 				if (parentJoint.HasValue && childJoint.HasValue)
 				{
 					var parentJointPos = parentJoint.Value.Position.Map();
 					var childJointPos = childJoint.Value.Position.Map();
-					var referencePoint = new Vector3(parentJointPos.X, 0, 0);
+					// TODO: MP: To ogranicza nas do siedzenia w określonej odległości od sensora.
+					var referencePoint = new Vector3(parentJointPos.X, 1f, 0f);
 
 					double a = MathHelper.Distance(referencePoint, childJointPos);
 					double b = MathHelper.Distance(referencePoint, parentJointPos);
