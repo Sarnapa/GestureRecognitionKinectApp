@@ -28,7 +28,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		private Timer countdownTimer;
 		private Visibility countdownInfoVisibility = Visibility.Hidden;
 		private string countdownInfoImageUri = ViewModelsUtils.GetImageUri("ZeroIcon.png");
-		private double currentCountdownValue = CountdownMaxValue;
+		private double currentCountdownValue;
 		#endregion
 
 		#region Private properties
