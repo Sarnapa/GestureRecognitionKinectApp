@@ -289,7 +289,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 									string basicText = $"Detected {trackedBodiesCount} users.\nOnly one user movemenets can be tracked.";
 									string gestureRecorderText = $"Gesture recording has been cancelled.";
 
-									Messenger.Default.Send(new StoppedBodyTrackingMessage()
+									Messenger.Default.Send(new BodyTrackingStoppedMessage()
 									{
 										IsStopped = true,
 										Text = this.TrackingState == BodyTrackingState.RecordingGesture ?
@@ -302,7 +302,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 								}
 								else
 								{
-									Messenger.Default.Send(new StoppedBodyTrackingMessage()
+									Messenger.Default.Send(new BodyTrackingStoppedMessage()
 									{
 										IsStopped = false,
 									});

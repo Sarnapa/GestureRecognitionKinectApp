@@ -97,7 +97,7 @@
     <Compile Include="ViewModels\Messages\GestureRecordFinishedMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureRecordMessage.cs" />
     <Compile Include="ViewModels\Messages\KinectStatusMessage.cs" />
-    <Compile Include="ViewModels\Messages\StoppedBodyTrackingMessage.cs" />
+    <Compile Include="ViewModels\Messages\BodyTrackingStoppedMessage.cs" />
     <Compile Include="ViewModels\Messages\TemporaryStateStartedMessage.cs" />
     <Compile Include="ViewModels\Messages\TrackedUsersCountChangedMessage.cs" />
     <Compile Include="ViewModels\NavigationService\FrameNavigationService.cs" />

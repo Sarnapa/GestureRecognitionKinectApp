@@ -1,6 +1,6 @@
 ﻿namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages
 {
-	public class StoppedBodyTrackingMessage
+	public class BodyTrackingStoppedMessage
 	{
 		public bool IsStopped
 		{

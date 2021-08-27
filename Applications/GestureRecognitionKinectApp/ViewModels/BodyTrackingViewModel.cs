@@ -250,7 +250,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			Messenger.Default.Register<KinectStatusMessage>(this, m => KinectStatusChangedMessageHandler(m));
 			Messenger.Default.Register<TrackedUsersCountChangedMessage>(this, m => TrackedUsersCountChangedMessageHandler(m));
 			Messenger.Default.Register<FPSValueMessage>(this, m => FPSValueMessageHandler(m));
-			Messenger.Default.Register<StoppedBodyTrackingMessage>(this, m => StoppedBodyTrackingMessageHandler(m));
+			Messenger.Default.Register<BodyTrackingStoppedMessage>(this, m => StoppedBodyTrackingMessageHandler(m));
 			Messenger.Default.Register<TemporaryStateStartedMessage>(this, m => TemporaryStateStartedMessageHandler(m));
 		}
 		#endregion
@@ -328,7 +328,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			this.FPSValueText = $"{string.Format("{0:0.00}", m.Value)} FPS";
 		}
 
-		private void StoppedBodyTrackingMessageHandler(StoppedBodyTrackingMessage m)
+		private void StoppedBodyTrackingMessageHandler(BodyTrackingStoppedMessage m)
 		{
 			this.StoppedBodyTrackingInfoVisibility = m.IsStopped ? Visibility.Visible : Visibility.Hidden;
 			this.StoppedBodyTrackingInfoText = m.IsStopped ? m.Text : string.Empty;
