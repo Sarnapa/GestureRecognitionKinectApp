@@ -296,7 +296,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 											$"{basicText}\n{gestureRecorderText}" : basicText
 									});
 
-									CleanGestureRecorder();
+									StopGestureRecording(true);
 									UpdateLastDisplayedColorFrameTime();
 									return;
 								}
@@ -338,6 +338,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						}
 					}
 
+					// TODO: Consider if it occurs that user movement is not tracked suddenly during gesture recording. 
+					CheckIfStopGestureRecording();
 					UpdateLastDisplayedColorFrameTime();
 				}
 			}
@@ -404,7 +406,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				if (this.gestureToStartRecordingStartTime.HasValue)
 				{
 					TimeSpan duration = DateTime.Now - this.gestureToStartRecordingStartTime.Value;
-					if (duration > Consts.GestureToStartRecordingTimeLimit)
+					if (duration >= Consts.GestureToStartRecordingTimeLimit)
 					{
 						this.gestureToStartRecordingStartTime = null;
 						this.TrackingState = BodyTrackingState.WaitingToStartRecordingGesture;
@@ -445,10 +447,20 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			this.TrackingState = BodyTrackingState.RecordingGesture;
 		}
 
-		private void StopGestureRecording()
+		private void CheckIfStopGestureRecording()
+		{
+			if (this.TrackingState == BodyTrackingState.RecordingGesture && this.gestureRecordStartTime.HasValue)
+			{
+				TimeSpan duration = DateTime.Now - this.gestureRecordStartTime.Value;
+				if (duration >= Consts.GestureRecordTimeLimit)
+					Messenger.Default.Send(new GestureRecordingFinishedMessage());
+			}
+		}
+
+		private void StopGestureRecording(bool deleteGestureRecordFile = false)
 		{
 			this.gestureRecorder.Stop();
-			CleanGestureRecorder(false);
+			CleanGestureRecorder(deleteGestureRecordFile);
 		}
 
 		private void CleanGestureRecorder(bool deleteGestureRecordFile = true)

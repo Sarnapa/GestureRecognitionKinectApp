@@ -91,7 +91,8 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region TotalVectorAngle feature methods
 		public static double? CalculateTotalVectorAngle(double?[] angleVector)
 		{
-			return angleVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Sum(a => a.Value);
+			var filteredAngleVector = angleVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Select(a => a.Value);
+			return filteredAngleVector != null && filteredAngleVector.Any() ? (double?)filteredAngleVector.Sum() : null;
 		}
 
 		public static double CalculateTotalVectorAngle(IEnumerable<CameraSpacePoint> jointsPositions)
@@ -108,7 +109,8 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region SquaredTotalVectorAngle feature methods
 		public static double? CalculateSquaredTotalVectorAngle(double?[] angleVector)
 		{
-			return angleVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Sum(a => Math.Pow(a.Value, 2));
+			var filteredAngleVector = angleVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Select(a => a.Value);
+			return filteredAngleVector != null && filteredAngleVector.Any() ? (double?)filteredAngleVector.Sum(a => Math.Pow(a, 2)) : null;
 		}
 
 		public static double CalculateSquaredTotalVectorAngle(IEnumerable<CameraSpacePoint> jointsPositions)
@@ -164,7 +166,8 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region TotalDisplacement feature methods
 		public static double? CalculateTotalDisplacement(double?[] displacementVector)
 		{
-			return displacementVector?.Where(d => d.HasValue && !double.IsNaN(d.Value)).Sum(d => d.Value);
+			var filteredDisplacementVector = displacementVector?.Where(d => d.HasValue && !double.IsNaN(d.Value)).Select(d => d.Value);
+			return filteredDisplacementVector != null && filteredDisplacementVector.Any() ? (double?)filteredDisplacementVector.Sum() : null;
 		}
 
 		public static double CalculateTotalDisplacement(IEnumerable<CameraSpacePoint> jointsPositions)
@@ -181,7 +184,8 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region MaximumDisplacement feature methods
 		public static double? CalculateMaximumDisplacement(double?[] displacementVector)
 		{
-			return displacementVector?.Where(d => d.HasValue && !double.IsNaN(d.Value)).Max(d => d.Value);
+			var filteredDisplacementVector = displacementVector?.Where(d => d.HasValue && !double.IsNaN(d.Value)).Select(d => d.Value);
+			return filteredDisplacementVector != null && filteredDisplacementVector.Any() ? (double?)filteredDisplacementVector.Max() : null;
 		}
 		#endregion
 
@@ -329,14 +333,16 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region MeanAngle feature methods
 		public static double? CalculateMeanAngle(double?[] angleVector)
 		{
-			return angleVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Average(a => a.Value);
+			var filteredAngleVector = angleVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Select(a => a.Value);
+			return filteredAngleVector != null && filteredAngleVector.Any() ? (double?)filteredAngleVector.Average() : null;
 		}
 		#endregion
 
 		#region MaximumAngle feature methods
 		public static double? CalculateMaximumAngle(double?[] angleVector)
 		{
-			return angleVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Max(a => a.Value);
+			var filteredAngleVector = angleVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Select(a => a.Value);
+			return filteredAngleVector != null && filteredAngleVector.Any() ? (double?)filteredAngleVector.Max() : null;
 		}
 		#endregion
 
@@ -374,14 +380,16 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region BetweenHandJointsDistanceMax feature methods
 		public static double? CalculateBetweenHandJointsDistanceMax(double?[] distanceVector)
 		{
-			return distanceVector?.Where(d => d.HasValue && !double.IsNaN(d.Value)).Max(d => d.Value);
+			var filteredDistanceVector = distanceVector?.Where(d => d.HasValue && !double.IsNaN(d.Value)).Select(d => d.Value);
+			return filteredDistanceVector != null && filteredDistanceVector.Any() ? (double?)filteredDistanceVector.Max() : null;
 		}
 		#endregion
 
 		#region BetweenHandJointsDistanceMean feature methods
 		public static double? CalculateBetweenHandJointsDistanceMean(double?[] distanceVector)
 		{
-			return distanceVector?.Where(d => d.HasValue && !double.IsNaN(d.Value)).Average(d => d.Value);
+			var filteredDistanceVector = distanceVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Select(d => d.Value);
+			return filteredDistanceVector != null && filteredDistanceVector.Any() ? (double?)filteredDistanceVector.Average() : null;
 		}
 		#endregion
 
