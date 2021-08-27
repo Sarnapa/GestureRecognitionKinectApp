@@ -12,6 +12,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 
 			return null;
 		}
+
+		public static string GetImageUri(string imageName)
+		{
+			if (string.IsNullOrEmpty(imageName))
+				throw new ArgumentNullException(nameof(imageName));
+
+			return $"pack://application:,,,/Resources/{imageName}";
+		}
 		#endregion
 	}
 }

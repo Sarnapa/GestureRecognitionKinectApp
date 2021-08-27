@@ -61,7 +61,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get
 			{
-				return "pack://application:,,,/Resources/BackIcon.png";
+				return ViewModelsUtils.GetImageUri("BackIcon.png");
 			}
 		}
 
@@ -77,7 +77,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get
 			{
-				return "pack://application:,,,/Resources/BackIcon.png";
+				return ViewModelsUtils.GetImageUri("BackIcon.png");
 			}
 		}
 
@@ -93,7 +93,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get
 			{
-				return "pack://application:,,,/Resources/NextIcon.png";
+				return ViewModelsUtils.GetImageUri("NextIcon.png");
 			}
 		}
 

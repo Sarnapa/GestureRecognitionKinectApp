@@ -98,6 +98,7 @@
     <Compile Include="ViewModels\Messages\GestureRecordMessage.cs" />
     <Compile Include="ViewModels\Messages\KinectStatusMessage.cs" />
     <Compile Include="ViewModels\Messages\StoppedBodyTrackingMessage.cs" />
+    <Compile Include="ViewModels\Messages\TemporaryStateStartedMessage.cs" />
     <Compile Include="ViewModels\Messages\TrackedUsersCountChangedMessage.cs" />
     <Compile Include="ViewModels\NavigationService\FrameNavigationService.cs" />
     <Compile Include="ViewModels\NavigationService\IFrameNavigationService.cs" />
@@ -226,6 +227,14 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ReplayRecordIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\FiveIcon.png" />
+    <Resource Include="Resources\FourIcon.png" />
+    <Resource Include="Resources\OneIcon.png" />
+    <Resource Include="Resources\ThreeIcon.png" />
+    <Resource Include="Resources\TwoIcon.png" />
+    <Resource Include="Resources\ZeroIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -3,6 +3,8 @@
 	public enum BodyTrackingState
 	{
 		Standard,
+		GestureToStartRecording,
+		WaitingToStartRecordingGesture,
 		RecordingGesture,
 		RecognizingGesture,
 	}

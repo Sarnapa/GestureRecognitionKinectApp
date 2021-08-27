@@ -48,6 +48,10 @@
                 Background="Transparent" BorderBrush="Transparent" IsHitTestVisible="False" Focusable="False" IsReadOnly="True" TextAlignment="Center" 
                 TextWrapping="Wrap" FontSize="36" FontStretch="UltraExpanded"/>
         </Border>
+        <Border Grid.Row="1" Background="{StaticResource TransparentGreyBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding CountdownInfoVisibility}">
+            <Image Source="{Binding CountdownInfoImageUri}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Margin="100"
+                IsHitTestVisible="False" Focusable="False"/>
+        </Border>
 
         <StatusBar Grid.Row="2" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
             <StatusBarItem Content="{Binding KinectStatusText}" />

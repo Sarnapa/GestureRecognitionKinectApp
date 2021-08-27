@@ -20,11 +20,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 	{
 		#region Private / protected fields
 		/// <summary>
-		/// Time limit for gesture record
-		/// </summary>
-		private readonly TimeSpan gestureRecordTimeLimit = TimeSpan.FromSeconds(10);
-
-		/// <summary>
 		/// Render skeleton data
 		/// </summary>
 		private readonly RenderBodyFrameManager renderBodyFrameManager;
@@ -84,8 +79,19 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// </summary>
 		private FileStream gestureRecordFile;
 
-		private DateTime startGestureRecordTime;
+		/// <summary>
+		/// Determines time when gesture recording has started
+		/// </summary>
+		private DateTime? gestureRecordStartTime;
 
+		/// <summary>
+		/// Determines time when user has shown gesture to start recording
+		/// </summary>
+		private DateTime? gestureToStartRecordingStartTime;
+
+		/// <summary>
+		/// To calculate FPS value
+		/// </summary>
 		private DateTime lastDisplayedColorFrameTime;
 		#endregion
 
@@ -190,21 +196,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				this.multiSourceReader.MultiSourceFrameArrived += this.Reader_FrameArrived;
 		}
 
-		public void StartStopRecordingGesture()
+		public void StartStopGestureRecording()
 		{
-			if (this.TrackingState == BodyTrackingState.Standard)
-			{
-				CreateTemporaryRecordFile();
-				this.gestureRecorder = new KinectRecorder(KinectRecordOptions.All, this.gestureRecordFile,
-					Consts.GestureRecordResizingCoef);
-				this.startGestureRecordTime = DateTime.Now;
-				this.TrackingState = BodyTrackingState.RecordingGesture;
-			}
+			if (this.TrackingState == BodyTrackingState.Standard || this.TrackingState == BodyTrackingState.WaitingToStartRecordingGesture)
+				StartGestureRecording();
 			else if (this.TrackingState == BodyTrackingState.RecordingGesture)
-			{
-				this.gestureRecorder.Stop();
-				CleanGestureRecorder(false);
-			}
+				StopGestureRecording();
 		}
 
 		public void Cleanup(bool deleteGestureRecordFile = true)
@@ -256,7 +253,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					this.colorImage.Lock();
 					colorImageLocked = true;
 
-					if (this.gestureRecorder != null && (this.gestureRecorder.Options & KinectRecordOptions.Color) != 0)
+					if (this.TrackingState == BodyTrackingState.RecordingGesture && (this.gestureRecorder.Options & KinectRecordOptions.Color) != 0)
 						this.gestureRecorder.Record(colorFrame);
 
 					this.renderColorFrameManager.ProcessColorFrame(colorFrame, this.displayImageWidth, this.displayImageHeight,
@@ -281,9 +278,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						});
 
 						var trackedBodiesData = ConvertToColorSpace(trackedBodies);
-
-						if (this.gestureRecorder != null && (this.gestureRecorder.Options & KinectRecordOptions.Bodies) != 0)
-							this.gestureRecorder.Record(bodyFrame, trackedBodiesData);
 
 						using (var dc = this.bodyImageDrawingGroup.Open())
 						{
@@ -314,13 +308,19 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 									});
 								}
 
-								// Draw a transparent background to set the render size
-								dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
-
 								var trackedBodyData = trackedBodiesData.FirstOrDefault();
 								var trackedBody = trackedBodyData.Item1;
 								var trackedBodyColorSpacePoints = trackedBodyData.Item2?.ToDictionary(
 									kv => kv.Key, kv => new Point(kv.Value.X, kv.Value.Y));
+
+								if (this.TrackingState == BodyTrackingState.RecordingGesture && (this.gestureRecorder.Options & KinectRecordOptions.Bodies) != 0)
+									this.gestureRecorder.Record(bodyFrame, trackedBodiesData);
+								else if (this.TrackingState == BodyTrackingState.Standard || this.TrackingState == BodyTrackingState.GestureToStartRecording)
+									UpdateGestureToStartRecordingDetectionState(trackedBody);
+
+								// Draw a transparent background to set the render size
+								dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
+
 								// Process body data
 								if (trackedBody != null && trackedBodyColorSpacePoints != null)
 								{
@@ -395,12 +395,60 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		}
 		#endregion
 
+		#region Detecting gestures to start recording / recognizing given gesture
+		private bool UpdateGestureToStartRecordingDetectionState(Body trackedBody)
+		{
+			bool isRightHandClosed = trackedBody.HandRightState == HandState.Closed && trackedBody.HandRightConfidence == TrackingConfidence.High;
+			if (isRightHandClosed)
+			{
+				if (this.gestureToStartRecordingStartTime.HasValue)
+				{
+					TimeSpan duration = DateTime.Now - this.gestureToStartRecordingStartTime.Value;
+					if (duration > Consts.GestureToStartRecordingTimeLimit)
+					{
+						this.gestureToStartRecordingStartTime = null;
+						this.TrackingState = BodyTrackingState.WaitingToStartRecordingGesture;
+						Messenger.Default.Send(new TemporaryStateStartedMessage());
+					}
+				}
+				else
+				{
+					this.gestureToStartRecordingStartTime = DateTime.Now;
+					this.TrackingState = BodyTrackingState.GestureToStartRecording;
+				}
+			}
+			else
+			{
+				this.gestureToStartRecordingStartTime = null;
+				this.TrackingState = BodyTrackingState.Standard;
+			}
+
+			return isRightHandClosed;
+		}
+		#endregion
+
 		#region Gesture recording methods
 		private void CreateTemporaryRecordFile()
 		{
 			string fileName = $"{Utils.RandomString(32)}{Consts.GestureRecordFileExtension}";
 			this.gestureRecordFile = File.Create(fileName);
 			File.SetAttributes(fileName, File.GetAttributes(fileName) | FileAttributes.Hidden);
+		}
+
+		private void StartGestureRecording()
+		{
+			CreateTemporaryRecordFile();
+			this.gestureRecorder = new KinectRecorder(KinectRecordOptions.All, this.gestureRecordFile,
+				Consts.GestureRecordResizingCoef);
+			this.gestureToStartRecordingStartTime = null;
+			this.gestureRecordStartTime = DateTime.Now;
+			this.TrackingState = BodyTrackingState.RecordingGesture;
+		}
+
+		private void StopGestureRecording()
+		{
+			this.gestureRecorder.Stop();
+			CleanGestureRecorder(false);
 		}
 
 		private void CleanGestureRecorder(bool deleteGestureRecordFile = true)
@@ -419,6 +467,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				this.gestureRecordFile.Dispose();
 				this.gestureRecordFile = null;
 			}
+			if (this.gestureRecordStartTime != null)
+				this.gestureRecordStartTime = null;
+			if (this.gestureToStartRecordingStartTime != null)
+				this.gestureToStartRecordingStartTime = null;
 		}
 		#endregion
 

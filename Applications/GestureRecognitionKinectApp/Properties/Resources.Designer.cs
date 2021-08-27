@@ -118,6 +118,26 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FiveIcon {
+            get {
+                object obj = ResourceManager.GetObject("FiveIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FourIcon {
+            get {
+                object obj = ResourceManager.GetObject("FourIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gesture features information.
         /// </summary>
         internal static string GestureFeaturesInformation {
@@ -189,6 +209,16 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
         internal static string NoSensorStatusText {
             get {
                 return ResourceManager.GetString("NoSensorStatusText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OneIcon {
+            get {
+                object obj = ResourceManager.GetObject("OneIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -283,6 +313,36 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
         internal static System.Drawing.Bitmap SuccessIcon {
             get {
                 object obj = ResourceManager.GetObject("SuccessIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ThreeIcon {
+            get {
+                object obj = ResourceManager.GetObject("ThreeIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TwoIcon {
+            get {
+                object obj = ResourceManager.GetObject("TwoIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ZeroIcon {
+            get {
+                object obj = ResourceManager.GetObject("ZeroIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

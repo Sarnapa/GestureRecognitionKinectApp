@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Timers;
 using System.Windows;
 using System.Windows.Media;
 using Microsoft.Win32;
@@ -15,6 +16,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 	public class BodyTrackingViewModel : ViewModelBase, IDisposable
 	{
 		#region Private fields
+		private const double CountdownInterval = 1000d;
+		private const double CountdownMaxValue = 3000d;
 		private readonly BodyTrackingModel model;
 		private readonly IFrameNavigationService navigationService;
 		private string kinectStatusText;
@@ -22,6 +25,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		private string fpsValueText;
 		private Visibility stoppedBodyTrackingInfoVisibility = Visibility.Hidden;
 		private string stoppedBodyTrackingInfoText;
+		private Timer countdownTimer;
+		private Visibility countdownInfoVisibility = Visibility.Hidden;
+		private string countdownInfoImageUri = ViewModelsUtils.GetImageUri("ZeroIcon.png");
+		private double currentCountdownValue = CountdownMaxValue;
 		#endregion
 
 		#region Private properties
@@ -123,6 +130,38 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			}
 		}
 
+		public Visibility CountdownInfoVisibility
+		{
+			get
+			{
+				return this.countdownInfoVisibility;
+			}
+			set
+			{
+				if (this.countdownInfoVisibility != value)
+				{
+					this.countdownInfoVisibility = value;
+					RaisePropertyChanged(nameof(CountdownInfoVisibility));
+				}
+			}
+		}
+
+		public string CountdownInfoImageUri
+		{
+			get
+			{
+				return this.countdownInfoImageUri;
+			}
+			set
+			{
+				if (this.countdownInfoImageUri != value)
+				{
+					this.countdownInfoImageUri = value;
+					RaisePropertyChanged(nameof(CountdownInfoImageUri));
+				}
+			}
+		}
+
 		public Visibility ImportGestureRecordButtonVisibility
 		{
 			get
@@ -144,7 +183,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get
 			{
-				return "pack://application:,,,/Resources/ImportRecordIcon.png";
+				return ViewModelsUtils.GetImageUri("ImportRecordIcon.png");
 			}
 		}
 
@@ -170,7 +209,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			get
 			{
 				return this.model.TrackingState == BodyTrackingState.RecordingGesture ?
-					"pack://application:,,,/Resources/StopRecordIcon.png" : "pack://application:,,,/Resources/StartRecordIcon.png";
+					ViewModelsUtils.GetImageUri("StopRecordIcon.png") : ViewModelsUtils.GetImageUri("StartRecordIcon.png");
 			}
 		}
 
@@ -200,6 +239,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			this.model = new BodyTrackingModel();
 			this.navigationService = navigationService;
+			this.countdownTimer = new Timer(CountdownInterval);
+			this.countdownTimer.AutoReset = true;
+			this.countdownTimer.Elapsed += CountdownTimerElapsedHandler;
 			this.StartCommand = new RelayCommand(this.StartCommandAction);
 			this.ImportGestureRecordCommand = new RelayCommand(this.ImportGestureRecordCommandAction);
 			this.StartStopRecordGestureCommand = new RelayCommand(this.StartStopRecordGestureCommandAction);
@@ -209,6 +251,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			Messenger.Default.Register<TrackedUsersCountChangedMessage>(this, m => TrackedUsersCountChangedMessageHandler(m));
 			Messenger.Default.Register<FPSValueMessage>(this, m => FPSValueMessageHandler(m));
 			Messenger.Default.Register<StoppedBodyTrackingMessage>(this, m => StoppedBodyTrackingMessageHandler(m));
+			Messenger.Default.Register<TemporaryStateStartedMessage>(this, m => TemporaryStateStartedMessageHandler(m));
 		}
 		#endregion
 
@@ -239,7 +282,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			bool isRecording = this.model.TrackingState == BodyTrackingState.RecordingGesture;
 			string gestureRecordFilePath = this.model.GestureRecordFilePath;
 
-			this.model.StartStopRecordingGesture();
+			this.model.StartStopGestureRecording();
 			RaisePropertyChanged(nameof(StartStopRecordGestureButtonImageUri));
 			RaisePropertyChanged(nameof(StartStopRecordGestureButtonTip));
 
@@ -289,6 +332,64 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			this.StoppedBodyTrackingInfoVisibility = m.IsStopped ? Visibility.Visible : Visibility.Hidden;
 			this.StoppedBodyTrackingInfoText = m.IsStopped ? m.Text : string.Empty;
+		}
+
+		private void TemporaryStateStartedMessageHandler(TemporaryStateStartedMessage m)
+		{
+			this.currentCountdownValue = CountdownMaxValue;
+			SetCountdownInfoImageUri();
+			this.CountdownInfoVisibility = Visibility.Visible;
+			this.countdownTimer.Start();
+		}
+		#endregion
+
+		#region Events handlers
+		private void CountdownTimerElapsedHandler(object sender, ElapsedEventArgs e)
+		{
+			Application.Current.Dispatcher.Invoke(() =>
+			{
+				this.currentCountdownValue -= CountdownInterval;
+				SetCountdownInfoImageUri();
+				if (this.currentCountdownValue < 0d)
+				{
+					this.countdownTimer.Stop();
+					this.CountdownInfoVisibility = Visibility.Hidden;
+
+					if (this.model.TrackingState == BodyTrackingState.WaitingToStartRecordingGesture)
+					{
+						this.model.StartStopGestureRecording();
+						RaisePropertyChanged(nameof(StartStopRecordGestureButtonImageUri));
+						RaisePropertyChanged(nameof(StartStopRecordGestureButtonTip));
+					}
+				}
+			});
+		}
+		#endregion
+
+		#region Other private methods
+		private void SetCountdownInfoImageUri()
+		{
+			switch (this.currentCountdownValue)
+			{
+				case 5000d:
+					this.CountdownInfoImageUri = ViewModelsUtils.GetImageUri("FiveIcon.png");
+					break;
+				case 4000d:
+					this.CountdownInfoImageUri = ViewModelsUtils.GetImageUri("FourIcon.png");
+					break;
+				case 3000d:
+					this.CountdownInfoImageUri = ViewModelsUtils.GetImageUri("ThreeIcon.png");
+					break;
+				case 2000d:
+					this.CountdownInfoImageUri = ViewModelsUtils.GetImageUri("TwoIcon.png");
+					break;
+				case 1000d:
+					this.CountdownInfoImageUri = ViewModelsUtils.GetImageUri("OneIcon.png");
+					break;
+				case 0d:
+					this.CountdownInfoImageUri = ViewModelsUtils.GetImageUri("ZeroIcon.png");
+					break;
+			}
 		}
 		#endregion
 

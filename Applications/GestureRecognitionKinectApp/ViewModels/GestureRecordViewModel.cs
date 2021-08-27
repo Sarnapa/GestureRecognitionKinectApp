@@ -63,7 +63,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get
 			{
-				return "pack://application:,,,/Resources/BackIcon.png";
+				return ViewModelsUtils.GetImageUri("BackIcon.png");
 			}
 		}
 
@@ -87,7 +87,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get
 			{
-				return "pack://application:,,,/Resources/ReplayRecordIcon.png";
+				return ViewModelsUtils.GetImageUri("ReplayRecordIcon.png");
 			}
 		}
 
@@ -112,8 +112,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get
 			{
-				return this.IsGestureFeaturesValid ? "pack://application:,,,/Resources/SuccessIcon.png"
-					: "pack://application:,,,/Resources/FailedIcon.png";
+				return this.IsGestureFeaturesValid ? ViewModelsUtils.GetImageUri("SuccessIcon.png")
+					: ViewModelsUtils.GetImageUri("FailedIcon.png");
 			}
 		}
 
@@ -137,7 +137,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get
 			{
-				return "pack://application:,,,/Resources/ExportRecordIcon.png";
+				return ViewModelsUtils.GetImageUri("ExportRecordIcon.png");
 			}
 		}
 
