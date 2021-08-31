@@ -23,6 +23,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		private string kinectStatusText;
 		private int trackedUsersCount;
 		private string fpsValueText;
+		private Visibility startStopRecordGestureButtonVisibility = Visibility.Hidden;
 		private Visibility stoppedBodyTrackingInfoVisibility = Visibility.Hidden;
 		private string stoppedBodyTrackingInfoText;
 		private Timer countdownTimer;
@@ -48,7 +49,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			{
 				return this.kinectStatusText;
 			}
-			set
+			private set
 			{
 				if (this.kinectStatusText != value)
 				{
@@ -88,7 +89,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			{
 				return this.fpsValueText;
 			}
-			set
+			private set
 			{
 				if (this.fpsValueText != value)
 				{
@@ -104,7 +105,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			{
 				return this.stoppedBodyTrackingInfoVisibility;
 			}
-			set
+			private set
 			{
 				if (this.stoppedBodyTrackingInfoVisibility != value)
 				{
@@ -120,7 +121,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			{
 				return this.stoppedBodyTrackingInfoText;
 			}
-			set
+			private set
 			{
 				if (this.stoppedBodyTrackingInfoText != value)
 				{
@@ -136,7 +137,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			{
 				return this.countdownInfoVisibility;
 			}
-			set
+			private set
 			{
 				if (this.countdownInfoVisibility != value)
 				{
@@ -152,7 +153,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			{
 				return this.countdownInfoImageUri;
 			}
-			set
+			private set
 			{
 				if (this.countdownInfoImageUri != value)
 				{
@@ -191,7 +192,15 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get
 			{
-				return this.IsKinectAvailable ? Visibility.Visible : Visibility.Hidden;
+				return this.startStopRecordGestureButtonVisibility;
+			}
+			private set
+			{
+				if (this.startStopRecordGestureButtonVisibility != value)
+				{
+					this.startStopRecordGestureButtonVisibility = value;
+					RaisePropertyChanged(nameof(StartStopRecordGestureButtonVisibility));
+				}
 			}
 		}
 
@@ -199,7 +208,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get
 			{
-				return this.model.TrackingState == BodyTrackingState.RecordingGesture ?
+				return this.startStopRecordGestureButtonVisibility == Visibility.Visible && this.model.TrackingState == BodyTrackingState.RecordingGesture?
 					Properties.Resources.StopRecordTip : Properties.Resources.StartRecordTip;
 			}
 		}
@@ -208,7 +217,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get
 			{
-				return this.model.TrackingState == BodyTrackingState.RecordingGesture ?
+				return this.startStopRecordGestureButtonVisibility == Visibility.Visible && this.model.TrackingState == BodyTrackingState.RecordingGesture ?
 					ViewModelsUtils.GetImageUri("StopRecordIcon.png") : ViewModelsUtils.GetImageUri("StartRecordIcon.png");
 			}
 		}
@@ -284,6 +293,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			string gestureRecordFilePath = this.model.GestureRecordFilePath;
 
 			this.model.StartStopGestureRecording();
+			this.StartStopRecordGestureButtonVisibility = isRecording ? Visibility.Hidden : Visibility.Visible; 
 			RaisePropertyChanged(nameof(StartStopRecordGestureButtonImageUri));
 			RaisePropertyChanged(nameof(StartStopRecordGestureButtonTip));
 
@@ -303,8 +313,16 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		#region Messages handlers
 		private void KinectStatusChangedMessageHandler(KinectStatusMessage m)
 		{
-			RaisePropertyChanged(nameof(StartStopRecordGestureButtonVisibility));
+			if (m.PrevState == BodyTrackingState.WaitingToStartRecordingGesture && !this.IsKinectAvailable)
+				StopCountdown();
+
 			this.KinectStatusText = m.Text;
+			if (!this.IsKinectAvailable)
+			{
+				UpdateStartStopRecordGestureButtonState(Visibility.Hidden);
+				UpdateFPSValueText(0d);
+				UpdateTrackedUsersCount(0);
+			}
 		}
 
 		private void DisplayImageChangedMessageHandler(DisplayImageChangedMessage m)
@@ -317,22 +335,24 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 
 		private void TrackedUsersCountChangedMessageHandler(TrackedUsersCountChangedMessage m)
 		{
-			if (this.trackedUsersCount != m.Count)
-			{
-				this.trackedUsersCount = m.Count;
-				RaisePropertyChanged(nameof(TrackedUsersCountText));
-			}
+			UpdateTrackedUsersCount(m.Count);
 		}
 
 		private void FPSValueMessageHandler(FPSValueMessage m)
 		{
-			this.FPSValueText = $"{string.Format("{0:0.00}", m.Value)} FPS";
+			UpdateFPSValueText(m.Value);
 		}
 
 		private void BodyTrackingStoppedMessageHandler(BodyTrackingStoppedMessage m)
 		{
-			this.StoppedBodyTrackingInfoVisibility = m.IsStopped ? Visibility.Visible : Visibility.Hidden;
-			this.StoppedBodyTrackingInfoText = m.IsStopped ? m.Text : string.Empty;
+			if (m.PrevState == BodyTrackingState.WaitingToStartRecordingGesture && m.IsStopped)
+				StopCountdown();
+
+			bool showInfo = m.IsStopped && !string.IsNullOrEmpty(m.Text);
+
+			UpdateStartStopRecordGestureButtonState(this.model.IsUserTracked ? Visibility.Visible : Visibility.Hidden);
+			this.StoppedBodyTrackingInfoVisibility = showInfo ? Visibility.Visible : Visibility.Hidden;
+			this.StoppedBodyTrackingInfoText = showInfo ? m.Text : string.Empty;
 		}
 
 		private void GestureRecordingFinishedMessageHandler(GestureRecordingFinishedMessage m)
@@ -344,12 +364,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			this.currentCountdownValue = CountdownMaxValue;
 			SetCountdownInfoImageUri();
-			this.CountdownInfoVisibility = Visibility.Visible;
-			this.countdownTimer.Start();
+			StartCountdown();
 		}
 		#endregion
 
-		#region Events handlers
+		#region Countdown timer methods
 		private void CountdownTimerElapsedHandler(object sender, ElapsedEventArgs e)
 		{
 			Application.Current.Dispatcher.Invoke(() =>
@@ -358,8 +377,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				SetCountdownInfoImageUri();
 				if (this.currentCountdownValue < 0d)
 				{
-					this.countdownTimer.Stop();
-					this.CountdownInfoVisibility = Visibility.Hidden;
+					StopCountdown();
 
 					if (this.model.TrackingState == BodyTrackingState.WaitingToStartRecordingGesture)
 					{
@@ -370,9 +388,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				}
 			});
 		}
-		#endregion
 
-		#region Other private methods
 		private void SetCountdownInfoImageUri()
 		{
 			switch (this.currentCountdownValue)
@@ -395,6 +411,45 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				case 0d:
 					this.CountdownInfoImageUri = ViewModelsUtils.GetImageUri("ZeroIcon.png");
 					break;
+			}
+		}
+
+		private void StartCountdown()
+		{
+			this.CountdownInfoVisibility = Visibility.Visible;
+			this.countdownTimer.Start();
+		}
+
+		private void StopCountdown()
+		{
+			this.countdownTimer.Stop();
+			this.CountdownInfoVisibility = Visibility.Hidden;
+			this.currentCountdownValue = CountdownMaxValue;
+		}
+		#endregion
+
+		#region Other methods
+		private void UpdateFPSValueText(double fpsValue)
+		{
+			this.FPSValueText = $"{string.Format("{0:0.00}", fpsValue)} FPS";
+		}
+
+		private void UpdateTrackedUsersCount(int currentTrackedUsersCount)
+		{
+			if (this.trackedUsersCount != currentTrackedUsersCount)
+			{
+				this.trackedUsersCount = currentTrackedUsersCount;
+				RaisePropertyChanged(nameof(TrackedUsersCountText));
+			}
+		}
+
+		private void UpdateStartStopRecordGestureButtonState(Visibility visibility)
+		{
+			if (this.StartStopRecordGestureButtonVisibility != visibility)
+			{
+				this.StartStopRecordGestureButtonVisibility = visibility;
+				RaisePropertyChanged(nameof(StartStopRecordGestureButtonImageUri));
+				RaisePropertyChanged(nameof(StartStopRecordGestureButtonTip));
 			}
 		}
 		#endregion

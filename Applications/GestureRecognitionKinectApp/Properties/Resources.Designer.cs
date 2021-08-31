@@ -80,6 +80,17 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Detected {0} users.
+        ///Only one user movemenets can be tracked.
+        ///Further actions canceled..
+        /// </summary>
+        internal static string DetectedMoreUsers {
+            get {
+                return ResourceManager.GetString("DetectedMoreUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap ExportRecordIcon {
@@ -176,6 +187,26 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lost Kinect connection.
+        ///Further actions canceled..
+        /// </summary>
+        internal static string LostKinectConnection {
+            get {
+                return ResourceManager.GetString("LostKinectConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lost user body tracking.
+        ///Further actions canceled..
+        /// </summary>
+        internal static string LostUserBodyTracking {
+            get {
+                return ResourceManager.GetString("LostUserBodyTracking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap NextIcon {
@@ -195,6 +226,16 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kinect has not provided color frame.
+        ///Further actions canceled..
+        /// </summary>
+        internal static string NoColorFrame {
+            get {
+                return ResourceManager.GetString("NoColorFrame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gesture features calculation failed.
         /// </summary>
         internal static string NoGestureFeatures {
@@ -204,7 +245,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No ready Kinect found!.
+        ///   Looks up a localized string similar to No ready - Kinect not found!.
         /// </summary>
         internal static string NoSensorStatusText {
             get {
@@ -247,15 +288,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
         internal static string RunningStatusText {
             get {
                 return ResourceManager.GetString("RunningStatusText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Kinect not available!.
-        /// </summary>
-        internal static string SensorNotAvailableStatusText {
-            get {
-                return ResourceManager.GetString("SensorNotAvailableStatusText", resourceCulture);
             }
         }
         

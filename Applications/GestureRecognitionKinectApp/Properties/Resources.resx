@@ -124,6 +124,11 @@
   <data name="BackTip" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="DetectedMoreUsers" xml:space="preserve">
+    <value>Detected {0} users.
+Only one user movemenets can be tracked.
+Further actions canceled.</value>
+  </data>
   <data name="ExportRecordIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ExportRecordIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -154,17 +159,29 @@
   <data name="InformationIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\InformationIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="LostKinectConnection" xml:space="preserve">
+    <value>Lost Kinect connection.
+Further actions canceled.</value>
+  </data>
+  <data name="LostUserBodyTracking" xml:space="preserve">
+    <value>Lost user body tracking.
+Further actions canceled.</value>
+  </data>
   <data name="NextIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NextIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="NextTip" xml:space="preserve">
     <value>Next</value>
   </data>
+  <data name="NoColorFrame" xml:space="preserve">
+    <value>Kinect has not provided color frame.
+Further actions canceled.</value>
+  </data>
   <data name="NoGestureFeatures" xml:space="preserve">
     <value>Gesture features calculation failed</value>
   </data>
   <data name="NoSensorStatusText" xml:space="preserve">
-    <value>No ready Kinect found!</value>
+    <value>No ready - Kinect not found!</value>
   </data>
   <data name="OneIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OneIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -177,9 +194,6 @@
   </data>
   <data name="RunningStatusText" xml:space="preserve">
     <value>Running</value>
-  </data>
-  <data name="SensorNotAvailableStatusText" xml:space="preserve">
-    <value>Kinect not available!</value>
   </data>
   <data name="SettingsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SettingsIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
