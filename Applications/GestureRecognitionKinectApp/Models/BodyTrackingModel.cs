@@ -85,9 +85,19 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		private Body currentTrackedBody;
 
 		/// <summary>
+		/// Dictionary: current tracked body joint -> joint localization in color space
+		/// </summary>
+		private BodyJointsColorSpacePointsDict currentTrackedBodyJointsColorSpacePointsDict;
+
+		/// <summary>
 		/// Determines time when body tracking process has been stopped
 		/// </summary>
 		private DateTime? bodyTrackingStoppedTime;
+
+		/// <summary>
+		/// Determines time when user has shown gesture to start recording
+		/// </summary>
+		private DateTime? gestureToStartRecordingStartTime;
 
 		/// <summary>
 		/// Determines time when gesture recording has started
@@ -95,9 +105,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		private DateTime? gestureRecordStartTime;
 
 		/// <summary>
-		/// Determines time when user has shown gesture to start recording
+		/// Determines time when user has stopped making a gesture during recording
 		/// </summary>
-		private DateTime? gestureToStartRecordingStartTime;
+		private DateTime? gestureRecordUserWithoutMovementStartTime;
 
 		/// <summary>
 		/// To calculate FPS value
@@ -278,7 +288,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			ColorFrame colorFrame = null;
 			BodyFrame bodyFrame = null;
 			Body prevTrackedBody = this.currentTrackedBody;
-			BodyJointsColorSpacePointsDict trackedBodyJointsColorSpacePointsDict = null;
+			BodyJointsColorSpacePointsDict prevTrackedBodyJointsColorSpacePointsDict = this.currentTrackedBodyJointsColorSpacePointsDict;
 			int trackedBodiesCount = 0;
 
 			try
@@ -320,8 +330,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						if (this.TrackingState == BodyTrackingState.Standard || this.TrackingState == BodyTrackingState.GestureToStartRecording)
 							UpdateGestureToStartRecordingDetectionState(this.currentTrackedBody);
 
-						trackedBodyJointsColorSpacePointsDict = ConvertToColorSpace(this.currentTrackedBody);
-						var trackedBodyColorSpacePoints = trackedBodyJointsColorSpacePointsDict?.ToDictionary(
+						this.currentTrackedBodyJointsColorSpacePointsDict = ConvertToColorSpace(this.currentTrackedBody);
+						var trackedBodyColorSpacePoints = this.currentTrackedBodyJointsColorSpacePointsDict?.ToDictionary(
 							kv => kv.Key, kv => new Point(kv.Value.X, kv.Value.Y));
 
 						// Draw a transparent background to set the render size
@@ -362,12 +372,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						{
 							StopGestureRecording(true);
 						}
-						else if (!CheckIfStopGestureRecording())
+						else if (!CheckIfStopGestureRecording(prevTrackedBodyJointsColorSpacePointsDict))
 						{
 							if ((this.gestureRecorder.Options & KinectRecordOptions.Color) != 0)
 								this.gestureRecorder.Record(colorFrame);
 							if ((this.gestureRecorder.Options & KinectRecordOptions.Bodies) != 0)
-								this.gestureRecorder.Record(bodyFrame, new[] { (this.currentTrackedBody, trackedBodyJointsColorSpacePointsDict) });
+								this.gestureRecorder.Record(bodyFrame, new[] { (this.currentTrackedBody, this.currentTrackedBodyJointsColorSpacePointsDict) });
 						}
 						break;
 				}
@@ -495,7 +505,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			this.TrackingState = BodyTrackingState.RecordingGesture;
 		}
 
-		private bool CheckIfStopGestureRecording()
+		private bool CheckIfStopGestureRecording(BodyJointsColorSpacePointsDict prevDict)
 		{
 			if (this.TrackingState == BodyTrackingState.RecordingGesture && this.gestureRecordStartTime.HasValue)
 			{
@@ -503,11 +513,60 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				if (duration >= Consts.GestureRecordTimeLimit)
 				{
 					Messenger.Default.Send(new GestureRecordingFinishedMessage());
+					this.gestureRecordUserWithoutMovementStartTime = null;
 					return true;
 				}
+
+				if (CompareBodyJointsColorSpacePointsDict(prevDict))
+				{
+					if (this.gestureRecordUserWithoutMovementStartTime.HasValue)
+					{
+						if (DateTime.Now - this.gestureRecordUserWithoutMovementStartTime >= Consts.GestureRecordUserWithoutMovementTimeLimit)
+						{
+							Messenger.Default.Send(new GestureRecordingFinishedMessage());
+							this.gestureRecordUserWithoutMovementStartTime = null;
+							return true;
+						}
+					}
+					else
+						this.gestureRecordUserWithoutMovementStartTime = DateTime.Now;
+				}
+				else
+					this.gestureRecordUserWithoutMovementStartTime = null;
 			}
 
 			return false;
+		}
+
+		private bool CompareBodyJointsColorSpacePointsDict(BodyJointsColorSpacePointsDict prevDict)
+		{
+			if (this.currentTrackedBodyJointsColorSpacePointsDict == null && prevDict == null)
+				return true;
+
+			if (this.currentTrackedBodyJointsColorSpacePointsDict == null || prevDict == null)
+				return false;
+
+			if (this.currentTrackedBodyJointsColorSpacePointsDict.Count != prevDict.Count)
+				return false;
+
+			foreach (var pair in prevDict)
+			{
+				var joint = pair.Key;
+				var prevPosition = pair.Value;
+
+				// Tracking thumbs positions is unstable.
+				if (joint == JointType.ThumbLeft || joint == JointType.ThumbRight)
+					continue;
+
+				if (!this.currentTrackedBodyJointsColorSpacePointsDict.TryGetValue(joint, out ColorSpacePoint currentPosition))
+					return false;
+
+				if (Math.Abs(currentPosition.X - prevPosition.X) > Consts.ColorSpaceBodyJointDisplacementPositionLimit 
+					|| Math.Abs(currentPosition.Y - prevPosition.Y) > Consts.ColorSpaceBodyJointDisplacementPositionLimit)
+					return false;
+			}
+
+			return true;
 		}
 
 		private void StopGestureRecording(bool deleteGestureRecordFile = false)
@@ -543,8 +602,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				this.gestureRecordStartTime = null;
 			if (this.gestureToStartRecordingStartTime != null)
 				this.gestureToStartRecordingStartTime = null;
+			if (this.gestureRecordUserWithoutMovementStartTime != null)
+				this.gestureRecordUserWithoutMovementStartTime = null;
 			if (this.currentTrackedBody != null)
 				this.currentTrackedBody = null;
+			if (this.currentTrackedBodyJointsColorSpacePointsDict != null)
+				this.currentTrackedBodyJointsColorSpacePointsDict = null;
 		}
 
 		private bool CheckIfColorFrameIsNull(ColorFrame colorFrame, bool showMessage = true)
