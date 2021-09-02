@@ -42,6 +42,10 @@
         <Viewbox Grid.Row="1" HorizontalAlignment="Center">
             <Image Source="{Binding BodyImage}" Stretch="UniformToFill" />
         </Viewbox>
-        
+
+
+        <StatusBar Grid.Row="2" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
+            <StatusBarItem Content="{Binding GestureReplayCurrentTime}" />
+        </StatusBar>
     </Grid>
 </Page>

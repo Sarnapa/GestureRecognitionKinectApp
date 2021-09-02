@@ -7,5 +7,11 @@
     <Application.Resources>
         <!-- ViewModelLocator sector (for MVVM Light) -->
         <viewModels:ViewModelLocator x:Key="Locator"/>
+
+        <!-- Colors -->
+        <SolidColorBrush x:Key="TransparentGreyBrush" Color="#ccbfbfbf"/>
+        <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e" />
+        <SolidColorBrush x:Key="KinectPurpleBrush" Color="#ff52318f" />
+        <SolidColorBrush x:Key="KinectBlueBrush" Color="#ff00BCF2" />
     </Application.Resources>
 </Application>

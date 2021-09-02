@@ -51,6 +51,17 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			}
 		}
 
+		public string GestureReplayCurrentTime
+		{
+			get
+			{
+				string currentTimeText = this.model.GestureReplayStartTime.HasValue ? 
+					$"{DateTime.Now - this.model.GestureReplayStartTime.Value:ss\\:ff}" : "00:00";
+
+				return $"Time: {currentTimeText}";
+			}
+		}
+
 		public string ReturnButtonTip
 		{
 			get
@@ -178,6 +189,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			this.CleanupCommand = new RelayCommand(this.CleanupCommandAction);
 			Messenger.Default.Register<GestureRecordMessage>(this, m => GestureRecordMessageHandler(m));
 			Messenger.Default.Register<DisplayImageChangedMessage>(this, m => DisplayImageChangedMessageHandler(m));
+			Messenger.Default.Register<GestureRecordFrameProcessedMessage>(this, m => GestureRecordFrameProcessedMessageHandler(m));
 			Messenger.Default.Register<GestureRecordFinishedMessage>(this, m => GestureRecordFinishedMessageHandler(m));
 		}
 		#endregion
@@ -255,6 +267,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				RaisePropertyChanged(nameof(ColorImage));
 			if ((m.ChangedDisplayImage & ImageKind.Body) != 0)
 				RaisePropertyChanged(nameof(BodyImage));
+		}
+
+		private void GestureRecordFrameProcessedMessageHandler(GestureRecordFrameProcessedMessage m)
+		{
+			RaisePropertyChanged(nameof(GestureReplayCurrentTime));
 		}
 
 		private void GestureRecordFinishedMessageHandler(GestureRecordFinishedMessage m)

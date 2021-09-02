@@ -95,6 +95,7 @@
     <Compile Include="ViewModels\Messages\FPSValueMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureFeaturesMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureRecordFinishedMessage.cs" />
+    <Compile Include="ViewModels\Messages\GestureRecordFrameProcessedMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureRecordingFinishedMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureRecordMessage.cs" />
     <Compile Include="ViewModels\Messages\KinectStatusMessage.cs" />

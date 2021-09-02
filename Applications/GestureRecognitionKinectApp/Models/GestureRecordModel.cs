@@ -53,6 +53,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		private KinectReplay gestureReplay;
 
 		/// <summary>
+		/// Determines time when gesture record is repeated
+		/// </summary>
+		private DateTime? gestureReplayStartTime;
+
+		/// <summary>
 		/// Access to file containing gesture record
 		/// </summary>
 		private FileStream gestureRecordFile;
@@ -114,6 +119,17 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			get
 			{
 				return this.gestureFeatures;
+			}
+		}
+
+		/// <summary>
+		/// Determines time when gesture record is repeated
+		/// </summary>
+		public DateTime? GestureReplayStartTime
+		{
+			get
+			{
+				return this.gestureReplayStartTime;
 			}
 		}
 		#endregion
@@ -195,7 +211,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#region Events handlers
 		private void GestureReplay_AllFramesReady(object sender, ReplayAllFramesReadyEventArgs e)
 		{
-			bool colorImageSendMessage = this.colorImage == null;
+			bool shouldBeFirstColorFrame = this.colorImage == null;
 
 			var colorFrame = e.AllFrames.ColorFrame;
 			if (colorFrame != null)
@@ -219,12 +235,18 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				}
 			}
 
-			if (colorImageSendMessage && colorFrame != null)
+			if (shouldBeFirstColorFrame && colorFrame != null)
+			{
+				this.gestureReplayStartTime = DateTime.Now;
 				Messenger.Default.Send(new DisplayImageChangedMessage() { ChangedDisplayImage = ImageKind.Color });
+			}
+
+			Messenger.Default.Send(new GestureRecordFrameProcessedMessage());
 		}
 
 		private void GestureReplay_Finished()
 		{
+			this.gestureReplayStartTime = null;
 			if (!this.AreGestureFeaturesCalculated && this.gestureBodyFrames.Any())
 			{
 				Task.Factory.StartNew(async () =>
@@ -261,6 +283,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			this.colorImage = null;
 			this.bodyImage = null;
 			this.bodyImageDrawingGroup = null;
+			this.gestureReplayStartTime = null;
 		}
 
 		private void CleanGestureRecordFileAccess(bool deleteGestureRecordFile = true)
