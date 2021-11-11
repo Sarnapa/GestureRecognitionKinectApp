@@ -93,6 +93,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Messages\DisplayImageChangedMessage.cs" />
     <Compile Include="ViewModels\Messages\FPSValueMessage.cs" />
+    <Compile Include="ViewModels\Messages\GestureDetectionResultMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureFeaturesMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureRecordFinishedMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureRecordFrameProcessedMessage.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Views\GestureRecordPage.xaml.cs">
       <DependentUpon>GestureRecordPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Helpers\FontSizeConverter.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -202,6 +204,10 @@
       <Project>{5770279b-0942-45e9-b618-c4778f802499}</Project>
       <Name>KinectStreamRecordReplayProcUnit</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Solutions\GestureDetectionProcUnit\GestureRecognitionProcUnit.csproj">
+      <Project>{265a16dc-8a2d-408f-a3aa-2ab35c3150bd}</Project>
+      <Name>GestureRecognitionProcUnit</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\StartRecordIcon.png">
@@ -237,6 +243,9 @@
     <Resource Include="Resources\ThreeIcon.png" />
     <Resource Include="Resources\TwoIcon.png" />
     <Resource Include="Resources\ZeroIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\QuestionIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

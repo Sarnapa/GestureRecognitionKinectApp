@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels;
+using FontSizeConverter = GestureRecognition.Applications.GestureRecognitionKinectApp.Views.Helpers.FontSizeConverter;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Views
 {
@@ -43,6 +44,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Views
 			{
 				mainPanelBorder.Margin = new Thickness();
 			}
+		}
+
+		private void RecognizingGestureResultTextBox_SizeOrTextChanged(object sender, RoutedEventArgs e)
+		{
+			FontSizeConverter.ScaleFontSizeForTextBlock(sender as TextBox, 1);
 		}
 	}
 }

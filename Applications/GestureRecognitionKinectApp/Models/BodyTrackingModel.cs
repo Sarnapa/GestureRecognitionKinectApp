@@ -5,14 +5,20 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Threading.Tasks;
 using Microsoft.Kinect;
+using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Utilities;
+using GestureRecognition.Processing.BaseClassLib.Structures.GestureDetection;
 using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record;
+using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
+using GestureRecognition.Processing.GestureRecognitionProcUnit;
+using System.Threading;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 {
@@ -28,6 +34,16 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// Render color frame
 		/// </summary>
 		private readonly RenderColorFrameManager renderColorFrameManager;
+
+		/// <summary>
+		/// Executes gesture recognition process
+		/// </summary>
+		private GestureRecognitionManager gestureRecognitionManager; 
+
+		/// <summary>
+		/// Calculates features for gesture recognition process
+		/// </summary>
+		private GestureRecognitionFeaturesManager gestureRecognitionFeaturesManager;
 
 		/// <summary>
 		/// RGB image that will be displayed
@@ -95,17 +111,17 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		private DateTime? bodyTrackingStoppedTime;
 
 		/// <summary>
-		/// Determines time when user has shown gesture to start recording
+		/// Determines time when user has shown gesture to start recording / detection process
 		/// </summary>
-		private DateTime? gestureToStartRecordingStartTime;
+		private DateTime? gestureToStartProcessStartTime;
 
 		/// <summary>
-		/// Determines time when gesture recording has started
+		/// Determines time when gesture recording has started (including recording concerning detection process)
 		/// </summary>
 		private DateTime? gestureRecordStartTime;
 
 		/// <summary>
-		/// Determines time when user has stopped making a gesture during recording
+		/// Determines time when user has stopped making a gesture during recording (including recording concerning detection process)
 		/// </summary>
 		private DateTime? gestureRecordUserWithoutMovementStartTime;
 
@@ -113,6 +129,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// To calculate FPS value
 		/// </summary>
 		private DateTime lastDisplayedColorFrameTime;
+
+		/// <summary>
+		/// Loaded gesture frames for gesture recognizing process
+		/// </summary>
+		private List<BodyData> gestureToRecognizeBodyFrames;
 		#endregion
 
 		#region Private properties
@@ -165,7 +186,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// </summary>
 		public BodyTrackingState TrackingState
 		{
-			get; set;
+			get;
+			set;
 		}
 
 		/// <summary>
@@ -196,6 +218,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		{
 			this.renderColorFrameManager = new RenderColorFrameManager();
 			this.renderBodyFrameManager = new RenderBodyFrameManager();
+			this.gestureRecognitionManager = SimpleIoc.Default.GetInstance<GestureRecognitionManager>();
+			this.gestureRecognitionFeaturesManager = SimpleIoc.Default.GetInstance<GestureRecognitionFeaturesManager>();
+
+			this.gestureToRecognizeBodyFrames = new List<BodyData>();
 		}
 		#endregion
 
@@ -240,15 +266,51 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 		public void StartStopGestureRecording()
 		{
-			if (this.TrackingState == BodyTrackingState.Standard || this.TrackingState == BodyTrackingState.WaitingToStartRecordingGesture)
+			if (this.TrackingState == BodyTrackingState.Standard || this.TrackingState == BodyTrackingState.WaitingToStartGestureRecording)
 				StartGestureRecording();
-			else if (this.TrackingState == BodyTrackingState.RecordingGesture)
+			else if (this.TrackingState == BodyTrackingState.GestureRecording)
 				StopGestureRecording();
+		}
+
+		public void StartGestureToRecognizeRecording()
+		{
+			if (this.TrackingState == BodyTrackingState.WaitingToStartGestureRecognizing)
+			{
+				this.gestureToStartProcessStartTime = null;
+				this.gestureRecordStartTime = DateTime.Now;
+				this.TrackingState = BodyTrackingState.GestureToRecognizeRecording;
+			}
+		}
+
+		public async Task<GestureRecognitionResult> ExecuteGestureRecognitionProcess()
+		{
+			try
+			{
+				if (this.gestureToRecognizeBodyFrames.Any())
+				{
+					this.TrackingState = BodyTrackingState.WaitingForGestureRecognizingResult;
+					var gestureFeatures = await this.gestureRecognitionFeaturesManager.CalculateFeatures(this.gestureToRecognizeBodyFrames.ToArray());
+					if (gestureFeatures != null && gestureFeatures.IsValid)
+					{
+						return await this.gestureRecognitionManager.RecognizeGesture(new GestureRecognitionParameters(gestureFeatures, CancellationToken.None));
+					}
+					else
+						return new GestureRecognitionResult(false, "Error during calculating features for gesture.");
+				}
+
+				return new GestureRecognitionResult(false, "No frames for gesture to recognize.");
+			}
+			finally
+			{
+				CleanGestureToRecognizeBodyFrames();
+				this.TrackingState = BodyTrackingState.Standard;
+			}
 		}
 
 		public void Cleanup(bool deleteGestureRecordFile = true)
 		{
 			CleanGestureRecorder(deleteGestureRecordFile);
+			CleanGestureToRecognizeBodyFrames();
 
 			if (this.multiSourceReader != null)
 			{
@@ -265,6 +327,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 			if (this.currentTrackedBody != null)
 				this.currentTrackedBody = null;
+
 		}
 		#endregion
 
@@ -327,8 +390,19 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					{
 						UpdateBodyTrackingStoppedStatusAndSendMessage(false);
 
-						if (this.TrackingState == BodyTrackingState.Standard || this.TrackingState == BodyTrackingState.GestureToStartRecording)
-							UpdateGestureToStartRecordingDetectionState(this.currentTrackedBody);
+						switch (this.TrackingState)
+						{
+							case BodyTrackingState.Standard:
+								if (!UpdateGestureToStartRecordingDetectionState(this.currentTrackedBody))
+									UpdateGestureToStartRecognizingDetectionState(this.currentTrackedBody);
+								break;
+							case BodyTrackingState.GestureToStartGestureRecording:
+								UpdateGestureToStartRecordingDetectionState(this.currentTrackedBody);
+								break;
+							case BodyTrackingState.GestureToStartGestureRecognizing:
+								UpdateGestureToStartRecognizingDetectionState(this.currentTrackedBody);
+								break;
+						}
 
 						this.currentTrackedBodyJointsColorSpacePointsDict = ConvertToColorSpace(this.currentTrackedBody);
 						var trackedBodyColorSpacePoints = this.currentTrackedBodyJointsColorSpacePointsDict?.ToDictionary(
@@ -359,15 +433,17 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						if (!CheckIfColorFrameIsNull(colorFrame, false) && !CheckIfNoneTrackedUsers(trackedBodiesCount, false))
 							CheckIfMoreTrackedUsers(trackedBodiesCount);
 						break;
-					case BodyTrackingState.GestureToStartRecording:
+					case BodyTrackingState.GestureToStartGestureRecording:
+					case BodyTrackingState.GestureToStartGestureRecognizing:
 						if (!CheckIfColorFrameIsNull(colorFrame, false) && !CheckIfNoneTrackedUsers(trackedBodiesCount, false))
 							CheckIfMoreTrackedUsers(trackedBodiesCount);
 						break;
-					case BodyTrackingState.WaitingToStartRecordingGesture:
+					case BodyTrackingState.WaitingToStartGestureRecording:
+					case BodyTrackingState.WaitingToStartGestureRecognizing:
 						if (!CheckIfColorFrameIsNull(colorFrame) && !CheckIfNoneTrackedUsers(trackedBodiesCount))
 							CheckIfMoreTrackedUsers(trackedBodiesCount);
 						break;
-					case BodyTrackingState.RecordingGesture:
+					case BodyTrackingState.GestureRecording:
 						if (CheckIfColorFrameIsNull(colorFrame) || CheckIfNoneTrackedUsers(trackedBodiesCount) || CheckIfMoreTrackedUsers(trackedBodiesCount))
 						{
 							StopGestureRecording(true);
@@ -379,6 +455,15 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 							if ((this.gestureRecorder.Options & KinectRecordOptions.Bodies) != 0)
 								this.gestureRecorder.Record(bodyFrame, new[] { (this.currentTrackedBody, this.currentTrackedBodyJointsColorSpacePointsDict) });
 						}
+						break;
+					case BodyTrackingState.GestureToRecognizeRecording:
+						if (!CheckIfColorFrameIsNull(colorFrame) && !CheckIfNoneTrackedUsers(trackedBodiesCount) && !CheckIfMoreTrackedUsers(trackedBodiesCount))
+						{
+							if (!CheckIfStopGestureRecording(prevTrackedBodyJointsColorSpacePointsDict))
+								this.gestureToRecognizeBodyFrames.Add(new BodyData(this.currentTrackedBody));
+						}
+						else
+							CleanGestureToRecognizeBodyFrames();
 						break;
 				}
 
@@ -413,9 +498,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					Text = statusText 
 				});
 
-				if (!this.IsKinectAvailable && this.TrackingState == BodyTrackingState.RecordingGesture)
+				if (!this.IsKinectAvailable)
 				{
-					StopGestureRecording(true);
+					if (this.TrackingState == BodyTrackingState.GestureRecording)
+						StopGestureRecording(true);
 					UpdateBodyTrackingStoppedStatusAndSendMessage(true, Properties.Resources.LostKinectConnection);
 				}
 				else
@@ -461,29 +547,59 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			bool isRightHandClosed = trackedBody.HandRightState == HandState.Closed && trackedBody.HandRightConfidence == TrackingConfidence.High;
 			if (isRightHandClosed)
 			{
-				if (this.gestureToStartRecordingStartTime.HasValue)
+				if (this.gestureToStartProcessStartTime.HasValue && this.TrackingState == BodyTrackingState.GestureToStartGestureRecording)
 				{
-					TimeSpan duration = DateTime.Now - this.gestureToStartRecordingStartTime.Value;
+					TimeSpan duration = DateTime.Now - this.gestureToStartProcessStartTime.Value;
 					if (duration >= Consts.GestureToStartRecordingTimeLimit)
 					{
-						this.gestureToStartRecordingStartTime = null;
-						this.TrackingState = BodyTrackingState.WaitingToStartRecordingGesture;
+						this.gestureToStartProcessStartTime = null;
+						this.TrackingState = BodyTrackingState.WaitingToStartGestureRecording;
 						Messenger.Default.Send(new TemporaryStateStartedMessage());
 					}
 				}
 				else
 				{
-					this.gestureToStartRecordingStartTime = DateTime.Now;
-					this.TrackingState = BodyTrackingState.GestureToStartRecording;
+					this.gestureToStartProcessStartTime = DateTime.Now;
+					this.TrackingState = BodyTrackingState.GestureToStartGestureRecording;
 				}
 			}
-			else
+			else if (this.TrackingState == BodyTrackingState.GestureToStartGestureRecording)
 			{
-				this.gestureToStartRecordingStartTime = null;
+				this.gestureToStartProcessStartTime = null;
 				this.TrackingState = BodyTrackingState.Standard;
 			}
 
 			return isRightHandClosed;
+		}
+
+		private bool UpdateGestureToStartRecognizingDetectionState(Body trackedBody)
+		{
+			bool isRightHandOpen = trackedBody.HandRightState == HandState.Open && trackedBody.HandRightConfidence == TrackingConfidence.High;
+			if (isRightHandOpen)
+			{
+				if (this.gestureToStartProcessStartTime.HasValue && this.TrackingState == BodyTrackingState.GestureToStartGestureRecognizing)
+				{
+					TimeSpan duration = DateTime.Now - this.gestureToStartProcessStartTime.Value;
+					if (duration >= Consts.GestureToStartRecognizingTimeLimit)
+					{
+						this.gestureToStartProcessStartTime = null;
+						this.TrackingState = BodyTrackingState.WaitingToStartGestureRecognizing;
+						Messenger.Default.Send(new TemporaryStateStartedMessage());
+					}
+				}
+				else
+				{
+					this.gestureToStartProcessStartTime = DateTime.Now;
+					this.TrackingState = BodyTrackingState.GestureToStartGestureRecognizing;
+				}
+			}
+			else if (this.TrackingState == BodyTrackingState.GestureToStartGestureRecognizing)
+			{
+				this.gestureToStartProcessStartTime = null;
+				this.TrackingState = BodyTrackingState.Standard;
+			}
+
+			return isRightHandOpen;
 		}
 		#endregion
 
@@ -495,22 +611,28 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			File.SetAttributes(fileName, File.GetAttributes(fileName) | FileAttributes.Hidden);
 		}
 
-		private void StartGestureRecording()
+		private void StartGestureRecording(bool isGestureToRecognize = false)
 		{
 			CreateTemporaryRecordFile();
-			this.gestureRecorder = new KinectRecorder(KinectRecordOptions.All, this.gestureRecordFile,
-				Consts.GestureRecordResizingCoef);
-			this.gestureToStartRecordingStartTime = null;
+			this.gestureRecorder = new KinectRecorder(isGestureToRecognize ? KinectRecordOptions.Bodies : KinectRecordOptions.All,
+				this.gestureRecordFile, Consts.GestureRecordResizingCoef);
+			this.gestureToStartProcessStartTime = null;
 			this.gestureRecordStartTime = DateTime.Now;
-			this.TrackingState = BodyTrackingState.RecordingGesture;
+			this.TrackingState = BodyTrackingState.GestureRecording;
 		}
 
 		private bool CheckIfStopGestureRecording(BodyJointsColorSpacePointsDict prevDict)
 		{
-			if (this.TrackingState == BodyTrackingState.RecordingGesture && this.gestureRecordStartTime.HasValue)
+			bool isGestureRecording = this.TrackingState == BodyTrackingState.GestureRecording;
+			bool isGestureToRecognizeRecording = this.TrackingState == BodyTrackingState.GestureToRecognizeRecording;
+			if ((isGestureRecording || isGestureToRecognizeRecording) && this.gestureRecordStartTime.HasValue)
 			{
+				TimeSpan gestureRecordTimeLimit = isGestureRecording ? Consts.GestureRecordTimeLimit : Consts.GestureToRecognizeRecordTimeLimit;
+				TimeSpan gestureRecordUserWithoutMovementTimeLimit = isGestureRecording ? Consts.GestureRecordUserWithoutMovementTimeLimit
+					: Consts.GestureToRecognizeRecordUserWithoutMovementTimeLimit;
+
 				TimeSpan duration = DateTime.Now - this.gestureRecordStartTime.Value;
-				if (duration >= Consts.GestureRecordTimeLimit)
+				if (duration >= gestureRecordTimeLimit)
 				{
 					Messenger.Default.Send(new GestureRecordingFinishedMessage());
 					this.gestureRecordUserWithoutMovementStartTime = null;
@@ -521,7 +643,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				{
 					if (this.gestureRecordUserWithoutMovementStartTime.HasValue)
 					{
-						if (DateTime.Now - this.gestureRecordUserWithoutMovementStartTime >= Consts.GestureRecordUserWithoutMovementTimeLimit)
+						if (DateTime.Now - this.gestureRecordUserWithoutMovementStartTime >= gestureRecordUserWithoutMovementTimeLimit)
 						{
 							Messenger.Default.Send(new GestureRecordingFinishedMessage());
 							this.gestureRecordUserWithoutMovementStartTime = null;
@@ -600,8 +722,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			this.TrackingState = BodyTrackingState.Standard;
 			if (this.gestureRecordStartTime != null)
 				this.gestureRecordStartTime = null;
-			if (this.gestureToStartRecordingStartTime != null)
-				this.gestureToStartRecordingStartTime = null;
+			if (this.gestureToStartProcessStartTime != null)
+				this.gestureToStartProcessStartTime = null;
 			if (this.gestureRecordUserWithoutMovementStartTime != null)
 				this.gestureRecordUserWithoutMovementStartTime = null;
 			if (this.currentTrackedBody != null)
@@ -681,6 +803,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			}
 			else
 				Messenger.Default.Send(new FPSValueMessage() { Value = 0d });
+		}
+
+		private void CleanGestureToRecognizeBodyFrames()
+		{
+			if (this.gestureToRecognizeBodyFrames.Any())
+				this.gestureToRecognizeBodyFrames.Clear();
 		}
 		#endregion
 

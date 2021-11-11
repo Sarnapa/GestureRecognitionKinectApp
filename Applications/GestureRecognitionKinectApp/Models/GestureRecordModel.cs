@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
@@ -15,7 +16,6 @@ using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
 using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.All;
-using static GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures.GestureRecognitionDefinitions;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 {
@@ -31,6 +31,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// Render color frame
 		/// </summary>
 		private readonly RenderColorFrameManager renderColorFrameManager;
+
+		/// <summary>
+		/// Calculates features for gesture recognition process
+		/// </summary>
+		private GestureRecognitionFeaturesManager gestureRecognitionFeaturesManager;
 
 		/// <summary>
 		/// RGB image that will be displayed
@@ -66,11 +71,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// Loaded gesture frames
 		/// </summary>
 		private List<BodyData> gestureBodyFrames;
-
-		/// <summary>
-		/// Calculates features for gesture recognition process
-		/// </summary>
-		private GestureRecognitionFeaturesManager gestureRecognitionManager;
 
 		/// <summary>
 		/// Calculated gesture features
@@ -139,9 +139,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		{
 			this.renderColorFrameManager = new RenderColorFrameManager();
 			this.renderBodyFrameManager = new RenderBodyFrameManager(Consts.GestureRecordResizingCoef);
+			this.gestureRecognitionFeaturesManager = SimpleIoc.Default.GetInstance<GestureRecognitionFeaturesManager>();
 
 			this.gestureBodyFrames = new List<BodyData>();
-			this.gestureRecognitionManager = new GestureRecognitionFeaturesManager(GestureRecognitionJoints, GestureRecognitionBones);
 		}
 		#endregion
 
@@ -253,7 +253,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				{
 					try
 					{
-						this.gestureFeatures = await this.gestureRecognitionManager.CalculateFeatures(this.gestureBodyFrames.ToArray());
+						this.gestureFeatures = await this.gestureRecognitionFeaturesManager.CalculateFeatures(this.gestureBodyFrames.ToArray());
 					}
 					finally
 					{

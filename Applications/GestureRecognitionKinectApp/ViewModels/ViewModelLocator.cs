@@ -2,6 +2,9 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.NavigationService;
+using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
+using GestureRecognition.Processing.GestureRecognitionProcUnit;
+using static GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures.GestureRecognitionDefinitions;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 {
@@ -58,6 +61,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			navigationService.Configure(GestureRecordPageKey, new Uri("../Views/GestureRecordPage.xaml", UriKind.Relative));
 			navigationService.Configure(GestureFeaturesPageKey, new Uri("../Views/GestureFeaturesPage.xaml", UriKind.Relative));
 			SimpleIoc.Default.Register<IFrameNavigationService>(() => navigationService);
+
+			var gestureRecognitionFeaturesManager = new GestureRecognitionFeaturesManager(GestureRecognitionJoints, GestureRecognitionBones);
+			SimpleIoc.Default.Register(() => gestureRecognitionFeaturesManager);
+
+			var gestureRecognitionManager = new GestureRecognitionManager();
+			SimpleIoc.Default.Register(() => gestureRecognitionManager);
 
 			SimpleIoc.Default.Register<MainViewModel>();
 			SimpleIoc.Default.Register<BodyTrackingViewModel>(true);

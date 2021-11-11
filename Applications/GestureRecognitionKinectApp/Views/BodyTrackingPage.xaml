@@ -19,34 +19,57 @@
             <RowDefinition Height="20*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
         <ToolBar Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                 ToolBarTray.IsLocked="True" Loaded="ToolBar_Loaded">
             <Button Visibility="{Binding ImportGestureRecordButtonVisibility}" ToolTip="{Binding ImportGestureRecordButtonTip}" Command="{Binding ImportGestureRecordCommand}">
                 <Image Source="{Binding ImportGestureRecordButtonImageUri}"/>
             </Button>
-            <Button Visibility="{Binding StartStopRecordGestureButtonVisibility}" ToolTip="{Binding StartStopRecordGestureButtonTip}" Command="{Binding StartStopRecordGestureCommand}">
-                <Image Source="{Binding StartStopRecordGestureButtonImageUri}"/>
+            <Button Visibility="{Binding StartStopGestureRecordButtonVisibility}" ToolTip="{Binding StartStopGestureRecordButtonTip}" Command="{Binding StartStopGestureRecordCommand}">
+                <Image Source="{Binding StartStopGestureRecordButtonImageUri}"/>
             </Button>
         </ToolBar>
 
-        <Viewbox Grid.Row="1" HorizontalAlignment="Center">
-            <Image Source="{Binding ColorImage}" Stretch="UniformToFill" />
+        <Grid Grid.Column="1" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Label Content="Last result:" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" Margin="0 0 20 0"
+                FontSize="24" FontStretch="SemiExpanded"/>
+            <TextBox Grid.Column="1" Text="{Binding GestureRecognizingResultText, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10" Background="Transparent" Foreground="Black" BorderBrush="{StaticResource MediumGreyBrush}" 
+                IsHitTestVisible="False" Focusable="False" IsReadOnly="True" TextAlignment="Center" TextWrapping="Wrap" FontStretch="SemiExpanded"
+                SizeChanged="RecognizingGestureResultTextBox_SizeOrTextChanged" TextChanged="RecognizingGestureResultTextBox_SizeOrTextChanged"/>
+            <Image Grid.Column="2" Source="{Binding GestureRecognizingResultImageUri, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="10" Stretch="Uniform"
+                Visibility="{Binding GestureRecognizingResultImageVisibility, Mode=OneWay}" IsHitTestVisible="False" Focusable="False"/>
+        </Grid>
+
+        <Viewbox Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+            <Border Background="Transparent" BorderThickness="3" BorderBrush="{Binding GestureRecordingBorderBrush}">
+                <Image Source="{Binding ColorImage}" Stretch="UniformToFill" />
+            </Border>
         </Viewbox>
-        <Viewbox Grid.Row="1" HorizontalAlignment="Center">
+        <Viewbox Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center">
             <Image Source="{Binding BodyImage}" Stretch="UniformToFill" />
         </Viewbox>
-        <Border Grid.Row="1" Background="{StaticResource TransparentGreyBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding StoppedBodyTrackingInfoVisibility}">
+        <Border Grid.Row="1" Grid.ColumnSpan="2" Background="{StaticResource TransparentGreyBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding StoppedBodyTrackingInfoVisibility}">
             <TextBox Text="{Binding StoppedBodyTrackingInfoText, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" 
                 Background="Transparent" BorderBrush="Transparent" IsHitTestVisible="False" Focusable="False" IsReadOnly="True" TextAlignment="Center" 
                 TextWrapping="Wrap" FontSize="36" FontStretch="UltraExpanded"/>
         </Border>
-        <Border Grid.Row="1" Background="{StaticResource TransparentGreyBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding CountdownInfoVisibility}">
+        <Border Grid.Row="1" Grid.ColumnSpan="2" Background="{StaticResource TransparentGreyBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding CountdownInfoVisibility}">
             <Image Source="{Binding CountdownInfoImageUri}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Margin="100"
                 IsHitTestVisible="False" Focusable="False"/>
         </Border>
 
-        <StatusBar Grid.Row="2" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
+        <StatusBar Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
             <StatusBarItem Content="{Binding KinectStatusText}" />
             <StatusBarItem Content="{Binding TrackedUsersCountText}" />
             <StatusBarItem Content="{Binding FPSValueText}" />
