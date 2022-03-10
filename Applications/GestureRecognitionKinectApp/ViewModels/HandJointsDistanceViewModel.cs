@@ -8,19 +8,19 @@
 		#endregion
 
 		#region Public properties
-		public double? BetweenHandJointsDistanceMax
+		public string BetweenHandJointsDistanceMax
 		{
 			get
 			{
-				return ViewModelsUtils.Round(this.betweenHandJointsDistanceMax, 3);
+				return ViewModelsUtils.Format(this.betweenHandJointsDistanceMax);
 			}
 		}
 
-		public double? BetweenHandJointsDistanceMean
+		public string BetweenHandJointsDistanceMean
 		{
 			get
 			{
-				return ViewModelsUtils.Round(this.betweenHandJointsDistanceMean, 3);
+				return ViewModelsUtils.Format(this.betweenHandJointsDistanceMean);
 			}
 		}
 		#endregion

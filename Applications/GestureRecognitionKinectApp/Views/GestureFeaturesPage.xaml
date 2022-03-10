@@ -74,6 +74,8 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -98,6 +100,10 @@
                 <Label Grid.Row="7" Grid.Column="1" Content="{Binding TotalDisplacement}"/>
                 <Label Grid.Row="8" Style="{StaticResource Header}" Content="Maximum displacement"/>
                 <Label Grid.Row="8" Grid.Column="1" Content="{Binding MaximumDisplacement}"/>
+                <Label Grid.Row="9" Style="{StaticResource Header}" Content="Bounding box diagonal length"/>
+                <Label Grid.Row="9" Grid.Column="1" Content="{Binding BoundingBoxDiagonalLength}"/>
+                <Label Grid.Row="10" Style="{StaticResource Header}" Content="Bounding box angle"/>
+                <Label Grid.Row="10" Grid.Column="1" Content="{Binding BoundingBoxAngle}"/>
             </Grid>
 
             <ToolBar Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Loaded="ToolBar_Loaded">

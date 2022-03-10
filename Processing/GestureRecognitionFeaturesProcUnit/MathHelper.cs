@@ -6,6 +6,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 {
 	public static class MathHelper
 	{
+		#region Public methods
 		public static double CalculateSpatialAngle(Vector3 v1, Vector3 v2)
 		{
 			if (v1 == null)
@@ -13,12 +14,20 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 			if (v2 == null)
 				throw new ArgumentNullException(nameof(v2));
 
-			return ConvertRadiansToDegrees(Math.Acos(Vector3.Dot(v2, v1) / (v2.Length() * v1.Length())));
+			// TODO: MP: Do pomyślenia, czy zastosować, gdyby były jakieś problemy.
+			//var convertedV1 = v1.ToVector2();
+			//var convertedV2 = v2.ToVector2();
+
+			double val = Vector3.Dot(v2, v1) / (v2.Length() * v1.Length());
+			val = Math.Max(-1d, val);
+			val = Math.Min(1d, val);
+
+			return ConvertRadiansToDegrees(Math.Acos(val));
 		}
 
 		public static double ConvertRadiansToDegrees(double radians)
 		{
-			return radians == 0d ? 0d : 180 / Math.PI * radians;
+			return radians == 0d ? 0d : 180d / Math.PI * radians;
 		}
 
 		public static double Distance(Vector3 v1, Vector3 v2)
@@ -27,6 +36,10 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 				throw new ArgumentNullException(nameof(v1));
 			if (v2 == null)
 				throw new ArgumentNullException(nameof(v2));
+
+			// TODO: MP: Do pomyślenia, czy zastosować, gdyby były jakieś problemy.
+			//var convertedV1 = v1.ToVector2();
+			//var convertedV2 = v2.ToVector2();
 
 			return Vector3.Distance(v2, v1);
 		}
@@ -52,5 +65,16 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 
 			return ConvertRadiansToDegrees(Math.Atan2(b, a));
 		}
+		#endregion
+
+		#region Private methods
+		private static Vector2 ToVector2(this Vector3 vec)
+		{
+			if (vec == null)
+				return Vector2.Zero;
+
+			return new Vector2(vec.X, vec.Y);
+		}
+		#endregion
 	}
 }

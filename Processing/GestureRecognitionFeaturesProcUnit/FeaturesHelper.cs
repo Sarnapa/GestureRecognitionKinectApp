@@ -91,7 +91,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region TotalVectorAngle feature methods
 		public static double? CalculateTotalVectorAngle(double?[] angleVector)
 		{
-			var filteredAngleVector = angleVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Select(a => a.Value);
+			var filteredAngleVector = angleVector?.Where(a => a.HasValue).Select(a => a.Value);
 			return filteredAngleVector != null && filteredAngleVector.Any() ? (double?)filteredAngleVector.Sum() : null;
 		}
 
@@ -109,7 +109,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region SquaredTotalVectorAngle feature methods
 		public static double? CalculateSquaredTotalVectorAngle(double?[] angleVector)
 		{
-			var filteredAngleVector = angleVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Select(a => a.Value);
+			var filteredAngleVector = angleVector?.Where(a => a.HasValue).Select(a => a.Value);
 			return filteredAngleVector != null && filteredAngleVector.Any() ? (double?)filteredAngleVector.Sum(a => Math.Pow(a, 2)) : null;
 		}
 
@@ -166,7 +166,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region TotalDisplacement feature methods
 		public static double? CalculateTotalDisplacement(double?[] displacementVector)
 		{
-			var filteredDisplacementVector = displacementVector?.Where(d => d.HasValue && !double.IsNaN(d.Value)).Select(d => d.Value);
+			var filteredDisplacementVector = displacementVector?.Where(d => d.HasValue).Select(d => d.Value);
 			return filteredDisplacementVector != null && filteredDisplacementVector.Any() ? (double?)filteredDisplacementVector.Sum() : null;
 		}
 
@@ -184,7 +184,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region MaximumDisplacement feature methods
 		public static double? CalculateMaximumDisplacement(double?[] displacementVector)
 		{
-			var filteredDisplacementVector = displacementVector?.Where(d => d.HasValue && !double.IsNaN(d.Value)).Select(d => d.Value);
+			var filteredDisplacementVector = displacementVector?.Where(d => d.HasValue).Select(d => d.Value);
 			return filteredDisplacementVector != null && filteredDisplacementVector.Any() ? (double?)filteredDisplacementVector.Max() : null;
 		}
 		#endregion
@@ -197,7 +197,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 
 			float? minX = null, maxX = null, minY = null, maxY = null, minZ = null, maxZ = null;
 
-			if (!bodyFrames.Any())
+			if (bodyFrames.Any())
 			{
 				foreach (var bodyFrame in bodyFrames)
 				{
@@ -220,8 +220,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 					}
 				}
 
-				if (minX.HasValue && maxX.HasValue && minY.HasValue && maxY.HasValue && minZ.HasValue
-					&& maxZ.HasValue)
+				if (minX.HasValue && maxX.HasValue && minY.HasValue && maxY.HasValue && minZ.HasValue && maxZ.HasValue)
 					return new JointBoundingBox(minX.Value, maxX.Value, minY.Value, maxY.Value, minZ.Value, maxZ.Value);
 			}
 
@@ -305,7 +304,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 					double b = MathHelper.Distance(referencePoint, parentJointPos);
 					double c = MathHelper.Distance(childJointPos, parentJointPos);
 
-					double angle = Math.Acos((Math.Pow(a, 2) + Math.Pow(b, 2) - Math.Pow(c, 2)) / 2 * a * b * c);
+					double angle = Math.Acos((Math.Pow(a, 2) + Math.Pow(b, 2) - Math.Pow(c, 2)) / (2 * a * b));
 					res.Add(MathHelper.ConvertRadiansToDegrees(angle));
 				}
 				else
@@ -333,7 +332,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region MeanAngle feature methods
 		public static double? CalculateMeanAngle(double?[] angleVector)
 		{
-			var filteredAngleVector = angleVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Select(a => a.Value);
+			var filteredAngleVector = angleVector?.Where(a => a.HasValue).Select(a => a.Value);
 			return filteredAngleVector != null && filteredAngleVector.Any() ? (double?)filteredAngleVector.Average() : null;
 		}
 		#endregion
@@ -341,7 +340,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region MaximumAngle feature methods
 		public static double? CalculateMaximumAngle(double?[] angleVector)
 		{
-			var filteredAngleVector = angleVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Select(a => a.Value);
+			var filteredAngleVector = angleVector?.Where(a => a.HasValue).Select(a => a.Value);
 			return filteredAngleVector != null && filteredAngleVector.Any() ? (double?)filteredAngleVector.Max() : null;
 		}
 		#endregion
@@ -380,7 +379,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region BetweenHandJointsDistanceMax feature methods
 		public static double? CalculateBetweenHandJointsDistanceMax(double?[] distanceVector)
 		{
-			var filteredDistanceVector = distanceVector?.Where(d => d.HasValue && !double.IsNaN(d.Value)).Select(d => d.Value);
+			var filteredDistanceVector = distanceVector?.Where(d => d.HasValue).Select(d => d.Value);
 			return filteredDistanceVector != null && filteredDistanceVector.Any() ? (double?)filteredDistanceVector.Max() : null;
 		}
 		#endregion
@@ -388,7 +387,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region BetweenHandJointsDistanceMean feature methods
 		public static double? CalculateBetweenHandJointsDistanceMean(double?[] distanceVector)
 		{
-			var filteredDistanceVector = distanceVector?.Where(a => a.HasValue && !double.IsNaN(a.Value)).Select(d => d.Value);
+			var filteredDistanceVector = distanceVector?.Where(a => a.HasValue).Select(d => d.Value);
 			return filteredDistanceVector != null && filteredDistanceVector.Any() ? (double?)filteredDistanceVector.Average() : null;
 		}
 		#endregion

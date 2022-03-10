@@ -20,35 +20,35 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			}
 		}
 
-		public double? InitialAngle
+		public string InitialAngle
 		{
 			get
 			{
-				return ViewModelsUtils.Round(this.angleData.InitialAngle, 3);
+				return ViewModelsUtils.Format(this.angleData.InitialAngle);
 			}
 		}
 
-		public double? FinalAngle
+		public string FinalAngle
 		{
 			get
 			{
-				return ViewModelsUtils.Round(this.angleData.FinalAngle, 3);
+				return ViewModelsUtils.Format(this.angleData.FinalAngle);
 			}
 		}
 
-		public double? MeanAngle
+		public string MeanAngle
 		{
 			get
 			{
-				return ViewModelsUtils.Round(this.angleData.MeanAngle, 3);
+				return ViewModelsUtils.Format(this.angleData.MeanAngle);
 			}
 		}
 
-		public double? MaximumAngle
+		public string MaximumAngle
 		{
 			get
 			{
-				return ViewModelsUtils.Round(this.angleData.MaximumAngle, 3);
+				return ViewModelsUtils.Format(this.angleData.MaximumAngle);
 			}
 		}
 		#endregion

@@ -41,6 +41,9 @@
 		#endregion
 
 		#region Constructors
+		public JointBoundingBox(float minX, float maxX, float minY, float maxY) : this(minX, maxX, minY, maxY, 0f, 0f)
+		{}
+
 		public JointBoundingBox(float minX, float maxX, float minY, float maxY, float minZ, float maxZ)
 		{
 			this.MinX = minX;

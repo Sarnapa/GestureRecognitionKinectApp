@@ -5,6 +5,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 	public static class ViewModelsUtils
 	{
 		#region Public methods
+		public static string Format(double? value)
+		{
+			if (value.HasValue)
+				return string.Format("{0:0.###}", value.Value);
+
+			return string.Empty;
+		}
+
 		public static double? Round(double? value, int decimalPlaces)
 		{
 			if (value.HasValue)

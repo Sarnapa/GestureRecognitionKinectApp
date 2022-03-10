@@ -20,67 +20,85 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			}
 		}
 
-		public double? F1F2SpatialAngle
+		public string F1F2SpatialAngle
 		{
 			get
 			{
-				return ViewModelsUtils.Round(this.features.F1F2SpatialAngle, 3);
+				return ViewModelsUtils.Format(this.features.F1F2SpatialAngle);
 			}
 		}
 
-		public double? FN_1FNSpatialAngle
+		public string FN_1FNSpatialAngle
 		{
 			get
 			{
-				return ViewModelsUtils.Round(this.features.FN_1FNSpatialAngle, 3);
+				return ViewModelsUtils.Format(this.features.FN_1FNSpatialAngle);
 			}
 		}
 
-		public double? F1FNSpatialAngle
+		public string F1FNSpatialAngle
 		{
 			get
 			{
-				return ViewModelsUtils.Round(this.features.F1F2SpatialAngle, 3);
+				return ViewModelsUtils.Format(this.features.F1F2SpatialAngle);
 			}
 		}
 
-		public double? TotalVectorAngle
+		public string TotalVectorAngle
 		{
 			get
 			{
-				return ViewModelsUtils.Round(this.features.TotalVectorAngle, 3);
+				return ViewModelsUtils.Format(this.features.TotalVectorAngle);
 			}
 		}
 
-		public double? SquaredTotalVectorAngle
+		public string SquaredTotalVectorAngle
 		{
 			get
 			{
-				return ViewModelsUtils.Round(this.features.SquaredTotalVectorAngle, 3);
+				return ViewModelsUtils.Format(this.features.SquaredTotalVectorAngle);
 			}
 		}
 
-		public double? TotalVectorDisplacement
+		public string TotalVectorDisplacement
 		{
 			get
 			{
-				return ViewModelsUtils.Round(this.features.TotalVectorDisplacement, 3);
+				return ViewModelsUtils.Format(this.features.TotalVectorDisplacement);
 			}
 		}
 
-		public double? TotalDisplacement
+		public string TotalDisplacement
 		{
 			get
 			{
-				return ViewModelsUtils.Round(this.features.TotalDisplacement, 3);
+				return ViewModelsUtils.Format(this.features.TotalDisplacement);
 			}
 		}
 
-		public double? MaximumDisplacement
+		public string MaximumDisplacement
 		{
 			get
 			{
-				return ViewModelsUtils.Round(this.features.MaximumDisplacement, 3);
+				return ViewModelsUtils.Format(this.features.MaximumDisplacement);
+			}
+		}
+
+		public string BoundingBoxDiagonalLength
+		{
+			get
+			{
+				return (this.joint == JointType.HandLeft || this.joint == JointType.HandRight) && this.features is HandJointGestureFeatures handJointGestureFeatures
+					? ViewModelsUtils.Format(handJointGestureFeatures.BoundingBoxDiagonalLength) : Properties.Resources.JointGestureFeatureNotSupportedText;
+			}
+		}
+
+		public string BoundingBoxAngle
+		{
+			get
+			{
+				return (this.joint == JointType.HandLeft || this.joint == JointType.HandRight) && this.features is HandJointGestureFeatures handJointGestureFeatures
+					? ViewModelsUtils.Format(handJointGestureFeatures.BoundingBoxAngle) : Properties.Resources.JointGestureFeatureNotSupportedText;
 			}
 		}
 		#endregion

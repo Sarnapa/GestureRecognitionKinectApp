@@ -187,6 +187,15 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not supported.
+        /// </summary>
+        internal static string JointGestureFeatureNotSupportedText {
+            get {
+                return ResourceManager.GetString("JointGestureFeatureNotSupportedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lost Kinect connection.
         ///Further actions canceled..
         /// </summary>
