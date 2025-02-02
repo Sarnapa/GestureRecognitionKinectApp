@@ -317,6 +317,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		}
 		#endregion
 
+		#region Loading gestures data methods
 		private bool LoadGestureData()
 		{
 			string gestureDataFilePath = GetGestureDataFilePath();
@@ -354,7 +355,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			return this.gestureRecordFile?.Name?.Replace(Consts.GestureRecordFileExtension,
 				CsvHelperUtils.CsvFileExtension) ?? string.Empty;
 		}
+		#endregion
 
+		#region Cleaning up methods
 		private void CleanGestureReplay(bool deleteGestureRecordFile = true)
 		{
 			if (this.gestureReplay != null)
@@ -401,6 +404,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		{
 			this.GestureLabel = null;
 		}
+		#endregion
+
 		#endregion
 	}
 }

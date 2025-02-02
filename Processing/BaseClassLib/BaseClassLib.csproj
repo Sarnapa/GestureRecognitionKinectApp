@@ -55,6 +55,8 @@
     <Compile Include="Structures\GestureRecognition\LoadGestureRecognitionModelParameters.cs" />
     <Compile Include="Structures\GestureRecognition\LoadGestureRecognitionModelResult.cs" />
     <Compile Include="Structures\GestureRecognition\Predictions\GesturePrediction.cs" />
+    <Compile Include="Structures\GestureRecognition\PrepareGesturesDataForRecognitionModelParameters.cs" />
+    <Compile Include="Structures\GestureRecognition\PrepareGesturesDataForRecognitionModelResult.cs" />
     <Compile Include="Structures\GestureRecognition\RecognizeGestureParameters.cs" />
     <Compile Include="Structures\GestureRecognition\RecognizeGestureResult.cs" />
     <Compile Include="Structures\Kinect\BodyData.cs" />

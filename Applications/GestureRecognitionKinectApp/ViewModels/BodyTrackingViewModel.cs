@@ -9,9 +9,11 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Utilities;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.NavigationService;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
+using GestureRecognition.Processing.BaseClassLib.Utils;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 {
@@ -199,6 +201,31 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			}
 		}
 
+		public Visibility PrepareGesturesDataButtonVisibility
+		{
+			get
+			{
+				return this.model.TrackingState == BodyTrackingState.Standard
+					? Visibility.Visible : Visibility.Hidden;
+			}
+		}
+
+		public string PrepareGesturesDataButtonTip
+		{
+			get
+			{
+				return Properties.Resources.PrepareGesturesDataTip;
+			}
+		}
+
+		public string PrepareGesturesDataButtonImageUri
+		{
+			get
+			{
+				return ViewModelsUtils.GetImageUri("PrepareGesturesData.png");
+			}
+		}
+
 		public Visibility StartStopGestureRecordButtonVisibility
 		{
 			get
@@ -290,6 +317,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get; private set;
 		}
+		public RelayCommand PrepareGesturesDataCommand
+		{
+			get; private set;
+		}
 		public RelayCommand StartStopGestureRecordCommand
 		{
 			get; private set;
@@ -312,6 +343,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			this.countdownTimer.Elapsed += CountdownTimerElapsedHandler;
 			this.StartCommand = new RelayCommand(this.StartCommandAction);
 			this.ImportGestureRecordCommand = new RelayCommand(this.ImportGestureRecordCommandAction);
+			this.PrepareGesturesDataCommand = new RelayCommand(this.PrepareGesturesDataCommandAction);
 			this.StartStopGestureRecordCommand = new RelayCommand(this.StartStopGestureRecordCommandAction);
 			this.CleanupCommand = new RelayCommand(this.CleanupCommandAction);
 			Messenger.Default.Register<DisplayImageChangedMessage>(this, m => DisplayImageChangedMessageHandler(m));
@@ -343,6 +375,43 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			{
 				Messenger.Default.Send<GestureRecordMessage, GestureRecordViewModel>(
 					new GestureRecordMessage() { IsTemporaryFile = false, FilePath = openFileDialog.FileName });
+			}
+		}
+
+		private void PrepareGesturesDataCommandAction()
+		{
+			var openFileDialog = new OpenFileDialog
+			{
+				Filter = $"Gesture data files (*{CsvHelperUtils.CsvFileExtension})|*{CsvHelperUtils.CsvFileExtension}",
+				Multiselect = true
+			};
+			bool? openFileDialogRes = openFileDialog.ShowDialog();
+			if (openFileDialogRes.HasValue && openFileDialogRes == true && openFileDialog.FileNames != null)
+			{
+				var saveFileDialog = new SaveFileDialog
+				{
+					Filter = $"Gesture data files (*{CsvHelperUtils.CsvFileExtension})|*{CsvHelperUtils.CsvFileExtension}",
+				};
+				bool? saveFileDialogRes = saveFileDialog.ShowDialog();
+				if (saveFileDialogRes.HasValue && saveFileDialogRes == true && !string.IsNullOrEmpty(saveFileDialog.FileName))
+				{
+					var result = this.model.GestureRecognitionManager.PrepareGesturesDataForRecognitionModel(
+						new PrepareGesturesDataForRecognitionModelParameters()
+						{
+							GestureDataFilesPaths = openFileDialog.FileNames,
+							GesturesDataOutputFilePath = saveFileDialog.FileName
+						});
+					if (result?.Success == true)
+					{
+						MessageBoxUtils.ShowMessage($"Preparing gestures data succeeded.\nOutput file - {saveFileDialog.FileName}",
+							"Gesture recognition", MessageBoxButton.OK, MessageBoxImage.Information);
+					}
+					else
+					{
+						MessageBoxUtils.ShowMessage($"Preparing gestures data failed", "Gesture recognition",
+							MessageBoxButton.OK, MessageBoxImage.Error);
+					}
+				}
 			}
 		}
 

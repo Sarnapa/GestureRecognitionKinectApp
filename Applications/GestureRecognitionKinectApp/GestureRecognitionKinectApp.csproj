@@ -83,6 +83,7 @@
     <Compile Include="Models\Presentation\Structures\Base\AsyncCommandBase.cs" />
     <Compile Include="Models\Processing\Structures\Consts.cs" />
     <Compile Include="Models\Processing\Structures\Definitions.cs" />
+    <Compile Include="Models\Processing\Utilities\MessageBoxUtils.cs" />
     <Compile Include="Models\Processing\Utilities\Utils.cs" />
     <Compile Include="ViewModels\BodyTrackingViewModel.cs" />
     <Compile Include="ViewModels\BoneJointsAngleDataViewModel.cs" />
@@ -253,6 +254,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\QuestionIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PrepareGesturesData.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

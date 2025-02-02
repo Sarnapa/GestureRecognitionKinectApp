@@ -29,6 +29,9 @@
             <Button Visibility="{Binding ImportGestureRecordButtonVisibility}" ToolTip="{Binding ImportGestureRecordButtonTip}" Command="{Binding ImportGestureRecordCommand}">
                 <Image Source="{Binding ImportGestureRecordButtonImageUri}"/>
             </Button>
+            <Button Visibility="{Binding PrepareGesturesDataButtonVisibility}" ToolTip="{Binding PrepareGesturesDataButtonTip}" Command="{Binding PrepareGesturesDataCommand}">
+                <Image Source="{Binding PrepareGesturesDataButtonImageUri}"/>
+            </Button>
             <Button Visibility="{Binding StartStopGestureRecordButtonVisibility}" ToolTip="{Binding StartStopGestureRecordButtonTip}" Command="{Binding StartStopGestureRecordCommand}">
                 <Image Source="{Binding StartStopGestureRecordButtonImageUri}"/>
             </Button>

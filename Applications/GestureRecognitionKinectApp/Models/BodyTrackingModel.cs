@@ -211,6 +211,17 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				return this.gestureRecordFile?.Name ?? string.Empty; 
 			}
 		}
+
+		/// <summary>
+		/// Executes gesture recognition process
+		/// </summary>
+		public GestureRecognitionManager GestureRecognitionManager
+		{
+			get
+			{
+				return this.gestureRecognitionManager;
+			}
+		}
 		#endregion
 
 		#region Constructors
