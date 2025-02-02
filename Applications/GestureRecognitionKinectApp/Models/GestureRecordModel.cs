@@ -200,7 +200,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 		public void SetGestureLabel(string label)
 		{
-			this.GestureLabel = label;
+			this.GestureLabel = label.ToLower();
 		}
 
 		public bool ExportGestureRecord(string filePath)
