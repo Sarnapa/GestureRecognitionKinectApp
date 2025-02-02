@@ -90,10 +90,11 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 					boundingBoxAngle = FeaturesHelper.CalculateBoundingBoxAngle(boundingBox);
 				}
 
-				var handStates = FeaturesHelper.GetHandStates(bodyFrames, jointType);
+				// Turned off for now, if the results are not satisfactory then turn it on
+				//var handStates = FeaturesHelper.GetHandStates(bodyFrames, jointType);
 				gestureFeatures.AddJointGestureFeature(jointType, new HandJointGestureFeatures(f1F2SpatialAngle,
 					fN_1FNSpatialAngle, f1FNSpatialAngle, totalVectorAngle, squaredTotalVectorAngle, totalVectorDisplacement,
-					totalDisplacement, maximumDisplacement, boundingBoxDiagonalLength, boundingBoxAngle, handStates));
+					totalDisplacement, maximumDisplacement, boundingBoxDiagonalLength, boundingBoxAngle/*, handStates*/));
 			}
 			else
 			{

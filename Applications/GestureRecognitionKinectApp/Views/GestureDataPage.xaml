@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:GestureRecognition.Applications.GestureRecognitionKinectApp.Views"
       mc:Ignorable="d" 
       d:DesignHeight="864" d:DesignWidth="1152"
-      Title="GestureFeaturesPage">
+      Title="GestureDataPage">
 
     <Page.Resources>
         <Style x:Key="{x:Type Label}" TargetType="Label">
@@ -36,7 +36,7 @@
     </Page.Resources>
 
     <Page.DataContext>
-        <Binding Source="{StaticResource Locator}" Path="GestureFeatures"/>
+        <Binding Source="{StaticResource Locator}" Path="GestureData"/>
     </Page.DataContext>
 
     <Grid>
@@ -159,7 +159,9 @@
 
         <Grid Grid.Row="1" Grid.Column="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="9*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="6*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -167,7 +169,6 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="3*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -178,6 +179,15 @@
                 <Label Grid.Column="1" Content="{Binding BetweenHandJointsDistanceMax}"/>
                 <Label Grid.Row="1" Style="{StaticResource Header}" Content="Mean distance between hands"/>
                 <Label Grid.Row="1" Grid.Column="1" Content="{Binding BetweenHandJointsDistanceMean}"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Style="{StaticResource Header}" Content="Gesture Label"/>
+                <Label Grid.Column="1" Content="{Binding GestureLabel}"/>
             </Grid>
         </Grid>
 

@@ -86,23 +86,24 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecogniti
 			private set;
 		}
 
-		public HandState[] HandStates
-		{
-			get;
-			private set;
-		}
+		// Turned off for now, if the results are not satisfactory then turn it on
+		//public HandState[] HandStates
+		//{
+		//	get;
+		//	private set;
+		//}
 		#endregion
 
 		#region Constructors
 		public HandJointGestureFeatures(double? f1F2SpatialAngle, double? fN_1FNSpatialAngle, double? f1FNSpatialAngle,
 			double? totalVectorAngle, double? squaredTotalVectorAngle, double? totalVectorDisplacement, double? totalDisplacement,
-			double? maximumDisplacement, double? boundingBoxDiagonalLength, double? boundingBoxAngle, HandState[] handStates)
+			double? maximumDisplacement, double? boundingBoxDiagonalLength, double? boundingBoxAngle/*, HandState[] handStates*/)
 			: base(f1F2SpatialAngle, fN_1FNSpatialAngle, f1FNSpatialAngle, totalVectorAngle, squaredTotalVectorAngle,
 				totalVectorDisplacement, totalDisplacement, maximumDisplacement)
 		{
 			this.BoundingBoxDiagonalLength = boundingBoxDiagonalLength;
 			this.BoundingBoxAngle = boundingBoxAngle;
-			this.HandStates = handStates;
+			//this.HandStates = handStates;
 		}
 		#endregion
 	}

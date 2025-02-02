@@ -11,8 +11,11 @@ using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
+using GestureRecognition.Processing.BaseClassLib.Mappers;
+using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures;
 using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
+using GestureRecognition.Processing.BaseClassLib.Utils;
 using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.All;
@@ -86,6 +89,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				return this.gestureFeatures != null;
 			}
 		}
+
+		private bool IsGestureLabel
+		{
+			get
+			{
+				return !string.IsNullOrEmpty(this.GestureLabel);
+			}
+		}
 		#endregion
 
 		#region Public properties
@@ -123,6 +134,15 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		}
 
 		/// <summary>
+		/// Assigned gesture label
+		/// </summary>
+		public string GestureLabel
+		{
+			get;
+			private set;
+		}
+
+		/// <summary>
 		/// Determines time when gesture record is repeated
 		/// </summary>
 		public DateTime? GestureReplayStartTime
@@ -146,7 +166,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#endregion
 
 		#region Public methods
-		public void Start(string gestureRecordFilePath)
+		public void Start(string gestureRecordFilePath, bool tryLoadGestureData)
 		{
 			if (string.IsNullOrEmpty(gestureRecordFilePath))
 				throw new ArgumentNullException(nameof(gestureRecordFilePath));
@@ -164,6 +184,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			try
 			{
 				this.gestureRecordFile = File.OpenRead(gestureRecordFilePath);
+				if (tryLoadGestureData)
+					LoadGestureData();
+
 				this.gestureReplay = new KinectReplay(this.gestureRecordFile);
 				this.gestureReplay.AllFramesReady += GestureReplay_AllFramesReady;
 				this.gestureReplay.Finished += GestureReplay_Finished;
@@ -173,6 +196,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			{
 				// TODO: Handle exception
 			}
+		}
+
+		public void SetGestureLabel(string label)
+		{
+			this.GestureLabel = label;
 		}
 
 		public bool ExportGestureRecord(string filePath)
@@ -198,11 +226,33 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			return false;
 		}
 
+		public bool ExportGestureData()
+		{
+			string gestureDataFilePath = GetGestureDataFilePath();
+			if (!string.IsNullOrEmpty(gestureDataFilePath) && this.AreGestureFeaturesCalculated && this.IsGestureLabel)
+			{
+				try
+				{
+					var gestureDataView = this.gestureFeatures.Map(this.GestureLabel);
+					CsvHelperUtils.WriteGesturesToFile(new List<GestureDataView>() { gestureDataView }, gestureDataFilePath);
+					return true;
+				}
+				catch (Exception e)
+				{
+					// TODO: Handle exception in better way.
+					return false;
+				}
+			}
+
+			return false;
+		}
+
 		public void Cleanup(bool deleteGestureRecordFile = true)
 		{
 			CleanGestureReplay(deleteGestureRecordFile);
 			CleanGestureBodyFrames();
 			CleanGestureFeatures();
+			CleanGestureLabel();
 		}
 		#endregion
 
@@ -267,6 +317,44 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		}
 		#endregion
 
+		private bool LoadGestureData()
+		{
+			string gestureDataFilePath = GetGestureDataFilePath();
+			if (!string.IsNullOrEmpty(gestureDataFilePath) && File.Exists(gestureDataFilePath)
+				&& (!this.AreGestureFeaturesCalculated || !this.IsGestureLabel))
+			{
+				try
+				{
+					var gestureDataView = CsvHelperUtils.GetGesturesFromFile(gestureDataFilePath)?.FirstOrDefault();
+					if (gestureDataView != null)
+					{
+						var gesturePair = gestureDataView.Map();
+						var gestureFeatures = gesturePair.features;
+						string gestureLabel = gesturePair.label;
+						if (gestureFeatures.IsValid)
+						{
+							this.gestureFeatures = gestureFeatures;
+							this.GestureLabel = gestureLabel;
+							return true;
+						}
+					}
+				}
+				catch (Exception e)
+				{
+					// TODO: Handle exception in better way.
+					return false;
+				}
+			}
+
+			return false;
+		}
+
+		private string GetGestureDataFilePath()
+		{
+			return this.gestureRecordFile?.Name?.Replace(Consts.GestureRecordFileExtension,
+				CsvHelperUtils.CsvFileExtension) ?? string.Empty;
+		}
+
 		private void CleanGestureReplay(bool deleteGestureRecordFile = true)
 		{
 			if (this.gestureReplay != null)
@@ -307,6 +395,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		private void CleanGestureFeatures()
 		{
 			this.gestureFeatures = null;
+		}
+
+		private void CleanGestureLabel()
+		{
+			this.GestureLabel = null;
 		}
 		#endregion
 	}

@@ -9,6 +9,7 @@ using GestureRecognition.Applications.GestureRecognitionKinectApp.Models;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.NavigationService;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Views.Dialogs;
 using static GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.ViewModelLocator;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
@@ -132,7 +133,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get
 			{
-				return this.isTemporaryGestureRecordFile && this.isGestureRecordFinished ? Visibility.Visible : Visibility.Hidden;
+				return this.isTemporaryGestureRecordFile && this.isGestureRecordFinished && this.IsGestureFeaturesValid
+					? Visibility.Visible : Visibility.Hidden;
 			}
 		}
 
@@ -206,7 +208,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				RaisePropertyChanged(nameof(ReplayGestureRecordButtonVisibility));
 				RaisePropertyChanged(nameof(ShowGestureFeaturesInformationButtonVisibility));
 				RaisePropertyChanged(nameof(ExportGestureRecordButtonVisibility));
-				this.model.Start(this.gestureRecordFilePath);
+				this.model.Start(this.gestureRecordFilePath, !isTemporaryGestureRecordFile);
 			}
 		}
 
@@ -217,19 +219,27 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 
 		private void ExportGestureRecordCommandAction()
 		{
-			var saveFileDialog = new SaveFileDialog
+			var gestureLabelInputDialog = new GestureLabelInputDialog();
+			if (gestureLabelInputDialog.ShowDialog() == true)
 			{
-				Filter = $"Gesture record files (*{Consts.GestureRecordFileExtension})|*{Consts.GestureRecordFileExtension}"
-			};
-			bool? saveFileDialogRes = saveFileDialog.ShowDialog();
-			if (saveFileDialogRes.HasValue && saveFileDialogRes == true && !string.IsNullOrEmpty(saveFileDialog.FileName))
-			{
-				bool res = this.model.ExportGestureRecord(saveFileDialog.FileName);
-				if (res)
+				this.model.SetGestureLabel(gestureLabelInputDialog.GestureLabel);
+
+				var saveFileDialog = new SaveFileDialog
 				{
-					this.isTemporaryGestureRecordFile = false;
-					this.gestureRecordFilePath = saveFileDialog.FileName;
-					RaisePropertyChanged(nameof(ExportGestureRecordButtonVisibility));
+					Filter = $"Gesture record files (*{Consts.GestureRecordFileExtension})|*{Consts.GestureRecordFileExtension}"
+				};
+				bool? saveFileDialogRes = saveFileDialog.ShowDialog();
+				if (saveFileDialogRes.HasValue && saveFileDialogRes == true && !string.IsNullOrEmpty(saveFileDialog.FileName))
+				{
+					bool exportGestureRecordRes = this.model.ExportGestureRecord(saveFileDialog.FileName);
+					if (exportGestureRecordRes)
+					{
+						this.isTemporaryGestureRecordFile = false;
+						this.gestureRecordFilePath = saveFileDialog.FileName;
+						// TODO: Exporting gesture data failure handling.
+						this.model.ExportGestureData();
+						RaisePropertyChanged(nameof(ExportGestureRecordButtonVisibility));
+					}
 				}
 			}
 		}
@@ -239,7 +249,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			if (this.IsGestureFeaturesValid)
 			{
 				this.isCleanupPermission = false;
-				Messenger.Default.Send(new GestureFeaturesMessage() { Features = this.model.GestureFeatures });
+				Messenger.Default.Send(new GestureDataMessage() { Features = this.model.GestureFeatures,
+					Label = this.model.GestureLabel });
 			}
 		}
 

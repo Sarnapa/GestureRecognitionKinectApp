@@ -86,7 +86,7 @@
     <Compile Include="Models\Processing\Utilities\Utils.cs" />
     <Compile Include="ViewModels\BodyTrackingViewModel.cs" />
     <Compile Include="ViewModels\BoneJointsAngleDataViewModel.cs" />
-    <Compile Include="ViewModels\GestureFeaturesViewModel.cs" />
+    <Compile Include="ViewModels\GestureDataViewModel.cs" />
     <Compile Include="ViewModels\GestureRecordViewModel.cs" />
     <Compile Include="ViewModels\HandJointsDistanceViewModel.cs" />
     <Compile Include="ViewModels\JointGestureFeaturesViewModel.cs" />
@@ -94,7 +94,7 @@
     <Compile Include="ViewModels\Messages\DisplayImageChangedMessage.cs" />
     <Compile Include="ViewModels\Messages\FPSValueMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureRecognitionResultMessage.cs" />
-    <Compile Include="ViewModels\Messages\GestureFeaturesMessage.cs" />
+    <Compile Include="ViewModels\Messages\GestureDataMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureRecordFinishedMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureRecordFrameProcessedMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureRecordingFinishedMessage.cs" />
@@ -110,8 +110,11 @@
     <Compile Include="Views\BodyTrackingPage.xaml.cs">
       <DependentUpon>BodyTrackingPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GestureFeaturesPage.xaml.cs">
-      <DependentUpon>GestureFeaturesPage.xaml</DependentUpon>
+    <Compile Include="Views\Dialogs\GestureLabelInputDialog.xaml.cs">
+      <DependentUpon>GestureLabelInputDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GestureDataPage.xaml.cs">
+      <DependentUpon>GestureDataPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GestureRecordPage.xaml.cs">
       <DependentUpon>GestureRecordPage.xaml</DependentUpon>
@@ -128,7 +131,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GestureFeaturesPage.xaml">
+    <Page Include="Views\Dialogs\GestureLabelInputDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GestureDataPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

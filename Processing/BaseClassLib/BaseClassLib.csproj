@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mappers\GestureRecognitionMapper.cs" />
     <Compile Include="Mappers\KinectMappers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structures\GestureRecognitionFeatures\GestureFeatures.cs" />
@@ -62,9 +63,13 @@
     <Compile Include="Structures\Kinect\Bone.cs" />
     <Compile Include="Structures\GestureRecognitionFeatures\BoneJointsAngleData.cs" />
     <Compile Include="Structures\Kinect\BonesDefinitions.cs" />
+    <Compile Include="Utils\CsvHelperUtils.cs" />
     <Compile Include="Utils\DataViewsUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CsvHelper">
+      <Version>33.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Kinect">
       <Version>2.0.1410.19000</Version>
     </PackageReference>

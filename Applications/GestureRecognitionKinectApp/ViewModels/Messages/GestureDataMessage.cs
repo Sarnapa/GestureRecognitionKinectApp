@@ -2,9 +2,14 @@
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages
 {
-	public class GestureFeaturesMessage
+	public class GestureDataMessage
 	{
 		public GestureFeatures Features
+		{
+			get; set;
+		}
+
+		public string Label
 		{
 			get; set;
 		}

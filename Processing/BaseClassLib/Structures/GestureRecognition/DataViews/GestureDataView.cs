@@ -266,11 +266,12 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecogniti
 			set;
 		}
 
-		public HandState[] HandLeftHandStates
-		{
-			get;
-			set;
-		}
+		// Turned off for now, if the results are not satisfactory then turn it on
+		//public HandState[] HandLeftHandStates
+		//{
+		//	get;
+		//	set;
+		//}
 		#endregion
 
 		#region HandRight joint features
@@ -334,11 +335,12 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecogniti
 			set;
 		}
 
-		public HandState[] HandRightHandStates
-		{
-			get;
-			set;
-		}
+		// Turned off for now, if the results are not satisfactory then turn it on
+		//public HandState[] HandRightHandStates
+		//{
+		//	get;
+		//	set;
+		//}
 		#endregion
 
 		#region ThumbLeft joint features

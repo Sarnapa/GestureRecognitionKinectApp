@@ -8,13 +8,14 @@ using static GestureRecognition.Applications.GestureRecognitionKinectApp.ViewMod
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 {
-	public class GestureFeaturesViewModel : ViewModelBase
+	public class GestureDataViewModel : ViewModelBase
 	{
 		#region Private fields
 		private readonly IFrameNavigationService navigationService;
 		private JointGestureFeaturesViewModel[] jointsFeatures;
 		private BoneJointsAngleDataViewModel[] bonesFeatures;
 		private HandJointsDistanceViewModel handJointsDistances;
+		private string gestureLabel;
 		private int currentJointFeaturesIdx, currentBoneFeaturesIdx;
 		#endregion
 
@@ -46,6 +47,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			get
 			{
 				return this.handJointsDistances;
+			}
+		}
+
+		public string GestureLabel
+		{
+			get
+			{
+				return this.gestureLabel;
 			}
 		}
 
@@ -123,7 +132,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		#endregion
 
 		#region Constructors
-		public GestureFeaturesViewModel(IFrameNavigationService navigationService)
+		public GestureDataViewModel(IFrameNavigationService navigationService)
 		{
 			this.navigationService = navigationService;
 			this.ReturnCommand = new RelayCommand(this.ReturnCommandAction);
@@ -131,7 +140,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			this.NextJointFeaturesCommand = new RelayCommand(this.NextJointFeaturesCommandAction);
 			this.PrevBoneFeaturesCommand = new RelayCommand(this.PrevBoneFeaturesCommandAction);
 			this.NextBoneFeaturesCommand = new RelayCommand(this.NextBoneFeaturesCommandAction);
-			Messenger.Default.Register<GestureFeaturesMessage>(this, m => GestureFeaturesMessageHandler(m));
+			Messenger.Default.Register<GestureDataMessage>(this, m => GestureDataMessageHandler(m));
 		}
 		#endregion
 
@@ -169,15 +178,16 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		#endregion
 
 		#region Messages handlers
-		private void GestureFeaturesMessageHandler(GestureFeaturesMessage m)
+		private void GestureDataMessageHandler(GestureDataMessage m)
 		{
 			if (m != null && m.Features != null && m.Features.IsValid)
 			{
 				this.jointsFeatures = m.Features.JointsGestureFeaturesDict.Select(f => new JointGestureFeaturesViewModel(f.Key, f.Value)).ToArray();
 				this.bonesFeatures = m.Features.BoneJointsAngleDataDict.Select(b => new BoneJointsAngleDataViewModel(b.Key, b.Value)).ToArray();
 				this.handJointsDistances = new HandJointsDistanceViewModel(m.Features.BetweenHandJointsDistanceMax, m.Features.BetweenHandJointsDistanceMean);
+				this.gestureLabel = m.Label;
 				RaisePropertyChanged(nameof(CurrentJointFeatures));
-				this.navigationService.NavigateTo(GestureFeaturesPageKey);
+				this.navigationService.NavigateTo(GestureDataPageKey);
 			}
 		}
 		#endregion

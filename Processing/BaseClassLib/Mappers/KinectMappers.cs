@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Microsoft.Kinect;
 using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
-using System.Numerics;
 
 namespace GestureRecognition.Processing.BaseClassLib.Mappers
 {
