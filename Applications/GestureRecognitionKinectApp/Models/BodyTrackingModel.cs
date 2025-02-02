@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Kinect;
 using GalaSoft.MvvmLight.Ioc;
@@ -13,12 +14,11 @@ using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Mes
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Utilities;
-using GestureRecognition.Processing.BaseClassLib.Structures.GestureDetection;
+using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
 using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record;
 using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
 using GestureRecognition.Processing.GestureRecognitionProcUnit;
-using System.Threading;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 {
@@ -282,7 +282,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			}
 		}
 
-		public async Task<GestureRecognitionResult> ExecuteGestureRecognitionProcess()
+		public async Task<RecognizeGestureResult> ExecuteGestureRecognitionProcess()
 		{
 			try
 			{
@@ -292,13 +292,13 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					var gestureFeatures = await this.gestureRecognitionFeaturesManager.CalculateFeatures(this.gestureToRecognizeBodyFrames.ToArray());
 					if (gestureFeatures != null && gestureFeatures.IsValid)
 					{
-						return await this.gestureRecognitionManager.RecognizeGesture(new GestureRecognitionParameters(gestureFeatures, CancellationToken.None));
+						return await this.gestureRecognitionManager.RecognizeGesture(new RecognizeGestureParameters(gestureFeatures, CancellationToken.None));
 					}
 					else
-						return new GestureRecognitionResult(false, "Error during calculating features for gesture.");
+						return new RecognizeGestureResult(false, "Error during calculating features for gesture.");
 				}
 
-				return new GestureRecognitionResult(false, "No frames for gesture to recognize.");
+				return new RecognizeGestureResult(false, "No frames for gesture to recognize.");
 			}
 			finally
 			{

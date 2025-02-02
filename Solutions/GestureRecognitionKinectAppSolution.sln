@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35201.131
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{A41A560A-D1F0-47F1-9ED1-D79118B968B7}"
 EndProject
@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Processing", "Processing", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognitionFeaturesProcUnit.UnitTests", "..\Tests\Processing\GestureRecognitionFeaturesProcUnit.UnitTests\GestureRecognitionFeaturesProcUnit.UnitTests.csproj", "{8CB32729-EA42-4381-890A-92977F925952}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognitionProcUnit", "GestureDetectionProcUnit\GestureRecognitionProcUnit.csproj", "{265A16DC-8A2D-408F-A3AA-2AB35C3150BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognitionProcUnit", "..\Processing\GestureRecognitionProcUnit\GestureRecognitionProcUnit.csproj", "{265A16DC-8A2D-408F-A3AA-2AB35C3150BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

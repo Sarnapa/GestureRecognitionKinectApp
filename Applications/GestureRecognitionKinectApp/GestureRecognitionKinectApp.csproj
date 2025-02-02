@@ -93,7 +93,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Messages\DisplayImageChangedMessage.cs" />
     <Compile Include="ViewModels\Messages\FPSValueMessage.cs" />
-    <Compile Include="ViewModels\Messages\GestureDetectionResultMessage.cs" />
+    <Compile Include="ViewModels\Messages\GestureRecognitionResultMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureFeaturesMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureRecordFinishedMessage.cs" />
     <Compile Include="ViewModels\Messages\GestureRecordFrameProcessedMessage.cs" />
@@ -200,13 +200,13 @@
       <Project>{49dd73ce-c7ad-4d29-9946-7b356fa28b0e}</Project>
       <Name>GestureRecognitionFeaturesProcUnit</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Processing\GestureRecognitionProcUnit\GestureRecognitionProcUnit.csproj">
+      <Project>{265a16dc-8a2d-408f-a3aa-2ab35c3150bd}</Project>
+      <Name>GestureRecognitionProcUnit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Processing\KinectStreamRecordReplayProcUnit\KinectStreamRecordReplayProcUnit.csproj">
       <Project>{5770279b-0942-45e9-b618-c4778f802499}</Project>
       <Name>KinectStreamRecordReplayProcUnit</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Solutions\GestureDetectionProcUnit\GestureRecognitionProcUnit.csproj">
-      <Project>{265a16dc-8a2d-408f-a3aa-2ab35c3150bd}</Project>
-      <Name>GestureRecognitionProcUnit</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

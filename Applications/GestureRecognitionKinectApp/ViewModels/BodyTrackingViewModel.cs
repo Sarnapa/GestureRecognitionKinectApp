@@ -11,7 +11,7 @@ using GestureRecognition.Applications.GestureRecognitionKinectApp.Models;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.NavigationService;
-using GestureRecognition.Processing.BaseClassLib.Structures.GestureDetection;
+using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 {
@@ -555,9 +555,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			RaisePropertyChanged(nameof(StartStopGestureRecordButtonTip));
 		}
 
-		private void UpdateGestureRecognizingResultState(GestureRecognitionResult result)
+		private void UpdateGestureRecognizingResultState(RecognizeGestureResult result)
 		{
-			UpdateGestureRecognizingResultState(result?.Text, Visibility.Visible, result?.Success ?? false
+			UpdateGestureRecognizingResultState(result?.Label, Visibility.Visible, result?.Success ?? false
 				? ViewModelsUtils.GetImageUri("SuccessIcon.png") : ViewModelsUtils.GetImageUri("FailedIcon.png"));
 		}
 
