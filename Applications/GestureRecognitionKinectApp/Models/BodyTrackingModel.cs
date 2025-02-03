@@ -303,7 +303,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					var gestureFeatures = await this.gestureRecognitionFeaturesManager.CalculateFeatures(this.gestureToRecognizeBodyFrames.ToArray());
 					if (gestureFeatures != null && gestureFeatures.IsValid)
 					{
-						return await this.gestureRecognitionManager.RecognizeGesture(new RecognizeGestureParameters(gestureFeatures, CancellationToken.None));
+						return await this.gestureRecognitionManager.RecognizeGestureAsync(new RecognizeGestureParameters(gestureFeatures, CancellationToken.None));
 					}
 					else
 						return new RecognizeGestureResult(false, "Error during calculating features for gesture.");

@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.ML;
+using GestureRecognition.Processing.BaseClassLib.Mappers;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
 using GestureRecognition.Processing.BaseClassLib.Utils;
+using GestureRecognition.Processing.GestureRecognitionProcUnit.Models.TGM1;
 
 namespace GestureRecognition.Processing.GestureRecognitionProcUnit
 {
   public class GestureRecognitionManager
 	{
 		#region Private fields
-		private Random rand = new Random();
-		private MLContext mlContext;
 		#endregion
 
 		#region Public properties
@@ -28,9 +28,7 @@ namespace GestureRecognition.Processing.GestureRecognitionProcUnit
 
 		#region Constructors
 		public GestureRecognitionManager()
-		{
-			this.mlContext = new MLContext(0);
-		}
+		{}
 		#endregion
 
 		#region Public methods
@@ -54,28 +52,58 @@ namespace GestureRecognition.Processing.GestureRecognitionProcUnit
 			return new LoadGestureRecognitionModelResult();
 		}
 
-		public async Task<RecognizeGestureResult> RecognizeGesture(RecognizeGestureParameters parameters)
+		public async Task<RecognizeGestureResult> RecognizeGestureAsync(RecognizeGestureParameters parameters)
 		{
+			return await Task.Run(() => RecognizeGesture(parameters));
+		}
+
+		public RecognizeGestureResult RecognizeGesture(RecognizeGestureParameters parameters)
+		{
+
 			if (parameters == null)
 				throw new ArgumentNullException(nameof(parameters));
+			if (parameters.Features == null)
+				throw new ArgumentNullException(nameof(parameters.Features));
 
-			bool success;
-			string gestureText;
+			bool success = false;
+			string gestureLabel = string.Empty;
 
-			if (rand.Next(2) > 0)
+			if (parameters.Features.IsValid)
 			{
-				success = true;
-				gestureText = "Gesture";
+				var gestureDataView = parameters.Features.Map(string.Empty);
+				var modelInput = gestureDataView.MapToModelInput();
+				try
+				{
+					var modelOutput = TGM1.Predict(modelInput);
+					if (modelOutput != null && !string.IsNullOrEmpty(modelOutput.PredictedLabel))
+					{
+						float score = modelOutput.Score?.Max() ?? float.NaN;
+						if (!float.IsNaN(score) && score > 0.5f)
+						{
+							success = true;
+							gestureLabel = modelOutput.PredictedLabel;
+						}
+						else
+						{
+							gestureLabel = "Gesture unknown";
+						}
+					}
+					else
+					{
+						gestureLabel = "Model return empty result";
+					}
+				}
+				catch (Exception ex)
+				{
+					gestureLabel = "Error during gesture prediction";
+				}
 			}
 			else
 			{
-				success = false;
-				gestureText = "Failed";
+				gestureLabel = "Invalid features";
 			}
 
-			await Task.Delay(3000);
-
-			return new RecognizeGestureResult(success, gestureText);
+			return new RecognizeGestureResult(success, gestureLabel);
 		}
 		#endregion
 
