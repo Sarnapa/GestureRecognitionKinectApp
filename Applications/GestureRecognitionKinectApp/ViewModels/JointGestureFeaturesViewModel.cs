@@ -40,7 +40,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get
 			{
-				return ViewModelsUtils.Format(this.features.F1F2SpatialAngle);
+				return ViewModelsUtils.Format(this.features.F1FNSpatialAngle);
 			}
 		}
 
