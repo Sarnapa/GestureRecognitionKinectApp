@@ -150,6 +150,9 @@ Further actions canceled.</value>
   <data name="GestureFeaturesInformation" xml:space="preserve">
     <value>Gesture features information</value>
   </data>
+  <data name="ImportModel" xml:space="preserve">
+    <value>Import gesture recognition model</value>
+  </data>
   <data name="ImportRecordIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ImportRecordIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

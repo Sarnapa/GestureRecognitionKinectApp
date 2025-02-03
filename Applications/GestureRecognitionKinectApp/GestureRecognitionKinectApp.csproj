@@ -258,5 +258,9 @@
   <ItemGroup>
     <Resource Include="Resources\PrepareGesturesData.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ExportModel.png" />
+    <Resource Include="Resources\ImportModel.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

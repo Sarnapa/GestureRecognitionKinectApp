@@ -26,6 +26,9 @@
 
         <ToolBar Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                 ToolBarTray.IsLocked="True" Loaded="ToolBar_Loaded">
+            <Button Visibility="{Binding ImportGestureRecognitionModelButtonVisibility}" ToolTip="{Binding ImportGestureRecognitionModelButtonTip}" Command="{Binding ImportGestureRecognitionModelCommand}">
+                <Image Source="{Binding ImportGestureRecognitionModelButtonImageUri}"/>
+            </Button>
             <Button Visibility="{Binding ImportGestureRecordButtonVisibility}" ToolTip="{Binding ImportGestureRecordButtonTip}" Command="{Binding ImportGestureRecordCommand}">
                 <Image Source="{Binding ImportGestureRecordButtonImageUri}"/>
             </Button>

@@ -176,6 +176,33 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			}
 		}
 
+		public Visibility ImportGestureRecognitionModelButtonVisibility
+		{
+			get
+			{
+				// TODO: Change when mechanism will be ready
+				//return this.model.TrackingState == BodyTrackingState.Standard
+				//	? Visibility.Visible : Visibility.Hidden;
+				return Visibility.Collapsed;
+			}
+		}
+
+		public string ImportGestureRecognitionModelButtonTip
+		{
+			get
+			{
+				return Properties.Resources.ImportModel;
+			}
+		}
+
+		public string ImportGestureRecognitionModelButtonImageUri
+		{
+			get
+			{
+				return ViewModelsUtils.GetImageUri("ImportModel.png");
+			}
+		}
+
 		public Visibility ImportGestureRecordButtonVisibility
 		{
 			get
@@ -313,6 +340,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get; private set;
 		}
+		public RelayCommand ImportGestureRecognitionModelCommand
+		{
+			get;
+			private set;
+		}
 		public RelayCommand ImportGestureRecordCommand
 		{
 			get; private set;
@@ -342,6 +374,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			this.countdownTimer.AutoReset = true;
 			this.countdownTimer.Elapsed += CountdownTimerElapsedHandler;
 			this.StartCommand = new RelayCommand(this.StartCommandAction);
+			this.ImportGestureRecognitionModelCommand = new RelayCommand(this.ImportGestureRecognitionModelCommandAction);
 			this.ImportGestureRecordCommand = new RelayCommand(this.ImportGestureRecordCommandAction);
 			this.PrepareGesturesDataCommand = new RelayCommand(this.PrepareGesturesDataCommandAction);
 			this.StartStopGestureRecordCommand = new RelayCommand(this.StartStopGestureRecordCommandAction);
@@ -362,6 +395,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		private void StartCommandAction()
 		{
 			this.model.Start();
+		}
+
+		private void ImportGestureRecognitionModelCommandAction()
+		{
 		}
 
 		private void ImportGestureRecordCommandAction()

@@ -158,6 +158,15 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import gesture recognition model.
+        /// </summary>
+        internal static string ImportModel {
+            get {
+                return ResourceManager.GetString("ImportModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap ImportRecordIcon {

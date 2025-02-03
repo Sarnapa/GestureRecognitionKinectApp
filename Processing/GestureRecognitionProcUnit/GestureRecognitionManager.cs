@@ -80,6 +80,8 @@ namespace GestureRecognition.Processing.GestureRecognitionProcUnit
 		#endregion
 
 		#region Private methods
+
+		#region Gestures from / to .csv files methods
 		private List<GestureDataView> LoadGesturesDataFromFiles(string[] filesPaths)
 		{
 			if (filesPaths == null)
@@ -118,6 +120,7 @@ namespace GestureRecognition.Processing.GestureRecognitionProcUnit
 				return false;
 			}
 		}
+		#endregion
 
 		#endregion
 	}
