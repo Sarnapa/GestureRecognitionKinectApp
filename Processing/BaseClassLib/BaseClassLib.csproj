@@ -42,9 +42,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mappers\BodyMapper.cs" />
     <Compile Include="Mappers\GestureRecognitionMapper.cs" />
-    <Compile Include="Mappers\KinectMappers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Structures\Body\BodyData.cs" />
+    <Compile Include="Structures\Body\BodyDataWithColorSpacePoints.cs" />
+    <Compile Include="Structures\Body\BodyJointsColorSpacePointsDict.cs" />
+    <Compile Include="Structures\Body\Bone.cs" />
+    <Compile Include="Structures\Body\BonesDefinition.cs" />
+    <Compile Include="Structures\Body\HandState.cs" />
+    <Compile Include="Structures\Body\Joint.cs" />
+    <Compile Include="Structures\Body\JointType.cs" />
+    <Compile Include="Structures\Body\TrackingConfidence.cs" />
+    <Compile Include="Structures\Body\TrackingState.cs" />
     <Compile Include="Structures\GestureRecognitionFeatures\GestureFeatures.cs" />
     <Compile Include="Structures\GestureRecognitionFeatures\GestureRecognitionDefinitions.cs" />
     <Compile Include="Structures\GestureRecognitionFeatures\JointBoundingBox.cs" />
@@ -59,21 +69,16 @@
     <Compile Include="Structures\GestureRecognition\PrepareGesturesDataForRecognitionModelResult.cs" />
     <Compile Include="Structures\GestureRecognition\RecognizeGestureParameters.cs" />
     <Compile Include="Structures\GestureRecognition\RecognizeGestureResult.cs" />
-    <Compile Include="Structures\Kinect\BodyData.cs" />
-    <Compile Include="Structures\Kinect\BodyDataWithColorSpacePoints.cs" />
-    <Compile Include="Structures\Kinect\BodyJointsColorSpacePointsDict.cs" />
-    <Compile Include="Structures\Kinect\Bone.cs" />
     <Compile Include="Structures\GestureRecognitionFeatures\BoneJointsAngleData.cs" />
-    <Compile Include="Structures\Kinect\BonesDefinitions.cs" />
+    <Compile Include="Structures\Streaming\BodyFrame.cs" />
+    <Compile Include="Structures\Streaming\ColorFrame.cs" />
+    <Compile Include="Structures\Streaming\ColorImageFormat.cs" />
     <Compile Include="Utils\CsvHelperUtils.cs" />
     <Compile Include="Utils\DataViewsUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CsvHelper">
       <Version>33.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Kinect">
-      <Version>2.0.1410.19000</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.ML">
       <Version>4.0.1</Version>

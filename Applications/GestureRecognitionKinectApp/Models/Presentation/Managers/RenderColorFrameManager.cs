@@ -2,8 +2,8 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Color;
-using Microsoft.Kinect;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers
 {
@@ -22,23 +22,25 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 			if (colorImage == null)
 				throw new ArgumentNullException(nameof(colorImage));
 
-			var colorFrameDescription = colorFrame.FrameDescription;
-			using (var colorBuffer = colorFrame.LockRawImageBuffer())
+			// Verify data and write the new color frame data to the display bitmap
+			if ((colorFrame.Width == frameWidth) && (colorFrame.Height == frameHeight))
 			{
-				// Verify data and write the new color frame data to the display bitmap
-				if ((colorFrameDescription.Width == frameWidth) && (colorFrameDescription.Height == frameHeight))
+				colorImage.Lock();
+				try
 				{
-					colorFrame.CopyConvertedFrameDataToIntPtr(
-						colorImage.BackBuffer,
-						(uint)(frameWidth * frameHeight * 4),
-						ColorImageFormat.Bgra);
-
+					var rect = new Int32Rect(0, 0, frameWidth, frameHeight);
+					int stride = frameWidth * Convert.ToInt32(colorFrame.BytesPerPixel);
+					colorImage.WritePixels(rect, colorFrame.ColorData, stride, 0);
+				}
+				finally
+				{
 					colorImage.AddDirtyRect(new Int32Rect(0, 0, frameWidth, frameHeight));
+					colorImage.Unlock();
 				}
-				else
-				{
-					// TODO: Throw exception
-				}
+			}
+			else
+			{
+				// TODO: Throw exception
 			}
 		}
 

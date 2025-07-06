@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using Microsoft.Kinect;
-using GestureRecognition.Processing.BaseClassLib.Mappers;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures;
-using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 
 namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 {
@@ -21,11 +19,6 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 			return GetVector(bodyFrames, jointType, (v1, v2) => MathHelper.CalculateSpatialAngle(v1, v2));
 		}
 
-		public static double[] CalculateAngleVector(IEnumerable<CameraSpacePoint> jointsPositions)
-		{
-			return CalculateAngleVector(jointsPositions?.Map());
-		}
-
 		public static double[] CalculateAngleVector(IEnumerable<Vector3> jointsPositions)
 		{
 			return GetVector(jointsPositions, (v1, v2) => MathHelper.CalculateSpatialAngle(v1, v2));
@@ -38,11 +31,6 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 			return angleVector?.FirstOrDefault();
 		}
 
-		public static double CalculateF1F2SpatialAngle(CameraSpacePoint f1JointPosition, CameraSpacePoint f2JointPosition)
-		{
-			return CalculateF1F2SpatialAngle(f1JointPosition.Map(), f2JointPosition.Map());
-		}
-
 		public static double CalculateF1F2SpatialAngle(Vector3 f1JointPosition, Vector3 f2JointPosition)
 		{
 			return MathHelper.CalculateSpatialAngle(f1JointPosition, f2JointPosition);
@@ -53,11 +41,6 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		public static double? GetFN_1FNSpatialAngle(double?[] angleVector)
 		{
 			return angleVector?.LastOrDefault();
-		}
-
-		public static double CalculateFN_1FNSpatialAngle(CameraSpacePoint fN_1JointPosition, CameraSpacePoint fNJointPosition)
-		{
-			return CalculateFN_1FNSpatialAngle(fN_1JointPosition.Map(), fNJointPosition.Map());
 		}
 
 		public static double CalculateFN_1FNSpatialAngle(Vector3 fN_1JointPosition, Vector3 fNJointPosition)
@@ -77,11 +60,6 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 			return GetVector(new[] { bodyFrame1, bodyFrameN }, jointType, (v1, v2) => MathHelper.CalculateSpatialAngle(v1, v2))?.FirstOrDefault();
 		}
 
-		public static double CalculateF1FNSpatialAngle(CameraSpacePoint f1JointPosition, CameraSpacePoint fNJointPosition)
-		{
-			return CalculateF1FNSpatialAngle(f1JointPosition.Map(), fNJointPosition.Map());
-		}
-
 		public static double CalculateF1FNSpatialAngle(Vector3 f1JointPosition, Vector3 fNJointPosition)
 		{
 			return MathHelper.CalculateSpatialAngle(f1JointPosition, fNJointPosition);
@@ -93,11 +71,6 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		{
 			var filteredAngleVector = angleVector?.Where(a => a.HasValue).Select(a => a.Value);
 			return filteredAngleVector != null && filteredAngleVector.Any() ? (double?)filteredAngleVector.Sum() : null;
-		}
-
-		public static double CalculateTotalVectorAngle(IEnumerable<CameraSpacePoint> jointsPositions)
-		{
-			return CalculateTotalVectorAngle(jointsPositions?.Map());
 		}
 
 		public static double CalculateTotalVectorAngle(IEnumerable<Vector3> jointsPositions)
@@ -113,11 +86,6 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 			return filteredAngleVector != null && filteredAngleVector.Any() ? (double?)filteredAngleVector.Sum(a => Math.Pow(a, 2)) : null;
 		}
 
-		public static double CalculateSquaredTotalVectorAngle(IEnumerable<CameraSpacePoint> jointsPositions)
-		{
-			return CalculateSquaredTotalVectorAngle(jointsPositions?.Map());
-		}
-
 		public static double CalculateSquaredTotalVectorAngle(IEnumerable<Vector3> jointsPositions)
 		{
 			return Sum(jointsPositions, (v1, v2) => Math.Pow(MathHelper.CalculateSpatialAngle(v1, v2), 2));
@@ -128,11 +96,6 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		public static double?[] CalculateDisplacementVector(BodyData[] bodyFrames, JointType jointType)
 		{
 			return GetVector(bodyFrames, jointType, (v1, v2) => MathHelper.Distance(v1, v2));
-		}
-
-		public static double[] CalculateDisplacementVector(IEnumerable<CameraSpacePoint> jointsPositions)
-		{
-			return CalculateDisplacementVector(jointsPositions?.Map());
 		}
 
 		public static double[] CalculateDisplacementVector(IEnumerable<Vector3> jointsPositions)
@@ -152,11 +115,6 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 			return GetVector(new[] { bodyFrame1, bodyFrameN }, jointType, (v1, v2) => MathHelper.Distance(v1, v2))?.FirstOrDefault();
 		}
 
-		public static double CalculateTotalVectorDisplacement(CameraSpacePoint f1JointPosition, CameraSpacePoint fNJointPosition)
-		{
-			return CalculateTotalVectorDisplacement(f1JointPosition.Map(), fNJointPosition.Map());
-		}
-
 		public static double CalculateTotalVectorDisplacement(Vector3 f1JointPosition, Vector3 fNJointPosition)
 		{
 			return MathHelper.Distance(f1JointPosition, fNJointPosition);
@@ -168,11 +126,6 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		{
 			var filteredDisplacementVector = displacementVector?.Where(d => d.HasValue).Select(d => d.Value);
 			return filteredDisplacementVector != null && filteredDisplacementVector.Any() ? (double?)filteredDisplacementVector.Sum() : null;
-		}
-
-		public static double CalculateTotalDisplacement(IEnumerable<CameraSpacePoint> jointsPositions)
-		{
-			return CalculateTotalDisplacement(jointsPositions?.Map());
 		}
 
 		public static double CalculateTotalDisplacement(IEnumerable<Vector3> jointsPositions)
@@ -295,8 +248,8 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 				var childJoint = GetJoint(bodyFrame, bone.ChildJoint);
 				if (parentJoint.HasValue && childJoint.HasValue)
 				{
-					var parentJointPos = parentJoint.Value.Position.Map();
-					var childJointPos = childJoint.Value.Position.Map();
+					var parentJointPos = parentJoint.Value.Position;
+					var childJointPos = childJoint.Value.Position;
 					// TODO: MP: To ogranicza nas do siedzenia w określonej odległości od sensora.
 					var referencePoint = new Vector3(parentJointPos.X, 1f, 0f);
 
@@ -363,8 +316,8 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 				var joint2 = GetJoint(bodyFrame, jointType2);
 				if (joint1.HasValue && joint2.HasValue)
 				{
-					var joint1Pos = joint1.Value.Position.Map();
-					var joint2Pos = joint2.Value.Position.Map();
+					var joint1Pos = joint1.Value.Position;
+					var joint2Pos = joint2.Value.Position;
 
 					res.Add(MathHelper.Distance(joint1Pos, joint2Pos));
 				}
@@ -445,8 +398,8 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 				var firstBodyFrameJoint = GetJoint(firstBodyFrame, jointType);
 				var secondBodyFrameJoint = GetJoint(secondBodyFrame, jointType);
 				if (firstBodyFrameJoint.HasValue && secondBodyFrameJoint.HasValue)
-					res.Add(calculationFunc(firstBodyFrameJoint.Value.Position.Map(),
-						secondBodyFrameJoint.Value.Position.Map()));
+					res.Add(calculationFunc(firstBodyFrameJoint.Value.Position,
+						secondBodyFrameJoint.Value.Position));
 				else
 					res.Add(null);
 			}

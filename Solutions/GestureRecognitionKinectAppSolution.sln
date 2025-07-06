@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2E3C99D8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognitionKinectApp", "..\Applications\GestureRecognitionKinectApp\GestureRecognitionKinectApp.csproj", "{82923549-CA92-4C04-AA92-0FCCF0651BEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectStreamRecordReplayProcUnit", "..\Processing\KinectStreamRecordReplayProcUnit\KinectStreamRecordReplayProcUnit.csproj", "{5770279B-0942-45E9-B618-C4778F802499}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamRecordReplayProcUnit", "..\Processing\KinectStreamRecordReplayProcUnit\StreamRecordReplayProcUnit.csproj", "{5770279B-0942-45E9-B618-C4778F802499}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognitionFeaturesProcUnit", "..\Processing\GestureRecognitionFeaturesProcUnit\GestureRecognitionFeaturesProcUnit.csproj", "{49DD73CE-C7AD-4D29-9946-7B356FA28B0E}"
 EndProject
@@ -22,6 +22,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognitionFeaturesProcUnit.UnitTests", "..\Tests\Processing\GestureRecognitionFeaturesProcUnit.UnitTests\GestureRecognitionFeaturesProcUnit.UnitTests.csproj", "{8CB32729-EA42-4381-890A-92977F925952}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognitionProcUnit", "..\Processing\GestureRecognitionProcUnit\GestureRecognitionProcUnit.csproj", "{265A16DC-8A2D-408F-A3AA-2AB35C3150BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLNETProcUnit.UnitTests", "..\Tests\Processing\MLNETProcUnit.UnitTests\MLNETProcUnit.UnitTests.csproj", "{EFB1F9D9-20FF-45A6-8497-42251B1E2313}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLNETProcUnit", "..\Processing\MLNETProcUnit\MLNETProcUnit.csproj", "{A5132625-78EB-40BB-8AC0-29363C780CB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kinect", "Kinect", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectClassLib", "..\Processing\Kinect\KinectClassLib\KinectClassLib.csproj", "{3F1D7DD4-4D5D-420E-9EDA-856EB19136A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +61,18 @@ Global
 		{265A16DC-8A2D-408F-A3AA-2AB35C3150BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{265A16DC-8A2D-408F-A3AA-2AB35C3150BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{265A16DC-8A2D-408F-A3AA-2AB35C3150BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFB1F9D9-20FF-45A6-8497-42251B1E2313}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFB1F9D9-20FF-45A6-8497-42251B1E2313}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFB1F9D9-20FF-45A6-8497-42251B1E2313}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFB1F9D9-20FF-45A6-8497-42251B1E2313}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5132625-78EB-40BB-8AC0-29363C780CB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5132625-78EB-40BB-8AC0-29363C780CB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5132625-78EB-40BB-8AC0-29363C780CB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5132625-78EB-40BB-8AC0-29363C780CB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F1D7DD4-4D5D-420E-9EDA-856EB19136A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F1D7DD4-4D5D-420E-9EDA-856EB19136A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F1D7DD4-4D5D-420E-9EDA-856EB19136A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F1D7DD4-4D5D-420E-9EDA-856EB19136A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +85,10 @@ Global
 		{96E3129E-DD6E-4CFA-80DB-DE3A14387239} = {2E3C99D8-73C7-49BD-B7DE-95262CCCA450}
 		{8CB32729-EA42-4381-890A-92977F925952} = {96E3129E-DD6E-4CFA-80DB-DE3A14387239}
 		{265A16DC-8A2D-408F-A3AA-2AB35C3150BD} = {3781FC4E-1641-4B92-B381-17C7800ECE70}
+		{EFB1F9D9-20FF-45A6-8497-42251B1E2313} = {96E3129E-DD6E-4CFA-80DB-DE3A14387239}
+		{A5132625-78EB-40BB-8AC0-29363C780CB3} = {3781FC4E-1641-4B92-B381-17C7800ECE70}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {3781FC4E-1641-4B92-B381-17C7800ECE70}
+		{3F1D7DD4-4D5D-420E-9EDA-856EB19136A6} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {08987FA6-B986-4650-AD85-E1111EBF06CC}

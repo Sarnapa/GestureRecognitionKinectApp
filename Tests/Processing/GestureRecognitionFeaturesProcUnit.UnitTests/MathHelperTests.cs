@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures;
 using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
 
-namespace GestureRecognitionFeaturesProcUnit.UnitTests
+namespace GestureRecognition.Tests.Processing.GestureRecognitionFeaturesProcUnit.UnitTests
 {
 	[TestClass]
 	public class MathHelperTests

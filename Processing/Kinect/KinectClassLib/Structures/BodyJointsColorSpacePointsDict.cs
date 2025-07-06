@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Kinect;
 
-namespace GestureRecognition.Processing.BaseClassLib.Structures.Kinect
+namespace GestureRecognition.Processing.Kinect.KinectClassLib.Structures
 {
 	[Serializable]
-	public class BodyJointsColorSpacePointsDict : IDictionary<JointType, ColorSpacePoint>
+	public class BodyJointsColorSpacePointsDict: IDictionary<JointType, ColorSpacePoint>
 	{
 		#region Private fields
 		private IDictionary<JointType, ColorSpacePoint> internalDict;

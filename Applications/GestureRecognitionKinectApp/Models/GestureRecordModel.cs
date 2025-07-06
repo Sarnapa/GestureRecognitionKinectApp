@@ -12,9 +12,9 @@ using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Present
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Processing.BaseClassLib.Mappers;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures;
-using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
 using GestureRecognition.Processing.BaseClassLib.Utils;
 using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay;
@@ -58,7 +58,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// <summary>
 		/// Load gesture record from file and replay it
 		/// </summary>
-		private KinectReplay gestureReplay;
+		private Replay gestureReplay;
 
 		/// <summary>
 		/// Determines time when gesture record is repeated
@@ -187,7 +187,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				if (tryLoadGestureData)
 					LoadGestureData();
 
-				this.gestureReplay = new KinectReplay(this.gestureRecordFile);
+				this.gestureReplay = new Replay(this.gestureRecordFile);
 				this.gestureReplay.AllFramesReady += GestureReplay_AllFramesReady;
 				this.gestureReplay.Finished += GestureReplay_Finished;
 				this.gestureReplay.Start();

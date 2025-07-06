@@ -1,8 +1,8 @@
-﻿using Microsoft.Kinect;
-using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
+﻿using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures;
 using static GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures.GestureRecognitionDefinitions;
-using static GestureRecognition.Processing.BaseClassLib.Structures.Kinect.BonesDefinitions;
+using static GestureRecognition.Processing.BaseClassLib.Structures.Body.BonesDefinitions;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 
 namespace GestureRecognition.Processing.BaseClassLib.Mappers
 {

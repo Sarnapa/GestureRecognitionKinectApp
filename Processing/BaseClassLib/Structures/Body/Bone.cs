@@ -1,9 +1,8 @@
 ﻿using System;
-using Microsoft.Kinect;
 
-namespace GestureRecognition.Processing.BaseClassLib.Structures.Kinect
+namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 {
-	public class Bone : IEquatable<Bone>
+	public class Bone: IEquatable<Bone>
 	{
 		#region Public properties
 		public JointType ParentJoint

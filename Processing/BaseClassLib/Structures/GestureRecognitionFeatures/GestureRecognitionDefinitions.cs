@@ -1,6 +1,5 @@
-﻿using Microsoft.Kinect;
-using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
-using static GestureRecognition.Processing.BaseClassLib.Structures.Kinect.BonesDefinitions;
+﻿using GestureRecognition.Processing.BaseClassLib.Structures.Body;
+using static GestureRecognition.Processing.BaseClassLib.Structures.Body.BonesDefinitions;
 
 namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures
 {

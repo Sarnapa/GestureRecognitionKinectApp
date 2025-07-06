@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using Microsoft.Kinect;
-using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies;
-using static GestureRecognition.Processing.BaseClassLib.Structures.Kinect.BonesDefinitions;
+using static GestureRecognition.Processing.BaseClassLib.Structures.Body.BonesDefinitions;
 using static GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures.GestureRecognitionDefinitions;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers

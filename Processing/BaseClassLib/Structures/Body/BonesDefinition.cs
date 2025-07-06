@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Kinect;
 
-namespace GestureRecognition.Processing.BaseClassLib.Structures.Kinect
+namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 {
 	public static class BonesDefinitions
 	{

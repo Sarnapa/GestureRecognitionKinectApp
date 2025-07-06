@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.Kinect;
 
-namespace GestureRecognition.Processing.BaseClassLib.Structures.Kinect
+namespace GestureRecognition.Processing.Kinect.KinectClassLib.Structures
 {
 	[Serializable]
-	public sealed class BodyDataWithColorSpacePoints : BodyData
+	public sealed class BodyDataWithColorSpacePoints: BodyData
 	{
 		#region Public properties
 		public BodyJointsColorSpacePointsDict JointsColorSpacePoints

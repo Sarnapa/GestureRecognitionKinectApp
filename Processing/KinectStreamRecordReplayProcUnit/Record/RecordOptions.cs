@@ -3,7 +3,7 @@
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record
 {
 	[Flags]
-	public enum KinectRecordOptions
+	public enum RecordOptions
 	{
 		Color = 1,
 		Bodies = 2,

@@ -2,19 +2,15 @@
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using Microsoft.Kinect;
 using GestureRecognition.Processing.BaseClassLib.Mappers;
-using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
+using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies
 {
 	public class ReplayBodyFrame : ReplayFrame
 	{
 		#region Public properties
-		public Vector4 FloorClipPlane
-		{
-			get; private set;
-		}
 		public BodyDataWithColorSpacePoints[] Bodies
 		{
 			get; private set;
@@ -28,13 +24,9 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.
 				throw new ArgumentNullException(nameof(frame));
 
 			this.TimeStamp = (long)frame.RelativeTime.TotalMilliseconds;
-			this.FloorClipPlane = frame.FloorClipPlane;
 			
 			// Without color space coordinations for bodies joints
-			var bodies = new Body[frame.BodyCount];
-			frame.GetAndRefreshBodyData(bodies);
-
-			var bodiesWithJointsColorSpacePoints = bodies.Select(b => (b, new BodyJointsColorSpacePointsDict()));
+			var bodiesWithJointsColorSpacePoints = frame.Bodies.Select(b => (b, new BodyJointsColorSpacePointsDict()));
 			this.Bodies = bodiesWithJointsColorSpacePoints.Map();
 		}
 
@@ -53,13 +45,6 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.
 		internal override void CreateFromReader(BinaryReader reader)
 		{
 			this.TimeStamp = reader.ReadInt64();
-			// This is not necessary
-			//this.FloorClipPlane = new Vector4 {
-			//	X = reader.ReadSingle(),
-			//	Y = reader.ReadSingle(),
-			//	Z = reader.ReadSingle(),
-			//	W = reader.ReadSingle()
-			//};
 
 			var formatter = new BinaryFormatter();
 			this.Bodies = (BodyDataWithColorSpacePoints[])formatter.Deserialize(reader.BaseStream);

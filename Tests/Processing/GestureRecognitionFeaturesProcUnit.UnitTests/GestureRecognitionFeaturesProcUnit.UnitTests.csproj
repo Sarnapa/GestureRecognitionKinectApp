@@ -7,7 +7,7 @@
     <ProjectGuid>{8CB32729-EA42-4381-890A-92977F925952}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GestureRecognitionFeaturesProcUnit.UnitTests</RootNamespace>
+    <RootNamespace>GestureRecognition.Tests.Processing.GestureRecognitionFeaturesProcUnit.UnitTests</RootNamespace>
     <AssemblyName>GestureRecognitionFeaturesProcUnit.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -48,10 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MSTest.TestAdapter">
-      <Version>3.7.3</Version>
+      <Version>3.9.3</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
-      <Version>3.7.3</Version>
+      <Version>3.9.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@ using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Colo
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 {
-	public class KinectReplay : IDisposable
+	public class Replay : IDisposable
 	{
 		#region Private fields
 		private BinaryReader reader;
@@ -52,16 +52,16 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 		#endregion
 
 		#region Constructors
-		public KinectReplay(Stream stream)
+		public Replay(Stream stream)
 		{
 			this.stream = stream;
 			this.reader = new BinaryReader(stream);
 
 			this.synchronizationContext = SynchronizationContext.Current;
 
-			var options = (KinectRecordOptions)reader.ReadInt32();
+			var options = (RecordOptions)reader.ReadInt32();
 
-			if ((options & KinectRecordOptions.All) != 0)
+			if ((options & RecordOptions.All) != 0)
 			{
 				this.allReplay = new ReplayAllFramesSystem();
 				while (this.reader.BaseStream.Position != this.reader.BaseStream.Length)
@@ -69,20 +69,20 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 			}
 			else
 			{
-				if ((options & KinectRecordOptions.Color) != 0)
+				if ((options & RecordOptions.Color) != 0)
 					this.colorReplay = new ReplaySystem<ReplayColorFrame>();
-				if ((options & KinectRecordOptions.Bodies) != 0)
+				if ((options & RecordOptions.Bodies) != 0)
 					this.bodyReplay = new ReplaySystem<ReplayBodyFrame>();
 
 				while (this.reader.BaseStream.Position != this.reader.BaseStream.Length)
 				{
-					var header = (KinectRecordOptions)reader.ReadInt32();
+					var header = (RecordOptions)reader.ReadInt32();
 					switch (header)
 					{
-						case KinectRecordOptions.Color:
+						case RecordOptions.Color:
 							this.colorReplay.AddFrame(this.reader);
 							break;
-						case KinectRecordOptions.Bodies:
+						case RecordOptions.Bodies:
 							this.bodyReplay.AddFrame(this.reader);
 							break;
 					}
@@ -188,7 +188,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 				this.stream.Dispose();
 				this.stream = null;
 			}
-			#endregion
 		}
+		#endregion
 	}
 }

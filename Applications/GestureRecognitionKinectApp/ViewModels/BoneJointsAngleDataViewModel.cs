@@ -1,6 +1,6 @@
 ﻿using System;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures;
-using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 {

@@ -2,23 +2,26 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Kinect;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Utilities;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
-using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
+using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record;
 using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
 using GestureRecognition.Processing.GestureRecognitionProcUnit;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing;
+using Kinect = Microsoft.Kinect;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 {
@@ -73,22 +76,22 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// <summary>
 		/// Active Kinect sensor
 		/// </summary>
-		private KinectSensor kinectSensor;
+		private Kinect.KinectSensor kinectSensor;
 
 		/// <summary>
 		/// Reader for frames from multiple sources
 		/// </summary>
-		private MultiSourceFrameReader multiSourceReader;
+		private Kinect.MultiSourceFrameReader multiSourceReader;
 
 		/// <summary>
 		/// Coordinate mapper to map one type of point to another
 		/// </summary>
-		private CoordinateMapper coordinateMapper;
+		private Kinect.CoordinateMapper coordinateMapper;
 
 		/// <summary>
 		/// Records gesture (color and skeleton data)
 		/// </summary>
-		private KinectRecorder gestureRecorder;
+		private Recorder gestureRecorder;
 
 		/// <summary>
 		/// Access to file containing gesture record
@@ -98,7 +101,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// <summary>
 		/// Access to tracked user skeleton data
 		/// </summary>
-		private Body currentTrackedBody;
+		private BodyData currentTrackedBody;
 
 		/// <summary>
 		/// Dictionary: current tracked body joint -> joint localization in color space
@@ -240,16 +243,16 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		public void Start()
 		{
 			// One sensor is currently supported
-			this.kinectSensor = KinectSensor.GetDefault();
+			this.kinectSensor = Kinect.KinectSensor.GetDefault();
 			this.kinectSensor.IsAvailableChanged += this.Sensor_IsAvailableChanged;
 
 			// Open the reader for the body frames
-			this.multiSourceReader = this.kinectSensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body);
+			this.multiSourceReader = this.kinectSensor.OpenMultiSourceFrameReader(Kinect.FrameSourceTypes.Color | Kinect.FrameSourceTypes.Body);
 
 			// Get the coordinate mapper
 			this.coordinateMapper = this.kinectSensor.CoordinateMapper;
 
-			var colorFrameDescription = this.kinectSensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
+			var colorFrameDescription = this.kinectSensor.ColorFrameSource.CreateFrameDescription(Kinect.ColorImageFormat.Bgra);
 			this.displayImageWidth = colorFrameDescription.Width;
 			this.displayImageHeight = colorFrameDescription.Height;
 
@@ -350,7 +353,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// </summary>
 		/// <param name="sender">Object sending the event</param>
 		/// <param name="e">Event arguments</param>
-		private void Reader_FrameArrived(object sender, MultiSourceFrameArrivedEventArgs e)
+		private void Reader_FrameArrived(object sender, Kinect.MultiSourceFrameArrivedEventArgs e)
 		{
 			var multiSourceFrame = e.FrameReference.AcquireFrame();
 
@@ -359,16 +362,18 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				return;
 
 			bool colorImageLocked = false;
-			ColorFrame colorFrame = null;
-			BodyFrame bodyFrame = null;
-			Body prevTrackedBody = this.currentTrackedBody;
+			Kinect.ColorFrame kinectColorFrame = null;
+			Kinect.BodyFrame kinectBodyFrame = null;
+			BodyData prevTrackedBody = this.currentTrackedBody;
 			BodyJointsColorSpacePointsDict prevTrackedBodyJointsColorSpacePointsDict = this.currentTrackedBodyJointsColorSpacePointsDict;
 			int trackedBodiesCount = 0;
 
 			try
 			{
-				colorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame();
-				bodyFrame = multiSourceFrame.BodyFrameReference.AcquireFrame();
+				kinectColorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame();
+				kinectBodyFrame = multiSourceFrame.BodyFrameReference.AcquireFrame();
+				var colorFrame = kinectColorFrame?.Map(ColorImageFormat.Bgra);
+				var bodyFrame = kinectBodyFrame?.Map();
 
 				if (colorFrame != null)
 				{
@@ -382,13 +387,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				if (colorFrame != null && bodyFrame != null && bodyFrame.BodyCount > 0 && !this.IsBodyTrackingStoppedYet)
 				{
 					this.bodyTrackingStoppedTime = null;
-					var bodies = new Body[bodyFrame.BodyCount];
-					// The first time GetAndRefreshBodyData is called, Kinect will allocate each Body in the array.
-					// As long as those body objects are not disposed and not set to null in the array,
-					// those body objects will be re-used.
-					bodyFrame.GetAndRefreshBodyData(bodies);
 
-					var trackedBodies = bodies.Where(b => b != null && b.IsTracked);
+					var trackedBodies = bodyFrame.Bodies.Where(b => b != null && b.IsTracked);
 					trackedBodiesCount = trackedBodies.Count();
 					this.currentTrackedBody = trackedBodiesCount == 1 ? trackedBodies.FirstOrDefault() : null;
 				}
@@ -461,9 +461,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						}
 						else if (!CheckIfStopGestureRecording(prevTrackedBodyJointsColorSpacePointsDict))
 						{
-							if ((this.gestureRecorder.Options & KinectRecordOptions.Color) != 0)
+							if ((this.gestureRecorder.Options & RecordOptions.Color) != 0)
 								this.gestureRecorder.Record(colorFrame);
-							if ((this.gestureRecorder.Options & KinectRecordOptions.Bodies) != 0)
+							if ((this.gestureRecorder.Options & RecordOptions.Bodies) != 0)
 								this.gestureRecorder.Record(bodyFrame, new[] { (this.currentTrackedBody, this.currentTrackedBodyJointsColorSpacePointsDict) });
 						}
 						break;
@@ -485,10 +485,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			{
 				if (colorImageLocked)
 					this.colorImage.Unlock();
-				if (colorFrame != null)
-					colorFrame.Dispose();
-				if (bodyFrame != null)
-					bodyFrame.Dispose();
+				if (kinectColorFrame != null)
+					kinectColorFrame.Dispose();
+				if (kinectBodyFrame != null)
+					kinectBodyFrame.Dispose();
 			}
 		}
 
@@ -497,7 +497,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// </summary>
 		/// <param name="sender">Object sending the event</param>
 		/// <param name="e">Event arguments</param>
-		private void Sensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
+		private void Sensor_IsAvailableChanged(object sender, Kinect.IsAvailableChangedEventArgs e)
 		{
 			// On failure, set the status text
 			if (this.kinectSensor != null)
@@ -522,17 +522,17 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#endregion
 
 		#region Convert body joints coordinations to color coordinations methods
-		private BodyJointsColorSpacePointsDict ConvertToColorSpace(Body body)
+		private BodyJointsColorSpacePointsDict ConvertToColorSpace(BodyData body)
 		{
 			return ConvertToColorSpace(new[] { body }).FirstOrDefault().Item2;
 		}
 
-		private IEnumerable<(Body, BodyJointsColorSpacePointsDict)> ConvertToColorSpace(IEnumerable<Body> bodies)
+		private (BodyData, BodyJointsColorSpacePointsDict)[] ConvertToColorSpace(IEnumerable<BodyData> bodies)
 		{
 			if (bodies == null || !bodies.Any())
-				return Enumerable.Empty<(Body, BodyJointsColorSpacePointsDict)>();
+				return new (BodyData, BodyJointsColorSpacePointsDict)[] { };
 
-			return bodies.Select(b => (b, ConvertToColorSpace(b?.Joints)));
+			return bodies.Select(b => (b, ConvertToColorSpace(b?.Joints))).ToArray();
 		}
 
 		private BodyJointsColorSpacePointsDict ConvertToColorSpace(IReadOnlyDictionary<JointType, Joint> joints)
@@ -544,7 +544,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				foreach (var jointType in joints.Keys)
 				{
 					var position = joints[jointType].Position;
-					jointsPoints[jointType] = this.coordinateMapper.MapCameraPointToColorSpace(position);
+					// TODO: Remember to make this available on the service associated with the Kinect sensor.
+					var kinectPosition = new Kinect.CameraSpacePoint() { X = position.X, Y = position.Y, Z = position.Z };
+					var kinectColorSpacePosition = this.coordinateMapper.MapCameraPointToColorSpace(kinectPosition);
+					jointsPoints[jointType] = kinectColorSpacePosition.Map();
 				}
 			}
 
@@ -553,7 +556,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#endregion
 
 		#region Detecting gestures to start recording / recognizing given gesture
-		private bool UpdateGestureToStartRecordingDetectionState(Body trackedBody)
+		private bool UpdateGestureToStartRecordingDetectionState(BodyData trackedBody)
 		{
 			bool isRightHandClosed = trackedBody.HandRightState == HandState.Closed && trackedBody.HandRightConfidence == TrackingConfidence.High;
 			if (isRightHandClosed)
@@ -583,7 +586,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			return isRightHandClosed;
 		}
 
-		private bool UpdateGestureToStartRecognizingDetectionState(Body trackedBody)
+		private bool UpdateGestureToStartRecognizingDetectionState(BodyData trackedBody)
 		{
 			bool isRightHandOpen = trackedBody.HandRightState == HandState.Open && trackedBody.HandRightConfidence == TrackingConfidence.High;
 			if (isRightHandOpen)
@@ -625,7 +628,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		private void StartGestureRecording(bool isGestureToRecognize = false)
 		{
 			CreateTemporaryRecordFile();
-			this.gestureRecorder = new KinectRecorder(isGestureToRecognize ? KinectRecordOptions.Bodies : KinectRecordOptions.All,
+			this.gestureRecorder = new Recorder(isGestureToRecognize ? RecordOptions.Bodies : RecordOptions.All,
 				this.gestureRecordFile, Consts.GestureRecordResizingCoef);
 			this.gestureToStartProcessStartTime = null;
 			this.gestureRecordStartTime = DateTime.Now;
@@ -691,7 +694,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				if (joint == JointType.ThumbLeft || joint == JointType.ThumbRight)
 					continue;
 
-				if (!this.currentTrackedBodyJointsColorSpacePointsDict.TryGetValue(joint, out ColorSpacePoint currentPosition))
+				if (!this.currentTrackedBodyJointsColorSpacePointsDict.TryGetValue(joint, out Vector2 currentPosition))
 					return false;
 
 				if (Math.Abs(currentPosition.X - prevPosition.X) > Consts.ColorSpaceBodyJointDisplacementPositionLimit 

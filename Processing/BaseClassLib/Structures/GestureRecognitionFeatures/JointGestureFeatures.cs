@@ -1,6 +1,4 @@
-﻿using Microsoft.Kinect;
-
-namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures
+﻿namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures
 {
 	public class JointGestureFeatures
 	{

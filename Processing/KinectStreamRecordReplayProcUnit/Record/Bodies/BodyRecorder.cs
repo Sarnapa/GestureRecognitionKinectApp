@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
+using System.Numerics;
 using System.Runtime.Serialization.Formatters.Binary;
-using Microsoft.Kinect;
 using GestureRecognition.Processing.BaseClassLib.Mappers;
-using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
+using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.Bodies
 {
@@ -27,29 +28,24 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.
 		#endregion
 
 		#region Public methods
-		public void Record(BodyFrame frame, IEnumerable<(Body, BodyJointsColorSpacePointsDict)> bodies)
+		public void Record(BodyFrame bodyFrame, (BodyData, BodyJointsColorSpacePointsDict)[] bodies)
 		{
-			if (frame == null)
-				throw new ArgumentNullException(nameof(frame));
-			if (frame.BodyCount <= 0)
-				throw new ArgumentException(nameof(frame.BodyCount));
+			if (bodyFrame == null)
+				throw new ArgumentNullException(nameof(bodyFrame));
+			if (bodyFrame.Bodies == null || bodyFrame.Bodies.Length <= 0)
+				throw new ArgumentException(nameof(bodyFrame.Bodies));
 			if (bodies == null)
 				throw new ArgumentNullException(nameof(bodies));
 
 			bodies = GetResizingBodies(bodies);
 
 			// Header
-			this.writer.Write((int)KinectRecordOptions.Bodies);
+			this.writer.Write((int)RecordOptions.Bodies);
 
 			// Data
 			var timeSpan = DateTime.Now.Subtract(referenceTime);
 			this.referenceTime = DateTime.Now;
 			this.writer.Write((long)timeSpan.TotalMilliseconds);
-			// This is not necessary
-			//this.writer.Write(frame.FloorClipPlane.X);
-			//this.writer.Write(frame.FloorClipPlane.Y);
-			//this.writer.Write(frame.FloorClipPlane.Z);
-			//this.writer.Write(frame.FloorClipPlane.W);
 
 			var bodiesData = bodies.Map();
 
@@ -59,14 +55,14 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.
 		#endregion
 
 		#region Private methods
-		private IEnumerable<(Body, BodyJointsColorSpacePointsDict)> GetResizingBodies(IEnumerable<(Body, BodyJointsColorSpacePointsDict)> bodies)
+		private (BodyData, BodyJointsColorSpacePointsDict)[] GetResizingBodies((BodyData, BodyJointsColorSpacePointsDict)[] bodies)
 		{
 			if (bodies == null)
 				throw new ArgumentNullException(nameof(bodies));
 
 			if (this.resizingCoef != 1.0f && bodies.Any())
 			{
-				var newBodies = new List<(Body, BodyJointsColorSpacePointsDict)>();
+				var newBodies = new List<(BodyData, BodyJointsColorSpacePointsDict)>();
 
 				foreach (var kv in bodies)
 				{
@@ -77,7 +73,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.
 					{
 						foreach (var jointPoint in bodyJointsColorSpacePointsDict)
 						{
-							newBodyJointsColorSpacePointsDict[jointPoint.Key] = new ColorSpacePoint()
+							newBodyJointsColorSpacePointsDict[jointPoint.Key] = new Vector2()
 							{
 								X = jointPoint.Value.X * this.resizingCoef,
 								Y = jointPoint.Value.Y * this.resizingCoef
@@ -88,7 +84,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.
 					newBodies.Add((body, newBodyJointsColorSpacePointsDict));
 				}
 
-				return newBodies;
+				return newBodies.ToArray();
 			}
 
 			return bodies;

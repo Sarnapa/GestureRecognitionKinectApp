@@ -81,6 +81,7 @@
     <Compile Include="Models\Presentation\Managers\RenderBodyFrameManager.cs" />
     <Compile Include="Models\Presentation\Structures\Base\AsyncCommand.cs" />
     <Compile Include="Models\Presentation\Structures\Base\AsyncCommandBase.cs" />
+    <Compile Include="Models\Processing\Mappers.cs" />
     <Compile Include="Models\Processing\Structures\Consts.cs" />
     <Compile Include="Models\Processing\Structures\Definitions.cs" />
     <Compile Include="Models\Processing\Utilities\MessageBoxUtils.cs" />
@@ -212,9 +213,9 @@
       <Project>{265a16dc-8a2d-408f-a3aa-2ab35c3150bd}</Project>
       <Name>GestureRecognitionProcUnit</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Processing\KinectStreamRecordReplayProcUnit\KinectStreamRecordReplayProcUnit.csproj">
+    <ProjectReference Include="..\..\Processing\KinectStreamRecordReplayProcUnit\StreamRecordReplayProcUnit.csproj">
       <Project>{5770279b-0942-45e9-b618-c4778f802499}</Project>
-      <Name>KinectStreamRecordReplayProcUnit</Name>
+      <Name>StreamRecordReplayProcUnit</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

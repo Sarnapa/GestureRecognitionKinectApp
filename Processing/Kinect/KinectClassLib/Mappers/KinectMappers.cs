@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using GestureRecognition.Processing.Kinect.KinectClassLib.Structures;
 using Microsoft.Kinect;
-using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
 
-namespace GestureRecognition.Processing.BaseClassLib.Mappers
+namespace GestureRecognition.Processing.Kinect.KinectClassLib.Mappers
 {
 	public static class KinectMappers
 	{

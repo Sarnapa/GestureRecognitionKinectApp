@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Kinect;
 
-namespace GestureRecognition.Processing.BaseClassLib.Structures.Kinect
+namespace GestureRecognition.Processing.Kinect.KinectClassLib.Structures
 {
 	[Serializable]
 	public class BodyData

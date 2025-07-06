@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using Microsoft.Kinect;
-using GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
+using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.Bodies;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.Color;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record
 {
-	public class KinectRecorder : IDisposable
+	public class Recorder : IDisposable
 	{
 		#region Private fields
 		private Stream recordStream;
@@ -21,17 +20,17 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record
 		#endregion
 
 		#region Public properties
-		public KinectRecordOptions Options
+		public RecordOptions Options
 		{
 			get; set;
 		}
 		#endregion
 
 		#region Constructors
-		public KinectRecorder(KinectRecordOptions options, Stream recordStream) : this(options, recordStream, 1.0f)
+		public Recorder(RecordOptions options, Stream recordStream) : this(options, recordStream, 1.0f)
 		{}
 
-		public KinectRecorder(KinectRecordOptions options, Stream recordStream, float resizingCoef)
+		public Recorder(RecordOptions options, Stream recordStream, float resizingCoef)
 		{
 			this.Options = options;
 
@@ -40,11 +39,11 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record
 
 			this.writer.Write((int)this.Options);
 
-			if ((this.Options & KinectRecordOptions.Color) != 0)
+			if ((this.Options & RecordOptions.Color) != 0)
 			{
 				this.colorRecoder = new ColorRecorder(this.writer, resizingCoef);
 			}
-			if ((this.Options & KinectRecordOptions.Bodies) != 0)
+			if ((this.Options & RecordOptions.Bodies) != 0)
 			{
 				this.bodyRecorder = new BodyRecorder(this.writer, resizingCoef);
 			}
@@ -54,7 +53,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record
 		#endregion
 
 		#region Public methods
-		public void Record(ColorFrame frame, ColorImageFormat destinationFormat = ColorImageFormat.Bgra)
+		public void Record(ColorFrame frame)
 		{
 			if (this.writer == null)
 				throw new Exception("This recorder is stopped");
@@ -62,14 +61,14 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record
 			if (this.colorRecoder == null)
 				throw new Exception("Color recording is not actived on this KinectRecorder");
 
-			this.colorRecoder.Record(frame, destinationFormat);
+			this.colorRecoder.Record(frame);
 			Flush();
 		}
 
-		public void Record(BodyFrame frame, IEnumerable<(Body, BodyJointsColorSpacePointsDict)> bodies)
+		public void Record(BodyFrame frame, (BodyData, BodyJointsColorSpacePointsDict)[] bodies)
 		{
-			if (bodies == null)
-				throw new ArgumentNullException(nameof(bodies));
+			if (frame == null)
+				throw new ArgumentNullException(nameof(frame));
 
 			if (this.writer == null)
 				throw new Exception("This recorder is stopped");

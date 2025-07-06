@@ -1,6 +1,4 @@
-﻿using Microsoft.Kinect;
-
-namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews
+﻿namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews
 {
 	// TODO: Problem, że tutaj podajemy na sztywno te cechy, żeby nowy dodać punkt charakterystyczny trzeba będzie podać tutaj na sztywno do kodu.
 	public class GestureDataView

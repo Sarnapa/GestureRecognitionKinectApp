@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Microsoft.Kinect;
+using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Color
 {
@@ -43,18 +43,14 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.
 		{
 			if (frame == null)
 				throw new ArgumentNullException(nameof(frame));
-			if (frame.FrameDescription == null)
-				throw new ArgumentNullException(nameof(frame.FrameDescription));
-
-			var frameDescription = frame.FrameDescription;
 
 			this.TimeStamp = (long)frame.RelativeTime.TotalMilliseconds;
-			this.BytesPerPixel = frameDescription.BytesPerPixel;
+			this.BytesPerPixel = frame.BytesPerPixel;
 			this.RawColorImageFormat = frame.RawColorImageFormat;
-			this.Width = frameDescription.Width;
-			this.Height = frameDescription.Height;
+			this.Width = frame.Width;
+			this.Height = frame.Height;
 
-			this.LengthInPixels = frameDescription.LengthInPixels;
+			this.LengthInPixels = frame.LengthInPixels;
 			this.internalFrame = frame;
 		}
 		#endregion
@@ -71,7 +67,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.
 		{
 			if (this.internalFrame != null)
 			{
-				this.internalFrame.CopyRawFrameDataToArray(pixelData);
+				this.internalFrame.ColorData = pixelData;
 				return;
 			}
 
