@@ -384,7 +384,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						ref this.colorImage);
 				}
 
-				if (colorFrame != null && bodyFrame != null && bodyFrame.BodyCount > 0 && !this.IsBodyTrackingStoppedYet)
+				if (colorFrame != null && bodyFrame != null && bodyFrame.BodiesCount > 0 && !this.IsBodyTrackingStoppedYet)
 				{
 					this.bodyTrackingStoppedTime = null;
 

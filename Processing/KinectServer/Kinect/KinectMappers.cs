@@ -2,79 +2,23 @@
 using System.Linq;
 using System.Numerics;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
+using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 using MSKinect = Microsoft.Kinect;
 
-namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing
+namespace GestureRecognition.Processing.KinectServer.Kinect
 {
-	internal static class Mappers
+	public static class KinectMappers
 	{
-		#region MSKinect.ColorFrame -> ColorFrame
-		public static ColorFrame Map(this MSKinect.ColorFrame kinectColorFrame, ColorImageFormat destinationFormat)
+		#region FrameSourceTypes -> MSKinect.FrameSourceTypes
+		public static MSKinect.FrameSourceTypes Map(this FrameSourceTypes sourceTypes)
 		{
-			if (kinectColorFrame == null)
-				return null;
-
-			var kinectDestinationFormat = destinationFormat.Map();
-			bool isNecessaryToConvert = kinectColorFrame.RawColorImageFormat != kinectDestinationFormat;
-			uint bytesPerPixel = isNecessaryToConvert ? GetBytesPerPixel(destinationFormat) : kinectColorFrame.FrameDescription.BytesPerPixel;
-
-			byte[] colorData = new byte[kinectColorFrame.FrameDescription.LengthInPixels * bytesPerPixel];
-			if (isNecessaryToConvert)
-				kinectColorFrame.CopyConvertedFrameDataToArray(colorData, kinectDestinationFormat);
-			else
-				kinectColorFrame.CopyRawFrameDataToArray(colorData);
-
-			return new ColorFrame(
-				kinectColorFrame.FrameDescription.Width,
-				kinectColorFrame.FrameDescription.Height,
-				destinationFormat,
-				bytesPerPixel,
-				kinectColorFrame.FrameDescription.LengthInPixels,
-				kinectColorFrame.RelativeTime,
-				colorData
-				);
-		}
-
-		private static uint GetBytesPerPixel(ColorImageFormat format)
-		{
-			switch (format)
-			{
-				case ColorImageFormat.Rgba:
-					return 4;
-				case ColorImageFormat.Yuv:
-					return 2;
-				case ColorImageFormat.Bgra:
-					return 4;
-				case ColorImageFormat.Bayer:
-					return 1;
-				case ColorImageFormat.Yuy2:
-					return 2;
-			}
-
-			return 0;
-		}
-		#endregion
-
-
-		#region MSKinect.ColorImageFormat -> ColorImageFormat
-		public static ColorImageFormat Map(this MSKinect.ColorImageFormat kinectColorImageFormat)
-		{
-			switch (kinectColorImageFormat)
-			{
-				case MSKinect.ColorImageFormat.Rgba:
-					return ColorImageFormat.Rgba;
-				case MSKinect.ColorImageFormat.Yuv:
-					return ColorImageFormat.Yuv;
-				case MSKinect.ColorImageFormat.Bgra:
-					return ColorImageFormat.Bgra;
-				case MSKinect.ColorImageFormat.Bayer:
-					return ColorImageFormat.Bayer;
-				case MSKinect.ColorImageFormat.Yuy2:
-					return ColorImageFormat.Yuy2;
-			}
-
-			return ColorImageFormat.None;
+			MSKinect.FrameSourceTypes result = MSKinect.FrameSourceTypes.None;
+			if (sourceTypes.HasFlag(FrameSourceTypes.Color))
+				result |= MSKinect.FrameSourceTypes.Color;
+			if (sourceTypes.HasFlag(FrameSourceTypes.Body))
+				result |= MSKinect.FrameSourceTypes.Body;
+			return result;
 		}
 		#endregion
 
@@ -99,21 +43,47 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 		}
 		#endregion
 
-		#region MSKinect.BodyFrame -> BodyFrame
-		public static BodyFrame Map(this MSKinect.BodyFrame kinectBodyFrame)
+		#region Kinect.ColorFrame -> ColorFrame
+		public static ColorFrame Map(this MSKinect.ColorFrame kinectColorFrame, ColorImageFormat destinationFormat,
+			uint bytesPerPixel, byte[] colorData)
+		{
+			if (kinectColorFrame == null || colorData == null || colorData.Length == 0)
+				return null;
+
+			return new ColorFrame(
+				kinectColorFrame.FrameDescription.Width,
+				kinectColorFrame.FrameDescription.Height,
+				destinationFormat,
+				bytesPerPixel,
+				kinectColorFrame.FrameDescription.LengthInPixels,
+				kinectColorFrame.RelativeTime,
+				colorData
+				);
+		}
+		#endregion
+
+		#region Kinect.BodyFrame -> BodyFrame
+		public static BodyFrame Map(this MSKinect.BodyFrame kinectBodyFrame, MSKinect.Body[] bodies)
 		{
 			if (kinectBodyFrame == null)
 				return null;
 
-			var bodies = new MSKinect.Body[kinectBodyFrame.BodyCount];
-			// The first time GetAndRefreshBodyData is called, Kinect will allocate each Body in the array.
-			// As long as those body objects are not disposed and not set to null in the array,
-			// those body objects will be re-used.
-			kinectBodyFrame.GetAndRefreshBodyData(bodies);
+			return new BodyFrame(
+				kinectBodyFrame.RelativeTime,
+				bodies?.Map() ?? new BodyData[] { }
+				);
+		}
+
+		public static BodyFrame Map(this MSKinect.BodyFrame kinectBodyFrame, int bodyCount,
+			bool tooMuchUsersForOneBodyTracking)
+		{
+			if (kinectBodyFrame == null)
+				return null;
 
 			return new BodyFrame(
 				kinectBodyFrame.RelativeTime,
-				bodies.Map() ?? new BodyData[] { }
+				bodyCount,
+				tooMuchUsersForOneBodyTracking
 				);
 		}
 		#endregion

@@ -15,11 +15,11 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 		#endregion
 
 		#region Constructors
-		public BodyDataWithColorSpacePoints(bool isTracked, IReadOnlyDictionary<JointType, Joint> joints,
+		public BodyDataWithColorSpacePoints(ulong trackingId, bool isTracked, IReadOnlyDictionary<JointType, Joint> joints,
 			HandState handLeftState, TrackingConfidence handLeftConfidence,
 			HandState handRightState, TrackingConfidence handRightConfidence,
 			BodyJointsColorSpacePointsDict jointsColorSpacePoints)
-			: base(isTracked, joints, handLeftState, handLeftConfidence, handRightState, handRightConfidence)
+			: base(trackingId, isTracked, joints, handLeftState, handLeftConfidence, handRightState, handRightConfidence)
 		{
 			this.JointsColorSpacePoints = jointsColorSpacePoints ?? new BodyJointsColorSpacePointsDict();
 		}

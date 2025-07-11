@@ -34,15 +34,18 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Streaming
 		{
 			get;
 			private set;
-		}
+		} = default;
 		public byte[] ColorData
 		{
 			get;
 			set;
-		}
+		} = new byte[0];
 		#endregion
 
 		#region Constructors
+		public ColorFrame()
+		{}
+
 		public ColorFrame(int width, int height, ColorImageFormat imageFormat, 
 			uint bytesPerPixel, uint lengthInPixels, TimeSpan relativeTime, byte[] colorData = null)
 		{

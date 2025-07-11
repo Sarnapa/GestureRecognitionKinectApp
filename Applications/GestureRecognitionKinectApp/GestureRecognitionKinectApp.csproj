@@ -81,6 +81,7 @@
     <Compile Include="Models\Presentation\Managers\RenderBodyFrameManager.cs" />
     <Compile Include="Models\Presentation\Structures\Base\AsyncCommand.cs" />
     <Compile Include="Models\Presentation\Structures\Base\AsyncCommandBase.cs" />
+    <Compile Include="Models\Processing\Kinect\KinectClient.cs" />
     <Compile Include="Models\Processing\Mappers.cs" />
     <Compile Include="Models\Processing\Structures\Consts.cs" />
     <Compile Include="Models\Processing\Structures\Definitions.cs" />

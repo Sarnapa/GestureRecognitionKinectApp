@@ -9,6 +9,11 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 	public class BodyData
 	{
 		#region Public properties
+		public ulong TrackingId
+		{
+			get;
+			private set;
+		}
 		public bool IsTracked
 		{
 			get;
@@ -18,7 +23,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 		{
 			get;
 			private set;
-		}
+		} = new Dictionary<JointType, Joint>();
 		public HandState HandLeftState
 		{
 			get;
@@ -42,10 +47,11 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 		#endregion
 
 		#region Constructors
-		public BodyData(bool isTracked, IReadOnlyDictionary<JointType, Joint> joints,
+		public BodyData(ulong trackingId, bool isTracked, IReadOnlyDictionary<JointType, Joint> joints,
 			HandState handLeftState, TrackingConfidence handLeftConfidence,
 			HandState handRightState, TrackingConfidence handRightConfidence)
 		{
+			this.TrackingId = trackingId;
 			this.IsTracked = isTracked;
 			this.Joints = joints ?? new Dictionary<JointType, Joint>();
 			this.HandLeftState = handLeftState;
@@ -59,6 +65,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 			if (other == null)
 				throw new ArgumentNullException(nameof(other));
 
+			this.TrackingId = other.TrackingId;
 			this.IsTracked = other.IsTracked;
 			this.Joints = new ReadOnlyDictionary<JointType, Joint>(other.Joints?
 				.ToDictionary(kv => kv.Key, kv => kv.Value) ?? new Dictionary<JointType, Joint>());
