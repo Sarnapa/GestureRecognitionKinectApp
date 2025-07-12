@@ -12,6 +12,8 @@ using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Kinect;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Utilities;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
@@ -20,7 +22,6 @@ using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record;
 using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
 using GestureRecognition.Processing.GestureRecognitionProcUnit;
-using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing;
 using Kinect = Microsoft.Kinect;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
@@ -37,6 +38,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// Render color frame
 		/// </summary>
 		private readonly RenderColorFrameManager renderColorFrameManager;
+
+		/// <summary>
+		/// Client for communication with Kinect server
+		/// </summary>
+		private readonly KinectClient kinectClient;
 
 		/// <summary>
 		/// Executes gesture recognition process
@@ -232,6 +238,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		{
 			this.renderColorFrameManager = new RenderColorFrameManager();
 			this.renderBodyFrameManager = new RenderBodyFrameManager();
+			this.kinectClient = new KinectClient();
 			this.gestureRecognitionManager = SimpleIoc.Default.GetInstance<GestureRecognitionManager>();
 			this.gestureRecognitionFeaturesManager = SimpleIoc.Default.GetInstance<GestureRecognitionFeaturesManager>();
 
@@ -240,8 +247,15 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#endregion
 
 		#region Public methods
-		public void Start()
+		public async Task Start()
 		{
+			bool isKinectServerStarted = this.kinectClient.StartKinectServer();
+			if (isKinectServerStarted)
+			{
+				bool isConnected = await this.kinectClient.Connect();
+
+			}
+
 			// One sensor is currently supported
 			this.kinectSensor = Kinect.KinectSensor.GetDefault();
 			this.kinectSensor.IsAvailableChanged += this.Sensor_IsAvailableChanged;

@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
+using System.Threading;
 using System.Threading.Tasks;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Data;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
+using static GestureRecognition.Processing.BaseClassLib.Utils.KinectServerUtils;
 using GestureRecognition.Processing.KinectServer.Kinect;
 using GestureRecognition.Processing.KinectServer.Kinect.Events;
+
 
 namespace GestureRecognition.Processing.KinectServer
 {
@@ -53,40 +56,38 @@ namespace GestureRecognition.Processing.KinectServer
 			}
 		}
 
-		public void Listen()
+		public async Task Listen(CancellationToken token = default)
 		{
 			string methodName = $"{nameof(Server)}.{nameof(Listen)}";
-			using (var pipeServerReader = new BinaryReader(this.pipeServer))
-			using (var pipeServerWriter = new BinaryWriter(this.pipeServer))
+			Console.WriteLine($"[{methodName}] Listening for messages from the client has started.");
+			while (this.isRunning && !token.IsCancellationRequested)
 			{
-				Console.WriteLine($"[{methodName}] Listening for messages from the client has started.");
-				while (this.isRunning)
+				try
 				{
-					try
+					var messageHeader = await ReadHeader(methodName, pipeServer, token).ConfigureAwait(false);
+					var messageType = messageHeader.Type;
+					switch (messageType)
 					{
-						var messageType = (MessageType)pipeServerReader.ReadInt32();
-						switch (messageType)
-						{
-							case MessageType.StartRequest:
-								HandleStartRequest(pipeServerReader, pipeServerWriter);
-								break;
-							case MessageType.StopRequest:
-								this.isRunning = false;
-								break;
-							default:
-								Console.WriteLine($"[{methodName}] Unexpected message type: {messageType}.");
-								break;
-						}
+						case MessageType.StartRequest:
+							await HandleStartRequest(messageHeader, token).ConfigureAwait(false);
+							break;
+						case MessageType.StopRequest:
+							await HandleStopRequest(token).ConfigureAwait(false);
+							this.isRunning = false;
+							break;
+						default:
+							Console.WriteLine($"[{methodName}] Unexpected message type: {messageType}.");
+							break;
 					}
-					catch (EndOfStreamException)
-					{
-						Console.WriteLine($"[{methodName}] Client disconnected.");
-						break;
-					}
-					catch (Exception ex)
-					{
-						Console.WriteLine($"[{methodName}] Exception type: {ex.GetType()}, exception message: {ex.Message}.");
-					}
+				}
+				catch (EndOfStreamException)
+				{
+					Console.WriteLine($"[{methodName}] Client disconnected.");
+					break;
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine($"[{methodName}] Exception type: {ex.GetType()}, exception message: {ex.Message}.");
 				}
 			}
 		}
@@ -103,24 +104,19 @@ namespace GestureRecognition.Processing.KinectServer
 		#region Private methods
 
 		#region Start and Stop requests handling methods
-		private void HandleStartRequest(BinaryReader pipeServerReader, BinaryWriter pipeServerWriter)
+		private async Task HandleStartRequest(MessageHeader header, CancellationToken token)
 		{
 			string methodName = $"{nameof(Server)}.{nameof(HandleStartRequest)}";
 			try
 			{
 				Console.WriteLine($"[{methodName}] Received Start request.");
-				var parameters = new StartRequestParams
-				{
-					FrameSourceTypes = (FrameSourceTypes)pipeServerReader.ReadInt32(),
-					ColorImageFormat = (ColorImageFormat)pipeServerReader.ReadInt32(),
-					IsOneBodyTrackingEnabled = pipeServerReader.ReadBoolean()
-				};
+				var parameters = await GetStartRequestParams(header, token).ConfigureAwait(false);
 				Console.WriteLine($"[{methodName}] Start request parameters:\n{parameters}");
 
 				var result = this.kinectManager.Start(parameters);
 				Console.WriteLine($"[{methodName}] Start request result:\n{result}");
 
-				SendStartResponse(pipeServerWriter, result);
+				await SendStartResponse(result, token).ConfigureAwait(false);
 				Console.WriteLine($"[{methodName}] Start response sent.");
 			}
 			catch (Exception ex)
@@ -129,12 +125,30 @@ namespace GestureRecognition.Processing.KinectServer
 			}
 		}
 
-		private void SendStartResponse(BinaryWriter pipeServerWriter, StartResponseResult result)
+		private async Task<StartRequestParams> GetStartRequestParams(MessageHeader header, CancellationToken token)
+		{
+			string methodName = $"{nameof(Server)}.{nameof(GetStartRequestParams)}";
+			var message = await ReadMessage(methodName, this.pipeServer, header, token).ConfigureAwait(false);
+			using (var ms = new MemoryStream(message.Payload))
+			{
+				using (var payloadReader = new BinaryReader(ms))
+				{
+					var parameters = new StartRequestParams
+					{
+						FrameSourceTypes = (FrameSourceTypes)payloadReader.ReadInt32(),
+						ColorImageFormat = (ColorImageFormat)payloadReader.ReadInt32(),
+						IsOneBodyTrackingEnabled = payloadReader.ReadBoolean()
+					};
+					return parameters;
+				}
+			}
+		}
+
+		private async Task SendStartResponse(StartResponseResult result, CancellationToken token)
 		{
 			string methodName = $"{nameof(Server)}.{nameof(SendStartResponse)}";
 			try
 			{
-				pipeServerWriter.Write((int)MessageType.StartResponse);
 				using (var ms = new MemoryStream())
 				{
 					using (var payloadWriter = new BinaryWriter(ms))
@@ -144,8 +158,10 @@ namespace GestureRecognition.Processing.KinectServer
 						payloadWriter.Write(result?.ColorFrameHeight ?? 0);
 						payloadWriter.Write(result?.KinectSensorIsAvailable ?? false);
 					}
+					byte[] payload = ms.ToArray();
+					var message = CreateMessage(MessageType.StartResponse, payload);
 
-					SendPayload(pipeServerWriter, ms.ToArray());
+					await WriteMessage(methodName, this.pipeServer, message, token).ConfigureAwait(false);
 				}
 			}
 			catch (Exception ex)
@@ -154,7 +170,7 @@ namespace GestureRecognition.Processing.KinectServer
 			}
 		}
 
-		private void HandleStopRequest(BinaryReader pipeServerReader, BinaryWriter pipeServerWriter)
+		private async Task HandleStopRequest(CancellationToken token)
 		{
 			string methodName = $"{nameof(Server)}.{nameof(HandleStopRequest)}";
 			try
@@ -165,7 +181,7 @@ namespace GestureRecognition.Processing.KinectServer
 				var result = this.kinectManager.Stop(parameters);
 				Console.WriteLine($"[{methodName}] Stop request result:\n{result}");
 
-				SendStopResponse(pipeServerWriter, result);
+				await SendStopResponse(result, token).ConfigureAwait(false);
 				Console.WriteLine($"[{methodName}] Stop response sent.");
 			}
 			catch (Exception ex)
@@ -174,20 +190,21 @@ namespace GestureRecognition.Processing.KinectServer
 			}
 		}
 
-		private void SendStopResponse(BinaryWriter pipeServerWriter, StopResponseResult result)
+		private async Task SendStopResponse(StopResponseResult result, CancellationToken token)
 		{
 			string methodName = $"{nameof(Server)}.{nameof(SendStopResponse)}";
 			try
 			{
-				pipeServerWriter.Write((int)MessageType.StopResponse);
 				using (var ms = new MemoryStream())
 				{
 					using (var payloadWriter = new BinaryWriter(ms))
 					{
 						payloadWriter.Write(result?.IsSuccess ?? false);
 					}
+					byte[] payload = ms.ToArray();
+					var message = CreateMessage(MessageType.StopResponse, payload);
 
-					SendPayload(pipeServerWriter, ms.ToArray());
+					await WriteMessage(methodName, this.pipeServer, message, token).ConfigureAwait(false);
 				}
 			}
 			catch (Exception ex)
@@ -198,15 +215,12 @@ namespace GestureRecognition.Processing.KinectServer
 		#endregion
 
 		#region Arrived frame handling methods
-		private void KinectManager_OnFrameArrived(object sender, FrameArrivedEventArgs e)
+		private async Task KinectManager_OnFrameArrived(object sender, FrameArrivedEventArgs e)
 		{
 			string methodName = $"{nameof(Server)}.{nameof(KinectManager_OnFrameArrived)}";
 			try
 			{
-				using (var pipeServerWriter = new BinaryWriter(this.pipeServer))
-				{
-					SendFrameDataMessage(pipeServerWriter, e?.Data);
-				}
+				await SendFrameDataMessage(e?.Data, CancellationToken.None).ConfigureAwait(false);
 			}
 			catch (Exception ex)
 			{
@@ -214,7 +228,7 @@ namespace GestureRecognition.Processing.KinectServer
 			}
 		}
 
-		private void SendFrameDataMessage(BinaryWriter pipeServerWriter, FrameData data)
+		private async Task SendFrameDataMessage(FrameData data, CancellationToken token)
 		{
 			string methodName = $"{nameof(Server)}.{nameof(SendFrameDataMessage)}";
 			try
@@ -224,7 +238,6 @@ namespace GestureRecognition.Processing.KinectServer
 				var bodyFrame = data?.BodyFrame ?? new BodyFrame();
 				var bodiesJointsColorSpacePointsDict =  data?.BodiesJointsColorSpacePointsDict ?? new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
 
-				pipeServerWriter.Write((int)MessageType.Frame);
 				using (var ms = new MemoryStream())
 				{
 					using (var payloadWriter = new BinaryWriter(ms))
@@ -233,8 +246,10 @@ namespace GestureRecognition.Processing.KinectServer
 						WriteBodyFrame(payloadWriter, bodyFrame);
 						WriteBodiesJointsColorSpacePointsDict(payloadWriter, bodiesJointsColorSpacePointsDict);
 					}
+					byte[] payload = ms.ToArray();
+					var message = CreateMessage(MessageType.Frame, payload);
 
-					SendPayload(pipeServerWriter, ms.ToArray());
+					await WriteMessage(methodName, this.pipeServer, message, token).ConfigureAwait(false);
 				}
 			}
 			catch (Exception ex)
@@ -311,15 +326,12 @@ namespace GestureRecognition.Processing.KinectServer
 		#endregion
 
 		#region Kinect availability status handling methods
-		private void KinectManager_OnKinectIsAvailableChanged(object sender, KinectIsAvailableChangedEventArgs e)
+		private async Task KinectManager_OnKinectIsAvailableChanged(object sender, KinectIsAvailableChangedEventArgs e)
 		{
 			string methodName = $"{nameof(Server)}.{nameof(KinectManager_OnKinectIsAvailableChanged)}";
 			try
 			{
-				using (var pipeServerWriter = new BinaryWriter(this.pipeServer))
-				{
-					SendKinectIsAvailableChangedMessage(pipeServerWriter, e?.Data);
-				}
+				await SendKinectIsAvailableChangedMessage(e?.Data, CancellationToken.None).ConfigureAwait(false);
 			}
 			catch (Exception ex)
 			{
@@ -327,20 +339,21 @@ namespace GestureRecognition.Processing.KinectServer
 			}
 		}
 
-		private void SendKinectIsAvailableChangedMessage(BinaryWriter pipeServerWriter, KinectIsAvailableChangedData data)
+		private async Task SendKinectIsAvailableChangedMessage(KinectIsAvailableChangedData data, CancellationToken token)
 		{
 			string methodName = $"{nameof(Server)}.{nameof(SendKinectIsAvailableChangedMessage)}";
 			try
 			{
-				pipeServerWriter.Write((int)MessageType.SensorIsAvailableChanged);
 				using (var ms = new MemoryStream())
 				{
 					using (var payloadWriter = new BinaryWriter(ms))
 					{
 						payloadWriter.Write(data?.IsAvailable ?? false);
 					}
+					byte[] payload = ms.ToArray();
+					var message = CreateMessage(MessageType.KinectIsAvailableChanged, payload);
 
-					SendPayload(pipeServerWriter, ms.ToArray());
+					await WriteMessage(methodName, this.pipeServer, message, token).ConfigureAwait(false);
 				}
 			}
 			catch (Exception ex)
@@ -351,12 +364,6 @@ namespace GestureRecognition.Processing.KinectServer
 		#endregion
 
 		#region Other private methods
-		private void SendPayload(BinaryWriter pipeServerWriter, byte[] payload)
-		{
-			pipeServerWriter.Write(payload.Length);
-			pipeServerWriter.Write(payload);
-		}
-
 		private void AttachKinectManagerEventsHandlers()
 		{
 			this.kinectManager.OnFrameArrived += this.KinectManager_OnFrameArrived;

@@ -265,4 +265,8 @@
     <Resource Include="Resources\ImportModel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="$(SolutionDir)\..\Processing\KinectServer\bin\$(Configuration)\KinectServer.exe"
+          DestinationFolder="$(TargetDir)" />
+  </Target>
 </Project>

@@ -94,4 +94,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "$(SolutionDir)\..\Applications\GestureRecognitionKinectApp\bin\$(Configuration)\$(TargetFileName)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

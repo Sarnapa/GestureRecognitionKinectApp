@@ -4,7 +4,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Dat
 {
 	public class StartRequestParams
 	{
-		#region Public methods
+		#region Public properites
 		public FrameSourceTypes FrameSourceTypes
 		{
 			get;

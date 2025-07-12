@@ -3,5 +3,6 @@
 	public static class Consts
 	{
 		public const string PipeName = "KinectPipe";
+		public const string ServerName = "KinectServer";
 	}
 }

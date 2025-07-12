@@ -12,9 +12,9 @@ namespace GestureRecognition.Processing.KinectServer
 			var kinectManager = new KinectManager();
 			var server = new Server(kinectManager);
 			
-			bool startSuccess = await server.Start();
+			bool startSuccess = await server.Start().ConfigureAwait(false);
 			if (startSuccess)
-				server.Listen();
+				await server.Listen().ConfigureAwait(false);
 			else
 				Console.WriteLine($"[{methodName}] Failed to start the server.");
 
