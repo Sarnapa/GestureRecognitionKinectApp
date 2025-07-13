@@ -12,17 +12,19 @@ using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
-using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Kinect;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Utilities;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
+using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer;
+using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Data;
+using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Events;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record;
 using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
 using GestureRecognition.Processing.GestureRecognitionProcUnit;
-using Kinect = Microsoft.Kinect;
+using Consts = GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures.Consts;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 {
@@ -78,21 +80,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// Drawing images height
 		/// </summary>
 		private int displayImageHeight;
-
-		/// <summary>
-		/// Active Kinect sensor
-		/// </summary>
-		private Kinect.KinectSensor kinectSensor;
-
-		/// <summary>
-		/// Reader for frames from multiple sources
-		/// </summary>
-		private Kinect.MultiSourceFrameReader multiSourceReader;
-
-		/// <summary>
-		/// Coordinate mapper to map one type of point to another
-		/// </summary>
-		private Kinect.CoordinateMapper coordinateMapper;
 
 		/// <summary>
 		/// Records gesture (color and skeleton data)
@@ -162,10 +149,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// </summary>
 		public bool IsKinectAvailable
 		{
-			get
-			{
-				return this.kinectSensor != null && this.kinectSensor.IsAvailable;
-			}
+			get;
+			private set;
 		}
 
 		/// <summary>
@@ -252,44 +237,52 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			bool isKinectServerStarted = this.kinectClient.StartKinectServer();
 			if (isKinectServerStarted)
 			{
-				bool isConnected = await this.kinectClient.Connect();
+				bool isConnected = await this.kinectClient.Connect().ConfigureAwait(false);
+				if (isConnected)
+				{
+					var startRequest = new StartRequestParams()
+					{
+						FrameSourceTypes = FrameSourceTypes.Color | FrameSourceTypes.Body,
+						ColorImageFormat = ColorImageFormat.Bgra,
+						IsOneBodyTrackingEnabled = true,
+					};
+					var startResponse = await this.kinectClient.SendStartRequest(startRequest).ConfigureAwait(false);
+					if (startResponse != null && startResponse.IsSuccess)
+					{
+						this.displayImageWidth = startResponse.ColorFrameWidth;
+						this.displayImageHeight = startResponse.ColorFrameHeight;
+						this.IsKinectAvailable = startResponse.KinectSensorIsAvailable;
+						this.kinectClient.OnFrameArrived += this.KinectClient_OnFrameArrived;
+						this.kinectClient.OnKinectIsAvailableChanged += this.KinectClient_OnKinectIsAvailableChanged;
 
+						// Create the color image
+						this.colorImage = new WriteableBitmap(this.displayImageWidth, this.displayImageHeight, 96.0, 96.0, PixelFormats.Bgra32, null);
+
+						// Create the drawing group we'll use for drawing body data
+						this.bodyImageDrawingGroup = new DrawingGroup();
+						// Create the image with body data
+						this.bodyImage = new DrawingImage(this.bodyImageDrawingGroup);
+
+						Messenger.Default.Send(new DisplayImageChangedMessage() { ChangedDisplayImage = ImageKind.All });
+					}
+					else
+					{
+						MessageBoxUtils.ShowMessage($"Starting communication with KinectServer failed.", MessageBoxButton.OK, MessageBoxImage.Error);
+					}
+				}
+				else
+				{
+					MessageBoxUtils.ShowMessage($"Connecting to KinectServer failed.", MessageBoxButton.OK, MessageBoxImage.Error);
+				}
+			}
+			else
+			{
+				MessageBoxUtils.ShowMessage($"Starting KinectServer failed.", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 
-			// One sensor is currently supported
-			this.kinectSensor = Kinect.KinectSensor.GetDefault();
-			this.kinectSensor.IsAvailableChanged += this.Sensor_IsAvailableChanged;
-
-			// Open the reader for the body frames
-			this.multiSourceReader = this.kinectSensor.OpenMultiSourceFrameReader(Kinect.FrameSourceTypes.Color | Kinect.FrameSourceTypes.Body);
-
-			// Get the coordinate mapper
-			this.coordinateMapper = this.kinectSensor.CoordinateMapper;
-
-			var colorFrameDescription = this.kinectSensor.ColorFrameSource.CreateFrameDescription(Kinect.ColorImageFormat.Bgra);
-			this.displayImageWidth = colorFrameDescription.Width;
-			this.displayImageHeight = colorFrameDescription.Height;
-
-			// Create the color image
-			this.colorImage = new WriteableBitmap(this.displayImageWidth, this.displayImageHeight, 96.0, 96.0, PixelFormats.Bgra32, null);
-
-			// Create the drawing group we'll use for drawing body data
-			this.bodyImageDrawingGroup = new DrawingGroup();
-			// Create the image with body data
-			this.bodyImage = new DrawingImage(this.bodyImageDrawingGroup);
-
-			Messenger.Default.Send(new DisplayImageChangedMessage() { ChangedDisplayImage = ImageKind.All });
-
-			// Open the sensor
-			this.kinectSensor.Open();
-
 			// Set the status text
-			string statusText = this.kinectSensor.IsAvailable ? Properties.Resources.RunningStatusText
-																											: Properties.Resources.NoSensorStatusText;
+			string statusText = this.IsKinectAvailable ? Properties.Resources.RunningStatusText : Properties.Resources.NoSensorStatusText;
 			Messenger.Default.Send(new KinectStatusMessage() { Text = statusText });
-
-			if (this.multiSourceReader != null)
-				this.multiSourceReader.MultiSourceFrameArrived += this.Reader_FrameArrived;
 		}
 
 		public void StartStopGestureRecording()
@@ -340,22 +333,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			CleanGestureRecorder(deleteGestureRecordFile);
 			CleanGestureToRecognizeBodyFrames();
 
-			if (this.multiSourceReader != null)
-			{
-				this.multiSourceReader.Dispose();
-				this.multiSourceReader = null;
-			}
-
-			if (this.kinectSensor != null)
-			{
-				this.kinectSensor.IsAvailableChanged -= this.Sensor_IsAvailableChanged;
-				this.kinectSensor.Close();
-				this.kinectSensor = null;
-			}
+			this.kinectClient.OnFrameArrived -= this.KinectClient_OnFrameArrived;
+			this.kinectClient.OnKinectIsAvailableChanged -= this.KinectClient_OnKinectIsAvailableChanged;
+			this.kinectClient.Disconnect();
 
 			if (this.currentTrackedBody != null)
 				this.currentTrackedBody = null;
-
 		}
 		#endregion
 
@@ -363,32 +346,25 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 		#region Events handlers
 		/// <summary>
-		/// Handles the data arriving from the sensor
+		/// Handles the data arriving from the KinectServer.
 		/// </summary>
 		/// <param name="sender">Object sending the event</param>
 		/// <param name="e">Event arguments</param>
-		private void Reader_FrameArrived(object sender, Kinect.MultiSourceFrameArrivedEventArgs e)
+		private Task KinectClient_OnFrameArrived(object sender, FrameArrivedEventArgs e)
 		{
-			var multiSourceFrame = e.FrameReference.AcquireFrame();
+			if (e.Data == null)
+				return Task.CompletedTask;
 
-			// If the Frame has expired by the time we process this event, return.
-			if (multiSourceFrame == null)
-				return;
-
+			var colorFrame = e.Data.ColorFrame;
+			var bodyFrame = e.Data.BodyFrame;
+			var bodiesJointsColorSpacePointsDict = e.Data.BodiesJointsColorSpacePointsDict;
 			bool colorImageLocked = false;
-			Kinect.ColorFrame kinectColorFrame = null;
-			Kinect.BodyFrame kinectBodyFrame = null;
 			BodyData prevTrackedBody = this.currentTrackedBody;
 			BodyJointsColorSpacePointsDict prevTrackedBodyJointsColorSpacePointsDict = this.currentTrackedBodyJointsColorSpacePointsDict;
 			int trackedBodiesCount = 0;
 
 			try
 			{
-				kinectColorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame();
-				kinectBodyFrame = multiSourceFrame.BodyFrameReference.AcquireFrame();
-				var colorFrame = kinectColorFrame?.Map(ColorImageFormat.Bgra);
-				var bodyFrame = kinectBodyFrame?.Map();
-
 				if (colorFrame != null)
 				{
 					this.colorImage.Lock();
@@ -429,7 +405,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 								break;
 						}
 
-						this.currentTrackedBodyJointsColorSpacePointsDict = ConvertToColorSpace(this.currentTrackedBody);
+						if (bodiesJointsColorSpacePointsDict != null && bodiesJointsColorSpacePointsDict.ContainsKey(this.currentTrackedBody.TrackingId))
+							this.currentTrackedBodyJointsColorSpacePointsDict = bodiesJointsColorSpacePointsDict[this.currentTrackedBody.TrackingId];
+
 						var trackedBodyColorSpacePoints = this.currentTrackedBodyJointsColorSpacePointsDict?.ToDictionary(
 							kv => kv.Key, kv => new Point(kv.Value.X, kv.Value.Y));
 
@@ -494,15 +472,13 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 				SendTrackedUsersCountChangedMessage(trackedBodiesCount);
 				UpdateLastDisplayedColorFrameTimeAndSendMessage(colorFrame != null);
+
+				return Task.CompletedTask;
 			}
 			finally
 			{
 				if (colorImageLocked)
 					this.colorImage.Unlock();
-				if (kinectColorFrame != null)
-					kinectColorFrame.Dispose();
-				if (kinectBodyFrame != null)
-					kinectBodyFrame.Dispose();
 			}
 		}
 
@@ -511,62 +487,61 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// </summary>
 		/// <param name="sender">Object sending the event</param>
 		/// <param name="e">Event arguments</param>
-		private void Sensor_IsAvailableChanged(object sender, Kinect.IsAvailableChangedEventArgs e)
+		private Task KinectClient_OnKinectIsAvailableChanged(object sender, KinectIsAvailableChangedEventArgs e)
 		{
-			// On failure, set the status text
-			if (this.kinectSensor != null)
-			{
-				string statusText = this.IsKinectAvailable ? Properties.Resources.RunningStatusText : Properties.Resources.NoSensorStatusText;
-				Messenger.Default.Send(new KinectStatusMessage() 
-				{ 
-					PrevState = this.TrackingState,
-					Text = statusText 
-				});
+			this.IsKinectAvailable = e.Data?.IsAvailable ?? false;
+			string statusText = this.IsKinectAvailable ? Properties.Resources.RunningStatusText : Properties.Resources.NoSensorStatusText;
+			Messenger.Default.Send(new KinectStatusMessage() 
+			{ 
+				PrevState = this.TrackingState,
+				Text = statusText 
+			});
 
-				if (!this.IsKinectAvailable)
-				{
-					if (this.TrackingState == BodyTrackingState.GestureRecording)
-						StopGestureRecording(true);
-					UpdateBodyTrackingStoppedStatusAndSendMessage(true, Properties.Resources.LostKinectConnection);
-				}
-				else
-					SetStandardState();
+			if (!this.IsKinectAvailable)
+			{
+				if (this.TrackingState == BodyTrackingState.GestureRecording)
+					StopGestureRecording(true);
+				UpdateBodyTrackingStoppedStatusAndSendMessage(true, Properties.Resources.LostKinectConnection);
 			}
+			else
+				SetStandardState();
+
+			return Task.CompletedTask;
 		}
 		#endregion
 
 		#region Convert body joints coordinations to color coordinations methods
-		private BodyJointsColorSpacePointsDict ConvertToColorSpace(BodyData body)
-		{
-			return ConvertToColorSpace(new[] { body }).FirstOrDefault().Item2;
-		}
+		// TODO: Unnecessary for now, to be removed
+		//private BodyJointsColorSpacePointsDict ConvertToColorSpace(BodyData body)
+		//{
+		//	return ConvertToColorSpace(new[] { body }).FirstOrDefault().Item2;
+		//}
 
-		private (BodyData, BodyJointsColorSpacePointsDict)[] ConvertToColorSpace(IEnumerable<BodyData> bodies)
-		{
-			if (bodies == null || !bodies.Any())
-				return new (BodyData, BodyJointsColorSpacePointsDict)[] { };
+		//private (BodyData, BodyJointsColorSpacePointsDict)[] ConvertToColorSpace(IEnumerable<BodyData> bodies)
+		//{
+		//	if (bodies == null || !bodies.Any())
+		//		return new (BodyData, BodyJointsColorSpacePointsDict)[] { };
 
-			return bodies.Select(b => (b, ConvertToColorSpace(b?.Joints))).ToArray();
-		}
+		//	return bodies.Select(b => (b, ConvertToColorSpace(b?.Joints))).ToArray();
+		//}
 
-		private BodyJointsColorSpacePointsDict ConvertToColorSpace(IReadOnlyDictionary<JointType, Joint> joints)
-		{
-			var jointsPoints = new BodyJointsColorSpacePointsDict();
+		//private BodyJointsColorSpacePointsDict ConvertToColorSpace(IReadOnlyDictionary<JointType, Joint> joints)
+		//{
+		//	var jointsPoints = new BodyJointsColorSpacePointsDict();
 
-			if (joints != null)
-			{
-				foreach (var jointType in joints.Keys)
-				{
-					var position = joints[jointType].Position;
-					// TODO: Remember to make this available on the service associated with the Kinect sensor.
-					var kinectPosition = new Kinect.CameraSpacePoint() { X = position.X, Y = position.Y, Z = position.Z };
-					var kinectColorSpacePosition = this.coordinateMapper.MapCameraPointToColorSpace(kinectPosition);
-					jointsPoints[jointType] = kinectColorSpacePosition.Map();
-				}
-			}
+		//	if (joints != null)
+		//	{
+		//		foreach (var jointType in joints.Keys)
+		//		{
+		//			var position = joints[jointType].Position;
+		//			var kinectPosition = new Kinect.CameraSpacePoint() { X = position.X, Y = position.Y, Z = position.Z };
+		//			var kinectColorSpacePosition = this.coordinateMapper.MapCameraPointToColorSpace(kinectPosition);
+		//			jointsPoints[jointType] = kinectColorSpacePosition.Map();
+		//		}
+		//	}
 
-			return jointsPoints;
-		}
+		//	return jointsPoints;
+		//}
 		#endregion
 
 		#region Detecting gestures to start recording / recognizing given gesture

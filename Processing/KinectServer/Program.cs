@@ -16,10 +16,11 @@ namespace GestureRecognition.Processing.KinectServer
 			if (startSuccess)
 				await server.Listen().ConfigureAwait(false);
 			else
-				Console.WriteLine($"[{methodName}] Failed to start the server.");
+				Console.WriteLine($"[{methodName}][{DateTime.Now}] Failed to start the server.");
 
 			server.Cleanup();
-			Console.WriteLine($"[{methodName}] The server has terminated.");
+			Console.WriteLine($"[{methodName}][{DateTime.Now}] The server has terminated.");
+			Console.ReadKey();
 		}
 	}
 

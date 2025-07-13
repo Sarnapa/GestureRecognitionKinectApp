@@ -27,9 +27,11 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Dat
 		#region Public methods
 		public override string ToString()
 		{
-			return $"{nameof(this.FrameSourceTypes)}: {this.FrameSourceTypes}\n" +
+			return "========================\n" +
+						 $"{nameof(this.FrameSourceTypes)}: {this.FrameSourceTypes}\n" +
 						 $"{nameof(this.ColorImageFormat)}: {this.ColorImageFormat}\n" +
-						 $"{nameof(this.IsOneBodyTrackingEnabled)}: {this.IsOneBodyTrackingEnabled}";
+						 $"{nameof(this.IsOneBodyTrackingEnabled)}: {this.IsOneBodyTrackingEnabled}\n" +
+						 "========================";
 		}
 		#endregion
 	}

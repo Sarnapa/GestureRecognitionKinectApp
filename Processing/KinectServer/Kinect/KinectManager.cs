@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Data;
+using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Events;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 using GestureRecognition.Processing.BaseClassLib.Utils;
-using GestureRecognition.Processing.KinectServer.Kinect.Events;
 using MSKinect = Microsoft.Kinect;
 
 namespace GestureRecognition.Processing.KinectServer.Kinect
@@ -64,13 +64,11 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 
 			var colorFrameDescription = this.kinectSensor.ColorFrameSource.CreateFrameDescription(colorImageFormat);
 
-			this.kinectSensor.Open();
-
 			if (this.multiSourceReader != null)
 				this.multiSourceReader.MultiSourceFrameArrived += this.Reader_FrameArrived;
 
-			bool isSuccess = this.kinectSensor.IsAvailable && this.multiSourceReader != null
-				&& colorFrameDescription != null && colorFrameDescription.Width > 0 && colorFrameDescription.Height > 0;
+			bool isSuccess = this.multiSourceReader != null && colorFrameDescription != null 
+				&& colorFrameDescription.Width > 0 && colorFrameDescription.Height > 0;
 
 			if (!isSuccess)
 				this.isOneBodyTrackingEnabled = false;
@@ -82,6 +80,12 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 				ColorFrameHeight = colorFrameDescription?.Height ?? 0,
 				KinectSensorIsAvailable = this.kinectSensor.IsAvailable,
 			};
+		}
+
+		public void OpenKinectSensor()
+		{
+			if (this.kinectSensor != null && !this.kinectSensor.IsOpen)
+				this.kinectSensor.Open();
 		}
 
 		public StopResponseResult Stop(StopRequestParams parameters)

@@ -13,7 +13,9 @@
 		#region Public methods
 		public override string ToString()
 		{
-			return $"{nameof(this.IsSuccess)}: {this.IsSuccess}";
+			return "========================\n" +
+						 $"{nameof(this.IsSuccess)}: {this.IsSuccess}\n" +
+						 "========================";
 		}
 		#endregion
 	}

@@ -31,10 +31,12 @@
 		#region Public methods
 		public override string ToString()
 		{
-			return $"{nameof(this.IsSuccess)}: {this.IsSuccess}\n" +
+			return "========================\n" +
+						 $"{nameof(this.IsSuccess)}: {this.IsSuccess}\n" +
 						 $"{nameof(this.ColorFrameWidth)}: {this.ColorFrameWidth}\n" +
 						 $"{nameof(this.ColorFrameHeight)}: {this.ColorFrameHeight}\n" +
-						 $"{nameof(this.KinectSensorIsAvailable)}: {this.KinectSensorIsAvailable}";
+						 $"{nameof(this.KinectSensorIsAvailable)}: {this.KinectSensorIsAvailable}\n" +
+						 "========================";
 		}
 		#endregion
 	}

@@ -392,9 +392,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		#region Private methods
 
 		#region Actions
-		private void StartCommandAction()
+		private async Task StartCommandAction()
 		{
-			this.model.Start();
+			await this.model.Start().ConfigureAwait(false);
 		}
 
 		private void ImportGestureRecognitionModelCommandAction()
@@ -441,12 +441,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 					if (result?.Success == true)
 					{
 						MessageBoxUtils.ShowMessage($"Preparing gestures data succeeded.\nOutput file - {saveFileDialog.FileName}",
-							"Gesture recognition", MessageBoxButton.OK, MessageBoxImage.Information);
+							MessageBoxButton.OK, MessageBoxImage.Information);
 					}
 					else
 					{
-						MessageBoxUtils.ShowMessage($"Preparing gestures data failed", "Gesture recognition",
-							MessageBoxButton.OK, MessageBoxImage.Error);
+						MessageBoxUtils.ShowMessage($"Preparing gestures data failed", MessageBoxButton.OK, MessageBoxImage.Error);
 					}
 				}
 			}

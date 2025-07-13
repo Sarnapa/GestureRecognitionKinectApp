@@ -58,9 +58,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Kinect\Events\EventHandlers.cs" />
-    <Compile Include="Kinect\Events\FrameArrivedEventArgs.cs" />
-    <Compile Include="Kinect\Events\KinectIsAvailableChangedEventArgs.cs" />
     <Compile Include="Kinect\KinectManager.cs" />
     <Compile Include="Kinect\KinectMappers.cs" />
     <Compile Include="Program.cs" />

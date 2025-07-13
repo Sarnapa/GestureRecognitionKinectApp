@@ -1,7 +1,7 @@
 ﻿using System;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Data;
 
-namespace GestureRecognition.Processing.KinectServer.Kinect.Events
+namespace GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Events
 {
 	public class FrameArrivedEventArgs: EventArgs
 	{
