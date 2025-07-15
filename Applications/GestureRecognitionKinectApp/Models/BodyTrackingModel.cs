@@ -240,6 +240,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				bool isConnected = await this.kinectClient.Connect().ConfigureAwait(false);
 				if (isConnected)
 				{
+					this.kinectClient.OnFrameArrived += this.KinectClient_OnFrameArrived;
+					this.kinectClient.OnKinectIsAvailableChanged += this.KinectClient_OnKinectIsAvailableChanged;
 					var startRequest = new StartRequestParams()
 					{
 						FrameSourceTypes = FrameSourceTypes.Color | FrameSourceTypes.Body,
@@ -252,16 +254,17 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						this.displayImageWidth = startResponse.ColorFrameWidth;
 						this.displayImageHeight = startResponse.ColorFrameHeight;
 						this.IsKinectAvailable = startResponse.KinectSensorIsAvailable;
-						this.kinectClient.OnFrameArrived += this.KinectClient_OnFrameArrived;
-						this.kinectClient.OnKinectIsAvailableChanged += this.KinectClient_OnKinectIsAvailableChanged;
 
-						// Create the color image
-						this.colorImage = new WriteableBitmap(this.displayImageWidth, this.displayImageHeight, 96.0, 96.0, PixelFormats.Bgra32, null);
+						Application.Current.Dispatcher.Invoke(() =>
+						{
+							// Create the color image
+							this.colorImage = new WriteableBitmap(this.displayImageWidth, this.displayImageHeight, 96.0, 96.0, PixelFormats.Bgra32, null);
 
-						// Create the drawing group we'll use for drawing body data
-						this.bodyImageDrawingGroup = new DrawingGroup();
-						// Create the image with body data
-						this.bodyImage = new DrawingImage(this.bodyImageDrawingGroup);
+							// Create the drawing group we'll use for drawing body data
+							this.bodyImageDrawingGroup = new DrawingGroup();
+							// Create the image with body data
+							this.bodyImage = new DrawingImage(this.bodyImageDrawingGroup);
+						});
 
 						Messenger.Default.Send(new DisplayImageChangedMessage() { ChangedDisplayImage = ImageKind.All });
 					}

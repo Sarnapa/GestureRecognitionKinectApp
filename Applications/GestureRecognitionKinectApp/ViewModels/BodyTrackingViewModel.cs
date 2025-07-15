@@ -392,9 +392,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		#region Private methods
 
 		#region Actions
-		private async Task StartCommandAction()
+		private void StartCommandAction()
 		{
-			await this.model.Start().ConfigureAwait(false);
+			this.model.Start();
 		}
 
 		private void ImportGestureRecognitionModelCommandAction()
@@ -475,77 +475,98 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		#region Messages handlers
 		private void KinectStatusChangedMessageHandler(KinectStatusMessage m)
 		{
-			if ((m.PrevState == BodyTrackingState.WaitingToStartGestureRecording || m.PrevState == BodyTrackingState.WaitingToStartGestureRecognizing)
-				&& !this.IsKinectAvailable)
+			Application.Current.Dispatcher.Invoke(() => 
 			{
-				StopCountdown();
-			}
+				if ((m.PrevState == BodyTrackingState.WaitingToStartGestureRecording || m.PrevState == BodyTrackingState.WaitingToStartGestureRecognizing)
+					&& !this.IsKinectAvailable)
+				{
+					StopCountdown();
+				}
 
-			this.KinectStatusText = m.Text;
+				this.KinectStatusText = m.Text;
 
-			if (!this.IsKinectAvailable)
-			{
-				UpdateGestureRecordingBorderState(false);
-				UpdateStartStopGestureRecordButtonState(Visibility.Hidden);
-				UpdateFPSValueText(0d);
-				UpdateTrackedUsersCount(0);
-			}
+				if (!this.IsKinectAvailable)
+				{
+					UpdateGestureRecordingBorderState(false);
+					UpdateStartStopGestureRecordButtonState(Visibility.Hidden);
+					UpdateFPSValueText(0d);
+					UpdateTrackedUsersCount(0);
+				}
+			});
 		}
 
 		private void DisplayImageChangedMessageHandler(DisplayImageChangedMessage m)
 		{
-			if ((m.ChangedDisplayImage & ImageKind.Color) != 0)
-				RaisePropertyChanged(nameof(ColorImage));
-			if ((m.ChangedDisplayImage & ImageKind.Body) != 0)
-				RaisePropertyChanged(nameof(BodyImage));
+			Application.Current.Dispatcher.Invoke(() =>
+			{
+				if ((m.ChangedDisplayImage & ImageKind.Color) != 0)
+					RaisePropertyChanged(nameof(ColorImage));
+				if ((m.ChangedDisplayImage & ImageKind.Body) != 0)
+					RaisePropertyChanged(nameof(BodyImage));
+			});
 		}
 
 		private void TrackedUsersCountChangedMessageHandler(TrackedUsersCountChangedMessage m)
 		{
-			UpdateTrackedUsersCount(m.Count);
+			Application.Current.Dispatcher.Invoke(() =>
+			{
+				UpdateTrackedUsersCount(m.Count);
+			});
 		}
 
 		private void FPSValueMessageHandler(FPSValueMessage m)
 		{
-			UpdateFPSValueText(m.Value);
+			Application.Current.Dispatcher.Invoke(() =>
+			{
+				UpdateFPSValueText(m.Value);
+			});
 		}
 
 		private void BodyTrackingStoppedMessageHandler(BodyTrackingStoppedMessage m)
 		{
-			if ((m.PrevState == BodyTrackingState.WaitingToStartGestureRecording || m.PrevState == BodyTrackingState.WaitingToStartGestureRecognizing)
-				&& m.IsStopped)
+			Application.Current.Dispatcher.Invoke(() =>
 			{
-				StopCountdown();
-			}
-
-			bool showInfo = m.IsStopped && !string.IsNullOrEmpty(m.Text);
-
-			if ((m.PrevState == BodyTrackingState.GestureRecording || m.PrevState == BodyTrackingState.GestureToRecognizeRecording)
+				if ((m.PrevState == BodyTrackingState.WaitingToStartGestureRecording || m.PrevState == BodyTrackingState.WaitingToStartGestureRecognizing)
 				&& m.IsStopped)
-			{
-				UpdateGestureRecordingBorderState(false);
-			}
+				{
+					StopCountdown();
+				}
 
-			if (!(!m.IsStopped && (m.PrevState == BodyTrackingState.GestureToRecognizeRecording || m.PrevState == BodyTrackingState.WaitingForGestureRecognizingResult)))
-				UpdateStartStopGestureRecordButtonState(this.model.IsUserTracked ? Visibility.Visible : Visibility.Hidden);
+				bool showInfo = m.IsStopped && !string.IsNullOrEmpty(m.Text);
 
-			this.StoppedBodyTrackingInfoVisibility = showInfo ? Visibility.Visible : Visibility.Hidden;
-			this.StoppedBodyTrackingInfoText = showInfo ? m.Text : string.Empty;
+				if ((m.PrevState == BodyTrackingState.GestureRecording || m.PrevState == BodyTrackingState.GestureToRecognizeRecording)
+					&& m.IsStopped)
+				{
+					UpdateGestureRecordingBorderState(false);
+				}
+
+				if (!(!m.IsStopped && (m.PrevState == BodyTrackingState.GestureToRecognizeRecording || m.PrevState == BodyTrackingState.WaitingForGestureRecognizingResult)))
+					UpdateStartStopGestureRecordButtonState(this.model.IsUserTracked ? Visibility.Visible : Visibility.Hidden);
+
+				this.StoppedBodyTrackingInfoVisibility = showInfo ? Visibility.Visible : Visibility.Hidden;
+				this.StoppedBodyTrackingInfoText = showInfo ? m.Text : string.Empty;
+			});
 		}
 
 		private async Task GestureRecordingFinishedMessageHandler(GestureRecordingFinishedMessage m)
 		{
-			if (this.model.TrackingState == BodyTrackingState.GestureToRecognizeRecording)
-				await this.StartGestureRecognitionProcess();
-			else
-				this.StartStopGestureRecordCommandAction();
+			await Application.Current.Dispatcher.InvokeAsync(async () =>
+			{
+				if (this.model.TrackingState == BodyTrackingState.GestureToRecognizeRecording)
+					await this.StartGestureRecognitionProcess();
+				else
+					this.StartStopGestureRecordCommandAction();
+			});
 		}
 
 		private void TemporaryStateStartedMessageHandler(TemporaryStateStartedMessage m)
 		{
-			this.currentCountdownValue = CountdownMaxValue;
-			SetCountdownInfoImageUri();
-			StartCountdown();
+			Application.Current.Dispatcher.Invoke(() =>
+			{
+				this.currentCountdownValue = CountdownMaxValue;
+				SetCountdownInfoImageUri();
+				StartCountdown();
+			});
 		}
 		#endregion
 

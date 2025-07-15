@@ -243,6 +243,7 @@ namespace GestureRecognition.Processing.KinectServer
 				var bodyFrame = data?.BodyFrame ?? new BodyFrame();
 				var bodiesJointsColorSpacePointsDict =  data?.BodiesJointsColorSpacePointsDict ?? new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
 
+				Console.WriteLine($"[{methodName}][{DateTime.Now}] Frame message sending...");
 				using (var ms = new MemoryStream())
 				{
 					using (var payloadWriter = new BinaryWriter(ms))

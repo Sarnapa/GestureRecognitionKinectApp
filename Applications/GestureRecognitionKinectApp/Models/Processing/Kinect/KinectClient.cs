@@ -50,6 +50,13 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 			try
 			{
 				string kinectServerExePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{Consts.ServerName}.exe");
+				if (Process.GetProcessesByName(Consts.ServerName).Length > 0)
+				{
+					// TODO: Better way for logging
+					Debug.WriteLine($"[{methodName}] Kinect server is already running.");
+					return true;
+				}
+
 				var kinectServerExeProcess = Process.Start(kinectServerExePath);
 				return kinectServerExeProcess != null;
 			}
