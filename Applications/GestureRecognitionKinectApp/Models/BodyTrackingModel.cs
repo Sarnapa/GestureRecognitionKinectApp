@@ -235,6 +235,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		public async Task Start()
 		{
 			bool isKinectServerStarted = this.kinectClient.StartKinectServer();
+			// bool isKinectServerStarted = true;
 			if (isKinectServerStarted)
 			{
 				bool isConnected = await this.kinectClient.Connect().ConfigureAwait(false);
@@ -370,11 +371,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			{
 				if (colorFrame != null)
 				{
-					this.colorImage.Lock();
-					colorImageLocked = true;
+					Application.Current.Dispatcher.Invoke(() =>
+					{
+						this.colorImage.Lock();
+						colorImageLocked = true;
 
-					this.renderColorFrameManager.ProcessColorFrame(colorFrame, this.displayImageWidth, this.displayImageHeight,
-						ref this.colorImage);
+						this.renderColorFrameManager.ProcessColorFrame(colorFrame, this.displayImageWidth, this.displayImageHeight,
+							ref this.colorImage);
+					});
 				}
 
 				if (colorFrame != null && bodyFrame != null && bodyFrame.BodiesCount > 0 && !this.IsBodyTrackingStoppedYet)
@@ -388,50 +392,53 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				else
 					this.currentTrackedBody = null;
 
-				using (var dc = this.bodyImageDrawingGroup.Open())
+				Application.Current.Dispatcher.Invoke(() =>
 				{
-					if (this.currentTrackedBody != null)
+					using (var dc = this.bodyImageDrawingGroup.Open())
 					{
-						UpdateBodyTrackingStoppedStatusAndSendMessage(false);
-
-						switch (this.TrackingState)
+						if (this.currentTrackedBody != null)
 						{
-							case BodyTrackingState.Standard:
-								if (!UpdateGestureToStartRecordingDetectionState(this.currentTrackedBody))
+							UpdateBodyTrackingStoppedStatusAndSendMessage(false);
+
+							switch (this.TrackingState)
+							{
+								case BodyTrackingState.Standard:
+									if (!UpdateGestureToStartRecordingDetectionState(this.currentTrackedBody))
+										UpdateGestureToStartRecognizingDetectionState(this.currentTrackedBody);
+									break;
+								case BodyTrackingState.GestureToStartGestureRecording:
+									UpdateGestureToStartRecordingDetectionState(this.currentTrackedBody);
+									break;
+								case BodyTrackingState.GestureToStartGestureRecognizing:
 									UpdateGestureToStartRecognizingDetectionState(this.currentTrackedBody);
-								break;
-							case BodyTrackingState.GestureToStartGestureRecording:
-								UpdateGestureToStartRecordingDetectionState(this.currentTrackedBody);
-								break;
-							case BodyTrackingState.GestureToStartGestureRecognizing:
-								UpdateGestureToStartRecognizingDetectionState(this.currentTrackedBody);
-								break;
-						}
+									break;
+							}
 
-						if (bodiesJointsColorSpacePointsDict != null && bodiesJointsColorSpacePointsDict.ContainsKey(this.currentTrackedBody.TrackingId))
-							this.currentTrackedBodyJointsColorSpacePointsDict = bodiesJointsColorSpacePointsDict[this.currentTrackedBody.TrackingId];
+							if (bodiesJointsColorSpacePointsDict != null && bodiesJointsColorSpacePointsDict.ContainsKey(this.currentTrackedBody.TrackingId))
+								this.currentTrackedBodyJointsColorSpacePointsDict = bodiesJointsColorSpacePointsDict[this.currentTrackedBody.TrackingId];
 
-						var trackedBodyColorSpacePoints = this.currentTrackedBodyJointsColorSpacePointsDict?.ToDictionary(
-							kv => kv.Key, kv => new Point(kv.Value.X, kv.Value.Y));
+							var trackedBodyColorSpacePoints = this.currentTrackedBodyJointsColorSpacePointsDict?.ToDictionary(
+								kv => kv.Key, kv => new Point(kv.Value.X, kv.Value.Y));
 
-						// Draw a transparent background to set the render size
-						dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
+							// Draw a transparent background to set the render size
+							dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
 
-						// Process body data
-						if (trackedBodyColorSpacePoints != null)
-						{
-							this.renderBodyFrameManager.DrawBody(this.currentTrackedBody.Joints, trackedBodyColorSpacePoints, dc, 0);
+							// Process body data
+							if (trackedBodyColorSpacePoints != null)
+							{
+								this.renderBodyFrameManager.DrawBody(this.currentTrackedBody.Joints, trackedBodyColorSpacePoints, dc, 0);
 
-							if (trackedBodyColorSpacePoints.ContainsKey(JointType.HandLeft))
-								this.renderBodyFrameManager.DrawHand(this.currentTrackedBody.HandLeftState, trackedBodyColorSpacePoints[JointType.HandLeft], dc);
-							if (trackedBodyColorSpacePoints.ContainsKey(JointType.HandRight))
-								this.renderBodyFrameManager.DrawHand(this.currentTrackedBody.HandRightState, trackedBodyColorSpacePoints[JointType.HandRight], dc);
+								if (trackedBodyColorSpacePoints.ContainsKey(JointType.HandLeft))
+									this.renderBodyFrameManager.DrawHand(this.currentTrackedBody.HandLeftState, trackedBodyColorSpacePoints[JointType.HandLeft], dc);
+								if (trackedBodyColorSpacePoints.ContainsKey(JointType.HandRight))
+									this.renderBodyFrameManager.DrawHand(this.currentTrackedBody.HandRightState, trackedBodyColorSpacePoints[JointType.HandRight], dc);
 
-							// prevent drawing outside of our render area
-							this.bodyImageDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
+								// prevent drawing outside of our render area
+								this.bodyImageDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
+							}
 						}
 					}
-				}
+				});
 
 				switch (this.TrackingState)
 				{
@@ -481,7 +488,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			finally
 			{
 				if (colorImageLocked)
-					this.colorImage.Unlock();
+				{
+					Application.Current.Dispatcher.Invoke(() =>
+					{
+						this.colorImage.Unlock();
+					});
+				}
 			}
 		}
 

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Numerics;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
@@ -49,7 +50,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 			string methodName = $"{nameof(KinectClient)}.{nameof(StartKinectServer)}";
 			try
 			{
-				string kinectServerExePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{Consts.ServerName}.exe");
+				string kinectServerExePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{Consts.ServerExePath}");
 				if (Process.GetProcessesByName(Consts.ServerName).Length > 0)
 				{
 					// TODO: Better way for logging
@@ -57,7 +58,15 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 					return true;
 				}
 
-				var kinectServerExeProcess = Process.Start(kinectServerExePath);
+				var startInfo = new ProcessStartInfo
+				{
+					FileName = kinectServerExePath,
+					UseShellExecute = true,
+					CreateNoWindow = false,
+					WindowStyle = ProcessWindowStyle.Normal
+				};
+
+				var kinectServerExeProcess = Process.Start(startInfo);
 				return kinectServerExeProcess != null;
 			}
 			catch (Exception ex)
@@ -243,7 +252,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 		#region Listening for messages methods
 		private void StartListenTask(CancellationToken token)
 		{
-			Task.Run(() => Listen(token).ConfigureAwait(false), token);
+			Task.Run(() => Listen(token).ConfigureAwait(false), token).ConfigureAwait(false);
 		}
 
 		private async Task Listen(CancellationToken token)

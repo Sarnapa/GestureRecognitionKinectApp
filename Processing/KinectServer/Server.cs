@@ -9,8 +9,8 @@ using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Data;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Events;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
-using static GestureRecognition.Processing.BaseClassLib.Utils.KinectServerUtils;
 using GestureRecognition.Processing.KinectServer.Kinect;
+using static GestureRecognition.Processing.BaseClassLib.Utils.KinectServerUtils;
 
 namespace GestureRecognition.Processing.KinectServer
 {
@@ -20,28 +20,42 @@ namespace GestureRecognition.Processing.KinectServer
 		private bool isRunning = true;
 		private readonly KinectManager kinectManager;
 		private readonly NamedPipeServerStream pipeServer;
+		private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
 		#endregion
 
 		#region Constructors
-		public Server(KinectManager kinectManager)
+		public Server()
 		{
-			if (kinectManager == null)
-				throw new ArgumentNullException(nameof(kinectManager));
-
-			this.kinectManager = kinectManager;
+			this.kinectManager = new KinectManager();
 			this.pipeServer = new NamedPipeServerStream(Consts.PipeName, PipeDirection.InOut, 1,
 				PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
 		}
 		#endregion
 
 		#region Public methods
+		public bool InitializeKinectManager()
+		{
+			string methodName = $"{nameof(Server)}.{nameof(InitializeKinectManager)}";
+			try
+			{
+				Console.WriteLine($"[{methodName}][{DateTime.Now}] Initializing Kinect environment...");
+				this.kinectManager.Initialize();
+				return true;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"[{methodName}][{DateTime.Now}] Exception type: {ex.GetType()}, exception message: {ex.Message}.");
+				return false;
+			}
+		}
+
 		public async Task<bool> Start()
 		{
 			string methodName = $"{nameof(Server)}.{nameof(Start)}";
 			try
 			{
 				Console.WriteLine($"[{methodName}][{DateTime.Now}] Waiting for client...");
-				await this.pipeServer.WaitForConnectionAsync();
+				await this.pipeServer.WaitForConnectionAsync().ConfigureAwait(false);
 				Console.WriteLine($"[{methodName}][{DateTime.Now}] Client connected.");
 
 				AttachKinectManagerEventsHandlers();
@@ -55,7 +69,12 @@ namespace GestureRecognition.Processing.KinectServer
 			}
 		}
 
-		public async Task Listen(CancellationToken token = default)
+		public Task StartListenTask(CancellationToken token = default)
+		{
+			return Task.Run(() => Listen(token, true), token);
+		}
+
+		public async Task Listen(CancellationToken token = default, bool cleanup = false)
 		{
 			string methodName = $"{nameof(Server)}.{nameof(Listen)}";
 			Console.WriteLine($"[{methodName}][{DateTime.Now}] Listening for messages from the client has started.");
@@ -95,10 +114,14 @@ namespace GestureRecognition.Processing.KinectServer
 					Console.WriteLine($"[{methodName}][{DateTime.Now}] Exception type: {ex.GetType()}, exception message: {ex.Message}.");
 				}
 			}
+
+			if (cleanup)
+				Cleanup();
 		}
 
 		public void Cleanup()
 		{
+			string methodName = $"{nameof(Server)}.{nameof(Cleanup)}";
 			this.DetachKinectManagerEventsHandlers();
 			this.pipeServer.Close();
 			this.pipeServer.Dispose();
@@ -118,13 +141,20 @@ namespace GestureRecognition.Processing.KinectServer
 				var parameters = GetStartRequestParams(message, token);
 				Console.WriteLine($"[{methodName}][{DateTime.Now}] Start request parameters:\n{parameters}");
 
-				var result = this.kinectManager.Start(parameters);
+				var result = this.kinectManager.GetKinectSensorInfoToStart(parameters);
 				Console.WriteLine($"[{methodName}][{DateTime.Now}] Start request result:\n{result}");
 
 				await SendStartResponse(result, token).ConfigureAwait(false);
 				Console.WriteLine($"[{methodName}][{DateTime.Now}] Start response sent.");
 
-				this.kinectManager.OpenKinectSensor();
+				if (!result.IsSuccess)
+				{
+					Console.WriteLine($"[{methodName}][{DateTime.Now}] Failed to start Kinect sensor, stopping server.");
+					this.isRunning = false;
+					return;
+				}
+
+				this.kinectManager.StartKinectSensor();
 				Console.WriteLine($"[{methodName}][{DateTime.Now}] Kinect sensor is open.");
 			}
 			catch (Exception ex)
@@ -168,7 +198,7 @@ namespace GestureRecognition.Processing.KinectServer
 					byte[] payload = ms.ToArray();
 					var message = CreateMessage(MessageType.StartResponse, payload);
 
-					await WriteMessage(methodName, this.pipeServer, message, token).ConfigureAwait(false);
+					await WriteMessageWithLock(methodName, this.pipeServer, message, token).ConfigureAwait(false);
 				}
 			}
 			catch (Exception ex)
@@ -209,7 +239,7 @@ namespace GestureRecognition.Processing.KinectServer
 					byte[] payload = ms.ToArray();
 					var message = CreateMessage(MessageType.StopResponse, payload);
 
-					await WriteMessage(methodName, this.pipeServer, message, token).ConfigureAwait(false);
+					await WriteMessageWithLock(methodName, this.pipeServer, message, token).ConfigureAwait(false);
 				}
 			}
 			catch (Exception ex)
@@ -241,7 +271,7 @@ namespace GestureRecognition.Processing.KinectServer
 				// It is controlled in the KinectManager to send frames when it makes sense, but just in case.
 				var colorFrame = data?.ColorFrame ?? new ColorFrame();
 				var bodyFrame = data?.BodyFrame ?? new BodyFrame();
-				var bodiesJointsColorSpacePointsDict =  data?.BodiesJointsColorSpacePointsDict ?? new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
+				var bodiesJointsColorSpacePointsDict = data?.BodiesJointsColorSpacePointsDict ?? new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
 
 				Console.WriteLine($"[{methodName}][{DateTime.Now}] Frame message sending...");
 				using (var ms = new MemoryStream())
@@ -255,7 +285,7 @@ namespace GestureRecognition.Processing.KinectServer
 					byte[] payload = ms.ToArray();
 					var message = CreateMessage(MessageType.Frame, payload);
 
-					await WriteMessage(methodName, this.pipeServer, message, token).ConfigureAwait(false);
+					await WriteMessageWithLock(methodName, this.pipeServer, message, token).ConfigureAwait(false);
 					Console.WriteLine($"[{methodName}][{DateTime.Now}] Frame message sent.");
 				}
 			}
@@ -365,7 +395,7 @@ namespace GestureRecognition.Processing.KinectServer
 					byte[] payload = ms.ToArray();
 					var message = CreateMessage(MessageType.KinectIsAvailableChanged, payload);
 
-					await WriteMessage(methodName, this.pipeServer, message, token).ConfigureAwait(false);
+					await WriteMessageWithLock(methodName, this.pipeServer, message, token).ConfigureAwait(false);
 					Console.WriteLine($"[{methodName}][{DateTime.Now}] KinectIsAvailableChanged message sent.");
 				}
 			}
@@ -377,6 +407,19 @@ namespace GestureRecognition.Processing.KinectServer
 		#endregion
 
 		#region Other private methods
+		private async Task WriteMessageWithLock(string methodName, NamedPipeServerStream pipeServer, Message message, CancellationToken token)
+		{
+			try
+			{
+				await this.semaphore.WaitAsync(token).ConfigureAwait(false);	
+				await WriteMessage(methodName, pipeServer, message, token).ConfigureAwait(false);
+			}
+			finally
+			{
+				this.semaphore.Release();
+			}
+		}
+
 		private void AttachKinectManagerEventsHandlers()
 		{
 			this.kinectManager.OnFrameArrived += this.KinectManager_OnFrameArrived;
