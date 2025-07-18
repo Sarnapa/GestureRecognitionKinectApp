@@ -33,22 +33,6 @@ namespace GestureRecognition.Processing.KinectServer
 		#endregion
 
 		#region Public methods
-		public bool InitializeKinectManager()
-		{
-			string methodName = $"{nameof(Server)}.{nameof(InitializeKinectManager)}";
-			try
-			{
-				Console.WriteLine($"[{methodName}][{DateTime.Now}] Initializing Kinect environment...");
-				this.kinectManager.Initialize();
-				return true;
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"[{methodName}][{DateTime.Now}] Exception type: {ex.GetType()}, exception message: {ex.Message}.");
-				return false;
-			}
-		}
-
 		public async Task<bool> Start()
 		{
 			string methodName = $"{nameof(Server)}.{nameof(Start)}";

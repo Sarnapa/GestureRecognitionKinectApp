@@ -385,12 +385,22 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				{
 					this.bodyTrackingStoppedTime = null;
 
-					var trackedBodies = bodyFrame.Bodies.Where(b => b != null && b.IsTracked);
-					trackedBodiesCount = trackedBodies.Count();
-					this.currentTrackedBody = trackedBodiesCount == 1 ? trackedBodies.FirstOrDefault() : null;
+					if (bodyFrame.TooMuchUsersForOneBodyTracking)
+					{
+						trackedBodiesCount = bodyFrame.BodiesCount;
+						this.currentTrackedBody = null;
+					}
+					else
+					{
+						var trackedBodies = bodyFrame.Bodies.Where(b => b != null && b.IsTracked);
+						trackedBodiesCount = trackedBodies.Count();
+						this.currentTrackedBody = trackedBodiesCount == 1 ? trackedBodies.FirstOrDefault() : null;
+					}
 				}
 				else
+				{
 					this.currentTrackedBody = null;
+				}
 
 				Application.Current.Dispatcher.Invoke(() =>
 				{

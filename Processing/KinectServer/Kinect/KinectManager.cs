@@ -52,25 +52,6 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 		#endregion
 
 		#region Public methods
-		public void Initialize()
-		{
-			//string methodName = $"{nameof(KinectManager)}.{nameof(Initialize)}";
-			//Console.WriteLine($"[{methodName}] STA Thread: {Thread.CurrentThread.GetApartmentState()}");
-
-			//this.kinectSensor = MSKinect.KinectSensor.GetDefault();
-			//Console.WriteLine($"[{methodName}] Kinect sensor is null: {kinectSensor == null}");
-			//this.kinectSensor.Open();
-			//this.kinectSensor.IsAvailableChanged += this.Sensor_IsAvailableChanged;
-
-			//this.coordinateMapper = this.kinectSensor.CoordinateMapper;
-
-			//this.multiSourceReader = this.kinectSensor.OpenMultiSourceFrameReader(MSKinect.FrameSourceTypes.Color | MSKinect.FrameSourceTypes.Body);
-			//if (this.multiSourceReader != null)
-			//	this.multiSourceReader.MultiSourceFrameArrived += this.Reader_FrameArrived;
-
-			//this.colorFrameDescription = this.kinectSensor.ColorFrameSource.CreateFrameDescription(MSKinect.ColorImageFormat.Bgra);
-		}
-
 		public StartResponseResult GetKinectSensorInfoToStart(StartRequestParams parameters)
 		{
 			string methodName = $"{nameof(KinectManager)}.{nameof(GetKinectSensorInfoToStart)}";
@@ -85,24 +66,13 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 
 			// One sensor is currently supported
 			this.kinectSensor = MSKinect.KinectSensor.GetDefault();
-			//this.kinectSensor.IsAvailableChanged += this.Sensor_IsAvailableChanged;
-			//if (!this.kinectSensor.IsOpen)
-			//	this.kinectSensor.Open();
-
-			//this.frameSourceTypes = frameSourceTypes;
-			// Open the reader for the body frames
-			//this.multiSourceReader = this.kinectSensor.OpenMultiSourceFrameReader(frameSourceTypes);
 
 			// Get the coordinate mapper
 			this.coordinateMapper = this.kinectSensor.CoordinateMapper;
 
 			var colorFrameDescription = this.kinectSensor.ColorFrameSource.CreateFrameDescription(this.colorImageFormat);
 
-			//if (this.multiSourceReader != null)
-			//	this.multiSourceReader.MultiSourceFrameArrived += this.Reader_FrameArrived;
-
-			bool isSuccess = /*this.multiSourceReader != null && */ colorFrameDescription != null 
-				&& colorFrameDescription.Width > 0 && colorFrameDescription.Height > 0;
+			bool isSuccess = colorFrameDescription != null && colorFrameDescription.Width > 0 && colorFrameDescription.Height > 0;
 
 			if (!isSuccess)
 				this.isOneBodyTrackingEnabled = false;
@@ -180,7 +150,7 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 			{
 				kinectColorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame();
 				kinectBodyFrame = multiSourceFrame.BodyFrameReference.AcquireFrame();
-				var kinectBodies = GetBodies(kinectBodyFrame);
+				var kinectBodies = GetBodies(kinectBodyFrame, true);
 				int kinectBodiesCount = kinectBodies.Length;
 
 				if (!this.isStopped && kinectColorFrame != null)
@@ -199,7 +169,7 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 							{
 								if (kinectBodiesCount == 1)
 								{
-									var trackedBody = kinectBodies.FirstOrDefault(b => b != null && b.IsTracked);
+									var trackedBody = kinectBodies.FirstOrDefault();
 									var trackedBodyJointsColorSpacePointsDict = ConvertToColorSpace(trackedBody);
 									bodiesJointsColorSpacePointsDict.Add(trackedBody.TrackingId, trackedBodyJointsColorSpacePointsDict);
 									bodyFrame = kinectBodyFrame.Map(new[] { trackedBody });
@@ -271,7 +241,7 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 		#endregion
 
 		#region BodyFrame methods
-		private MSKinect.Body[] GetBodies(MSKinect.BodyFrame kinectBodyFrame)
+		private MSKinect.Body[] GetBodies(MSKinect.BodyFrame kinectBodyFrame, bool onlyTracked)
 		{
 			if (kinectBodyFrame == null)
 				return new MSKinect.Body[0];
@@ -285,7 +255,7 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 			else
 				bodies = new MSKinect.Body[0];
 
-			return bodies;
+			return onlyTracked ? bodies.Where(b => b.IsTracked).ToArray() : bodies;
 		}
 		#endregion
 
