@@ -524,7 +524,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 
 		private void BodyTrackingStoppedMessageHandler(BodyTrackingStoppedMessage m)
 		{
-			Application.Current.Dispatcher.Invoke(() =>
+			Application.Current?.Dispatcher.Invoke(() =>
 			{
 				if ((m.PrevState == BodyTrackingState.WaitingToStartGestureRecording || m.PrevState == BodyTrackingState.WaitingToStartGestureRecognizing)
 				&& m.IsStopped)
