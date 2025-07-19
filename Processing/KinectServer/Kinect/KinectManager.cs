@@ -42,8 +42,14 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 		/// Flag that indicates whether single-user tracking mode is enabled
 		/// </summary>
 		private bool isOneBodyTrackingEnabled;
+		#endregion
 
-		private bool isStopped;
+		#region Public properties
+		public bool IsStopped
+		{
+			get;
+			private set;
+		}
 		#endregion
 
 		#region Public events
@@ -100,11 +106,13 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 			this.multiSourceReader = this.kinectSensor.OpenMultiSourceFrameReader(this.frameSourceTypes);
 			if (this.multiSourceReader != null)
 				this.multiSourceReader.MultiSourceFrameArrived += this.Reader_FrameArrived;
+
+			this.IsStopped = false;
 		}
 
 		public StopResponseResult Stop(StopRequestParams parameters)
 		{
-			this.isStopped = true;
+			this.IsStopped = true;
 
 			if (this.multiSourceReader != null)
 			{
@@ -153,7 +161,7 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 				var kinectBodies = GetBodies(kinectBodyFrame, true);
 				int kinectBodiesCount = kinectBodies.Length;
 
-				if (!this.isStopped && kinectColorFrame != null)
+				if (!this.IsStopped && kinectColorFrame != null)
 				{
 					var colorFrame = GetColorFrame(kinectColorFrame, ColorImageFormat.Bgra);
 					BodyFrame bodyFrame = null;
@@ -215,8 +223,11 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 		/// <param name="e">Event arguments</param>
 		private void Sensor_IsAvailableChanged(object sender, MSKinect.IsAvailableChangedEventArgs e)
 		{
-			OnKinectIsAvailableChanged?.Invoke(this, new KinectIsAvailableChangedEventArgs(
-				new KinectIsAvailableChangedData() { IsAvailable = e.IsAvailable }));
+			if (!this.IsStopped)
+			{
+				OnKinectIsAvailableChanged?.Invoke(this, new KinectIsAvailableChangedEventArgs(
+					new KinectIsAvailableChangedData() { IsAvailable = e.IsAvailable }));
+			}
 		}
 		#endregion
 

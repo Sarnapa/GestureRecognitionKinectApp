@@ -226,7 +226,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			this.kinectClient = new KinectClient();
 			this.gestureRecognitionManager = SimpleIoc.Default.GetInstance<GestureRecognitionManager>();
 			this.gestureRecognitionFeaturesManager = SimpleIoc.Default.GetInstance<GestureRecognitionFeaturesManager>();
-
 			this.gestureToRecognizeBodyFrames = new List<BodyData>();
 		}
 		#endregion
@@ -235,7 +234,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		public async Task Start()
 		{
 			bool isKinectServerStarted = this.kinectClient.StartKinectServer();
-			// bool isKinectServerStarted = true;
 			if (isKinectServerStarted)
 			{
 				bool isConnected = await this.kinectClient.Connect().ConfigureAwait(false);
@@ -243,12 +241,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				{
 					this.kinectClient.OnFrameArrived += this.KinectClient_OnFrameArrived;
 					this.kinectClient.OnKinectIsAvailableChanged += this.KinectClient_OnKinectIsAvailableChanged;
+
 					var startRequest = new StartRequestParams()
 					{
 						FrameSourceTypes = FrameSourceTypes.Color | FrameSourceTypes.Body,
 						ColorImageFormat = ColorImageFormat.Bgra,
 						IsOneBodyTrackingEnabled = true,
 					};
+
 					var startResponse = await this.kinectClient.SendStartRequest(startRequest).ConfigureAwait(false);
 					if (startResponse != null && startResponse.IsSuccess)
 					{
@@ -332,14 +332,23 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			}
 		}
 
-		public void Cleanup(bool deleteGestureRecordFile = true)
+		public async Task Cleanup(bool appFinished)
 		{
-			CleanGestureRecorder(deleteGestureRecordFile);
+			CleanGestureRecorder(appFinished);
 			CleanGestureToRecognizeBodyFrames();
 
 			this.kinectClient.OnFrameArrived -= this.KinectClient_OnFrameArrived;
 			this.kinectClient.OnKinectIsAvailableChanged -= this.KinectClient_OnKinectIsAvailableChanged;
+
+			var parameters = new StopRequestParams()
+			{
+				StopServerRunning = appFinished
+			};
+			await this.kinectClient.SendStopRequest(parameters).ConfigureAwait(false);
+
 			this.kinectClient.Disconnect();
+
+			ChangeKinectIsAvailableStatus(false);
 
 			if (this.currentTrackedBody != null)
 				this.currentTrackedBody = null;
@@ -357,6 +366,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		private Task KinectClient_OnFrameArrived(object sender, FrameArrivedEventArgs e)
 		{
 			if (e.Data == null)
+				return Task.CompletedTask;
+
+			if (this.colorImage == null || this.bodyImage == null)
 				return Task.CompletedTask;
 
 			var colorFrame = e.Data.ColorFrame;
@@ -448,50 +460,51 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 							}
 						}
 					}
+
+					switch (this.TrackingState)
+					{
+						case BodyTrackingState.Standard:
+							if (!CheckIfColorFrameIsNull(colorFrame, false) && !CheckIfNoneTrackedUsers(trackedBodiesCount, false))
+								CheckIfMoreTrackedUsers(trackedBodiesCount);
+							break;
+						case BodyTrackingState.GestureToStartGestureRecording:
+						case BodyTrackingState.GestureToStartGestureRecognizing:
+							if (!CheckIfColorFrameIsNull(colorFrame, false) && !CheckIfNoneTrackedUsers(trackedBodiesCount, false))
+								CheckIfMoreTrackedUsers(trackedBodiesCount);
+							break;
+						case BodyTrackingState.WaitingToStartGestureRecording:
+						case BodyTrackingState.WaitingToStartGestureRecognizing:
+							if (!CheckIfColorFrameIsNull(colorFrame) && !CheckIfNoneTrackedUsers(trackedBodiesCount))
+								CheckIfMoreTrackedUsers(trackedBodiesCount);
+							break;
+						case BodyTrackingState.GestureRecording:
+							if (CheckIfColorFrameIsNull(colorFrame) || CheckIfNoneTrackedUsers(trackedBodiesCount) || CheckIfMoreTrackedUsers(trackedBodiesCount))
+							{
+								StopGestureRecording(true);
+							}
+							else if (!CheckIfStopGestureRecording(prevTrackedBodyJointsColorSpacePointsDict))
+							{
+								if ((this.gestureRecorder.Options & RecordOptions.Color) != 0)
+									this.gestureRecorder.Record(colorFrame);
+								if ((this.gestureRecorder.Options & RecordOptions.Bodies) != 0)
+									this.gestureRecorder.Record(bodyFrame, new[] { (this.currentTrackedBody, this.currentTrackedBodyJointsColorSpacePointsDict) });
+							}
+							break;
+						case BodyTrackingState.GestureToRecognizeRecording:
+							if (!CheckIfColorFrameIsNull(colorFrame) && !CheckIfNoneTrackedUsers(trackedBodiesCount) && !CheckIfMoreTrackedUsers(trackedBodiesCount))
+							{
+								if (!CheckIfStopGestureRecording(prevTrackedBodyJointsColorSpacePointsDict))
+									this.gestureToRecognizeBodyFrames.Add(new BodyData(this.currentTrackedBody));
+							}
+							else
+								CleanGestureToRecognizeBodyFrames();
+							break;
+					}
+
+					SendTrackedUsersCountChangedMessage(trackedBodiesCount);
+					UpdateLastDisplayedColorFrameTimeAndSendMessage(colorFrame != null);
+
 				});
-
-				switch (this.TrackingState)
-				{
-					case BodyTrackingState.Standard:
-						if (!CheckIfColorFrameIsNull(colorFrame, false) && !CheckIfNoneTrackedUsers(trackedBodiesCount, false))
-							CheckIfMoreTrackedUsers(trackedBodiesCount);
-						break;
-					case BodyTrackingState.GestureToStartGestureRecording:
-					case BodyTrackingState.GestureToStartGestureRecognizing:
-						if (!CheckIfColorFrameIsNull(colorFrame, false) && !CheckIfNoneTrackedUsers(trackedBodiesCount, false))
-							CheckIfMoreTrackedUsers(trackedBodiesCount);
-						break;
-					case BodyTrackingState.WaitingToStartGestureRecording:
-					case BodyTrackingState.WaitingToStartGestureRecognizing:
-						if (!CheckIfColorFrameIsNull(colorFrame) && !CheckIfNoneTrackedUsers(trackedBodiesCount))
-							CheckIfMoreTrackedUsers(trackedBodiesCount);
-						break;
-					case BodyTrackingState.GestureRecording:
-						if (CheckIfColorFrameIsNull(colorFrame) || CheckIfNoneTrackedUsers(trackedBodiesCount) || CheckIfMoreTrackedUsers(trackedBodiesCount))
-						{
-							StopGestureRecording(true);
-						}
-						else if (!CheckIfStopGestureRecording(prevTrackedBodyJointsColorSpacePointsDict))
-						{
-							if ((this.gestureRecorder.Options & RecordOptions.Color) != 0)
-								this.gestureRecorder.Record(colorFrame);
-							if ((this.gestureRecorder.Options & RecordOptions.Bodies) != 0)
-								this.gestureRecorder.Record(bodyFrame, new[] { (this.currentTrackedBody, this.currentTrackedBodyJointsColorSpacePointsDict) });
-						}
-						break;
-					case BodyTrackingState.GestureToRecognizeRecording:
-						if (!CheckIfColorFrameIsNull(colorFrame) && !CheckIfNoneTrackedUsers(trackedBodiesCount) && !CheckIfMoreTrackedUsers(trackedBodiesCount))
-						{
-							if (!CheckIfStopGestureRecording(prevTrackedBodyJointsColorSpacePointsDict))
-								this.gestureToRecognizeBodyFrames.Add(new BodyData(this.currentTrackedBody));
-						}
-						else
-							CleanGestureToRecognizeBodyFrames();
-						break;
-				}
-
-				SendTrackedUsersCountChangedMessage(trackedBodiesCount);
-				UpdateLastDisplayedColorFrameTimeAndSendMessage(colorFrame != null);
 
 				return Task.CompletedTask;
 			}
@@ -514,12 +527,18 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// <param name="e">Event arguments</param>
 		private Task KinectClient_OnKinectIsAvailableChanged(object sender, KinectIsAvailableChangedEventArgs e)
 		{
-			this.IsKinectAvailable = e.Data?.IsAvailable ?? false;
+			ChangeKinectIsAvailableStatus(e.Data?.IsAvailable ?? false);
+			return Task.CompletedTask;
+		}
+
+		private void ChangeKinectIsAvailableStatus(bool isAvailable)
+		{
+			this.IsKinectAvailable = isAvailable;
 			string statusText = this.IsKinectAvailable ? Properties.Resources.RunningStatusText : Properties.Resources.NoSensorStatusText;
-			Messenger.Default.Send(new KinectStatusMessage() 
-			{ 
+			Messenger.Default.Send(new KinectStatusMessage()
+			{
 				PrevState = this.TrackingState,
-				Text = statusText 
+				Text = statusText
 			});
 
 			if (!this.IsKinectAvailable)
@@ -530,8 +549,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			}
 			else
 				SetStandardState();
-
-			return Task.CompletedTask;
 		}
 		#endregion
 

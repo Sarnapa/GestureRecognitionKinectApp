@@ -7,6 +7,5 @@
 		KinectIsAvailableChanged = 0x04,
 		Frame = 0x08,
 		StopRequest = 0x10,
-		StopResponse = 0x20
 	}
 }

@@ -394,7 +394,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		#region Actions
 		private void StartCommandAction()
 		{
-			this.model.Start();
+			Task.Run(async () => await this.model.Start());
 		}
 
 		private void ImportGestureRecognitionModelCommandAction()
@@ -468,14 +468,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 
 		private void CleanupCommandAction()
 		{
-			this.model.Cleanup(false);
+			Task.Run(async () => await this.model.Cleanup(false).ConfigureAwait(false));
 		}
 		#endregion
 
 		#region Messages handlers
 		private void KinectStatusChangedMessageHandler(KinectStatusMessage m)
 		{
-			Application.Current.Dispatcher.Invoke(() => 
+			Application.Current?.Dispatcher.Invoke(() => 
 			{
 				if ((m.PrevState == BodyTrackingState.WaitingToStartGestureRecording || m.PrevState == BodyTrackingState.WaitingToStartGestureRecognizing)
 					&& !this.IsKinectAvailable)
@@ -706,7 +706,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		public void Dispose()
 		{
 			if (this.model != null)
-				this.model.Cleanup();
+				Task.Run(async () => await this.model.Cleanup(true).ConfigureAwait(false));
 		}
 		#endregion
 	}

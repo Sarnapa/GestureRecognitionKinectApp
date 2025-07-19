@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Numerics;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
@@ -19,7 +18,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 	public class KinectClient
 	{
 		#region Private fields
-		private readonly NamedPipeClientStream pipeClient;
+		private NamedPipeClientStream pipeClient;
+		//private Task ListenTask;
 		#endregion
 
 		#region Public properties
@@ -39,9 +39,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 
 		#region Constructors
 		public KinectClient()
-		{
-			this.pipeClient = new NamedPipeClientStream(".", Consts.PipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
-		}
+		{}
 		#endregion
 
 		#region Public methods
@@ -50,7 +48,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 			string methodName = $"{nameof(KinectClient)}.{nameof(StartKinectServer)}";
 			try
 			{
-				string kinectServerExePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{Consts.ServerExePath}");
 				if (Process.GetProcessesByName(Consts.ServerName).Length > 0)
 				{
 					// TODO: Better way for logging
@@ -58,6 +55,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 					return true;
 				}
 
+				string kinectServerExePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{Consts.ServerExePath}");
 				var startInfo = new ProcessStartInfo
 				{
 					FileName = kinectServerExePath,
@@ -82,6 +80,16 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 			string methodName = $"{nameof(KinectClient)}.{nameof(Connect)}";
 			try
 			{
+				if (this.pipeClient == null)
+					this.pipeClient = new NamedPipeClientStream(".", Consts.PipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
+
+				if (this.pipeClient.IsConnected)
+				{
+					// TODO: Better way for logging
+					Debug.WriteLine($"[{methodName}] There is already a connection to Kinect server.");
+					return true;
+				}
+
 				await this.pipeClient.ConnectAsync(timeout, cancellationToken).ConfigureAwait(false);
 				return this.pipeClient.IsConnected;
 			}
@@ -120,7 +128,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 			}
 		}
 
-		public async Task<StopResponseResult> SendStopRequest(StopRequestParams parameters, CancellationToken token = default)
+		public async Task SendStopRequest(StopRequestParams parameters, CancellationToken token = default)
 		{
 			if (parameters == null)
 				throw new ArgumentNullException(nameof(parameters));
@@ -129,16 +137,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 			try
 			{
 				await SendStopRequestInternal(parameters, token).ConfigureAwait(false);
-				return await GetStopResponseInternal(token).ConfigureAwait(false);
 			}
 			catch (Exception ex)
 			{
 				// TODO: Better way for logging
 				Debug.WriteLine($"[{methodName}] Exception type: {ex.GetType()}, exception message: {ex.Message}.");
-				return new StopResponseResult
-				{
-					IsSuccess = false,
-				};
 			}
 		}
 
@@ -151,6 +154,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 				{
 					this.pipeClient.Close();
 					this.pipeClient.Dispose();
+					this.pipeClient = null;
 				}
 			}
 			catch (Exception ex)
@@ -216,35 +220,16 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 		private async Task SendStopRequestInternal(StopRequestParams parameters, CancellationToken token)
 		{
 			string methodName = $"{nameof(KinectClient)}.{nameof(SendStopRequestInternal)}";
-			byte[] payload = new byte[0];
-			var message = CreateMessage(MessageType.StopRequest, payload);
-
-			await WriteMessage(methodName, this.pipeClient, message, token).ConfigureAwait(false);
-		}
-
-		private async Task<StopResponseResult> GetStopResponseInternal(CancellationToken token)
-		{
-			string methodName = $"{nameof(KinectClient)}.{nameof(GetStopResponseInternal)}";
-			var message = await ReadMessage(methodName, this.pipeClient, token).ConfigureAwait(false);
-			if (message?.Header == null || message.Header.Type != MessageType.StopRequest ||
-				message.Header.PayloadLength == 0 || message.Payload == null || message.Payload.Length != message.Header.PayloadLength)
+			using (var ms = new MemoryStream())
 			{
-				return new StopResponseResult
+				using (var payloadWriter = new BinaryWriter(ms))
 				{
-					IsSuccess = false
-				};
-			}
-
-			using (var ms = new MemoryStream(message.Payload))
-			{
-				using (var payloadReader = new BinaryReader(ms))
-				{
-					var result = new StopResponseResult
-					{
-						IsSuccess = payloadReader.ReadBoolean(),
-					};
-					return result;
+					payloadWriter.Write(parameters.StopServerRunning);
 				}
+				byte[] payload = ms.ToArray();
+				var message = CreateMessage(MessageType.StopRequest, payload);
+
+				await WriteMessage(methodName, this.pipeClient, message, token).ConfigureAwait(false);
 			}
 		}
 		#endregion
@@ -252,7 +237,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 		#region Listening for messages methods
 		private void StartListenTask(CancellationToken token)
 		{
-			Task.Run(() => Listen(token).ConfigureAwait(false), token).ConfigureAwait(false);
+			Task.Run(async () => await Listen(token).ConfigureAwait(false), token);
 		}
 
 		private async Task Listen(CancellationToken token)
