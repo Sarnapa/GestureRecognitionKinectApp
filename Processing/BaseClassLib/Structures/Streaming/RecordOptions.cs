@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record
+namespace GestureRecognition.Processing.BaseClassLib.Structures.Streaming
 {
 	[Flags]
 	public enum RecordOptions

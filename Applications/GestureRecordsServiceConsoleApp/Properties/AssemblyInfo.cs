@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("KinectServer")]
+[assembly: AssemblyTitle("GestureRecordsServiceConsoleApp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("KinectServer")]
-[assembly: AssemblyCopyright("Copyright © 2025")]
+[assembly: AssemblyProduct("GestureRecordsServiceConsoleApp")]
+[assembly: AssemblyCopyright("Copyright ©  2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7bd7ccd9-19f1-48f2-bd6e-798b13d9ea19")]
+[assembly: Guid("4333556c-b9da-4e74-8b53-8ef6359cbf8a")]
 
 // Version information for an assembly consists of the following four values:
 //

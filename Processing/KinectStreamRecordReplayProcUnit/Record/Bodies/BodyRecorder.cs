@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Runtime.Serialization.Formatters.Binary;
 using GestureRecognition.Processing.BaseClassLib.Mappers;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
+using MessagePack;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.Bodies
 {
@@ -16,12 +16,14 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.
 		private DateTime referenceTime;
 		private readonly float resizingCoef = 1.0f;
 		private readonly BinaryWriter writer;
+		private readonly MessagePackSerializerOptions serializerOptions;
 		#endregion
 
 		#region Constructors
-		internal BodyRecorder(BinaryWriter writer, float resizingCoef)
+		internal BodyRecorder(BinaryWriter writer, MessagePackSerializerOptions serializerOptions, float resizingCoef)
 		{
 			this.writer = writer;
+			this.serializerOptions = serializerOptions;
 			this.resizingCoef = resizingCoef;
 			this.referenceTime = DateTime.Now;
 		}
@@ -45,12 +47,16 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.
 			// Data
 			var timeSpan = DateTime.Now.Subtract(referenceTime);
 			this.referenceTime = DateTime.Now;
-			this.writer.Write((long)timeSpan.TotalMilliseconds);
+			this.writer.Write(timeSpan.Ticks);
 
 			var bodiesData = bodies.Map();
 
-			var formatter = new BinaryFormatter();
-			formatter.Serialize(this.writer.BaseStream, bodiesData);
+			byte[] bodiesDataBytes;
+			if (this.serializerOptions == null)
+				bodiesDataBytes = MessagePackSerializer.Serialize(bodiesData);
+			else
+				bodiesDataBytes = MessagePackSerializer.Serialize(bodiesData, this.serializerOptions);
+			this.writer.Write(bodiesDataBytes);
 		}
 		#endregion
 

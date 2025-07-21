@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using MessagePack;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 {
@@ -12,7 +13,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 		#endregion
 
 		#region Internal methods
-		internal abstract void CreateFromReader(BinaryReader reader);
+		internal abstract void CreateFromReader(BinaryReader reader, MessagePackSerializerOptions serializerOptions);
 		#endregion
 	}
 }

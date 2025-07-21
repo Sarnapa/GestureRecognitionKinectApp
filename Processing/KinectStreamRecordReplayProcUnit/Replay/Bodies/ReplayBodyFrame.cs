@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using GestureRecognition.Processing.BaseClassLib.Mappers;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
+using MessagePack;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies
 {
@@ -23,7 +23,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.
 			if (frame == null)
 				throw new ArgumentNullException(nameof(frame));
 
-			this.TimeStamp = (long)frame.RelativeTime.TotalMilliseconds;
+			this.TimeStamp = frame.RelativeTime.Ticks;
 			
 			// Without color space coordinations for bodies joints
 			var bodiesWithJointsColorSpacePoints = frame.Bodies.Select(b => (b, new BodyJointsColorSpacePointsDict()));
@@ -42,12 +42,14 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.
 		#endregion
 
 		#region ReplayFrame overriders
-		internal override void CreateFromReader(BinaryReader reader)
+		internal override void CreateFromReader(BinaryReader reader, MessagePackSerializerOptions serializerOptions)
 		{
 			this.TimeStamp = reader.ReadInt64();
 
-			var formatter = new BinaryFormatter();
-			this.Bodies = (BodyDataWithColorSpacePoints[])formatter.Deserialize(reader.BaseStream);
+			if (serializerOptions == null)
+				this.Bodies = MessagePackSerializer.Deserialize<BodyDataWithColorSpacePoints[]>(reader.BaseStream);
+			else
+				this.Bodies = MessagePackSerializer.Deserialize<BodyDataWithColorSpacePoints[]>(reader.BaseStream, serializerOptions);
 		}
 		#endregion
 	}

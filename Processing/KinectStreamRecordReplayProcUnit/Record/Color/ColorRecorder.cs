@@ -58,7 +58,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.
 			// Data
 			var timeSpan = DateTime.Now.Subtract(referenceTime);
 			this.referenceTime = DateTime.Now;
-			this.writer.Write((long)timeSpan.TotalMilliseconds);
+			this.writer.Write(timeSpan.Ticks);
 			this.writer.Write(bytesPerPixel);
 			this.writer.Write((int)imageFormat);
 			this.writer.Write(frameWidth);

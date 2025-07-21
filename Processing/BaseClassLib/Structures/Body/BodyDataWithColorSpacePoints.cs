@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using MessagePack;
 
 namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 {
 	[Serializable]
-	public sealed class BodyDataWithColorSpacePoints: BodyData
+	[MessagePackObject(keyAsPropertyName: true)]
+	public partial class BodyDataWithColorSpacePoints: BodyData
 	{
 		#region Public properties
 		public BodyJointsColorSpacePointsDict JointsColorSpacePoints
@@ -15,6 +17,9 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 		#endregion
 
 		#region Constructors
+		public BodyDataWithColorSpacePoints()
+		{}
+
 		public BodyDataWithColorSpacePoints(ulong trackingId, bool isTracked, IReadOnlyDictionary<JointType, Joint> joints,
 			HandState handLeftState, TrackingConfidence handLeftConfidence,
 			HandState handRightState, TrackingConfidence handRightConfidence,

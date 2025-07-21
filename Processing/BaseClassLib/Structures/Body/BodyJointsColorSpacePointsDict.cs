@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.Serialization;
+using MessagePack;
 
 namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 {
 	[Serializable]
-	public class BodyJointsColorSpacePointsDict: IDictionary<JointType, Vector2>, ISerializable
+	[MessagePackObject]
+	public class BodyJointsColorSpacePointsDict: IDictionary<JointType, Vector2>/*, ISerializable*/
 	{
 		#region Private fields
 		private IDictionary<JointType, Vector2> internalDict;
@@ -18,23 +20,24 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 		{
 			this.internalDict = new Dictionary<JointType, Vector2>();
 		}
-		protected BodyJointsColorSpacePointsDict(SerializationInfo info, StreamingContext context)
-		{
-			this.internalDict = new Dictionary<JointType, Vector2>();
-			int count = info.GetInt32("Count");
+		//protected BodyJointsColorSpacePointsDict(SerializationInfo info, StreamingContext context)
+		//{
+		//	this.internalDict = new Dictionary<JointType, Vector2>();
+		//	int count = info.GetInt32("Count");
 
-			for (int i = 0; i < count; i++)
-			{
-				JointType key = (JointType)info.GetValue($"Key_{i}", typeof(JointType));
-				float x = info.GetSingle($"Value_{i}_X");
-				float y = info.GetSingle($"Value_{i}_Y");
-				Vector2 value = new Vector2(x, y);
-				this.internalDict[key] = value;
-			}
-		}
+		//	for (int i = 0; i < count; i++)
+		//	{
+		//		JointType key = (JointType)info.GetValue($"Key_{i}", typeof(JointType));
+		//		float x = info.GetSingle($"Value_{i}_X");
+		//		float y = info.GetSingle($"Value_{i}_Y");
+		//		Vector2 value = new Vector2(x, y);
+		//		this.internalDict[key] = value;
+		//	}
+		//}
 		#endregion
 
 		#region IDictionary implementation
+		[IgnoreMember]
 		public Vector2 this[JointType key]
 		{
 			get
@@ -48,6 +51,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 			}
 		}
 
+		[IgnoreMember]
 		public ICollection<JointType> Keys
 		{
 			get
@@ -56,6 +60,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 			}
 		}
 
+		[IgnoreMember]
 		public ICollection<Vector2> Values
 		{
 			get
@@ -64,6 +69,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 			}
 		}
 
+		[IgnoreMember]
 		public int Count
 		{
 			get
@@ -72,6 +78,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 			}
 		}
 
+		[IgnoreMember]
 		public bool IsReadOnly
 		{
 			get
@@ -137,19 +144,19 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 		#endregion
 
 		#region ISerializable implementation
-		public void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			info.AddValue("Count", this.internalDict.Count);
+		//public void GetObjectData(SerializationInfo info, StreamingContext context)
+		//{
+		//	info.AddValue("Count", this.internalDict.Count);
 
-			int i = 0;
-			foreach (var kv in this.internalDict)
-			{
-				info.AddValue($"Key_{i}", kv.Key);
-				info.AddValue($"Value_{i}_X", kv.Value.X);
-				info.AddValue($"Value_{i}_Y", kv.Value.Y);
-				i++;
-			}
-		}
+		//	int i = 0;
+		//	foreach (var kv in this.internalDict)
+		//	{
+		//		info.AddValue($"Key_{i}", kv.Key);
+		//		info.AddValue($"Value_{i}_X", kv.Value.X);
+		//		info.AddValue($"Value_{i}_Y", kv.Value.Y);
+		//		i++;
+		//	}
+		//}
 		#endregion
 	}
 }

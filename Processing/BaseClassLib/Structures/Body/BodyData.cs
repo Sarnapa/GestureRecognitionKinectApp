@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using MessagePack;
 
 namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 {
 	[Serializable]
-	public class BodyData
+	[MessagePackObject(keyAsPropertyName: true)]
+	public partial class BodyData
 	{
 		#region Public properties
 		public ulong TrackingId
@@ -47,6 +49,9 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 		#endregion
 
 		#region Constructors
+		public BodyData()
+		{}
+
 		public BodyData(ulong trackingId, bool isTracked, IReadOnlyDictionary<JointType, Joint> joints,
 			HandState handLeftState, TrackingConfidence handLeftConfidence,
 			HandState handRightState, TrackingConfidence handRightConfidence)

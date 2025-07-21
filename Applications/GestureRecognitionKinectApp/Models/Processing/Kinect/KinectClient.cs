@@ -19,7 +19,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 	{
 		#region Private fields
 		private NamedPipeClientStream pipeClient;
-		//private Task ListenTask;
 		#endregion
 
 		#region Public properties

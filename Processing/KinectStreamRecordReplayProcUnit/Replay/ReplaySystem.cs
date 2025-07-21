@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using MessagePack;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 {
@@ -10,11 +11,11 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 	internal class ReplaySystem<T> : ReplayBase<T> where T : ReplayFrame, new()
 	{
 		#region ReplayBase overriders
-		internal override void AddFrame(BinaryReader reader)
+		internal override void AddFrame(BinaryReader reader, MessagePackSerializerOptions serializerOptions)
 		{
 			T frame = new T();
 
-			frame.CreateFromReader(reader);
+			frame.CreateFromReader(reader, serializerOptions);
 
 			this.frames.Add(frame);
 		}
@@ -56,7 +57,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 			{
 				foreach (T frame in this.frames)
 				{
-					Thread.Sleep(TimeSpan.FromMilliseconds(frame.TimeStamp));
+					Thread.Sleep(TimeSpan.FromTicks(frame.TimeStamp));
 
 					if (token.IsCancellationRequested)
 						break;
@@ -81,7 +82,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 		#endregion
 
 		#region Abstract methods
-		internal abstract void AddFrame(BinaryReader reader);
+		internal abstract void AddFrame(BinaryReader reader, MessagePackSerializerOptions serializerOptions);
 		#endregion
 	}
 	#endregion

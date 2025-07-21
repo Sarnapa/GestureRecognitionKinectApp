@@ -92,7 +92,10 @@ namespace GestureRecognition.Processing.KinectServer
 				}
 				catch (IOException ex)
 				{
+					// TODO: To reconsider this exception handling.
 					Console.WriteLine($"[{methodName}][{DateTime.Now}] IOException: {ex.Message}, this may happen if client disconnected unexpectedly.");
+					//this.kinectManager.Stop(new StopRequestParams() { StopServerRunning = false });
+					//Cleanup(true);
 					break;
 				}
 				catch (Exception ex)
@@ -241,33 +244,36 @@ namespace GestureRecognition.Processing.KinectServer
 
 		private async Task SendFrameDataMessage(FrameData data, CancellationToken token)
 		{
-			string methodName = $"{nameof(Server)}.{nameof(SendFrameDataMessage)}";
-			try
+			if (this.pipeServer != null && this.pipeServer.IsConnected && this.IsRunning)
 			{
-				// It is controlled in the KinectManager to send frames when it makes sense, but just in case.
-				var colorFrame = data?.ColorFrame ?? new ColorFrame();
-				var bodyFrame = data?.BodyFrame ?? new BodyFrame();
-				var bodiesJointsColorSpacePointsDict = data?.BodiesJointsColorSpacePointsDict ?? new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
-
-				// Console.WriteLine($"[{methodName}][{DateTime.Now}] Frame message sending...");
-				using (var ms = new MemoryStream())
+				string methodName = $"{nameof(Server)}.{nameof(SendFrameDataMessage)}";
+				try
 				{
-					using (var payloadWriter = new BinaryWriter(ms))
-					{
-						WriteColorFrame(payloadWriter, colorFrame);
-						WriteBodyFrame(payloadWriter, bodyFrame);
-						WriteBodiesJointsColorSpacePointsDict(payloadWriter, bodiesJointsColorSpacePointsDict);
-					}
-					byte[] payload = ms.ToArray();
-					var message = CreateMessage(MessageType.Frame, payload);
+					// It is controlled in the KinectManager to send frames when it makes sense, but just in case.
+					var colorFrame = data?.ColorFrame ?? new ColorFrame();
+					var bodyFrame = data?.BodyFrame ?? new BodyFrame();
+					var bodiesJointsColorSpacePointsDict = data?.BodiesJointsColorSpacePointsDict ?? new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
 
-					await WriteMessageWithLock(methodName, this.pipeServer, message, token).ConfigureAwait(false);
-					// Console.WriteLine($"[{methodName}][{DateTime.Now}] Frame message sent.");
+					// Console.WriteLine($"[{methodName}][{DateTime.Now}] Frame message sending...");
+					using (var ms = new MemoryStream())
+					{
+						using (var payloadWriter = new BinaryWriter(ms))
+						{
+							WriteColorFrame(payloadWriter, colorFrame);
+							WriteBodyFrame(payloadWriter, bodyFrame);
+							WriteBodiesJointsColorSpacePointsDict(payloadWriter, bodiesJointsColorSpacePointsDict);
+						}
+						byte[] payload = ms.ToArray();
+						var message = CreateMessage(MessageType.Frame, payload);
+
+						await WriteMessageWithLock(methodName, this.pipeServer, message, token).ConfigureAwait(false);
+						// Console.WriteLine($"[{methodName}][{DateTime.Now}] Frame message sent.");
+					}
 				}
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"[{methodName}][{DateTime.Now}] Exception type: {ex.GetType()}, exception message: {ex.Message}.");
+				catch (Exception ex)
+				{
+					Console.WriteLine($"[{methodName}][{DateTime.Now}] Exception type: {ex.GetType()}, exception message: {ex.Message}.");
+				}
 			}
 		}
 
@@ -356,28 +362,31 @@ namespace GestureRecognition.Processing.KinectServer
 
 		private async Task SendKinectIsAvailableChangedMessage(KinectIsAvailableChangedData data, CancellationToken token)
 		{
-			string methodName = $"{nameof(Server)}.{nameof(SendKinectIsAvailableChangedMessage)}";
-			try
+			if (this.pipeServer != null && this.pipeServer.IsConnected && this.IsRunning)
 			{
-				bool isAvailable = data?.IsAvailable ?? false;
-				string currentStatusText = isAvailable ? "Available" : "Not available";
-				Console.WriteLine($"[{methodName}][{DateTime.Now}] Kinect availability has changed, current status - {currentStatusText}");
-				using (var ms = new MemoryStream())
+				string methodName = $"{nameof(Server)}.{nameof(SendKinectIsAvailableChangedMessage)}";
+				try
 				{
-					using (var payloadWriter = new BinaryWriter(ms))
+					bool isAvailable = data?.IsAvailable ?? false;
+					string currentStatusText = isAvailable ? "Available" : "Not available";
+					Console.WriteLine($"[{methodName}][{DateTime.Now}] Kinect availability has changed, current status - {currentStatusText}");
+					using (var ms = new MemoryStream())
 					{
-						payloadWriter.Write(isAvailable);
-					}
-					byte[] payload = ms.ToArray();
-					var message = CreateMessage(MessageType.KinectIsAvailableChanged, payload);
+						using (var payloadWriter = new BinaryWriter(ms))
+						{
+							payloadWriter.Write(isAvailable);
+						}
+						byte[] payload = ms.ToArray();
+						var message = CreateMessage(MessageType.KinectIsAvailableChanged, payload);
 
-					await WriteMessageWithLock(methodName, this.pipeServer, message, token).ConfigureAwait(false);
-					Console.WriteLine($"[{methodName}][{DateTime.Now}] KinectIsAvailableChanged message sent.");
+						await WriteMessageWithLock(methodName, this.pipeServer, message, token).ConfigureAwait(false);
+						Console.WriteLine($"[{methodName}][{DateTime.Now}] KinectIsAvailableChanged message sent.");
+					}
 				}
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"[{methodName}][{DateTime.Now}] Exception type: {ex.GetType()}, exception message: {ex.Message}.");
+				catch (Exception ex)
+				{
+					Console.WriteLine($"[{methodName}][{DateTime.Now}] Exception type: {ex.GetType()}, exception message: {ex.Message}.");
+				}
 			}
 		}
 		#endregion
@@ -390,6 +399,13 @@ namespace GestureRecognition.Processing.KinectServer
 				await this.semaphore.WaitAsync(token).ConfigureAwait(false);	
 				await WriteMessage(methodName, pipeServer, message, token).ConfigureAwait(false);
 			}
+			//catch (IOException ex)
+			//{
+			//	// TODO: To reconsider this exception handling.
+			//	Console.WriteLine($"[{methodName}][{DateTime.Now}] IOException: {ex.Message}, this may happen if client disconnected unexpectedly.");
+			//	this.kinectManager.Stop(new StopRequestParams() { StopServerRunning = false });
+			//	Cleanup(true);
+			//}
 			finally
 			{
 				this.semaphore.Release();
@@ -400,8 +416,8 @@ namespace GestureRecognition.Processing.KinectServer
 		{
 			string methodName = $"{nameof(Server)}.{nameof(Cleanup)}";
 			this.DetachKinectManagerEventsHandlers();
-			this.pipeServer.Close();
-			this.pipeServer.Dispose();
+			this.pipeServer?.Close();
+			this.pipeServer?.Dispose();
 			this.pipeServer = null;
 			this.isListening = false;
 			this.IsRunning = isRunning;

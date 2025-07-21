@@ -2,6 +2,7 @@
 using System.IO;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Color;
+using MessagePack;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.All
 {
@@ -27,7 +28,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.
 		#endregion
 
 		#region ReplayFrame overriders
-		internal override void CreateFromReader(BinaryReader reader)
+		internal override void CreateFromReader(BinaryReader reader, MessagePackSerializerOptions serializerOptions)
 		{
 			throw new NotImplementedException();
 		}

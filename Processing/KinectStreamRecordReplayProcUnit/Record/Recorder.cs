@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using GestureRecognition.Processing.BaseClassLib.Serialization.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.Bodies;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.Color;
+using MessagePack;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record
 {
@@ -45,7 +47,8 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record
 			}
 			if ((this.Options & RecordOptions.Bodies) != 0)
 			{
-				this.bodyRecorder = new BodyRecorder(this.writer, resizingCoef);
+				var serializerOptions = MessagePackSerializerOptions.Standard.WithResolver(BodyDataResolver.Instance);
+				this.bodyRecorder = new BodyRecorder(this.writer, serializerOptions, resizingCoef);
 			}
 
 			this.previousFlushDate = DateTime.Now;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
+using MessagePack;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Color
 {
@@ -44,7 +45,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.
 			if (frame == null)
 				throw new ArgumentNullException(nameof(frame));
 
-			this.TimeStamp = (long)frame.RelativeTime.TotalMilliseconds;
+			this.TimeStamp = frame.RelativeTime.Ticks;
 			this.BytesPerPixel = frame.BytesPerPixel;
 			this.RawColorImageFormat = frame.RawColorImageFormat;
 			this.Width = frame.Width;
@@ -81,7 +82,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.
 		#endregion
 
 		#region ReplayFrame overriders
-		internal override void CreateFromReader(BinaryReader reader)
+		internal override void CreateFromReader(BinaryReader reader, MessagePackSerializerOptions serializerOptions)
 		{
 			this.TimeStamp = reader.ReadInt64();
 			this.BytesPerPixel = reader.ReadUInt32();

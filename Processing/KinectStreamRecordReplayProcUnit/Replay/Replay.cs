@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record;
+using GestureRecognition.Processing.BaseClassLib.Serialization.Body;
+using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.All;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Color;
+using MessagePack;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 {
@@ -60,12 +62,13 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 			this.synchronizationContext = SynchronizationContext.Current;
 
 			var options = (RecordOptions)reader.ReadInt32();
+			var serializerOptions = MessagePackSerializerOptions.Standard.WithResolver(BodyDataResolver.Instance);
 
 			if ((options & RecordOptions.All) != 0)
 			{
 				this.allReplay = new ReplayAllFramesSystem();
 				while (this.reader.BaseStream.Position != this.reader.BaseStream.Length)
-					this.allReplay.AddFrame(reader);
+					this.allReplay.AddFrame(reader, serializerOptions);
 			}
 			else
 			{
@@ -80,10 +83,10 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 					switch (header)
 					{
 						case RecordOptions.Color:
-							this.colorReplay.AddFrame(this.reader);
+							this.colorReplay.AddFrame(this.reader, null);
 							break;
 						case RecordOptions.Bodies:
-							this.bodyReplay.AddFrame(this.reader);
+							this.bodyReplay.AddFrame(this.reader, serializerOptions);
 							break;
 					}
 				}
