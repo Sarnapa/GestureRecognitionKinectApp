@@ -10,12 +10,13 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp
 			string methodName = $"{nameof(Main)}";
 			Console.WriteLine($"[{methodName}][{DateTime.Now}] Starting GestureRecordsServiceConsoleApp...");
 
-			args = new string[]
-			{
-				ArgumentsConsts.SERIALIZATION_MODE_FILE,
-				@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Hello\2025_02_03\2025_02_03_hello1.record",
-				@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Hello\2025_07_21\2025_07_21_hello1.record"
-			};
+			// For testing purposes
+			//args = new string[]
+			//{
+			//	ArgumentsConsts.SERIALIZATION_MODE_DIRECTORY,
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Hello\2025_02_02\",
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Hello\2025_07_21\"
+			//};
 
 			if (args.Length < 3)
 			{

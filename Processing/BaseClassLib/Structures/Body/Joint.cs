@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Numerics;
-using System.Runtime.Serialization;
 using MessagePack;
 
 namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 {
-	[Serializable]
 	[MessagePackObject(keyAsPropertyName: true)]
-	public partial struct Joint: IEquatable<Joint>/*, ISerializable*/
+	public partial struct Joint: IEquatable<Joint>
 	{
 		#region Public properties
 		public JointType JointType
@@ -34,27 +32,6 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 			this.Position = position;
 			this.TrackingState = trackingState;
 		}
-
-		//private Joint(SerializationInfo info, StreamingContext context)
-		//{
-		//	this.JointType = (JointType)info.GetValue("JointType", typeof(JointType));
-		//	float x = info.GetSingle("X");
-		//	float y = info.GetSingle("Y");
-		//	float z = info.GetSingle("Z");
-		//	this.Position = new Vector3(x, y, z);
-		//	this.TrackingState = (TrackingState)info.GetValue("TrackingState", typeof(TrackingState));
-		//}
-		#endregion
-
-		#region ISerializable implementation
-		//public void GetObjectData(SerializationInfo info, StreamingContext context)
-		//{
-		//	info.AddValue("JointType", JointType);
-		//	info.AddValue("X", Position.X);
-		//	info.AddValue("Y", Position.Y);
-		//	info.AddValue("Z", Position.Z);
-		//	info.AddValue("TrackingState", TrackingState);
-		//}
 		#endregion
 
 		#region Overrides

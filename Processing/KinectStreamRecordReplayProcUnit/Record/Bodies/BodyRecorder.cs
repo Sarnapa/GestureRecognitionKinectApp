@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using MessagePack;
 using GestureRecognition.Processing.BaseClassLib.Mappers;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
-using MessagePack;
 
 namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.Bodies
 {

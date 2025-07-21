@@ -60,7 +60,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 					FileName = kinectServerExePath,
 					UseShellExecute = true,
 					CreateNoWindow = false,
-					WindowStyle = ProcessWindowStyle.Normal
+					WindowStyle = ProcessWindowStyle.Minimized
 				};
 
 				var kinectServerExeProcess = Process.Start(startInfo);
@@ -149,7 +149,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 			string methodName = $"{nameof(KinectClient)}.{nameof(Disconnect)}";
 			try
 			{
-				if (this.pipeClient.IsConnected)
+				if (this.pipeClient != null && this.pipeClient.IsConnected)
 				{
 					this.pipeClient.Close();
 					this.pipeClient.Dispose();

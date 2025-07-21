@@ -17,6 +17,7 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.Serial
 		private readonly string inputFilePath;
 		private readonly string outputFilePath;
 		private readonly MessagePackSerializerOptions serializerOptions;
+		private DateTime previousFlushDate;
 		#endregion
 
 		#region Constructors
@@ -87,6 +88,7 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.Serial
 				using (var reader = new BinaryReader(inputStream))
 				using (var writer = new BinaryWriter(outputStream))
 				{
+					this.previousFlushDate = DateTime.Now;
 					ProcessFile(reader, writer);
 				}
 				Console.WriteLine($"[{methodName}][{DateTime.Now}] Processing file finished - input file: {inputFilePath}, output file: {outputFilePath}.");
@@ -106,6 +108,7 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.Serial
 			{
 				var options = (RecordOptions)reader.ReadInt32();
 				Console.WriteLine($"[{methodName}][{DateTime.Now}] Record options: {options}.");
+				writer.Write((int)options);
 
 				while (reader.BaseStream.Position != reader.BaseStream.Length)
 				{
@@ -115,10 +118,12 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.Serial
 						case RecordOptions.Color:
 							var colorFrame = ReadColorFrame(reader);
 							WriteColorFrame(writer, colorFrame);
+							Flush(writer);
 							break;
 						case RecordOptions.Bodies:
 							var bodyFrame = ReadBodyFrame(reader);
 							WriteBodyFrame(writer, bodyFrame);
+							Flush(writer);
 							break;
 					}
 				}
@@ -169,8 +174,7 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.Serial
 			writer.Write(frame.Height);
 			writer.Write(frame.LengthInPixels);
 
-			if (frame.ColorData != null && frame.ColorData.Length > 0)
-				writer.Write(frame.ColorData);
+			writer.Write(frame.ColorData);
 		}
 
 		private void WriteBodyFrame(BinaryWriter writer, BodyFrame frame)
@@ -183,6 +187,19 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.Serial
 			var bodiesData = frame.Bodies?.Cast<BodyDataWithColorSpacePoints>().ToArray() ?? new BodyDataWithColorSpacePoints[0];
 			byte[] bodiesDataBytes = MessagePackSerializer.Serialize(bodiesData, this.serializerOptions);
 			writer.Write(bodiesDataBytes);
+		}
+		#endregion
+
+		#region Other private methods
+		private void Flush(BinaryWriter writer)
+		{
+			var now = DateTime.Now;
+
+			if (now.Subtract(this.previousFlushDate).TotalSeconds > 60)
+			{
+				this.previousFlushDate = now;
+				writer.Flush();
+			}
 		}
 		#endregion
 

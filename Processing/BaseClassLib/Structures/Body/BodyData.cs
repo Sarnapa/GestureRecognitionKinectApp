@@ -6,7 +6,6 @@ using MessagePack;
 
 namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 {
-	[Serializable]
 	[MessagePackObject(keyAsPropertyName: true)]
 	public partial class BodyData
 	{

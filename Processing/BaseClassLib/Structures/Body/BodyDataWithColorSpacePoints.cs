@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using MessagePack;
 
 namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 {
-	[Serializable]
 	[MessagePackObject(keyAsPropertyName: true)]
 	public partial class BodyDataWithColorSpacePoints: BodyData
 	{

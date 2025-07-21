@@ -13,6 +13,7 @@
     <PackageReference Include="CsvHelper" Version="33.0.1" />
     <PackageReference Include="MessagePack" Version="3.1.4" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Kinect" Version="2.0.1410.19000" />
     <PackageReference Include="Microsoft.ML" Version="4.0.1" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>

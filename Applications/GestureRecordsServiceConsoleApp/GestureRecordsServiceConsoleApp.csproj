@@ -51,9 +51,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\MessagePackSerializationManager.cs" />
     <Compile Include="Serialization\NewStructuresMapper.cs" />
-    <Compile Include="Serialization\OldStructures\BodyData.cs" />
-    <Compile Include="Serialization\OldStructures\BodyDataWithColorSpacePoints.cs" />
-    <Compile Include="Serialization\OldStructures\BodyJointsColorSpacePointsDict.cs" />
     <Compile Include="Serialization\SerializationMode.cs" />
   </ItemGroup>
   <ItemGroup>
