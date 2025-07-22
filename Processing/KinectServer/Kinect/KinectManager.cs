@@ -197,16 +197,16 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 						{
 							bodyFrame = kinectBodyFrame.Map(0, false);
 						}
-
-						OnFrameArrived?.Invoke(this, new FrameArrivedEventArgs(
-							new FrameData()
-							{
-								ColorFrame = colorFrame,
-								BodyFrame = bodyFrame,
-								BodiesJointsColorSpacePointsDict = bodiesJointsColorSpacePointsDict,
-							}
-						));
 					}
+
+					OnFrameArrived?.Invoke(this, new FrameArrivedEventArgs(
+						new FrameData()
+						{
+							ColorFrame = colorFrame,
+							BodyFrame = bodyFrame,
+							BodiesJointsColorSpacePointsDict = bodiesJointsColorSpacePointsDict,
+						}
+					));
 				}
 			}
 			finally

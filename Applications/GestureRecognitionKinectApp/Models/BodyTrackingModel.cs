@@ -281,10 +281,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						this.displayImageHeight = startResponse.ColorFrameHeight;
 						this.IsKinectAvailable = startResponse.KinectSensorIsAvailable;
 
-						//if (isExternalBodyTrackingModel)
-						//	TryToLoadExternalBodyTrackingModels();
-						//else
-						//	CleanExternalBodyTrackingModels();
+						if (isExternalBodyTrackingModel)
+							TryToLoadExternalBodyTrackingModels();
+						else
+							CleanExternalBodyTrackingModels();
 
 						Application.Current.Dispatcher.Invoke(() =>
 						{
@@ -415,7 +415,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			{
 				if (colorFrame != null)
 				{
-					Application.Current.Dispatcher.Invoke(() =>
+					Application.Current?.Dispatcher.Invoke(() =>
 					{
 						this.colorImage.Lock();
 						colorImageLocked = true;

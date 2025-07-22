@@ -14,7 +14,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 
 		// Torso
 		public static Bone ShoulderRightShoulderLeftBone = new Bone(JointType.ShoulderRight, JointType.ShoulderLeft);
-		public static Bone HipRightHipLeftBone = new Bone(JointType.HipLeft, JointType.HandRight);
+		public static Bone HipRightHipLeftBone = new Bone(JointType.HipLeft, JointType.HipRight);
 		public static Bone ShoulderRightHipRightBone = new Bone(JointType.ShoulderRight, JointType.HipRight);
 		public static Bone ShoulderLeftHipLeftBone = new Bone(JointType.ShoulderLeft, JointType.HipLeft);
 
