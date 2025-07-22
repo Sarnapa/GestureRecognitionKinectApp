@@ -15,15 +15,19 @@ using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Present
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Kinect;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Utilities;
+using GestureRecognition.Processing.BaseClassLib.Mappers;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Data;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Events;
+using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
+using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record;
 using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
 using GestureRecognition.Processing.GestureRecognitionProcUnit;
+using GestureRecognition.Processing.MLNETProcUnit;
 using Consts = GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures.Consts;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
@@ -130,6 +134,16 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// Loaded gesture frames for gesture recognizing process
 		/// </summary>
 		private List<BodyData> gestureToRecognizeBodyFrames;
+
+		/// <summary>
+		/// Wrapper for external model to detect the number of users in an image
+		/// </summary>
+		private IModelWrapper poseDetectionModelWrapper;
+
+		/// <summary>
+		/// Wrapper for external model to track user movement in an image
+		/// </summary>
+		private IModelWrapper poseLandmarksDetectionModelWrapper;
 		#endregion
 
 		#region Private properties
@@ -139,6 +153,15 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			{
 				return this.bodyTrackingStoppedTime.HasValue
 					&& DateTime.Now - this.bodyTrackingStoppedTime.Value < Consts.DefaultBodyTrackingStoppedTime;
+			}
+		}
+
+		private bool IsExternalBodyTrackingModelLoaded
+		{
+			get
+			{
+				return this.poseDetectionModelWrapper != null && this.poseDetectionModelWrapper.IsLoaded
+					&& this.poseLandmarksDetectionModelWrapper != null && this.poseLandmarksDetectionModelWrapper.IsLoaded;
 			}
 		}
 		#endregion
@@ -233,6 +256,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#region Public methods
 		public async Task Start()
 		{
+			bool isExternalBodyTrackingModel = true;
+
 			bool isKinectServerStarted = this.kinectClient.StartKinectServer();
 			if (isKinectServerStarted)
 			{
@@ -244,7 +269,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 					var startRequest = new StartRequestParams()
 					{
-						FrameSourceTypes = FrameSourceTypes.Color | FrameSourceTypes.Body,
+						FrameSourceTypes = isExternalBodyTrackingModel ? FrameSourceTypes.Color : (FrameSourceTypes.Color | FrameSourceTypes.Body),
 						ColorImageFormat = ColorImageFormat.Bgra,
 						IsOneBodyTrackingEnabled = true,
 					};
@@ -255,6 +280,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						this.displayImageWidth = startResponse.ColorFrameWidth;
 						this.displayImageHeight = startResponse.ColorFrameHeight;
 						this.IsKinectAvailable = startResponse.KinectSensorIsAvailable;
+
+						//if (isExternalBodyTrackingModel)
+						//	TryToLoadExternalBodyTrackingModels();
+						//else
+						//	CleanExternalBodyTrackingModels();
 
 						Application.Current.Dispatcher.Invoke(() =>
 						{
@@ -336,6 +366,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		{
 			CleanGestureRecorder(appFinished);
 			CleanGestureToRecognizeBodyFrames();
+			if (appFinished)
+				CleanExternalBodyTrackingModels();
 
 			this.kinectClient.OnFrameArrived -= this.KinectClient_OnFrameArrived;
 			this.kinectClient.OnKinectIsAvailableChanged -= this.KinectClient_OnKinectIsAvailableChanged;
@@ -393,25 +425,93 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					});
 				}
 
-				if (colorFrame != null && bodyFrame != null && bodyFrame.BodiesCount > 0 && !this.IsBodyTrackingStoppedYet)
+				if (colorFrame != null && !this.IsBodyTrackingStoppedYet)
 				{
-					this.bodyTrackingStoppedTime = null;
-
-					if (bodyFrame.TooMuchUsersForOneBodyTracking)
+					if (this.IsExternalBodyTrackingModelLoaded)
 					{
-						trackedBodiesCount = bodyFrame.BodiesCount;
-						this.currentTrackedBody = null;
+						var colorFrameInput = MLNetMapper.Map(colorFrame, ResolutionType.FullHD);
+
+						var poseDetectionPredictParams = new PoseDetectionModelPredictParameters()
+						{
+							ColorFrame = colorFrameInput,
+							// TODO: To be completed
+							// ConfidenceScoreThreshold =
+						};
+						var basePoseDetectionPredictResult = this.poseDetectionModelWrapper.Predict(poseDetectionPredictParams);
+						if (basePoseDetectionPredictResult.IsSuccess && basePoseDetectionPredictResult is PoseDetectionModelPredictResult poseDetectionPredictResult
+							&& poseDetectionPredictResult.DetectedPoseCount > 0)
+						{
+							this.bodyTrackingStoppedTime = null;
+							if (poseDetectionPredictResult.DetectedPoseCount > 1)
+							{
+								trackedBodiesCount = bodyFrame.BodiesCount;
+								this.currentTrackedBody = null;
+							}
+							else
+							{
+								var poseLandmarksDetectionPredictParams = new PoseLandmarksDetectionModelPredictParameters()
+								{
+									ColorFrame = colorFrameInput,
+									// TODO: To be completed
+									//ConfidenceScoreThreshold = ,
+									//InferredJointVisibilityThreshold = ,
+									//NotTrackedJointVisibilityThreshold = ,
+								};
+								var basePoseLandmarksDetectionPredictResult = this.poseLandmarksDetectionModelWrapper.Predict(poseLandmarksDetectionPredictParams);
+								if (basePoseLandmarksDetectionPredictResult.IsSuccess && basePoseLandmarksDetectionPredictResult is PoseLandmarksDetectionModelPredictResult
+									poseLandmarksDetectionPredictResult)
+								{
+									var bodyData = poseLandmarksDetectionPredictResult.BodyData;
+									var trackedBodies = bodyData != null && bodyData.IsTracked ? new BodyData[] { bodyData } : [];
+									trackedBodiesCount = trackedBodies.Length;
+									if (trackedBodiesCount == 1)
+									{
+										this.currentTrackedBody = bodyData;
+										if (bodiesJointsColorSpacePointsDict == null)
+											bodiesJointsColorSpacePointsDict = new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
+
+										bodiesJointsColorSpacePointsDict.Add(bodyData.TrackingId, bodyData.JointsColorSpacePoints);
+									}
+									else
+									{
+										this.currentTrackedBody = null;
+									}
+								}
+								else
+								{
+									trackedBodiesCount = 0;
+									this.currentTrackedBody = null;
+								}
+							}
+						}
+						else
+						{
+							this.currentTrackedBody = null;
+						}
 					}
 					else
 					{
-						var trackedBodies = bodyFrame.Bodies.Where(b => b != null && b.IsTracked);
-						trackedBodiesCount = trackedBodies.Count();
-						this.currentTrackedBody = trackedBodiesCount == 1 ? trackedBodies.FirstOrDefault() : null;
+						if (bodyFrame != null && bodyFrame.BodiesCount > 0)
+						{
+							this.bodyTrackingStoppedTime = null;
+
+							if (bodyFrame.TooMuchUsersForOneBodyTracking)
+							{
+								trackedBodiesCount = bodyFrame.BodiesCount;
+								this.currentTrackedBody = null;
+							}
+							else
+							{
+								var trackedBodies = bodyFrame.Bodies.Where(b => b != null && b.IsTracked);
+								trackedBodiesCount = trackedBodies.Count();
+								this.currentTrackedBody = trackedBodiesCount == 1 ? trackedBodies.FirstOrDefault() : null;
+							}
+						}
+						else
+						{
+							this.currentTrackedBody = null;
+						}
 					}
-				}
-				else
-				{
-					this.currentTrackedBody = null;
 				}
 
 				Application.Current.Dispatcher.Invoke(() =>
@@ -549,6 +649,54 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			}
 			else
 				SetStandardState();
+		}
+		#endregion
+
+		#region External body tracking model methods
+		private void TryToLoadExternalBodyTrackingModels()
+		{
+			if (!this.IsExternalBodyTrackingModelLoaded)
+			{
+				// TODO: Support for multiple resolutions
+				var modelWrapperParameters = new ModelWrapperParameters()
+				{
+					Seed = 42
+				};
+				this.poseDetectionModelWrapper = new PoseDetectionModelWrapper<ColorFrameFullHDInput>(modelWrapperParameters);
+				this.poseLandmarksDetectionModelWrapper = new PoseLandmarksDetectionModelWrapper<ColorFrameFullHDInput>(modelWrapperParameters);
+
+				var poseDetectionModelLoadParams = new LoadBodyTrackingModelParameters();
+				var poseDetectionModelLoadResult = this.poseDetectionModelWrapper.LoadModel(poseDetectionModelLoadParams);
+				if (poseDetectionModelLoadResult.IsSuccess)
+				{
+					var poseLandmarksDetectionModelLoadParams = new LoadBodyTrackingModelParameters();
+					var poseLandMarksDetectionModelLoadResult = this.poseLandmarksDetectionModelWrapper.LoadModel(poseLandmarksDetectionModelLoadParams);
+					if (!poseLandMarksDetectionModelLoadResult.IsSuccess)
+						MessageBoxUtils.ShowMessage(poseLandMarksDetectionModelLoadResult.ErrorMessage, MessageBoxButton.OK, MessageBoxImage.Error);
+				}
+				else
+				{
+					MessageBoxUtils.ShowMessage(poseDetectionModelLoadResult.ErrorMessage, MessageBoxButton.OK, MessageBoxImage.Error);
+				}
+
+				if (!this.IsExternalBodyTrackingModelLoaded)
+					CleanExternalBodyTrackingModels();
+			}
+		}
+
+		private void CleanExternalBodyTrackingModels()
+		{
+			if (this.poseDetectionModelWrapper != null)
+			{
+				this.poseDetectionModelWrapper.Cleanup();
+				this.poseDetectionModelWrapper = null;
+			}
+
+			if (this.poseLandmarksDetectionModelWrapper != null)
+			{
+				this.poseLandmarksDetectionModelWrapper.Cleanup();
+				this.poseLandmarksDetectionModelWrapper = null;
+			}
 		}
 		#endregion
 

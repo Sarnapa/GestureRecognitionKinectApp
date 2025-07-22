@@ -5,7 +5,8 @@ using System.Windows;
 using System.Windows.Media;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies;
-using static GestureRecognition.Processing.BaseClassLib.Structures.Body.BonesDefinitions;
+using KinectBonesDefinitions = GestureRecognition.Processing.BaseClassLib.Structures.Body.BonesDefinitions;
+using MediaPipesBonesDefinitions = GestureRecognition.Processing.BaseClassLib.Structures.Body.MediaPipesBonesDefinitions;
 using static GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures.GestureRecognitionDefinitions;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers
@@ -36,8 +37,17 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 		/// <summary>
 		/// Not drawn joints
 		/// </summary>
-		private readonly JointType[] jointsToIgnore = new JointType[] {JointType.KneeLeft, JointType.KneeRight, JointType.AnkleLeft,
-			JointType.AnkleRight, JointType.FootLeft, JointType.FootRight};
+		private readonly JointType[] jointsToIgnore = {
+			//JointType.KneeLeft, JointType.KneeRight, JointType.AnkleLeft,
+			//JointType.AnkleRight, JointType.FootLeft, JointType.FootRight,
+			//// From MediaPipe
+			//JointType.EyeInnerLeft, JointType.EyeLeft, JointType.EyeOuterLeft,
+			//JointType.EyeInnerRight, JointType.EyeRight, JointType.EyeOuterRight,
+			//JointType.EarLeft, JointType.EarRight,
+			//JointType.MouthLeft, JointType.MouthRight,
+			//JointType.HeelLeft, JointType.HeelRight,
+			//JointType.FootIndexLeft, JointType.FootIndexRight
+			};
 
 		/// <summary>
 		/// Brush used for drawing hands that are currently tracked as closed
@@ -77,7 +87,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 		/// <summary>
 		/// Definition of bones
 		/// </summary>
-		private readonly List<Bone> bones = AllBonesWithoutLegs;
+		private readonly List<Bone> bones = MediaPipesBonesDefinitions.AllBones; // KinectBonesDefinitions.AllBonesWithoutLegs;
 
 		/// <summary>
 		/// List of colors for each body tracked

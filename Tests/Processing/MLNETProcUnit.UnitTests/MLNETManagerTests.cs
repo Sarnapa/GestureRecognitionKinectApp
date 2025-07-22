@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
+using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
 using GestureRecognition.Processing.MLNETProcUnit;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GestureRecognition.Tests.Processing.MLNETProcUnit.UnitTests.UnitTests
 {
@@ -8,11 +9,29 @@ namespace GestureRecognition.Tests.Processing.MLNETProcUnit.UnitTests.UnitTests
 	public class MLNETManagerTests
 	{
 		[TestMethod]
-		public void LoadMediaPipePoseLandmarkDetectionModel()
+		public void LoadPoseDetectionModel()
 		{
-			string poseDetectionModelPath = @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\BodyTrackingModels\Mediapipe\PoseLandmarkDetection\FromUnity\pose_detection.onnx";
-			var manager = new MLNETManager();
-			manager.LoadModel(poseDetectionModelPath);
+			var modelWrapperParameters = new ModelWrapperParameters() { Seed = 42 };
+			var modelWrapper = new PoseDetectionModelWrapper<ColorFrameFullHDInput>(modelWrapperParameters);
+
+			var loadModelParameters = new LoadBodyTrackingModelParameters();
+			var loadModelResult = modelWrapper.LoadModel(loadModelParameters);
+
+			Assert.IsNotNull(loadModelResult);
+			Assert.IsTrue(loadModelResult.IsSuccess);
+		}
+
+		[TestMethod]
+		public void LoadPoseLandmarksDetectionModel()
+		{
+			var modelWrapperParameters = new ModelWrapperParameters() { Seed = 42 };
+			var modelWrapper = new PoseLandmarksDetectionModelWrapper<ColorFrameFullHDInput>(modelWrapperParameters);
+
+			var loadModelParameters = new LoadBodyTrackingModelParameters();
+			var loadModelResult = modelWrapper.LoadModel(loadModelParameters);
+
+			Assert.IsNotNull(loadModelResult);
+			Assert.IsTrue(loadModelResult.IsSuccess);
 		}
 	}
 }
