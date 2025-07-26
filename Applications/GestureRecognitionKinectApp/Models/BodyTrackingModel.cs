@@ -144,6 +144,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// Wrapper for external model to track user movement in an image
 		/// </summary>
 		private IModelWrapper poseLandmarksDetectionModelWrapper;
+
+		// For testing
+		//private int capturedColorFramesCount = 0;
 		#endregion
 
 		#region Private properties
@@ -395,13 +398,13 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// </summary>
 		/// <param name="sender">Object sending the event</param>
 		/// <param name="e">Event arguments</param>
-		private Task KinectClient_OnFrameArrived(object sender, FrameArrivedEventArgs e)
+		private async Task KinectClient_OnFrameArrived(object sender, FrameArrivedEventArgs e)
 		{
 			if (e.Data == null)
-				return Task.CompletedTask;
+				return;
 
 			if (this.colorImage == null || this.bodyImage == null)
-				return Task.CompletedTask;
+				return;
 
 			var colorFrame = e.Data.ColorFrame;
 			var bodyFrame = e.Data.BodyFrame;
@@ -425,6 +428,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					});
 				}
 
+				// For testing
+				//if (capturedColorFramesCount < 100)
+				//{
+				//	string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"./ColorFrame_{capturedColorFramesCount}.png");
+				//	ColorImageUtils.SaveBgraAsPng(colorFrame.ColorData, colorFrame.Width, colorFrame.Height, imagePath);
+				//	capturedColorFramesCount++;
+				//}
+
 				if (colorFrame != null && !this.IsBodyTrackingStoppedYet)
 				{
 					if (this.IsExternalBodyTrackingModelLoaded)
@@ -437,7 +448,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 							// TODO: To be completed
 							// ConfidenceScoreThreshold =
 						};
-						var basePoseDetectionPredictResult = this.poseDetectionModelWrapper.Predict(poseDetectionPredictParams);
+						var basePoseDetectionPredictResult = await this.poseDetectionModelWrapper.Predict(poseDetectionPredictParams).ConfigureAwait(false);
 						if (basePoseDetectionPredictResult.IsSuccess && basePoseDetectionPredictResult is PoseDetectionModelPredictResult poseDetectionPredictResult
 							&& poseDetectionPredictResult.DetectedPoseCount > 0)
 						{
@@ -457,7 +468,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 									//InferredJointVisibilityThreshold = ,
 									//NotTrackedJointVisibilityThreshold = ,
 								};
-								var basePoseLandmarksDetectionPredictResult = this.poseLandmarksDetectionModelWrapper.Predict(poseLandmarksDetectionPredictParams);
+								var basePoseLandmarksDetectionPredictResult = await this.poseLandmarksDetectionModelWrapper.Predict(poseLandmarksDetectionPredictParams).ConfigureAwait(false);
 								if (basePoseLandmarksDetectionPredictResult.IsSuccess && basePoseLandmarksDetectionPredictResult is PoseLandmarksDetectionModelPredictResult
 									poseLandmarksDetectionPredictResult)
 								{
@@ -605,8 +616,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					UpdateLastDisplayedColorFrameTimeAndSendMessage(colorFrame != null);
 
 				});
-
-				return Task.CompletedTask;
 			}
 			finally
 			{

@@ -7,7 +7,7 @@
 		public const int INPUT_IMAGE_WIDTH = 224;
 		public const int INPUT_IMAGE_HEIGHT = 224;
 		public const string INPUT_IMAGE_COLUMN_NAME = "input_1";
-		public const string OUTPUT_COORDINATES_COLUMN_NAME = "Identity";
+		public const string OUTPUT_BOUNDING_BOXES_COLUMN_NAME = "Identity";
 		public const string OUTPUT_CONFIDENCE_SCORES_COLUMN_NAME = "Identity_1";
 	}
 }

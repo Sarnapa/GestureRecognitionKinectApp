@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.ML;
+using Microsoft.ML.Transforms.Onnx;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
 using GestureRecognition.Processing.MLNETProcUnit.BodyTrackingModels.PoseDetection;
@@ -44,6 +46,15 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 			(bool fileExists, LoadModelResult fileNotExistResult) = CheckIfFileExists(this.ModelPath);
 			if (fileExists)
 			{
+				var onnxModelOptions = new OnnxOptions()
+				{
+					InputColumns = [PoseDetectionModelInfo.INPUT_IMAGE_COLUMN_NAME],
+					OutputColumns = [PoseDetectionModelInfo.OUTPUT_BOUNDING_BOXES_COLUMN_NAME, PoseDetectionModelInfo.OUTPUT_CONFIDENCE_SCORES_COLUMN_NAME],
+					ModelFile = this.ModelPath,
+					IntraOpNumThreads = Environment.ProcessorCount,
+					InterOpNumThreads = Environment.ProcessorCount,
+				};
+
 				try
 				{
 					var detectionPipeline = this.mlContext.Transforms.ResizeImages(
@@ -55,10 +66,8 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 							outputColumnName: PoseDetectionModelInfo.INPUT_IMAGE_COLUMN_NAME,
 							inputColumnName: "resized_image",
 							scaleImage: 1.0f / 255.0f))
-						.Append(this.mlContext.Transforms.ApplyOnnxModel(
-							outputColumnNames: [PoseDetectionModelInfo.OUTPUT_COORDINATES_COLUMN_NAME, PoseDetectionModelInfo.OUTPUT_CONFIDENCE_SCORES_COLUMN_NAME],
-							inputColumnNames: [PoseDetectionModelInfo.INPUT_IMAGE_COLUMN_NAME],
-							modelFile: this.ModelPath));
+						.Append(this.mlContext.Transforms.ApplyOnnxModel(onnxModelOptions)
+						);
 
 					this.model = detectionPipeline.Fit(this.mlContext.Data.LoadFromEnumerable(new List<ColorFrameInputType>()));
 					this.predictionEngine = this.mlContext.Model.CreatePredictionEngine<ColorFrameInputType, PoseDetectionOutput>(this.model);
@@ -79,13 +88,13 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 			return fileNotExistResult;
 		}
 
-		public override BasePredictResult Predict(BasePredictParameters parameters)
+		public override async Task<BasePredictResult> Predict(BasePredictParameters parameters)
 		{
 			if (parameters == null)
 				throw new ArgumentNullException(nameof(parameters));
 
 			if (parameters is PoseDetectionModelPredictParameters poseDetectionModelPredictParameters)
-				return Predict(poseDetectionModelPredictParameters);
+				return await Predict(poseDetectionModelPredictParameters);
 
 			return new PoseDetectionModelPredictResult()
 			{
@@ -94,7 +103,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 			};
 		}
 
-		public PoseDetectionModelPredictResult Predict(PoseDetectionModelPredictParameters parameters)
+		public Task<PoseDetectionModelPredictResult> Predict(PoseDetectionModelPredictParameters parameters)
 		{
 			if (parameters == null)
 				throw new ArgumentNullException(nameof(parameters));
@@ -108,29 +117,29 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 			{
 				try
 				{
-					var predResult = this.predictionEngine.Predict(colorFrameInput);
-					int detectedPosesCount = predResult?.ConfidenceScores?.Where(s => s >= confidenceScoreThreshold).Count() ?? 0;
-					return new PoseDetectionModelPredictResult()
+					//var predResult = this.predictionEngine.Predict(colorFrameInput);
+					//int detectedPosesCount = predResult?.ConfidenceScores?.Where(s => s >= confidenceScoreThreshold).Count() ?? 0;
+					return Task.FromResult(new PoseDetectionModelPredictResult()
 					{
-						DetectedPoseCount = detectedPosesCount
-					};
+						DetectedPoseCount = 1 //detectedPosesCount
+					});
 				}
 				catch (Exception ex)
 				{
-					return new PoseDetectionModelPredictResult()
+					return Task.FromResult(new PoseDetectionModelPredictResult()
 					{
 						ErrorKind = PredictErrorKind.UnexpectedError,
 						ErrorMessage = $"Unexpected error during prediction process for given pose detection model file path: [{this.ModelPath}]. " +
 							$"Exception type: {ex.GetType()}, exception message: {ex.Message}."
-					};
+					});
 				}
 			}
 
-			return new PoseDetectionModelPredictResult()
+			return Task.FromResult(new PoseDetectionModelPredictResult()
 			{
 				ErrorKind = PredictErrorKind.InvalidParameters,
 				ErrorMessage = $"Given pose detection model (file path: [{this.ModelPath}]) doesn't support provided image resolution."
-			};
+			});
 		}
 		#endregion
 	}

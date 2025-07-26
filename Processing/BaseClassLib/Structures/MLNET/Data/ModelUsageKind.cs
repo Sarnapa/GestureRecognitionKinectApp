@@ -4,6 +4,7 @@
 	{
 		PoseDetection,
 		PoseLandmarksDetection,
+		FullPoseLandmarksDetection,
 		GestureRecognition
 	}
 }

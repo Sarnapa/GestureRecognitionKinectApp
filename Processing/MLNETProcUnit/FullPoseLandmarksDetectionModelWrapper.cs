@@ -1,27 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using Microsoft.ML;
-using Microsoft.ML.Transforms.Image;
-using Microsoft.ML.Transforms.Onnx;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
+using GestureRecognition.Processing.MLNETProcUnit.BodyTrackingModels.PoseDetection;
 using GestureRecognition.Processing.MLNETProcUnit.BodyTrackingModels.PoseLandmarksDetection;
+using Microsoft.ML;
+using Microsoft.ML.Data;
+using Microsoft.ML.Transforms.Image;
+using Microsoft.ML.Transforms.Onnx;
 
 namespace GestureRecognition.Processing.MLNETProcUnit
 {
-	public class PoseLandmarksDetectionModelWrapper<ColorFrameInputType>: ModelWrapper<ColorFrameInputType, PoseLandmarksDetectionOutput>
+	public class FullPoseLandmarksDetectionModelWrapper<ColorFrameInputType>: ModelWrapper<ColorFrameInputType, PoseLandmarksDetectionOutput>
 			where ColorFrameInputType : BaseColorFrameInput
 	{
+		#region Private fields
+		private MLContext poseDetectionModelMLContext;
+		private ITransformer poseDetectionModel;
+		private PredictionEngine<ColorFrameInputType, PoseDetectionOutput> poseDetectionPredictionEngine;
+		#endregion
+
 		#region Constructors
-		public PoseLandmarksDetectionModelWrapper(ModelWrapperParameters parameters) : base(parameters)
+		public FullPoseLandmarksDetectionModelWrapper(ModelWrapperParameters parameters) : base(parameters)
 		{
 			this.ModelPath = PoseLandmarksDetectionModelInfo.FULL_MODEL_FILE_PATH;
 			this.ModelKind = ModelKind.ONNX;
-			this.ModelUsageKind = ModelUsageKind.PoseLandmarksDetection;
+			this.ModelUsageKind = ModelUsageKind.FullPoseLandmarksDetection;
 		}
 		#endregion
 
@@ -51,7 +60,40 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 			{
 				try
 				{
-					var onnxModelOptions = new OnnxOptions()
+					this.poseDetectionModelMLContext = new MLContext(this.seed);
+
+					var poseDetectionModelOnnxOptions = new OnnxOptions()
+					{
+						InputColumns = [PoseDetectionModelInfo.INPUT_IMAGE_COLUMN_NAME],
+						OutputColumns = [PoseDetectionModelInfo.OUTPUT_BOUNDING_BOXES_COLUMN_NAME, PoseDetectionModelInfo.OUTPUT_CONFIDENCE_SCORES_COLUMN_NAME],
+						ModelFile = PoseDetectionModelInfo.MODEL_FILE_PATH,
+						IntraOpNumThreads = Environment.ProcessorCount,
+						InterOpNumThreads = Environment.ProcessorCount,
+					};
+
+					var poseDetectionPipeline = this.poseDetectionModelMLContext.Transforms.ResizeImages(
+						outputColumnName: "resized_image",
+						imageWidth: PoseDetectionModelInfo.INPUT_IMAGE_WIDTH,
+						imageHeight: PoseDetectionModelInfo.INPUT_IMAGE_HEIGHT,
+						inputColumnName: nameof(BaseColorFrameInput.Image),
+						resizing: ImageResizingEstimator.ResizingKind.IsoPad,
+						cropAnchor: ImageResizingEstimator.Anchor.Center)
+						.Append(this.poseDetectionModelMLContext.Transforms.ExtractPixels(
+							outputColumnName: PoseDetectionModelInfo.INPUT_IMAGE_COLUMN_NAME,
+							inputColumnName: "resized_image",
+							colorsToExtract: ImagePixelExtractingEstimator.ColorBits.Rgb,
+							orderOfExtraction: ImagePixelExtractingEstimator.ColorsOrder.ABGR,
+							interleavePixelColors: true,
+							scaleImage: 1.0f / 255.0f))
+						.Append(this.poseDetectionModelMLContext.Transforms.ApplyOnnxModel(poseDetectionModelOnnxOptions)
+						);
+
+					this.poseDetectionModel = poseDetectionPipeline.Fit(this.poseDetectionModelMLContext.Data.LoadFromEnumerable(new List<ColorFrameInputType>()));
+					this.poseDetectionPredictionEngine = this.poseDetectionModelMLContext.Model.CreatePredictionEngine<ColorFrameInputType, PoseDetectionOutput>(this.poseDetectionModel);
+
+
+
+					var poseLandmarksDetectionModelOnnxOptions = new OnnxOptions()
 					{
 						InputColumns = [PoseLandmarksDetectionModelInfo.INPUT_IMAGE_COLUMN_NAME],
 						OutputColumns = [PoseLandmarksDetectionModelInfo.OUTPUT_LANDMARKS_COLUMN_NAME, PoseLandmarksDetectionModelInfo.OUTPUT_CONFIDENCE_SCORE_COLUMN_NAME],
@@ -60,7 +102,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 						InterOpNumThreads = Environment.ProcessorCount,
 					};
 
-					var detectionPipeline = this.mlContext.Transforms.ResizeImages(
+					var poseLandmarksDetectionPipeline = this.mlContext.Transforms.ResizeImages(
 						outputColumnName: "resized_image",
 						imageWidth: PoseLandmarksDetectionModelInfo.INPUT_IMAGE_WIDTH,
 						imageHeight: PoseLandmarksDetectionModelInfo.INPUT_IMAGE_HEIGHT,
@@ -74,9 +116,9 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 							orderOfExtraction: ImagePixelExtractingEstimator.ColorsOrder.ABGR,
 							interleavePixelColors: true,
 							scaleImage: 1.0f / 255.0f))
-						.Append(this.mlContext.Transforms.ApplyOnnxModel(onnxModelOptions));
+						.Append(this.mlContext.Transforms.ApplyOnnxModel(poseLandmarksDetectionModelOnnxOptions));
 
-					this.model = detectionPipeline.Fit(this.mlContext.Data.LoadFromEnumerable(new List<ColorFrameInputType>()));
+					this.model = poseLandmarksDetectionPipeline.Fit(this.mlContext.Data.LoadFromEnumerable(new List<ColorFrameInputType>()));
 					this.predictionEngine = this.mlContext.Model.CreatePredictionEngine<ColorFrameInputType, PoseLandmarksDetectionOutput>(this.model);
 
 					return new LoadModelResult();
@@ -126,6 +168,26 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 			{
 				try
 				{
+					var poseDetectionPredResult = this.poseDetectionPredictionEngine.Predict(colorFrameInput);
+					var poseDetectionConfidencesScores = poseDetectionPredResult?.ConfidenceScores?.Select((value, index) => (Score: Sigmoid(value), Index: index));
+					var poseDetectionConfidenceMaxScore = poseDetectionConfidencesScores?
+						.Aggregate((a, b) => (a.Score > b.Score) ? a : b) ?? new (0, -1);
+
+					if (poseDetectionConfidenceMaxScore.Index < 0 || poseDetectionConfidenceMaxScore.Score <= confidenceScoreThreshold)
+					{
+						return new PoseLandmarksDetectionModelPredictResult()
+						{
+							BodyData = GetNotTrackedBodyData()
+						};
+					}
+
+					float poseDetectionImageWidthScale = colorFrameInput.ImageWidth / PoseDetectionModelInfo.INPUT_IMAGE_WIDTH;
+					float poseDetectionImageHeightScale = colorFrameInput.ImageHeight / PoseDetectionModelInfo.INPUT_IMAGE_HEIGHT;
+					float scale = poseDetectionImageWidthScale > poseDetectionImageHeightScale ? poseDetectionImageWidthScale : poseDetectionImageHeightScale;
+
+					var poseDetectionBoundingBox = GetPoseDetectionBoundingBox(poseDetectionPredResult.BoundingBoxes, poseDetectionConfidenceMaxScore.Index,
+						poseDetectionImageWidthScale, poseDetectionImageHeightScale);
+
 					var predResult = this.predictionEngine.Predict(colorFrameInput);
 					float? confidenceScore = predResult?.ConfidenceScore != null && predResult.ConfidenceScore.Length > 0 ?
 						predResult.ConfidenceScore[0] : null;
@@ -133,7 +195,8 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 					{
 						return new PoseLandmarksDetectionModelPredictResult()
 						{
-							BodyData = GetNotTrackedBodyData()
+							BodyData = GetNotTrackedBodyData(),
+							BoundingBox = new RectangleF(poseDetectionBoundingBox.X, poseDetectionBoundingBox.Y, poseDetectionBoundingBox.Width, poseDetectionBoundingBox.Height)
 						};
 					}
 
@@ -151,7 +214,8 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 					return new PoseLandmarksDetectionModelPredictResult()
 					{
 						BodyData = await GetBodyData(poseLandmarks, colorFrame.ImageWidth, colorFrame.ImageHeight,
-							notTrackedJointVisibilityThreshold, inferredJointVisibilityThreshold).ConfigureAwait(false)
+							notTrackedJointVisibilityThreshold, inferredJointVisibilityThreshold).ConfigureAwait(false),
+						BoundingBox = new RectangleF(poseDetectionBoundingBox.X, poseDetectionBoundingBox.Y, poseDetectionBoundingBox.Width, poseDetectionBoundingBox.Height)
 					};
 				}
 				catch (Exception ex)
@@ -174,6 +238,34 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 		#endregion
 
 		#region Private methods
+
+		#region Getting pose detection methods
+		private static RectangleF GetPoseDetectionBoundingBox(float[] boundingBoxesOutput, int idx, float widthScale, float heightScale)
+		{
+			int stride = idx * 12;
+			return new RectangleF()
+			{
+				X = boundingBoxesOutput[stride] * widthScale,
+				Y = boundingBoxesOutput[stride + 1] * heightScale,
+				Width = boundingBoxesOutput[stride + 2] * widthScale,
+				Height = boundingBoxesOutput[stride + 3] * heightScale
+			};
+		}
+
+		//public static MLImage ExtractROI(MLImage inputImage, PoseDetectionBoundingBox boundingBox)
+		//{
+		//	// Przekształcenie współrzędnych bounding box do rozmiaru oryginalnego obrazu
+		//	int x_min = (int)(detection.BoundingBox[0] * inputImage.Width);
+		//	int y_min = (int)(detection.BoundingBox[1] * inputImage.Height);
+		//	int x_max = (int)(detection.BoundingBox[2] * inputImage.Width);
+		//	int y_max = (int)(detection.BoundingBox[3] * inputImage.Height);
+
+		//	// Wycięcie obszaru z obrazu
+		//	var roi = inputImage.GetRegion(x_min, y_min, x_max - x_min, y_max - y_min);
+
+		//	return roi;
+		//}
+		#endregion
 
 		#region Getting pose landmarks methods
 		private static PoseLandmark[] GetPoseLandmarks(float[] landmarksOutput)
@@ -217,7 +309,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 
 			return result.ToArray();
 		}
-		
+
 		private static PoseLandmark GetPoseLandmark(float[] landmarksOutput, int landmarkIdx, JointType jointType)
 		{
 			int stride = landmarkIdx * 5;

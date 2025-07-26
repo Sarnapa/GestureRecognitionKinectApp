@@ -1,4 +1,5 @@
-﻿using GestureRecognition.Processing.BaseClassLib.Structures.Body;
+﻿using System.Drawing;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
 
 namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
@@ -35,7 +36,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
 		{
 			get;
 			set;
-		} = 0.01f;
+		} = 0.2f;
 
 		public float InferredJointVisibilityThreshold
 		{
@@ -91,6 +92,12 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
 			get;
 			set;
 		}
+
+		public RectangleF BoundingBox
+		{
+			get;
+			set;
+		} = RectangleF.Empty;
 		#endregion
 	}
 

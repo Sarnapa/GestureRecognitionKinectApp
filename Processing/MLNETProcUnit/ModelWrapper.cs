@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
 using Microsoft.ML;
@@ -32,7 +33,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 
 		#region Methods
 		LoadModelResult LoadModel(BaseLoadModelParameters parameters);
-		BasePredictResult Predict(BasePredictParameters parameters);
+		Task<BasePredictResult> Predict(BasePredictParameters parameters);
 		void Cleanup();
 		#endregion
 	}
@@ -88,7 +89,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 
 		#region Public methods
 		public abstract LoadModelResult LoadModel(BaseLoadModelParameters parameters);
-		public abstract BasePredictResult Predict(BasePredictParameters parameters);
+		public abstract Task<BasePredictResult> Predict(BasePredictParameters parameters);
 		public void Cleanup()
 		{
 			this.model = null;

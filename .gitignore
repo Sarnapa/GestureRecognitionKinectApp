@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /Docs/Analysis/Analiza_dzialania_cech.xlsx
 /Scripts
+/Tests/Processing/MLNETProcUnit.UnitTests/Input
+/Tests/Processing/MLNETProcUnit.UnitTests/Output

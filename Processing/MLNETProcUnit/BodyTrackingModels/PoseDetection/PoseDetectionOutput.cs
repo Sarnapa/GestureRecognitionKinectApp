@@ -4,8 +4,8 @@ namespace GestureRecognition.Processing.MLNETProcUnit.BodyTrackingModels.PoseDet
 {
 	public class PoseDetectionOutput
 	{
-		[ColumnName(PoseDetectionModelInfo.OUTPUT_COORDINATES_COLUMN_NAME)]
-		public float[] Coordinates
+		[ColumnName(PoseDetectionModelInfo.OUTPUT_BOUNDING_BOXES_COLUMN_NAME)]
+		public float[] BoundingBoxes
 		{
 			get; set;
 		}
