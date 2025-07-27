@@ -21,10 +21,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Update="BodyTrackingModels\PoseDetection\pose_detection.onnx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="BodyTrackingModels\PoseLandmarksDetection\pose_landmarks_detector_full.onnx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>

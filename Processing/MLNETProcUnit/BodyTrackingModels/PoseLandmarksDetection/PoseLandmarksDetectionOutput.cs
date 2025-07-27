@@ -1,20 +1,22 @@
-﻿using Microsoft.ML.Data;
+﻿// Code archived - failed attempt with mediapipe model in ONNX format
 
-namespace GestureRecognition.Processing.MLNETProcUnit.BodyTrackingModels.PoseLandmarksDetection
-{
-	public class PoseLandmarksDetectionOutput
-	{
-		[ColumnName(PoseLandmarksDetectionModelInfo.OUTPUT_LANDMARKS_COLUMN_NAME)]
-		public float[] Landmarks
-		{
-			get; 
-			set;
-		}
+//using Microsoft.ML.Data;
 
-		[ColumnName(PoseLandmarksDetectionModelInfo.OUTPUT_CONFIDENCE_SCORE_COLUMN_NAME)]
-		public float[] ConfidenceScore
-		{
-			get; set;
-		}
-	}
-}
+//namespace GestureRecognition.Processing.MLNETProcUnit.BodyTrackingModels.PoseLandmarksDetection
+//{
+//	public class PoseLandmarksDetectionOutput
+//	{
+//		[ColumnName(PoseLandmarksDetectionModelInfo.OUTPUT_LANDMARKS_COLUMN_NAME)]
+//		public float[] Landmarks
+//		{
+//			get; 
+//			set;
+//		}
+
+//		[ColumnName(PoseLandmarksDetectionModelInfo.OUTPUT_CONFIDENCE_SCORE_COLUMN_NAME)]
+//		public float[] ConfidenceScore
+//		{
+//			get; set;
+//		}
+//	}
+//}

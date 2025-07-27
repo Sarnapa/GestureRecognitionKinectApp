@@ -1,51 +1,53 @@
-﻿using GestureRecognition.Processing.BaseClassLib.Structures.Body;
+﻿// Code archived - failed attempt with mediapipe model in ONNX format
 
-namespace GestureRecognition.Processing.MLNETProcUnit.BodyTrackingModels.PoseLandmarksDetection
-{
-	public class PoseLandmark
-	{
-		#region Public properties
-		public int Index
-		{
-			get;
-			set;
-		}
+//using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 
-		public JointType JointType
-		{
-			get;
-			set;
-		}
+//namespace GestureRecognition.Processing.MLNETProcUnit.BodyTrackingModels.PoseLandmarksDetection
+//{
+//	public class PoseLandmark
+//	{
+//		#region Public properties
+//		public int Index
+//		{
+//			get;
+//			set;
+//		}
 
-		public float X
-		{
-			get;
-			set;
-		}
+//		public JointType JointType
+//		{
+//			get;
+//			set;
+//		}
 
-		public float Y
-		{
-			get; 
-			set;
-		}
+//		public float X
+//		{
+//			get;
+//			set;
+//		}
 
-		public float Z
-		{
-			get;
-			set;
-		}
+//		public float Y
+//		{
+//			get; 
+//			set;
+//		}
 
-		public float Visibility
-		{
-			get;
-			set;
-		}
+//		public float Z
+//		{
+//			get;
+//			set;
+//		}
 
-		public float Presence
-		{
-			get;
-			set;
-		}
-		#endregion
-	}
-}
+//		public float Visibility
+//		{
+//			get;
+//			set;
+//		}
+
+//		public float Presence
+//		{
+//			get;
+//			set;
+//		}
+//		#endregion
+//	}
+//}

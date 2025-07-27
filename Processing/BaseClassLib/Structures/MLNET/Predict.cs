@@ -1,50 +1,48 @@
-﻿using System.Drawing;
-using GestureRecognition.Processing.BaseClassLib.Structures.Body;
-using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
-
-namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
+﻿namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
 {
 	#region PredictParameters
 	public abstract class BasePredictParameters: BaseParameters
-	{}
+	{ }
 
-	public abstract class BodyTrackingModelPredictParameters: BasePredictParameters
-	{
-		#region Public properties
-		public BaseColorFrameInput ColorFrame
-		{
-			get;
-			set;
-		}
+	// Code archived - failed attempt with mediapipe model in ONNX format
+	//public abstract class BodyTrackingModelPredictParameters: BasePredictParameters
+	//{
+	//	#region Public properties
+	//	public BaseColorFrameInput ColorFrame
+	//	{
+	//		get;
+	//		set;
+	//	}
 
-		public float ConfidenceScoreThreshold
-		{
-			get;
-			set;
-		} = 0.5f;
-		#endregion
-	}
+	//	public float ConfidenceScoreThreshold
+	//	{
+	//		get;
+	//		set;
+	//	} = 0.5f;
+	//	#endregion
+	//}
 
-	public class PoseDetectionModelPredictParameters: BodyTrackingModelPredictParameters
-	{
-	}
+	// Code archived - failed attempt with mediapipe model in ONNX format
+	//public class PoseDetectionModelPredictParameters: BodyTrackingModelPredictParameters
+	//{
+	//}
 
-	public class PoseLandmarksDetectionModelPredictParameters: BodyTrackingModelPredictParameters
-	{
-		#region Public properties
-		public float NotTrackedJointVisibilityThreshold
-		{
-			get;
-			set;
-		} = 0.2f;
+	//public class PoseLandmarksDetectionModelPredictParameters: BodyTrackingModelPredictParameters
+	//{
+	//	#region Public properties
+	//	public float NotTrackedJointVisibilityThreshold
+	//	{
+	//		get;
+	//		set;
+	//	} = 0.2f;
 
-		public float InferredJointVisibilityThreshold
-		{
-			get;
-			set;
-		} = 0.5f;
-		#endregion
-	}
+	//	public float InferredJointVisibilityThreshold
+	//	{
+	//		get;
+	//		set;
+	//	} = 0.5f;
+	//	#endregion
+	//}
 
 	public class GestureRecognitionModelPredictParameters: BasePredictParameters
 	{}
@@ -70,36 +68,39 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
 		#endregion
 	}
 
-	public abstract class BodyTrackingModelPredictResult: BasePredictResult
-	{}
+	// Code archived - failed attempt with mediapipe model in ONNX format
+	//public abstract class BodyTrackingModelPredictResult: BasePredictResult
+	//{}
 
-	public class PoseDetectionModelPredictResult: BodyTrackingModelPredictResult
-	{
-		#region Public properties
-		public int DetectedPoseCount
-		{
-			get;
-			set;
-		}
-		#endregion
-	}
+	// Code archived - failed attempt with mediapipe model in ONNX format
+	//public class PoseDetectionModelPredictResult: BodyTrackingModelPredictResult
+	//{
+	//	#region Public properties
+	//	public int DetectedPoseCount
+	//	{
+	//		get;
+	//		set;
+	//	}
+	//	#endregion
+	//}
 
-	public class PoseLandmarksDetectionModelPredictResult: BodyTrackingModelPredictResult
-	{
-		#region Public properties
-		public BodyDataWithColorSpacePoints BodyData
-		{
-			get;
-			set;
-		}
+	// Code archived - failed attempt with mediapipe model in ONNX format
+	//public class PoseLandmarksDetectionModelPredictResult: BodyTrackingModelPredictResult
+	//{
+	//	#region Public properties
+	//	public BodyDataWithColorSpacePoints BodyData
+	//	{
+	//		get;
+	//		set;
+	//	}
 
-		public RectangleF BoundingBox
-		{
-			get;
-			set;
-		} = RectangleF.Empty;
-		#endregion
-	}
+	//	public RectangleF BoundingBox
+	//	{
+	//		get;
+	//		set;
+	//	} = RectangleF.Empty;
+	//	#endregion
+	//}
 
 	public class GestureRecognitionModelPredictResult: BasePredictResult
 	{

@@ -1,119 +1,115 @@
-﻿using Microsoft.ML.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
-using GestureRecognition.Processing.BaseClassLib.Utils;
+﻿// Code archived - failed attempt with mediapipe model in ONNX format
 
-namespace GestureRecognition.Tests.Processing.MLNETProcUnit.UnitTests.UnitTests
-{
-	[TestClass]
-	public class MLNETManagerTests
-	{
-		#region Public methods
-		// TODO: To archive
-		//[TestMethod]
-		//public void LoadPoseDetectionModelTest()
-		//{
-		//	var (_, loadModelResult) = LoadPoseDetectionModel();
+//using Microsoft.ML.Data;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
+//using GestureRecognition.Processing.BaseClassLib.Utils;
 
-		//	Assert.IsNotNull(loadModelResult);
-		//	Assert.IsTrue(loadModelResult.IsSuccess);
-		//}
+//namespace GestureRecognition.Tests.Processing.MLNETProcUnit.UnitTests.UnitTests
+//{
+//	[TestClass]
+//	public class MLNETManagerTests
+//	{
+//		#region Public methods
+//		[TestMethod]
+//		public void LoadPoseDetectionModelTest()
+//		{
+//			var (_, loadModelResult) = LoadPoseDetectionModel();
 
-		// TODO: To archive
-		//[TestMethod]
-		//public void LoadPoseLandmarksDetectionModelTest()
-		//{
-		//	var (_, loadModelResult) = LoadPoseLandmarksDetectionModel();
+//			Assert.IsNotNull(loadModelResult);
+//			Assert.IsTrue(loadModelResult.IsSuccess);
+//		}
 
-		//	Assert.IsNotNull(loadModelResult);
-		//	Assert.IsTrue(loadModelResult.IsSuccess);
-		//}
+//		[TestMethod]
+//		public void LoadPoseLandmarksDetectionModelTest()
+//		{
+//			var (_, loadModelResult) = LoadPoseLandmarksDetectionModel();
 
-		// TODO: To archive
-		//[TestMethod]
-		//public async Task PredictPoseLandmarksDetectionModelTest()
-		//{
-		//	var (model, loadModelResult) = LoadFullPoseLandmarksDetectionModel();
+//			Assert.IsNotNull(loadModelResult);
+//			Assert.IsTrue(loadModelResult.IsSuccess);
+//		}
 
-		//	Assert.IsNotNull(loadModelResult);
-		//	Assert.IsTrue(loadModelResult.IsSuccess);
+//		[TestMethod]
+//		public async Task PredictPoseLandmarksDetectionModelTest()
+//		{
+//			var (model, loadModelResult) = LoadFullPoseLandmarksDetectionModel();
 
-		//	string[] colorFrameImageFilePaths = Directory.GetFiles(@"../../../Input", "*.png").TakeLast(1).ToArray();
-		//	foreach (string filePath in colorFrameImageFilePaths)
-		//	{
-		//		var colorFrame = GetColorFrameInput(filePath);
-		//		Assert.IsNotNull(colorFrame);
+//			Assert.IsNotNull(loadModelResult);
+//			Assert.IsTrue(loadModelResult.IsSuccess);
 
-		//		var predictResult = await model.Predict(new PoseLandmarksDetectionModelPredictParameters() { ColorFrame = colorFrame });
-		//		Assert.IsNotNull(predictResult);
-		//		Assert.IsInstanceOfType<PoseLandmarksDetectionModelPredictResult>(predictResult);
+//			string[] colorFrameImageFilePaths = Directory.GetFiles(@"../../../Input", "*.png").TakeLast(1).ToArray();
+//			foreach (string filePath in colorFrameImageFilePaths)
+//			{
+//				var colorFrame = GetColorFrameInput(filePath);
+//				Assert.IsNotNull(colorFrame);
 
-		//		if (predictResult.IsSuccess)
-		//		{
-		//			var poseLandmarksDetectionModelPredictResult = predictResult as PoseLandmarksDetectionModelPredictResult;
-		//			Assert.IsNotNull(poseLandmarksDetectionModelPredictResult.BodyData);
-		//			if (poseLandmarksDetectionModelPredictResult.BodyData.IsTracked)
-		//			{
-		//				Assert.IsNotNull(poseLandmarksDetectionModelPredictResult.BodyData.Joints);
-		//				Assert.IsNotEmpty(poseLandmarksDetectionModelPredictResult.BodyData.Joints);
-		//				Assert.IsNotNull(poseLandmarksDetectionModelPredictResult.BodyData.JointsColorSpacePoints);
-		//				Assert.IsNotEmpty(poseLandmarksDetectionModelPredictResult.BodyData.JointsColorSpacePoints);
+//				var predictResult = await model.Predict(new PoseLandmarksDetectionModelPredictParameters() { ColorFrame = colorFrame });
+//				Assert.IsNotNull(predictResult);
+//				Assert.IsInstanceOfType<PoseLandmarksDetectionModelPredictResult>(predictResult);
 
-		//				string outputFilePath = filePath.Replace("Input", "Output");
-		//				var drawBodyDataMng = new DrawBodyDataManager(filePath, outputFilePath);
-		//				drawBodyDataMng.DrawBodyData(poseLandmarksDetectionModelPredictResult.BodyData,
-		//					poseLandmarksDetectionModelPredictResult.BoundingBox);
-		//			}
-		//		}
-		//	}
-		//}
-		#endregion
+//				if (predictResult.IsSuccess)
+//				{
+//					var poseLandmarksDetectionModelPredictResult = predictResult as PoseLandmarksDetectionModelPredictResult;
+//					Assert.IsNotNull(poseLandmarksDetectionModelPredictResult.BodyData);
+//					if (poseLandmarksDetectionModelPredictResult.BodyData.IsTracked)
+//					{
+//						Assert.IsNotNull(poseLandmarksDetectionModelPredictResult.BodyData.Joints);
+//						Assert.IsNotEmpty(poseLandmarksDetectionModelPredictResult.BodyData.Joints);
+//						Assert.IsNotNull(poseLandmarksDetectionModelPredictResult.BodyData.JointsColorSpacePoints);
+//						Assert.IsNotEmpty(poseLandmarksDetectionModelPredictResult.BodyData.JointsColorSpacePoints);
 
-		#region Private methods
-		// TODO: To archive
-		//private static (IModelWrapper model, LoadModelResult result) LoadPoseDetectionModel()
-		//{
-		//	var modelWrapperParameters = new ModelWrapperParameters() { Seed = 42 };
-		//	var modelWrapper = new PoseDetectionModelWrapper<ColorFrameFullHDInput>(modelWrapperParameters);
+//						string outputFilePath = filePath.Replace("Input", "Output");
+//						var drawBodyDataMng = new DrawBodyDataManager(filePath, outputFilePath);
+//						drawBodyDataMng.DrawBodyData(poseLandmarksDetectionModelPredictResult.BodyData,
+//							poseLandmarksDetectionModelPredictResult.BoundingBox);
+//					}
+//				}
+//			}
+//		}
+//		#endregion
 
-		//	var loadModelParameters = new LoadBodyTrackingModelParameters();
-		//	var loadModelResult = modelWrapper.LoadModel(loadModelParameters);
+//		#region Private methods
+//		private static (IModelWrapper model, LoadModelResult result) LoadPoseDetectionModel()
+//		{
+//			var modelWrapperParameters = new ModelWrapperParameters() { Seed = 42 };
+//			var modelWrapper = new PoseDetectionModelWrapper<ColorFrameFullHDInput>(modelWrapperParameters);
 
-		//	return (modelWrapper, loadModelResult);
-		//}
+//			var loadModelParameters = new LoadBodyTrackingModelParameters();
+//			var loadModelResult = modelWrapper.LoadModel(loadModelParameters);
 
-		// TODO: To archive
-		//private static (IModelWrapper model, LoadModelResult result) LoadPoseLandmarksDetectionModel()
-		//{
-		//	var modelWrapperParameters = new ModelWrapperParameters() { Seed = 42 };
-		//	var modelWrapper = new PoseLandmarksDetectionModelWrapper<ColorFrameFullHDInput>(modelWrapperParameters);
+//			return (modelWrapper, loadModelResult);
+//		}
 
-		//	var loadModelParameters = new LoadBodyTrackingModelParameters();
-		//	var loadModelResult = modelWrapper.LoadModel(loadModelParameters);
+//		private static (IModelWrapper model, LoadModelResult result) LoadPoseLandmarksDetectionModel()
+//		{
+//			var modelWrapperParameters = new ModelWrapperParameters() { Seed = 42 };
+//			var modelWrapper = new PoseLandmarksDetectionModelWrapper<ColorFrameFullHDInput>(modelWrapperParameters);
 
-		//	return (modelWrapper, loadModelResult);
-		//}
+//			var loadModelParameters = new LoadBodyTrackingModelParameters();
+//			var loadModelResult = modelWrapper.LoadModel(loadModelParameters);
 
-		// TODO: To archive
-		//private static (IModelWrapper model, LoadModelResult result) LoadFullPoseLandmarksDetectionModel()
-		//{
-		//	var modelWrapperParameters = new ModelWrapperParameters() { Seed = 42 };
-		//	var modelWrapper = new FullPoseLandmarksDetectionModelWrapper<ColorFrameFullHDInput>(modelWrapperParameters);
+//			return (modelWrapper, loadModelResult);
+//		}
 
-		//	var loadModelParameters = new LoadBodyTrackingModelParameters();
-		//	var loadModelResult = modelWrapper.LoadModel(loadModelParameters);
+//		private static (IModelWrapper model, LoadModelResult result) LoadFullPoseLandmarksDetectionModel()
+//		{
+//			var modelWrapperParameters = new ModelWrapperParameters() { Seed = 42 };
+//			var modelWrapper = new FullPoseLandmarksDetectionModelWrapper<ColorFrameFullHDInput>(modelWrapperParameters);
 
-		//	return (modelWrapper, loadModelResult);
-		//}
+//			var loadModelParameters = new LoadBodyTrackingModelParameters();
+//			var loadModelResult = modelWrapper.LoadModel(loadModelParameters);
 
-		private static ColorFrameFullHDInput GetColorFrameInput(string filePath)
-		{
-			byte[] colorData = ColorImageUtils.LoadPngAsBgra(filePath, out int width, out int height);
-			return new ColorFrameFullHDInput()
-			{
-				Image = MLImage.CreateFromPixels(width, height, MLPixelFormat.Bgra32, colorData)
-			};
-		}
-		#endregion
-	}
-}
+//			return (modelWrapper, loadModelResult);
+//		}
+
+//		private static ColorFrameFullHDInput GetColorFrameInput(string filePath)
+//		{
+//			byte[] colorData = ColorImageUtils.LoadPngAsBgra(filePath, out int width, out int height);
+//			return new ColorFrameFullHDInput()
+//			{
+//				Image = MLImage.CreateFromPixels(width, height, MLPixelFormat.Bgra32, colorData)
+//			};
+//		}
+//		#endregion
+//	}
+//}

@@ -1,319 +1,321 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Threading.Tasks;
-using Microsoft.ML;
-using Microsoft.ML.Transforms.Image;
-using Microsoft.ML.Transforms.Onnx;
-using GestureRecognition.Processing.BaseClassLib.Structures.Body;
-using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
-using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
-using GestureRecognition.Processing.MLNETProcUnit.BodyTrackingModels.PoseLandmarksDetection;
+﻿// Code archived - failed attempt with mediapipe model in ONNX format
 
-namespace GestureRecognition.Processing.MLNETProcUnit
-{
-	public class PoseLandmarksDetectionModelWrapper<ColorFrameInputType>: ModelWrapper<ColorFrameInputType, PoseLandmarksDetectionOutput>
-			where ColorFrameInputType : BaseColorFrameInput
-	{
-		#region Constructors
-		public PoseLandmarksDetectionModelWrapper(ModelWrapperParameters parameters) : base(parameters)
-		{
-			this.ModelPath = PoseLandmarksDetectionModelInfo.FULL_MODEL_FILE_PATH;
-			this.ModelKind = ModelKind.ONNX;
-			this.ModelUsageKind = ModelUsageKind.PoseLandmarksDetection;
-		}
-		#endregion
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Numerics;
+//using System.Threading.Tasks;
+//using Microsoft.ML;
+//using Microsoft.ML.Transforms.Image;
+//using Microsoft.ML.Transforms.Onnx;
+//using GestureRecognition.Processing.BaseClassLib.Structures.Body;
+//using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
+//using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
+//using GestureRecognition.Processing.MLNETProcUnit.BodyTrackingModels.PoseLandmarksDetection;
 
-		#region Public methods
-		public override LoadModelResult LoadModel(BaseLoadModelParameters parameters)
-		{
-			if (parameters == null)
-				throw new ArgumentNullException(nameof(parameters));
+//namespace GestureRecognition.Processing.MLNETProcUnit
+//{
+//	public class PoseLandmarksDetectionModelWrapper<ColorFrameInputType>: ModelWrapper<ColorFrameInputType, PoseLandmarksDetectionOutput>
+//			where ColorFrameInputType : BaseColorFrameInput
+//	{
+//		#region Constructors
+//		public PoseLandmarksDetectionModelWrapper(ModelWrapperParameters parameters) : base(parameters)
+//		{
+//			this.ModelPath = PoseLandmarksDetectionModelInfo.FULL_MODEL_FILE_PATH;
+//			this.ModelKind = ModelKind.ONNX;
+//			this.ModelUsageKind = ModelUsageKind.PoseLandmarksDetection;
+//		}
+//		#endregion
 
-			if (parameters is LoadBodyTrackingModelParameters bodyTrackingModelParameters)
-				return LoadModel(bodyTrackingModelParameters);
+//		#region Public methods
+//		public override LoadModelResult LoadModel(BaseLoadModelParameters parameters)
+//		{
+//			if (parameters == null)
+//				throw new ArgumentNullException(nameof(parameters));
 
-			return new LoadModelResult()
-			{
-				ErrorKind = LoadModelErrorKind.InvalidParameters,
-				ErrorMessage = $"Invalid parameters for loading given pose landmarks detection model (file path: [{this.ModelPath}])."
-			};
-		}
+//			if (parameters is LoadBodyTrackingModelParameters bodyTrackingModelParameters)
+//				return LoadModel(bodyTrackingModelParameters);
 
-		public LoadModelResult LoadModel(LoadBodyTrackingModelParameters parameters)
-		{
-			if (parameters == null)
-				throw new ArgumentNullException(nameof(parameters));
+//			return new LoadModelResult()
+//			{
+//				ErrorKind = LoadModelErrorKind.InvalidParameters,
+//				ErrorMessage = $"Invalid parameters for loading given pose landmarks detection model (file path: [{this.ModelPath}])."
+//			};
+//		}
 
-			(bool fileExists, LoadModelResult fileNotExistResult) = CheckIfFileExists(this.ModelPath);
-			if (fileExists)
-			{
-				try
-				{
-					var onnxModelOptions = new OnnxOptions()
-					{
-						InputColumns = [PoseLandmarksDetectionModelInfo.INPUT_IMAGE_COLUMN_NAME],
-						OutputColumns = [PoseLandmarksDetectionModelInfo.OUTPUT_LANDMARKS_COLUMN_NAME, PoseLandmarksDetectionModelInfo.OUTPUT_CONFIDENCE_SCORE_COLUMN_NAME],
-						ModelFile = this.ModelPath,
-						IntraOpNumThreads = Environment.ProcessorCount,
-						InterOpNumThreads = Environment.ProcessorCount,
-					};
+//		public LoadModelResult LoadModel(LoadBodyTrackingModelParameters parameters)
+//		{
+//			if (parameters == null)
+//				throw new ArgumentNullException(nameof(parameters));
 
-					var detectionPipeline = this.mlContext.Transforms.ResizeImages(
-						outputColumnName: "resized_image",
-						imageWidth: PoseLandmarksDetectionModelInfo.INPUT_IMAGE_WIDTH,
-						imageHeight: PoseLandmarksDetectionModelInfo.INPUT_IMAGE_HEIGHT,
-						inputColumnName: nameof(BaseColorFrameInput.Image),
-						resizing: ImageResizingEstimator.ResizingKind.IsoPad,
-						cropAnchor: ImageResizingEstimator.Anchor.Center)
-						.Append(this.mlContext.Transforms.ExtractPixels(
-							outputColumnName: PoseLandmarksDetectionModelInfo.INPUT_IMAGE_COLUMN_NAME,
-							inputColumnName: "resized_image",
-							colorsToExtract: ImagePixelExtractingEstimator.ColorBits.Rgb,
-							orderOfExtraction: ImagePixelExtractingEstimator.ColorsOrder.ABGR,
-							interleavePixelColors: true,
-							scaleImage: 1.0f / 255.0f))
-						.Append(this.mlContext.Transforms.ApplyOnnxModel(onnxModelOptions));
+//			(bool fileExists, LoadModelResult fileNotExistResult) = CheckIfFileExists(this.ModelPath);
+//			if (fileExists)
+//			{
+//				try
+//				{
+//					var onnxModelOptions = new OnnxOptions()
+//					{
+//						InputColumns = [PoseLandmarksDetectionModelInfo.INPUT_IMAGE_COLUMN_NAME],
+//						OutputColumns = [PoseLandmarksDetectionModelInfo.OUTPUT_LANDMARKS_COLUMN_NAME, PoseLandmarksDetectionModelInfo.OUTPUT_CONFIDENCE_SCORE_COLUMN_NAME],
+//						ModelFile = this.ModelPath,
+//						IntraOpNumThreads = Environment.ProcessorCount,
+//						InterOpNumThreads = Environment.ProcessorCount,
+//					};
 
-					this.model = detectionPipeline.Fit(this.mlContext.Data.LoadFromEnumerable(new List<ColorFrameInputType>()));
-					this.predictionEngine = this.mlContext.Model.CreatePredictionEngine<ColorFrameInputType, PoseLandmarksDetectionOutput>(this.model);
+//					var detectionPipeline = this.mlContext.Transforms.ResizeImages(
+//						outputColumnName: "resized_image",
+//						imageWidth: PoseLandmarksDetectionModelInfo.INPUT_IMAGE_WIDTH,
+//						imageHeight: PoseLandmarksDetectionModelInfo.INPUT_IMAGE_HEIGHT,
+//						inputColumnName: nameof(BaseColorFrameInput.Image),
+//						resizing: ImageResizingEstimator.ResizingKind.IsoPad,
+//						cropAnchor: ImageResizingEstimator.Anchor.Center)
+//						.Append(this.mlContext.Transforms.ExtractPixels(
+//							outputColumnName: PoseLandmarksDetectionModelInfo.INPUT_IMAGE_COLUMN_NAME,
+//							inputColumnName: "resized_image",
+//							colorsToExtract: ImagePixelExtractingEstimator.ColorBits.Rgb,
+//							orderOfExtraction: ImagePixelExtractingEstimator.ColorsOrder.ABGR,
+//							interleavePixelColors: true,
+//							scaleImage: 1.0f / 255.0f))
+//						.Append(this.mlContext.Transforms.ApplyOnnxModel(onnxModelOptions));
 
-					return new LoadModelResult();
-				}
-				catch (Exception ex)
-				{
-					return new LoadModelResult()
-					{
-						ErrorKind = LoadModelErrorKind.UnexpectedError,
-						ErrorMessage = $"Unexpected error during loading ONNX model for given pose landmarks detection model file path: [{this.ModelPath}]. " +
-							$"Exception type: {ex.GetType()}, exception message: {ex.Message}."
-					};
-				}
-			}
+//					this.model = detectionPipeline.Fit(this.mlContext.Data.LoadFromEnumerable(new List<ColorFrameInputType>()));
+//					this.predictionEngine = this.mlContext.Model.CreatePredictionEngine<ColorFrameInputType, PoseLandmarksDetectionOutput>(this.model);
 
-			return fileNotExistResult;
-		}
+//					return new LoadModelResult();
+//				}
+//				catch (Exception ex)
+//				{
+//					return new LoadModelResult()
+//					{
+//						ErrorKind = LoadModelErrorKind.UnexpectedError,
+//						ErrorMessage = $"Unexpected error during loading ONNX model for given pose landmarks detection model file path: [{this.ModelPath}]. " +
+//							$"Exception type: {ex.GetType()}, exception message: {ex.Message}."
+//					};
+//				}
+//			}
 
-		public override async Task<BasePredictResult> Predict(BasePredictParameters parameters)
-		{
-			if (parameters == null)
-				throw new ArgumentNullException(nameof(parameters));
+//			return fileNotExistResult;
+//		}
 
-			if (parameters is PoseLandmarksDetectionModelPredictParameters poseLandmarksDetectionModelPredictParameters)
-				return await Predict(poseLandmarksDetectionModelPredictParameters);
+//		public override async Task<BasePredictResult> Predict(BasePredictParameters parameters)
+//		{
+//			if (parameters == null)
+//				throw new ArgumentNullException(nameof(parameters));
 
-			return new PoseLandmarksDetectionModelPredictResult()
-			{
-				ErrorKind = PredictErrorKind.InvalidParameters,
-				ErrorMessage = $"Invalid parameters for prediction process for given pose landmarks detection model (file path: [{this.ModelPath}])."
-			};
-		}
+//			if (parameters is PoseLandmarksDetectionModelPredictParameters poseLandmarksDetectionModelPredictParameters)
+//				return await Predict(poseLandmarksDetectionModelPredictParameters);
 
-		public async Task<PoseLandmarksDetectionModelPredictResult> Predict(PoseLandmarksDetectionModelPredictParameters parameters)
-		{
-			if (parameters == null)
-				throw new ArgumentNullException(nameof(parameters));
-			if (parameters.ColorFrame == null)
-				throw new ArgumentNullException(nameof(parameters.ColorFrame));
+//			return new PoseLandmarksDetectionModelPredictResult()
+//			{
+//				ErrorKind = PredictErrorKind.InvalidParameters,
+//				ErrorMessage = $"Invalid parameters for prediction process for given pose landmarks detection model (file path: [{this.ModelPath}])."
+//			};
+//		}
 
-			var colorFrame = parameters.ColorFrame;
-			float confidenceScoreThreshold = parameters.ConfidenceScoreThreshold;
-			float notTrackedJointVisibilityThreshold = parameters.NotTrackedJointVisibilityThreshold;
-			float inferredJointVisibilityThreshold = parameters.InferredJointVisibilityThreshold;
+//		public async Task<PoseLandmarksDetectionModelPredictResult> Predict(PoseLandmarksDetectionModelPredictParameters parameters)
+//		{
+//			if (parameters == null)
+//				throw new ArgumentNullException(nameof(parameters));
+//			if (parameters.ColorFrame == null)
+//				throw new ArgumentNullException(nameof(parameters.ColorFrame));
 
-			if (colorFrame is ColorFrameInputType colorFrameInput)
-			{
-				try
-				{
-					var predResult = this.predictionEngine.Predict(colorFrameInput);
-					float? confidenceScore = predResult?.ConfidenceScore != null && predResult.ConfidenceScore.Length > 0 ?
-						predResult.ConfidenceScore[0] : null;
-					if (!confidenceScore.HasValue || confidenceScore.Value <= confidenceScoreThreshold)
-					{
-						return new PoseLandmarksDetectionModelPredictResult()
-						{
-							BodyData = GetNotTrackedBodyData()
-						};
-					}
+//			var colorFrame = parameters.ColorFrame;
+//			float confidenceScoreThreshold = parameters.ConfidenceScoreThreshold;
+//			float notTrackedJointVisibilityThreshold = parameters.NotTrackedJointVisibilityThreshold;
+//			float inferredJointVisibilityThreshold = parameters.InferredJointVisibilityThreshold;
 
-					if (predResult.Landmarks == null || predResult.Landmarks.Length != PoseLandmarksDetectionModelInfo.LANDMARKS_COLUMN_LENGTH)
-					{
-						return new PoseLandmarksDetectionModelPredictResult()
-						{
-							ErrorKind = PredictErrorKind.InvalidOutput,
-							ErrorMessage = $"Invalid output concerning pose landmarks that was returned by given pose landmarks detection model (file path: [{this.ModelPath}])."
-						};
-					}
+//			if (colorFrame is ColorFrameInputType colorFrameInput)
+//			{
+//				try
+//				{
+//					var predResult = this.predictionEngine.Predict(colorFrameInput);
+//					float? confidenceScore = predResult?.ConfidenceScore != null && predResult.ConfidenceScore.Length > 0 ?
+//						predResult.ConfidenceScore[0] : null;
+//					if (!confidenceScore.HasValue || confidenceScore.Value <= confidenceScoreThreshold)
+//					{
+//						return new PoseLandmarksDetectionModelPredictResult()
+//						{
+//							BodyData = GetNotTrackedBodyData()
+//						};
+//					}
 
-					var poseLandmarks = GetPoseLandmarks(predResult.Landmarks);
+//					if (predResult.Landmarks == null || predResult.Landmarks.Length != PoseLandmarksDetectionModelInfo.LANDMARKS_COLUMN_LENGTH)
+//					{
+//						return new PoseLandmarksDetectionModelPredictResult()
+//						{
+//							ErrorKind = PredictErrorKind.InvalidOutput,
+//							ErrorMessage = $"Invalid output concerning pose landmarks that was returned by given pose landmarks detection model (file path: [{this.ModelPath}])."
+//						};
+//					}
 
-					return new PoseLandmarksDetectionModelPredictResult()
-					{
-						BodyData = await GetBodyData(poseLandmarks, colorFrame.ImageWidth, colorFrame.ImageHeight,
-							notTrackedJointVisibilityThreshold, inferredJointVisibilityThreshold).ConfigureAwait(false)
-					};
-				}
-				catch (Exception ex)
-				{
-					return new PoseLandmarksDetectionModelPredictResult()
-					{
-						ErrorKind = PredictErrorKind.UnexpectedError,
-						ErrorMessage = $"Unexpected error during prediction process for given pose landmarks detection model file path: [{this.ModelPath}]. " +
-							$"Exception type: {ex.GetType()}, exception message: {ex.Message}."
-					};
-				}
-			}
+//					var poseLandmarks = GetPoseLandmarks(predResult.Landmarks);
 
-			return new PoseLandmarksDetectionModelPredictResult()
-			{
-				ErrorKind = PredictErrorKind.InvalidParameters,
-				ErrorMessage = $"Given pose landmarks detection model (file path: [{this.ModelPath}]) doesn't support provided image resolution."
-			};
-		}
-		#endregion
+//					return new PoseLandmarksDetectionModelPredictResult()
+//					{
+//						BodyData = await GetBodyData(poseLandmarks, colorFrame.ImageWidth, colorFrame.ImageHeight,
+//							notTrackedJointVisibilityThreshold, inferredJointVisibilityThreshold).ConfigureAwait(false)
+//					};
+//				}
+//				catch (Exception ex)
+//				{
+//					return new PoseLandmarksDetectionModelPredictResult()
+//					{
+//						ErrorKind = PredictErrorKind.UnexpectedError,
+//						ErrorMessage = $"Unexpected error during prediction process for given pose landmarks detection model file path: [{this.ModelPath}]. " +
+//							$"Exception type: {ex.GetType()}, exception message: {ex.Message}."
+//					};
+//				}
+//			}
 
-		#region Private methods
+//			return new PoseLandmarksDetectionModelPredictResult()
+//			{
+//				ErrorKind = PredictErrorKind.InvalidParameters,
+//				ErrorMessage = $"Given pose landmarks detection model (file path: [{this.ModelPath}]) doesn't support provided image resolution."
+//			};
+//		}
+//		#endregion
 
-		#region Getting pose landmarks methods
-		private static PoseLandmark[] GetPoseLandmarks(float[] landmarksOutput)
-		{
-			var result = new List<PoseLandmark>
-			{
-				GetPoseLandmark(landmarksOutput, 0, JointType.Nose),
-				GetPoseLandmark(landmarksOutput, 1, JointType.EyeInnerLeft),
-				GetPoseLandmark(landmarksOutput, 2, JointType.EyeLeft),
-				GetPoseLandmark(landmarksOutput, 3, JointType.EyeOuterLeft),
-				GetPoseLandmark(landmarksOutput, 4, JointType.EyeInnerRight),
-				GetPoseLandmark(landmarksOutput, 5, JointType.EyeRight),
-				GetPoseLandmark(landmarksOutput, 6, JointType.EyeOuterRight),
-				GetPoseLandmark(landmarksOutput, 7, JointType.EarLeft),
-				GetPoseLandmark(landmarksOutput, 8, JointType.EarRight),
-				GetPoseLandmark(landmarksOutput, 9, JointType.MouthLeft),
-				GetPoseLandmark(landmarksOutput, 10, JointType.MouthRight),
-				GetPoseLandmark(landmarksOutput, 11, JointType.ShoulderLeft),
-				GetPoseLandmark(landmarksOutput, 12, JointType.ShoulderRight),
-				GetPoseLandmark(landmarksOutput, 13, JointType.ElbowLeft),
-				GetPoseLandmark(landmarksOutput, 14, JointType.ElbowRight),
-				GetPoseLandmark(landmarksOutput, 15, JointType.WristLeft),
-				GetPoseLandmark(landmarksOutput, 16, JointType.WristRight),
-				GetPoseLandmark(landmarksOutput, 17, JointType.PinkyLeft),
-				GetPoseLandmark(landmarksOutput, 18, JointType.PinkyRight),
-				GetPoseLandmark(landmarksOutput, 19, JointType.IndexLeft),
-				GetPoseLandmark(landmarksOutput, 20, JointType.IndexRight),
-				GetPoseLandmark(landmarksOutput, 21, JointType.ThumbLeft),
-				GetPoseLandmark(landmarksOutput, 22, JointType.ThumbRight),
-				GetPoseLandmark(landmarksOutput, 23, JointType.HipLeft),
-				GetPoseLandmark(landmarksOutput, 24, JointType.HipRight),
-				GetPoseLandmark(landmarksOutput, 25, JointType.KneeLeft),
-				GetPoseLandmark(landmarksOutput, 26, JointType.KneeRight),
-				GetPoseLandmark(landmarksOutput, 27, JointType.AnkleLeft),
-				GetPoseLandmark(landmarksOutput, 28, JointType.AnkleRight),
-				GetPoseLandmark(landmarksOutput, 29, JointType.HeelLeft),
-				GetPoseLandmark(landmarksOutput, 30, JointType.HeelRight),
-				GetPoseLandmark(landmarksOutput, 31, JointType.FootIndexLeft),
-				GetPoseLandmark(landmarksOutput, 32, JointType.FootIndexRight),
-			};
+//		#region Private methods
 
-			return result.ToArray();
-		}
-		
-		private static PoseLandmark GetPoseLandmark(float[] landmarksOutput, int landmarkIdx, JointType jointType)
-		{
-			int stride = landmarkIdx * 5;
-			return new PoseLandmark()
-			{
-				Index = landmarkIdx,
-				JointType = jointType,
-				X = landmarksOutput[stride],
-				Y = landmarksOutput[stride + 1],
-				Z = landmarksOutput[stride + 2],
-				Visibility = Sigmoid(landmarksOutput[stride + 3]),
-				Presence = Sigmoid(landmarksOutput[stride + 4])
-			};
-		}
-		#endregion
+//		#region Getting pose landmarks methods
+//		private static PoseLandmark[] GetPoseLandmarks(float[] landmarksOutput)
+//		{
+//			var result = new List<PoseLandmark>
+//			{
+//				GetPoseLandmark(landmarksOutput, 0, JointType.Nose),
+//				GetPoseLandmark(landmarksOutput, 1, JointType.EyeInnerLeft),
+//				GetPoseLandmark(landmarksOutput, 2, JointType.EyeLeft),
+//				GetPoseLandmark(landmarksOutput, 3, JointType.EyeOuterLeft),
+//				GetPoseLandmark(landmarksOutput, 4, JointType.EyeInnerRight),
+//				GetPoseLandmark(landmarksOutput, 5, JointType.EyeRight),
+//				GetPoseLandmark(landmarksOutput, 6, JointType.EyeOuterRight),
+//				GetPoseLandmark(landmarksOutput, 7, JointType.EarLeft),
+//				GetPoseLandmark(landmarksOutput, 8, JointType.EarRight),
+//				GetPoseLandmark(landmarksOutput, 9, JointType.MouthLeft),
+//				GetPoseLandmark(landmarksOutput, 10, JointType.MouthRight),
+//				GetPoseLandmark(landmarksOutput, 11, JointType.ShoulderLeft),
+//				GetPoseLandmark(landmarksOutput, 12, JointType.ShoulderRight),
+//				GetPoseLandmark(landmarksOutput, 13, JointType.ElbowLeft),
+//				GetPoseLandmark(landmarksOutput, 14, JointType.ElbowRight),
+//				GetPoseLandmark(landmarksOutput, 15, JointType.WristLeft),
+//				GetPoseLandmark(landmarksOutput, 16, JointType.WristRight),
+//				GetPoseLandmark(landmarksOutput, 17, JointType.PinkyLeft),
+//				GetPoseLandmark(landmarksOutput, 18, JointType.PinkyRight),
+//				GetPoseLandmark(landmarksOutput, 19, JointType.IndexLeft),
+//				GetPoseLandmark(landmarksOutput, 20, JointType.IndexRight),
+//				GetPoseLandmark(landmarksOutput, 21, JointType.ThumbLeft),
+//				GetPoseLandmark(landmarksOutput, 22, JointType.ThumbRight),
+//				GetPoseLandmark(landmarksOutput, 23, JointType.HipLeft),
+//				GetPoseLandmark(landmarksOutput, 24, JointType.HipRight),
+//				GetPoseLandmark(landmarksOutput, 25, JointType.KneeLeft),
+//				GetPoseLandmark(landmarksOutput, 26, JointType.KneeRight),
+//				GetPoseLandmark(landmarksOutput, 27, JointType.AnkleLeft),
+//				GetPoseLandmark(landmarksOutput, 28, JointType.AnkleRight),
+//				GetPoseLandmark(landmarksOutput, 29, JointType.HeelLeft),
+//				GetPoseLandmark(landmarksOutput, 30, JointType.HeelRight),
+//				GetPoseLandmark(landmarksOutput, 31, JointType.FootIndexLeft),
+//				GetPoseLandmark(landmarksOutput, 32, JointType.FootIndexRight),
+//			};
 
-		#region Getting body data methods
-		private static async Task<BodyDataWithColorSpacePoints> GetBodyData(PoseLandmark[] poseLandmarks, int imageWidth, int imageHeight,
-			float notTrackedJointVisibilityThreshold, float inferredJointVisibilityThreshold)
-		{
-			var jointsDict = new Dictionary<JointType, Joint>();
-			var jointsColorSpacePointsDict = new BodyJointsColorSpacePointsDict();
+//			return result.ToArray();
+//		}
 
-			float widthScale = imageWidth / PoseLandmarksDetectionModelInfo.INPUT_IMAGE_WIDTH;
-			float heightScale = imageHeight / PoseLandmarksDetectionModelInfo.INPUT_IMAGE_WIDTH;
+//		private static PoseLandmark GetPoseLandmark(float[] landmarksOutput, int landmarkIdx, JointType jointType)
+//		{
+//			int stride = landmarkIdx * 5;
+//			return new PoseLandmark()
+//			{
+//				Index = landmarkIdx,
+//				JointType = jointType,
+//				X = landmarksOutput[stride],
+//				Y = landmarksOutput[stride + 1],
+//				Z = landmarksOutput[stride + 2],
+//				Visibility = Sigmoid(landmarksOutput[stride + 3]),
+//				Presence = Sigmoid(landmarksOutput[stride + 4])
+//			};
+//		}
+//		#endregion
 
-			var getJointDataTasks = new List<Task<(Joint joint, Vector2 jointColorSpacePoint)>>();
+//		#region Getting body data methods
+//		private static async Task<BodyDataWithColorSpacePoints> GetBodyData(PoseLandmark[] poseLandmarks, int imageWidth, int imageHeight,
+//			float notTrackedJointVisibilityThreshold, float inferredJointVisibilityThreshold)
+//		{
+//			var jointsDict = new Dictionary<JointType, Joint>();
+//			var jointsColorSpacePointsDict = new BodyJointsColorSpacePointsDict();
 
-			foreach (var poseLandmark in poseLandmarks)
-			{
-				getJointDataTasks.Add(Task.Run(() => GetJointData(poseLandmark, widthScale, heightScale,
-					notTrackedJointVisibilityThreshold, inferredJointVisibilityThreshold)));
-			}
+//			float widthScale = imageWidth / PoseLandmarksDetectionModelInfo.INPUT_IMAGE_WIDTH;
+//			float heightScale = imageHeight / PoseLandmarksDetectionModelInfo.INPUT_IMAGE_WIDTH;
 
-			var getJointDataTasksResults = await Task.WhenAll(getJointDataTasks).ConfigureAwait(false);
+//			var getJointDataTasks = new List<Task<(Joint joint, Vector2 jointColorSpacePoint)>>();
 
-			foreach (var result in getJointDataTasksResults)
-			{
-				var joint = result.joint;
-				var jointColorSpacePoint = result.jointColorSpacePoint;
+//			foreach (var poseLandmark in poseLandmarks)
+//			{
+//				getJointDataTasks.Add(Task.Run(() => GetJointData(poseLandmark, widthScale, heightScale,
+//					notTrackedJointVisibilityThreshold, inferredJointVisibilityThreshold)));
+//			}
 
-				jointsDict.Add(joint.JointType, joint);
-				jointsColorSpacePointsDict.Add(joint.JointType, jointColorSpacePoint);
-			}
+//			var getJointDataTasksResults = await Task.WhenAll(getJointDataTasks).ConfigureAwait(false);
 
-			// TODO: Analysis whether we can detect whether the hand is open or closed
-			return new BodyDataWithColorSpacePoints(0, true, jointsDict, HandState.Unknown, TrackingConfidence.Low,
-				HandState.Unknown, TrackingConfidence.Low, jointsColorSpacePointsDict);
-		}
+//			foreach (var result in getJointDataTasksResults)
+//			{
+//				var joint = result.joint;
+//				var jointColorSpacePoint = result.jointColorSpacePoint;
 
-		private static (Joint joint, Vector2 jointColorSpacePoint) GetJointData(PoseLandmark poseLandmark, float widthScale, float heightScale,
-			float notTrackedJointVisibilityThreshold, float inferredJointVisibilityThreshold)
-		{
-			var jointPosition = new Vector3(poseLandmark.X, poseLandmark.Y, poseLandmark.Z);
-			var jointColorSpacePoint = GetColorSpacePoint(poseLandmark, widthScale, heightScale);
-			var jointTrackingState = GetTrackingState(poseLandmark.Visibility, notTrackedJointVisibilityThreshold,
-				inferredJointVisibilityThreshold);
-			var joint = new Joint(poseLandmark.JointType, jointPosition, jointTrackingState);
+//				jointsDict.Add(joint.JointType, joint);
+//				jointsColorSpacePointsDict.Add(joint.JointType, jointColorSpacePoint);
+//			}
 
-			return (joint, jointColorSpacePoint);
-		}
+//			// TODO: Analysis whether we can detect whether the hand is open or closed
+//			return new BodyDataWithColorSpacePoints(0, true, jointsDict, HandState.Unknown, TrackingConfidence.Low,
+//				HandState.Unknown, TrackingConfidence.Low, jointsColorSpacePointsDict);
+//		}
 
-		private static BodyDataWithColorSpacePoints GetNotTrackedBodyData()
-		{
-			return new BodyDataWithColorSpacePoints(0, false, null, HandState.Unknown, TrackingConfidence.Low,
-				HandState.Unknown, TrackingConfidence.Low, null);
-		}
-		#endregion
+//		private static (Joint joint, Vector2 jointColorSpacePoint) GetJointData(PoseLandmark poseLandmark, float widthScale, float heightScale,
+//			float notTrackedJointVisibilityThreshold, float inferredJointVisibilityThreshold)
+//		{
+//			var jointPosition = new Vector3(poseLandmark.X, poseLandmark.Y, poseLandmark.Z);
+//			var jointColorSpacePoint = GetColorSpacePoint(poseLandmark, widthScale, heightScale);
+//			var jointTrackingState = GetTrackingState(poseLandmark.Visibility, notTrackedJointVisibilityThreshold,
+//				inferredJointVisibilityThreshold);
+//			var joint = new Joint(poseLandmark.JointType, jointPosition, jointTrackingState);
 
-		#region Other private methods
-		private static TrackingState GetTrackingState(float visibility, float notTrackedJointVisibilityThreshold,
-			float inferredJointVisibilityThreshold)
-		{
-			if (visibility <= notTrackedJointVisibilityThreshold)
-				return TrackingState.NotTracked;
-			else if (visibility <= inferredJointVisibilityThreshold)
-				return TrackingState.Inferred;
+//			return (joint, jointColorSpacePoint);
+//		}
 
-			return TrackingState.Tracked;
-		}
+//		private static BodyDataWithColorSpacePoints GetNotTrackedBodyData()
+//		{
+//			return new BodyDataWithColorSpacePoints(0, false, null, HandState.Unknown, TrackingConfidence.Low,
+//				HandState.Unknown, TrackingConfidence.Low, null);
+//		}
+//		#endregion
 
-		public static float Sigmoid(float value)
-		{
-			float k = (float)Math.Exp(value);
-			return k / (1.0f + k);
-		}
+//		#region Other private methods
+//		private static TrackingState GetTrackingState(float visibility, float notTrackedJointVisibilityThreshold,
+//			float inferredJointVisibilityThreshold)
+//		{
+//			if (visibility <= notTrackedJointVisibilityThreshold)
+//				return TrackingState.NotTracked;
+//			else if (visibility <= inferredJointVisibilityThreshold)
+//				return TrackingState.Inferred;
 
-		private static Vector2 GetColorSpacePoint(PoseLandmark landmark, float widthScale, float heightScale)
-		{
-			float scaledX = landmark.X * widthScale;
-			float scaledY = landmark.Y * heightScale;
+//			return TrackingState.Tracked;
+//		}
 
-			return new Vector2(scaledX, scaledY);
-		}
-		#endregion
+//		public static float Sigmoid(float value)
+//		{
+//			float k = (float)Math.Exp(value);
+//			return k / (1.0f + k);
+//		}
 
-		#endregion
-	}
-}
+//		private static Vector2 GetColorSpacePoint(PoseLandmark landmark, float widthScale, float heightScale)
+//		{
+//			float scaledX = landmark.X * widthScale;
+//			float scaledY = landmark.Y * heightScale;
+
+//			return new Vector2(scaledX, scaledY);
+//		}
+//		#endregion
+
+//		#endregion
+//	}
+//}

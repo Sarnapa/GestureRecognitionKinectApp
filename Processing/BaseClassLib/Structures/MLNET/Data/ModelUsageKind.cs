@@ -2,9 +2,10 @@
 {
 	public enum ModelUsageKind
 	{
-		PoseDetection,
-		PoseLandmarksDetection,
-		FullPoseLandmarksDetection,
+		// Code archived - failed attempt with mediapipe model in ONNX format
+		//PoseDetection,
+		//PoseLandmarksDetection,
+		//FullPoseLandmarksDetection,
 		GestureRecognition
 	}
 }

@@ -4,8 +4,9 @@
 	public abstract class BaseLoadModelParameters: BaseParameters
 	{}
 
-	public class LoadBodyTrackingModelParameters: BaseLoadModelParameters
-	{}
+	// Code archived - failed attempt with mediapipe model in ONNX format
+	//public class LoadBodyTrackingModelParameters: BaseLoadModelParameters
+	//{}
 
 	public class LoadGestureRecognitionModelParameters: BaseLoadModelParameters
 	{
@@ -47,8 +48,9 @@
 		InvalidParameters,
 		FileNotExists,
 		UnsupportedModelFileExtension,
-		UnsupportedBodyTrackingModelUsageKind,
 		UnexpectedError,
+		// Code archived - failed attempt with mediapipe model in ONNX format
+		//UnsupportedBodyTrackingModelUsageKind,
 	}
 	#endregion
 }

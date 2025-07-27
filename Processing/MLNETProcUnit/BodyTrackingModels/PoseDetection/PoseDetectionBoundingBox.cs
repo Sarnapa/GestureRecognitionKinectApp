@@ -1,29 +1,31 @@
-﻿namespace GestureRecognition.Processing.MLNETProcUnit.BodyTrackingModels.PoseDetection
-{
-	public class PoseDetectionBoundingBox
-	{
-		public float X
-		{
-			get;
-			set;
-		}
+﻿// Code archived - failed attempt with mediapipe model in ONNX format
 
-		public float Y
-		{
-			get;
-			set;
-		}
+//namespace GestureRecognition.Processing.MLNETProcUnit.BodyTrackingModels.PoseDetection
+//{
+//	public class PoseDetectionBoundingBox
+//	{
+//		public float X
+//		{
+//			get;
+//			set;
+//		}
 
-		public float Width
-		{
-			get;
-			set;
-		}
+//		public float Y
+//		{
+//			get;
+//			set;
+//		}
 
-		public float Height
-		{
-			get;
-			set;
-		}
-	}
-}
+//		public float Width
+//		{
+//			get;
+//			set;
+//		}
+
+//		public float Height
+//		{
+//			get;
+//			set;
+//		}
+//	}
+//}
