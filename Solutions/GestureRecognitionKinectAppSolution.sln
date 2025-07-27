@@ -33,6 +33,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecordsServiceConsol
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "MediaPipeBodyTrackingRESTService", "..\Processing\MediaPipeBodyTrackingRESTService\MediaPipeBodyTrackingRESTService.pyproj", "{BC9A30C1-8E5D-43A5-A0C9-B6BE48349B0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaPipeBodyTrackingRESTServiceClientProcUnit", "..\Processing\MediaPipeBodyTrackingRESTServiceClientProcUnit\MediaPipeBodyTrackingRESTServiceClientProcUnit.csproj", "{08ECA8F7-4BC6-475D-8671-CC0AA4C07B27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaPipeBodyTrackingRESTService.IntegrationTests", "..\Tests\Processing\MediaPipeBodyTrackingRESTService.IntegrationTests\MediaPipeBodyTrackingRESTService.IntegrationTests.csproj", "{8E3B0693-0450-E331-41C5-83EEE7B98D3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +87,14 @@ Global
 		{BC9A30C1-8E5D-43A5-A0C9-B6BE48349B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC9A30C1-8E5D-43A5-A0C9-B6BE48349B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC9A30C1-8E5D-43A5-A0C9-B6BE48349B0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08ECA8F7-4BC6-475D-8671-CC0AA4C07B27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08ECA8F7-4BC6-475D-8671-CC0AA4C07B27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08ECA8F7-4BC6-475D-8671-CC0AA4C07B27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08ECA8F7-4BC6-475D-8671-CC0AA4C07B27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E3B0693-0450-E331-41C5-83EEE7B98D3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E3B0693-0450-E331-41C5-83EEE7B98D3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E3B0693-0450-E331-41C5-83EEE7B98D3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E3B0693-0450-E331-41C5-83EEE7B98D3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,6 +112,8 @@ Global
 		{7BD7CCD9-19F1-48F2-BD6E-798B13D9EA19} = {3781FC4E-1641-4B92-B381-17C7800ECE70}
 		{4333556C-B9DA-4E74-8B53-8EF6359CBF8A} = {A41A560A-D1F0-47F1-9ED1-D79118B968B7}
 		{BC9A30C1-8E5D-43A5-A0C9-B6BE48349B0F} = {3781FC4E-1641-4B92-B381-17C7800ECE70}
+		{08ECA8F7-4BC6-475D-8671-CC0AA4C07B27} = {3781FC4E-1641-4B92-B381-17C7800ECE70}
+		{8E3B0693-0450-E331-41C5-83EEE7B98D3C} = {96E3129E-DD6E-4CFA-80DB-DE3A14387239}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {08987FA6-B986-4650-AD85-E1111EBF06CC}

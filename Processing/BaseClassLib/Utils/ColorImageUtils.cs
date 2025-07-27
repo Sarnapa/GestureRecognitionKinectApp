@@ -65,5 +65,13 @@ namespace GestureRecognition.Processing.BaseClassLib.Utils
 				}
 			}
 		}
+
+		public static string EncodeImageToBase64(byte[] imageBytes)
+		{
+			if (imageBytes == null || imageBytes.Length == 0)
+				throw new ArgumentException("Image cannot be empty.");
+
+			return Convert.ToBase64String(imageBytes);
+		}
 	}
 }

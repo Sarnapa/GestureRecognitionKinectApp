@@ -29,6 +29,7 @@ using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
 using GestureRecognition.Processing.GestureRecognitionProcUnit;
 using GestureRecognition.Processing.MLNETProcUnit;
 using Consts = GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures.Consts;
+using GestureRecognition.Processing.BaseClassLib.Utils;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 {
@@ -146,7 +147,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		private IModelWrapper poseLandmarksDetectionModelWrapper;
 
 		// For testing
-		//private int capturedColorFramesCount = 0;
+		private int capturedColorFramesCounter = 0;
+		private int capturedColorFramesCount = 0;
 		#endregion
 
 		#region Private properties
@@ -429,101 +431,103 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				}
 
 				// For testing
-				//if (capturedColorFramesCount < 100)
-				//{
-				//	string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"./ColorFrame_{capturedColorFramesCount}.png");
-				//	ColorImageUtils.SaveBgraAsPng(colorFrame.ColorData, colorFrame.Width, colorFrame.Height, imagePath);
-				//	capturedColorFramesCount++;
-				//}
-
-				if (colorFrame != null && !this.IsBodyTrackingStoppedYet)
+				if (capturedColorFramesCount < 100 && capturedColorFramesCounter != 0 && capturedColorFramesCounter % 24 == 0)
 				{
-					if (this.IsExternalBodyTrackingModelLoaded)
-					{
-						var colorFrameInput = MLNetMapper.Map(colorFrame, ResolutionType.FullHD);
-
-						var poseDetectionPredictParams = new PoseDetectionModelPredictParameters()
-						{
-							ColorFrame = colorFrameInput,
-							// TODO: To be completed
-							// ConfidenceScoreThreshold =
-						};
-						var basePoseDetectionPredictResult = await this.poseDetectionModelWrapper.Predict(poseDetectionPredictParams).ConfigureAwait(false);
-						if (basePoseDetectionPredictResult.IsSuccess && basePoseDetectionPredictResult is PoseDetectionModelPredictResult poseDetectionPredictResult
-							&& poseDetectionPredictResult.DetectedPoseCount > 0)
-						{
-							this.bodyTrackingStoppedTime = null;
-							if (poseDetectionPredictResult.DetectedPoseCount > 1)
-							{
-								trackedBodiesCount = bodyFrame.BodiesCount;
-								this.currentTrackedBody = null;
-							}
-							else
-							{
-								var poseLandmarksDetectionPredictParams = new PoseLandmarksDetectionModelPredictParameters()
-								{
-									ColorFrame = colorFrameInput,
-									// TODO: To be completed
-									//ConfidenceScoreThreshold = ,
-									//InferredJointVisibilityThreshold = ,
-									//NotTrackedJointVisibilityThreshold = ,
-								};
-								var basePoseLandmarksDetectionPredictResult = await this.poseLandmarksDetectionModelWrapper.Predict(poseLandmarksDetectionPredictParams).ConfigureAwait(false);
-								if (basePoseLandmarksDetectionPredictResult.IsSuccess && basePoseLandmarksDetectionPredictResult is PoseLandmarksDetectionModelPredictResult
-									poseLandmarksDetectionPredictResult)
-								{
-									var bodyData = poseLandmarksDetectionPredictResult.BodyData;
-									var trackedBodies = bodyData != null && bodyData.IsTracked ? new BodyData[] { bodyData } : [];
-									trackedBodiesCount = trackedBodies.Length;
-									if (trackedBodiesCount == 1)
-									{
-										this.currentTrackedBody = bodyData;
-										if (bodiesJointsColorSpacePointsDict == null)
-											bodiesJointsColorSpacePointsDict = new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
-
-										bodiesJointsColorSpacePointsDict.Add(bodyData.TrackingId, bodyData.JointsColorSpacePoints);
-									}
-									else
-									{
-										this.currentTrackedBody = null;
-									}
-								}
-								else
-								{
-									trackedBodiesCount = 0;
-									this.currentTrackedBody = null;
-								}
-							}
-						}
-						else
-						{
-							this.currentTrackedBody = null;
-						}
-					}
-					else
-					{
-						if (bodyFrame != null && bodyFrame.BodiesCount > 0)
-						{
-							this.bodyTrackingStoppedTime = null;
-
-							if (bodyFrame.TooMuchUsersForOneBodyTracking)
-							{
-								trackedBodiesCount = bodyFrame.BodiesCount;
-								this.currentTrackedBody = null;
-							}
-							else
-							{
-								var trackedBodies = bodyFrame.Bodies.Where(b => b != null && b.IsTracked);
-								trackedBodiesCount = trackedBodies.Count();
-								this.currentTrackedBody = trackedBodiesCount == 1 ? trackedBodies.FirstOrDefault() : null;
-							}
-						}
-						else
-						{
-							this.currentTrackedBody = null;
-						}
-					}
+					string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"./ColorFrame_{capturedColorFramesCount}.png");
+					ColorImageUtils.SaveBgraAsPng(colorFrame.ColorData, colorFrame.Width, colorFrame.Height, imagePath);
+					capturedColorFramesCount++;
+					capturedColorFramesCounter = 0;
 				}
+				capturedColorFramesCounter++;
+
+				//if (colorFrame != null && !this.IsBodyTrackingStoppedYet)
+				//{
+				//	if (this.IsExternalBodyTrackingModelLoaded)
+				//	{
+				//		var colorFrameInput = MLNetMapper.Map(colorFrame, ResolutionType.FullHD);
+
+				//		var poseDetectionPredictParams = new PoseDetectionModelPredictParameters()
+				//		{
+				//			ColorFrame = colorFrameInput,
+				//			// TODO: To be completed
+				//			// ConfidenceScoreThreshold =
+				//		};
+				//		var basePoseDetectionPredictResult = await this.poseDetectionModelWrapper.Predict(poseDetectionPredictParams).ConfigureAwait(false);
+				//		if (basePoseDetectionPredictResult.IsSuccess && basePoseDetectionPredictResult is PoseDetectionModelPredictResult poseDetectionPredictResult
+				//			&& poseDetectionPredictResult.DetectedPoseCount > 0)
+				//		{
+				//			this.bodyTrackingStoppedTime = null;
+				//			if (poseDetectionPredictResult.DetectedPoseCount > 1)
+				//			{
+				//				trackedBodiesCount = bodyFrame.BodiesCount;
+				//				this.currentTrackedBody = null;
+				//			}
+				//			else
+				//			{
+				//				var poseLandmarksDetectionPredictParams = new PoseLandmarksDetectionModelPredictParameters()
+				//				{
+				//					ColorFrame = colorFrameInput,
+				//					// TODO: To be completed
+				//					//ConfidenceScoreThreshold = ,
+				//					//InferredJointVisibilityThreshold = ,
+				//					//NotTrackedJointVisibilityThreshold = ,
+				//				};
+				//				var basePoseLandmarksDetectionPredictResult = await this.poseLandmarksDetectionModelWrapper.Predict(poseLandmarksDetectionPredictParams).ConfigureAwait(false);
+				//				if (basePoseLandmarksDetectionPredictResult.IsSuccess && basePoseLandmarksDetectionPredictResult is PoseLandmarksDetectionModelPredictResult
+				//					poseLandmarksDetectionPredictResult)
+				//				{
+				//					var bodyData = poseLandmarksDetectionPredictResult.BodyData;
+				//					var trackedBodies = bodyData != null && bodyData.IsTracked ? new BodyData[] { bodyData } : [];
+				//					trackedBodiesCount = trackedBodies.Length;
+				//					if (trackedBodiesCount == 1)
+				//					{
+				//						this.currentTrackedBody = bodyData;
+				//						if (bodiesJointsColorSpacePointsDict == null)
+				//							bodiesJointsColorSpacePointsDict = new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
+
+				//						bodiesJointsColorSpacePointsDict.Add(bodyData.TrackingId, bodyData.JointsColorSpacePoints);
+				//					}
+				//					else
+				//					{
+				//						this.currentTrackedBody = null;
+				//					}
+				//				}
+				//				else
+				//				{
+				//					trackedBodiesCount = 0;
+				//					this.currentTrackedBody = null;
+				//				}
+				//			}
+				//		}
+				//		else
+				//		{
+				//			this.currentTrackedBody = null;
+				//		}
+				//	}
+				//	else
+				//	{
+				//		if (bodyFrame != null && bodyFrame.BodiesCount > 0)
+				//		{
+				//			this.bodyTrackingStoppedTime = null;
+
+				//			if (bodyFrame.TooMuchUsersForOneBodyTracking)
+				//			{
+				//				trackedBodiesCount = bodyFrame.BodiesCount;
+				//				this.currentTrackedBody = null;
+				//			}
+				//			else
+				//			{
+				//				var trackedBodies = bodyFrame.Bodies.Where(b => b != null && b.IsTracked);
+				//				trackedBodiesCount = trackedBodies.Count();
+				//				this.currentTrackedBody = trackedBodiesCount == 1 ? trackedBodies.FirstOrDefault() : null;
+				//			}
+				//		}
+				//		else
+				//		{
+				//			this.currentTrackedBody = null;
+				//		}
+				//	}
+				//}
 
 				Application.Current.Dispatcher.Invoke(() =>
 				{
