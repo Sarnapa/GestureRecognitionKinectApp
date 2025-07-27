@@ -14,16 +14,21 @@ using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Mes
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Kinect;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures.BodyTracking;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Utilities;
+using GestureRecognition.Processing.BaseClassLib.Mappers;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Data;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Events;
+using GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record;
+using GestureRecognition.Processing.BaseClassLib.Utils;
 using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
 using GestureRecognition.Processing.GestureRecognitionProcUnit;
+using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record;
+using GestureRecognition.Processing.MediaPipeBodyTrackingRESTServiceClientProcUnit;
 using Consts = GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures.Consts;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
@@ -205,6 +210,24 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		}
 
 		/// <summary>
+		/// Indicates which model is currently used to track user movement
+		/// </summary>
+		public BodyTrackingMode TrackingMode
+		{
+			get;
+			private set;
+		}
+
+		/// <summary>
+		/// Is the external model for tracking user movement ready for use?
+		/// </summary>
+		public bool IsExternalBodyTrackingModelLoaded
+		{
+			get;
+			private set;
+		}
+
+		/// <summary>
 		/// Represent state of body tracking process
 		/// </summary>
 		public BodyTrackingState TrackingState
@@ -262,7 +285,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#region Public methods
 		public async Task Start()
 		{
-			bool isExternalBodyTrackingModel = true;
+			this.TrackingMode = BodyTrackingMode.MediaPipe;
+			bool isMediaPipe = this.TrackingMode == BodyTrackingMode.MediaPipe;
 
 			bool isKinectServerStarted = this.kinectClient.StartKinectServer();
 			if (isKinectServerStarted)
@@ -275,7 +299,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 					var startRequest = new StartRequestParams()
 					{
-						FrameSourceTypes = isExternalBodyTrackingModel ? FrameSourceTypes.Color : (FrameSourceTypes.Color | FrameSourceTypes.Body),
+						FrameSourceTypes = isMediaPipe ? FrameSourceTypes.Color : (FrameSourceTypes.Color | FrameSourceTypes.Body),
 						ColorImageFormat = ColorImageFormat.Bgra,
 						IsOneBodyTrackingEnabled = true,
 					};
@@ -286,6 +310,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						this.displayImageWidth = startResponse.ColorFrameWidth;
 						this.displayImageHeight = startResponse.ColorFrameHeight;
 						this.IsKinectAvailable = startResponse.KinectSensorIsAvailable;
+
+						if (isMediaPipe)
+							await TryToLoadExternalBodyTrackingModels().ConfigureAwait(false);
 
 						// Code archived - failed attempt with mediapipe model in ONNX format
 						//if (isExternalBodyTrackingModel)
@@ -448,7 +475,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				if (colorFrame != null && !this.IsBodyTrackingStoppedYet)
 				{
 					#region Code archived - failed attempt with mediapipe model in ONNX format
-					// 	Code archived -failed attempt with mediapipe model in ONNX format
+					// 	Code archived - failed attempt with mediapipe model in ONNX format
 					//if (this.IsExternalBodyTrackingModelLoaded)
 					//{
 					//	var colorFrameInput = MLNetMapper.Map(colorFrame, ResolutionType.FullHD);
@@ -513,8 +540,31 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					//}
 					#endregion
 
-					if (false)
+					if (this.TrackingMode == BodyTrackingMode.MediaPipe)
 					{
+						if (this.IsExternalBodyTrackingModelLoaded)
+						{
+							var bodiesData = await GetBodiesData(colorFrame).ConfigureAwait(false);
+							if (bodiesData != null && bodiesData.Length > 0)
+							{
+								this.bodyTrackingStoppedTime = null;
+
+								var trackedBodies = bodiesData.Where(b => b.IsTracked).ToArray();
+								trackedBodiesCount = trackedBodies.Length;
+								if (trackedBodiesCount > 1)
+								{
+									this.currentTrackedBody = null;
+								}
+								else
+								{
+									this.currentTrackedBody = trackedBodies.FirstOrDefault();
+								}
+							}
+						}
+						else
+						{
+							this.currentTrackedBody = null;
+						}
 					}
 					else
 					{
@@ -678,6 +728,60 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#endregion
 
 		#region External body tracking model methods
+		// TODO: Providing from config
+		// TODO: Launching REST service from app
+		// TODO: Support for multiple resolutions
+		private async Task TryToLoadExternalBodyTrackingModels()
+		{
+			if (!this.IsExternalBodyTrackingModelLoaded)
+			{
+				var response = await LoadPoseLandmarksModel(ModelKind.PoseLandmarksLite, 1, 0.8f, 0.8f, 0.8f).ConfigureAwait(false);
+				if (response.Status == LoadPoseLandmarksModelResponseStatus.OK)
+				{
+					this.IsExternalBodyTrackingModelLoaded = true;
+				}
+				else
+				{
+					MessageBoxUtils.ShowMessage(response.Message, MessageBoxButton.OK, MessageBoxImage.Error);
+				}
+			}
+		}
+
+		private static async Task<LoadPoseLandmarksModelResponse> LoadPoseLandmarksModel(ModelKind kind, int numPoses,
+			float minPoseDetectionConfidence, float minPosePresenceConfidence, float minTrackingConfidence)
+		{
+			var httpClient = new MediaPipeBodyTrackingHttpClient("http://localhost:5555");
+			var request = new LoadPoseLandmarksModelRequest()
+			{
+				Kind = kind,
+				NumPoses = numPoses,
+				MinPoseDetectionConfidence = minPoseDetectionConfidence,
+				MinPosePresenceConfidence = minPosePresenceConfidence,
+				MinTrackingConfidence = minTrackingConfidence,
+			};
+			return await httpClient.LoadPoseLandmarksModelAsync(request).ConfigureAwait(false);
+		}
+
+		// TODO: Providing from config
+		private static async Task<BodyDataWithColorSpacePoints[]> GetBodiesData(ColorFrame colorFrame)
+		{
+			string imageBase64 = ColorImageUtils.EncodeImageToBase64(colorFrame.ColorData);
+			var response = await DetectPoseLandmark(imageBase64, colorFrame.Width, colorFrame.Height).ConfigureAwait(false);
+			return response.Map(0.5f, 0.75f);
+		}
+
+		private static async Task<DetectPoseLandmarksResponse> DetectPoseLandmark(string imageBase64, int imageWidth, int imageHeight)
+		{
+			var httpClient = new MediaPipeBodyTrackingHttpClient("http://localhost:5555");
+			var request = new DetectPoseLandmarksRequest()
+			{
+				Image = imageBase64,
+				ImageWidth = imageWidth,
+				ImageHeight = imageHeight
+			};
+			return await httpClient.DetectPoseLandmarksAsync(request).ConfigureAwait(false);
+		}
+
 		// Code archived - failed attempt with mediapipe model in ONNX format
 		//private void TryToLoadExternalBodyTrackingModels()
 		//{

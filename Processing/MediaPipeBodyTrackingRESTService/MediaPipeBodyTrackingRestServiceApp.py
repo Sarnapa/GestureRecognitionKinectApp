@@ -49,7 +49,9 @@ def detects_pose():
     except Exception as e:
         return jsonify(DetectPoseLandmarksResponse(
             status=DetectPoseLandmarksResponseStatus.error, 
-            message=str(e)).to_dict()
+            message=str(e),
+            landmarks=[],
+            world_landmarks=[]).to_dict()
             ), 500
 #endregion
 
