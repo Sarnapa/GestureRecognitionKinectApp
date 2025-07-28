@@ -24,7 +24,6 @@ using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Data;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Events;
 using GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
-using GestureRecognition.Processing.BaseClassLib.Utils;
 using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
 using GestureRecognition.Processing.GestureRecognitionProcUnit;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record;
