@@ -1,6 +1,7 @@
-﻿using System.Text;
-using Newtonsoft.Json;
+﻿using System.Diagnostics;
+using System.Text;
 using GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe;
+using Newtonsoft.Json;
 
 namespace GestureRecognition.Processing.MediaPipeBodyTrackingRESTServiceClientProcUnit
 {
@@ -26,7 +27,7 @@ namespace GestureRecognition.Processing.MediaPipeBodyTrackingRESTServiceClientPr
 			{
 				var jsonContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
 				var response = await this.httpClient.PostAsync($"{this.baseUrl}/load_pose_landmarks_model", jsonContent);
-				string content = await response.Content.ReadAsStringAsync();
+				string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 				var result = JsonConvert.DeserializeObject<LoadPoseLandmarksModelResponse>(content) ?? 
 					new LoadPoseLandmarksModelResponse()
 					{
@@ -65,15 +66,27 @@ namespace GestureRecognition.Processing.MediaPipeBodyTrackingRESTServiceClientPr
 		{
 			try
 			{
+				var start = DateTime.Now;
 				var jsonContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+				var finish = DateTime.Now;
+				Debug.WriteLine($"[{DateTime.Now}] Serialization duration: {(finish - start).TotalMilliseconds}");
+
+				start = DateTime.Now;
 				var response = await this.httpClient.PostAsync($"{this.baseUrl}/detects_pose_landmarks", jsonContent);
-				string content = await response.Content.ReadAsStringAsync();
+				string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+				finish = DateTime.Now;
+				Debug.WriteLine($"[{DateTime.Now}] Detects duration: {(finish - start).TotalMilliseconds}");
+
+				start = DateTime.Now;
 				var result = JsonConvert.DeserializeObject<DetectPoseLandmarksResponse>(content) ??
 					new DetectPoseLandmarksResponse()
 					{
 						Status = DetectPoseLandmarksResponseStatus.Error,
 						Message = "Detecting pose landmarks - received empty response."
 					};
+				finish = DateTime.Now;
+				Debug.WriteLine($"[{DateTime.Now}] Deserialization duration: {(finish - start).TotalMilliseconds}");
+
 				return result;
 			}
 			catch (HttpRequestException httpEx)

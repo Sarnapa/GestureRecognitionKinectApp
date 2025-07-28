@@ -85,6 +85,14 @@ class PoseLandmarksModelWrapper:
 
         image_data = base64.b64decode(request.image)
         np_image = np.frombuffer(image_data, dtype=np.uint8).reshape((image_height, image_width, 4))
+        
+        # TODO: Scaling factor as a parameter and minimum values
+        # scale_factor = 0.75
+        # resized_image_width = int(image_width * scale_factor)
+        # resized_image_height = int(image_height * scale_factor)
+        
+        # resized_image = cv2.resize(np_image, (resized_image_width, resized_image_height), interpolation=cv2.INTER_AREA)
+
         # TODO: image format as a request parameter
         rgb_image = cv2.cvtColor(np_image, cv2.COLOR_BGRA2RGB)
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_image)

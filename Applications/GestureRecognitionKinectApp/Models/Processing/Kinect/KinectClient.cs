@@ -256,10 +256,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 				switch (messageType)
 				{
 					case MessageType.Frame:
-						HandleFrameMessage(message);
+						await HandleFrameMessage(message).ConfigureAwait(false);
 						break;
 					case MessageType.KinectIsAvailableChanged:
-						HandleKinectIsAvailableChangedMessage(message);
+						await HandleKinectIsAvailableChangedMessage(message).ConfigureAwait(false);
 						break;
 					default:
 						// TODO: Better way for logging
@@ -271,7 +271,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 		#endregion
 
 		#region Frame message methods
-		private void HandleFrameMessage(Message message)
+		private async Task HandleFrameMessage(Message message)
 		{
 			string methodName = $"{nameof(KinectClient)}.{nameof(HandleFrameMessage)}";
 			if (message.Header.PayloadLength == 0 || message.Payload == null 
@@ -291,7 +291,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 						BodyFrame = ReadBodyFrame(payloadReader),
 						BodiesJointsColorSpacePointsDict = ReadBodiesJointsColorSpacePointsDict(payloadReader)
 					};
-					OnFrameArrived?.Invoke(this, new FrameArrivedEventArgs(data));
+
+					if (OnFrameArrived != null)
+						await OnFrameArrived.Invoke(this, new FrameArrivedEventArgs(data));
 				}
 			}
 		}
@@ -391,7 +393,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 		#endregion
 
 		#region KinectIsAvailableChanged message methods
-		private void HandleKinectIsAvailableChangedMessage(Message message)
+		private async Task HandleKinectIsAvailableChangedMessage(Message message)
 		{
 			string methodName = $"{nameof(KinectClient)}.{nameof(HandleKinectIsAvailableChangedMessage)}";
 			if (message.Header.PayloadLength == 0 || message.Payload == null 
@@ -410,7 +412,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 					{
 						IsAvailable = isAvailable
 					};
-					OnKinectIsAvailableChanged?.Invoke(this, new KinectIsAvailableChangedEventArgs(data));
+
+					if (OnKinectIsAvailableChanged != null)
+						await OnKinectIsAvailableChanged.Invoke(this, new KinectIsAvailableChangedEventArgs(data));
 				}
 			}
 		}
