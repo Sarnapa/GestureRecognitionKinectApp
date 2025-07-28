@@ -1,4 +1,5 @@
 from enum import Enum
+import json
 from ModelInfo import ModelKind
 
 #region LoadPoseLandmarksModelRequest
@@ -23,12 +24,15 @@ class LoadPoseLandmarksModelRequest:
             "min_pose_presence_confidence": self.min_pose_presence_confidence,
             "min_tracking_confidence": self.min_tracking_confidence
         }
+    
+    def __repr__(self):
+        return json.dumps(self.to_dict())
 #endregion
     
 #region LoadPoseLandmarksModelResponseStatus
 class LoadPoseLandmarksModelResponseStatus(Enum):
-    ok = "ok"
-    error = "error"
+    ok = 0x00
+    error = 0xFF
 #endregion
 
 #region LoadPoseLandmarksModelResponse
@@ -44,4 +48,7 @@ class LoadPoseLandmarksModelResponse:
             "status": self.status.value,
             "message": self.message
         }
+    
+    def __repr__(self):
+        return json.dumps(self.to_dict())
 #endregion

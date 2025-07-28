@@ -1,9 +1,9 @@
 from enum import Enum
 
 class ModelKind(Enum):
-    pose_landmarks_lite = 0
-    pose_landmarks_full = 1
-    pose_landmarks_heavy = 2
+    pose_landmarks_lite = 0x00
+    pose_landmarks_full = 0x01
+    pose_landmarks_heavy = 0x02
 
 POSE_LANDMARKS_MODEL_MAIN_DIRECTORY_PATH = r'C:\Users\Michal\source\repos\GestureRecognitionKinectApp\Processing\MediaPipeBodyTrackingWebSocketServer\Models\PoseLandmarksDetection'
 

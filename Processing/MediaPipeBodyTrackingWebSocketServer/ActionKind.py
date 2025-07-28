@@ -1,12 +1,12 @@
 from enum import Enum
 
 class ActionKind(Enum):
-    load_pose_landmarks_model = "load_pose_landmarks_model"
-    detect_pose_landmarks = "detect_pose_landmarks"
+    load_pose_landmarks_model = 0x00
+    detect_pose_landmarks = 0x01
 
     @staticmethod
-    def from_string(action_str: str):
+    def from_byte(action_byte):
         try:
-            return ActionKind[action_str.lower()]
+            return ActionKind(action_byte)
         except KeyError:
             return None 

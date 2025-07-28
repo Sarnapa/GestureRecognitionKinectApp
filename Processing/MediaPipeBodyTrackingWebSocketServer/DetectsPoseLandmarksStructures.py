@@ -1,4 +1,5 @@
 from enum import Enum
+import json
 from typing import List
 
 #region DetectPoseLandmarksRequest
@@ -14,6 +15,9 @@ class DetectPoseLandmarksRequest:
             "image_width": self.image_width,
             "image_height": self.image_height
         }
+    
+    def __repr__(self):
+        return json.dumps(self.to_dict())
 #endregion
 
 #region PoseLandmark
@@ -41,13 +45,16 @@ class PoseLandmark:
             "visibility": self.visibility,
             "presence": self.presence
         }
+    
+    def __repr__(self):
+        return json.dumps(self.to_dict())
 #endregion
 
 #region DetectPoseLandmarksResponseStatus
 class DetectPoseLandmarksResponseStatus(Enum):
-    ok = "ok"
-    no_pose = "no_pose"
-    error = "error"
+    ok = 0x00
+    no_pose = 0x01
+    error = 0xFF
 #endregion
 
 #region DetectPoseLandmarksResponse
@@ -68,5 +75,8 @@ class DetectPoseLandmarksResponse:
             "world_landmarks": [ [landmark.to_dict() for landmark in pose] for pose in self.world_landmarks ],
             "status": self.status.value,
             "message": self.message
-    }
+        }
+
+    def __repr__(self):
+        return json.dumps(self.to_dict())
 #endregion

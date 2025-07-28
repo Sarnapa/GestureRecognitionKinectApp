@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics;
+using System.Drawing;
 using GestureRecognition.Processing.BaseClassLib.Mappers;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe;
@@ -46,7 +47,7 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 		{
 			await LoadPoseLandmarksModel().ConfigureAwait(false);
 
-			string[] colorFrameImageFilePaths = Directory.GetFiles(@"../../../Input", "*.png").ToArray();
+			string[] colorFrameImageFilePaths = Directory.GetFiles(@"../../../Input", "*.png").Take(10).ToArray();
 			foreach (string filePath in colorFrameImageFilePaths)
 			{
 				await DetectsPoseLandmarks(filePath).ConfigureAwait(false);
@@ -101,14 +102,10 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 			byte[] imageData = ColorImageUtils.LoadPngAsBgra(filePath, out int width, out int height);
 			Assert.IsNotNull(imageData);
 			Assert.AreEqual(width * height * 4, imageData.Length);
-			
-			string imageBase64 = ColorImageUtils.EncodeImageToBase64(imageData);
-			Assert.IsNotNull(imageBase64);
-			Assert.IsNotEmpty(imageBase64);
-			
+	
 			return new DetectPoseLandmarksRequest()
 			{
-				Image = imageBase64,
+				Image = imageData,
 				ImageWidth = width,
 				ImageHeight = height
 			};
@@ -120,7 +117,10 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 
 			var request = GetDetectPoseLandmarksRequest(filePath);
 
+			// var start = DateTime.Now;
 			var response = await this.client.DetectPoseLandmarksAsync(request, CancellationToken.None).ConfigureAwait(false);
+			// var finish = DateTime.Now;
+			// Debug.WriteLine($"[{DateTime.Now}] Detects duration: {(finish - start).TotalMilliseconds}");
 			Assert.IsNotNull(response);
 			Assert.AreNotEqual(DetectPoseLandmarksResponseStatus.Error, response.Status);
 

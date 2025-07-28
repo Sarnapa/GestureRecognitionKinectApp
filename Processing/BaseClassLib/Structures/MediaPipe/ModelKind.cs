@@ -1,9 +1,9 @@
 ﻿namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
 {
-	public enum ModelKind
+	public enum ModelKind: byte
 	{
-		PoseLandmarksLite = 0,
-		PoseLandmarksFull = 1,
-		PoseLandmarksHeavy = 2
+		PoseLandmarksLite = 0x00,
+		PoseLandmarksFull = 0x01,
+		PoseLandmarksHeavy = 0x02,
 	}
 }

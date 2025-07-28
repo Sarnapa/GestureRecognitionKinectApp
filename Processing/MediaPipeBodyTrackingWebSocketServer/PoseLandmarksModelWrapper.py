@@ -1,4 +1,3 @@
-import base64
 import cv2
 import os
 import mediapipe as mp
@@ -6,6 +5,7 @@ import numpy as np
 import DetectsPoseLandmarksStructures as DetectsStructures
 import LoadPoseLandmarksModelStructures as LoadModelStructures
 import ModelInfo
+import time
 
 Tasks = mp.tasks
 Vision = mp.tasks.vision
@@ -80,14 +80,15 @@ class PoseLandmarksModelWrapper:
                     world_landmarks=world_landmarks,
             )
         
+        image = request.image
         image_width = request.image_width
         image_height = request.image_height
 
-        image_data = base64.b64decode(request.image)
-        np_image = np.frombuffer(image_data, dtype=np.uint8).reshape((image_height, image_width, 4))
+        # start = time.time()
+        np_image = np.frombuffer(image, dtype=np.uint8).reshape((image_height, image_width, 4))
         
         # TODO: Scaling factor as a parameter and minimum values
-        # scale_factor = 0.75
+        # scale_factor = 0.
         # resized_image_width = int(image_width * scale_factor)
         # resized_image_height = int(image_height * scale_factor)
         
@@ -96,8 +97,17 @@ class PoseLandmarksModelWrapper:
         # TODO: image format as a request parameter
         rgb_image = cv2.cvtColor(np_image, cv2.COLOR_BGRA2RGB)
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_image)
-        
+        # finish = time.time()
+        # duration = finish - start
+        # print(f"[image] {duration:.6f} seconds")
+
+        # start = time.time()
         result = self.model.detect(mp_image)
+        # finish = time.time()
+        # duration = finish - start
+        # print(f"[detect] {duration:.6f} seconds")
+
+        # start = time.time()
         if not result:
             return DetectsStructures.DetectPoseLandmarksResponse(
                 status=DetectsStructures.DetectPoseLandmarksResponseStatus.no_pose,
@@ -121,6 +131,10 @@ class PoseLandmarksModelWrapper:
         for world_pose_landmarks in result.pose_world_landmarks:
             world_pose = [DetectsStructures.PoseLandmark(idx, lm.x, lm.y, lm.z, lm.visibility, lm.presence) for idx, lm in enumerate(world_pose_landmarks)]
             world_landmarks.append(world_pose)
+
+        # finish = time.time()
+        # duration = finish - start
+        # print(f"[prepare result] {duration:.6f} seconds")
 
         return DetectsStructures.DetectPoseLandmarksResponse(
             status=DetectsStructures.DetectPoseLandmarksResponseStatus.ok,

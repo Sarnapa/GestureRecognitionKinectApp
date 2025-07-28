@@ -852,17 +852,16 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		// TODO: Providing from config
 		private async Task<BodyDataWithColorSpacePoints[]> GetBodiesData(ColorFrame colorFrame, CancellationToken token)
 		{
-			string imageBase64 = ColorImageUtils.EncodeImageToBase64(colorFrame.ColorData);
-			var response = await DetectPoseLandmark(imageBase64, colorFrame.Width, colorFrame.Height, token).ConfigureAwait(false);
+			var response = await DetectPoseLandmark(colorFrame.ColorData, colorFrame.Width, colorFrame.Height, token).ConfigureAwait(false);
 			return response.Map(0.5f, 0.75f);
 		}
 
-		private async Task<DetectPoseLandmarksResponse> DetectPoseLandmark(string imageBase64, int imageWidth, int imageHeight,
+		private async Task<DetectPoseLandmarksResponse> DetectPoseLandmark(byte[] image, int imageWidth, int imageHeight,
 			CancellationToken token)
 		{
 			var request = new DetectPoseLandmarksRequest()
 			{
-				Image = imageBase64,
+				Image = image,
 				ImageWidth = imageWidth,
 				ImageHeight = imageHeight
 			};

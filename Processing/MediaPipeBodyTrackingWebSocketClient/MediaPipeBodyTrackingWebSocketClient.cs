@@ -1,7 +1,9 @@
 ﻿using System.Net.WebSockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using Newtonsoft.Json;
 using GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe;
+using MessagePack;
+using Newtonsoft.Json;
 
 namespace GestureRecognition.Processing.MediaPipeBodyTrackingWebSocketClientProcUnit
 {
@@ -67,8 +69,8 @@ namespace GestureRecognition.Processing.MediaPipeBodyTrackingWebSocketClientProc
 		{
 			try
 			{
-				string requestJson = JsonConvert.SerializeObject(request);
-				var response = await SendRequestAndWaitForResponse<LoadPoseLandmarksModelResponse>(requestJson, token).ConfigureAwait(false);
+				byte[] requestBytes = SerializeToByteArray(request);
+				var response = await SendRequestAndWaitForResponse<LoadPoseLandmarksModelResponse>(requestBytes, token).ConfigureAwait(false);
 				if (response.Status == LoadPoseLandmarksModelResponseStatus.Error && string.IsNullOrEmpty(response.Message))
 				{
 					response.Message = "Loading pose landmarks model - received empty response.";
@@ -105,8 +107,8 @@ namespace GestureRecognition.Processing.MediaPipeBodyTrackingWebSocketClientProc
 		{
 			try
 			{
-				string requestJson = JsonConvert.SerializeObject(request);
-				var response = await SendRequestAndWaitForResponse<DetectPoseLandmarksResponse>(requestJson, token).ConfigureAwait(false);
+				byte[] requestBytes = SerializeToByteArray(request);
+				var response = await SendRequestAndWaitForResponse<DetectPoseLandmarksResponse>(requestBytes, token).ConfigureAwait(false);
 				if (response.Status == DetectPoseLandmarksResponseStatus.Error && string.IsNullOrEmpty(response.Message))
 				{
 					response.Message = "Detecting pose landmarks - received empty response.";
@@ -175,16 +177,25 @@ namespace GestureRecognition.Processing.MediaPipeBodyTrackingWebSocketClientProc
 		#endregion
 
 		#region Private methods
-		private async Task<T> SendRequestAndWaitForResponse<T>(string requestJson, CancellationToken token)
+		private static byte[] SerializeToByteArray(object obj)
+		{
+			return MessagePackSerializer.Serialize(obj);
+		}
+
+		private T DeserializeFromByteArray<T>(byte[] byteArray)
+		{
+			return MessagePackSerializer.Deserialize<T>(byteArray);
+		}
+
+		private async Task<T> SendRequestAndWaitForResponse<T>(byte[] messageBytes, CancellationToken token)
 			where T : class, new()
 		{
-			byte[] messageBytes = Encoding.UTF8.GetBytes(requestJson);
 			var buffer = new ArraySegment<byte>(messageBytes);
 
 			// TODO: In the case of an image, we should make sure to check the message size, otherwise the message will not be sent.
 			// For now, there is an increased limit on the server side.
 			// Send JSON request over WebSocket
-			await this.wsClient.SendAsync(buffer, WebSocketMessageType.Text, endOfMessage: true, token).ConfigureAwait(false);
+			await this.wsClient.SendAsync(buffer, WebSocketMessageType.Binary, endOfMessage: true, token).ConfigureAwait(false);
 
 			// Receive the response (loop until full JSON message is received)
 			var receiveBuffer = new ArraySegment<byte>(new byte[8192]);
@@ -199,9 +210,9 @@ namespace GestureRecognition.Processing.MediaPipeBodyTrackingWebSocketClientProc
 
 			// Convert accumulated bytes to string
 			ms.Seek(0, SeekOrigin.Begin);
-			string responseJson = Encoding.UTF8.GetString(ms.ToArray());
+			byte[] responseBytes = ms.ToArray();
 
-			return JsonConvert.DeserializeObject<T>(responseJson) ?? new T();
+			return DeserializeFromByteArray<T>(responseBytes) ?? new T();
 		}
 		#endregion
 	}
