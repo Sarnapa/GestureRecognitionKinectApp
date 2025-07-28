@@ -22,8 +22,9 @@ namespace GestureRecognition.Processing.KinectServer
 				}
 			}
 
-			Console.WriteLine($"[{methodName}][{DateTime.Now}] Press key to close console app.");
-			Console.ReadKey();
+			// TODO: Enable debug mode on demand so that this window does not close.
+			// Console.WriteLine($"[{methodName}][{DateTime.Now}] Press key to close console app.");
+			// Console.ReadKey();
 		}
 	}
 

@@ -363,5 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /Docs/Analysis/Analiza_dzialania_cech.xlsx
 /Scripts
-/Tests/Processing/MediaPipeBodyTrackingRESTService.IntegrationTests/Input
-/Tests/Processing/MediaPipeBodyTrackingRESTService.IntegrationTests/Output
+/Tests/Processing/MediaPipeBodyTrackingWebSocketServer.IntegrationTests/Input
+/Tests/Processing/MediaPipeBodyTrackingWebSocketServer.IntegrationTests/Output

@@ -8,6 +8,15 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
 	public class DetectPoseLandmarksRequest
 	{
 		#region Public properties
+		[JsonProperty("action")]
+		public string Action
+		{
+			get
+			{
+				return "detect_pose_landmarks";
+			}
+		}
+
 		[JsonProperty("image")]
 		public string Image
 		{
@@ -155,26 +164,26 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
 		public List<List<PoseLandmark>> Landmarks
 		{
 			get; set;
-		}
+		} = new List<List<PoseLandmark>>();
 
 		[JsonProperty("world_landmarks")]
 		public List<List<PoseLandmark>> WorldLandmarks
 		{
 			get; set;
-		}
+		} = new List<List<PoseLandmark>>();
 
 		[JsonProperty("status")]
 		[JsonConverter(typeof(DetectPoseLandmarksResponseStatusConverter))]
 		public DetectPoseLandmarksResponseStatus Status
 		{
 			get; set;
-		}
+		} = DetectPoseLandmarksResponseStatus.Error;
 
 		[JsonProperty("message")]
 		public string Message
 		{
 			get; set;
-		}
+		} = string.Empty;
 		#endregion
 	}
 	#endregion

@@ -50,7 +50,7 @@
     <ProjectReference Include="..\..\Processing\GestureRecognitionFeaturesProcUnit\GestureRecognitionFeaturesProcUnit.csproj" />
     <ProjectReference Include="..\..\Processing\GestureRecognitionProcUnit\GestureRecognitionProcUnit.csproj" />
     <ProjectReference Include="..\..\Processing\KinectStreamRecordReplayProcUnit\StreamRecordReplayProcUnit.csproj" />
-    <ProjectReference Include="..\..\Processing\MediaPipeBodyTrackingRESTServiceClientProcUnit\MediaPipeBodyTrackingRESTServiceClientProcUnit.csproj" />
+    <ProjectReference Include="..\..\Processing\MediaPipeBodyTrackingWebSocketClient\MediaPipeBodyTrackingWebSocketClientProcUnit.csproj" />
     <ProjectReference Include="..\..\Processing\MLNETProcUnit\MLNETProcUnit.csproj" />
   </ItemGroup>
   <ItemGroup>

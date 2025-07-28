@@ -13,7 +13,7 @@
       For more information, visit https://learn.microsoft.com/dotnet/core/testing/unit-testing-platform-integration-dotnet-test#show-failure-per-test
       -->
     <TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
-    <RootNamespace>GestureRecognition.Tests.Processing.MediaPipeBodyTrackingRESTService.IntegrationTests</RootNamespace>
+    <RootNamespace>GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServer.IntegrationTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,7 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Processing\BaseClassLib\BaseClassLib.csproj" />
-    <ProjectReference Include="..\..\..\Processing\MediaPipeBodyTrackingRESTServiceClientProcUnit\MediaPipeBodyTrackingRESTServiceClientProcUnit.csproj" />
+    <ProjectReference Include="..\..\..\Processing\MediaPipeBodyTrackingWebSocketClient\MediaPipeBodyTrackingWebSocketClientProcUnit.csproj" />
   </ItemGroup>
 
 </Project>

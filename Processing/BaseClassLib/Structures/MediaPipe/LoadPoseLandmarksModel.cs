@@ -7,6 +7,15 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
 	public class LoadPoseLandmarksModelRequest
 	{
 		#region Public properties
+		[JsonProperty("action")]
+		public string Action
+		{
+			get
+			{
+				return "load_pose_landmarks_model";
+			}
+		}
+
 		[JsonProperty("model_kind")]
 		public ModelKind Kind
 		{
@@ -114,14 +123,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
 		{
 			get;
 			set;
-		}
+		} = LoadPoseLandmarksModelResponseStatus.Error;
 
 		[JsonProperty("message")]
 		public string Message
 		{
 			get;
 			set;
-		}
+		} = string.Empty;
 		#endregion
 	}
 	#endregion

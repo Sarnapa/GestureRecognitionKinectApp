@@ -4,15 +4,17 @@ using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe;
 using GestureRecognition.Processing.BaseClassLib.Tests;
 using GestureRecognition.Processing.BaseClassLib.Utils;
-using GestureRecognition.Processing.MediaPipeBodyTrackingRESTServiceClientProcUnit;
+using GestureRecognition.Processing.MediaPipeBodyTrackingWebSocketClientProcUnit;
 
-namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingRESTService.IntegrationTests
+namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServer.IntegrationTests
 {
 	[TestClass]
 	public sealed class PoseLandmarksModelMethodsTest
 	{
 		#region Private fields & constants
-		private const string SERVICE_URL = "http://localhost:5555";
+		private const string SERVICE_URL = "ws://localhost:5555";
+
+		private MediaPipeBodyTrackingWebSocketClient? client;
 
 		private ModelKind poseLandmarksModelKind = ModelKind.PoseLandmarksLite;
 		private int poseLandmarksModelNumPoses = 1;
@@ -24,38 +26,57 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingRESTService.I
 		#endregion
 
 		#region Tests methods
+		[TestInitialize]
+		public async Task TestInitialize()
+		{
+			this.client = new MediaPipeBodyTrackingWebSocketClient(SERVICE_URL);
+			var result = await this.client.ConnectAsync(CancellationToken.None).ConfigureAwait(false);
+			Assert.IsNotNull(result);
+			Assert.IsTrue(result.IsSuccess);
+		}
+
 		[TestMethod]
 		public async Task LoadPoseLandmarksModelTest()
 		{
-			var httpClient = new MediaPipeBodyTrackingHttpClient(SERVICE_URL);
-			await LoadPoseLandmarksModel(httpClient).ConfigureAwait(false);
+			await LoadPoseLandmarksModel().ConfigureAwait(false);
 		}
 
 		[TestMethod]
 		public async Task DetectsPoseLandmarksTest()
 		{
-			var httpClient = new MediaPipeBodyTrackingHttpClient(SERVICE_URL);
-			await LoadPoseLandmarksModel(httpClient).ConfigureAwait(false);
+			await LoadPoseLandmarksModel().ConfigureAwait(false);
 
 			string[] colorFrameImageFilePaths = Directory.GetFiles(@"../../../Input", "*.png").ToArray();
 			foreach (string filePath in colorFrameImageFilePaths)
 			{
-				await DetectsPoseLandmarks(httpClient, filePath).ConfigureAwait(false);
+				await DetectsPoseLandmarks(filePath).ConfigureAwait(false);
 			}
 		}
 
+		[TestCleanup]
+		public async Task TestCleanup()
+		{
+			if (this.client != null)
+			{
+				var result = await this.client.DisconnectAsync(CancellationToken.None).ConfigureAwait(false);
+				Assert.IsNotNull(result);
+				Assert.IsTrue(result.IsSuccess);
+			}
+		}
 		#endregion
 
 		#region Private methods
 
 		#region Loading pose landmarks model methods
-		private async Task LoadPoseLandmarksModel(MediaPipeBodyTrackingHttpClient httpClient)
+		private async Task LoadPoseLandmarksModel()
 		{
+			Assert.IsNotNull(this.client);
+
 			var request = GetLoadPoseLandmarksModelRequest(this.poseLandmarksModelKind, this.poseLandmarksModelNumPoses,
 				this.poseLandmarksModelMinPoseDetectionConfidence, poseLandmarksModelMinPosePresenceConfidence,
 				this.poseLandmarksModelMinTrackingConfidence);
 
-			var response = await httpClient.LoadPoseLandmarksModelAsync(request).ConfigureAwait(false);
+			var response = await this.client.LoadPoseLandmarksModelAsync(request, CancellationToken.None).ConfigureAwait(false);
 			Assert.IsNotNull(response);
 			Assert.AreEqual(LoadPoseLandmarksModelResponseStatus.OK, response.Status);
 		}
@@ -93,11 +114,13 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingRESTService.I
 			};
 		}
 
-		private async Task DetectsPoseLandmarks(MediaPipeBodyTrackingHttpClient httpClient, string filePath)
+		private async Task DetectsPoseLandmarks(string filePath)
 		{
+			Assert.IsNotNull(this.client);
+
 			var request = GetDetectPoseLandmarksRequest(filePath);
 
-			var response = await httpClient.DetectPoseLandmarksAsync(request).ConfigureAwait(false);
+			var response = await this.client.DetectPoseLandmarksAsync(request, CancellationToken.None).ConfigureAwait(false);
 			Assert.IsNotNull(response);
 			Assert.AreNotEqual(DetectPoseLandmarksResponseStatus.Error, response.Status);
 

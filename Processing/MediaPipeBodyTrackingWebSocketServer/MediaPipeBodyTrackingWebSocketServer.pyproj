@@ -4,7 +4,8 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>bc9a30c1-8e5d-43a5-a0c9-b6be48349b0f</ProjectGuid>
-    <ProjectHome>.</ProjectHome>
+    <ProjectHome>
+    </ProjectHome>
     <ProjectTypeGuids>{789894c7-04a9-4a11-a6b5-3f4435165112};{1b580a1a-fdb3-4b32-83e1-6407eb2722e6};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <StartupFile>
     </StartupFile>
@@ -15,7 +16,7 @@
     <WebBrowserUrl>http://localhost</WebBrowserUrl>
     <OutputPath>.</OutputPath>
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
-    <Name>MediaPipeBodyTrackingRESTService</Name>
+    <Name>MediaPipeBodyTrackingWebSocketServer</Name>
     <RootNamespace>MediaPipeBodyTrackingRESTService</RootNamespace>
     <InterpreterId>Global|VisualStudio|3.12.10</InterpreterId>
   </PropertyGroup>
@@ -37,9 +38,11 @@
     <InterpreterReference Include="Global|VisualStudio|3.12.10" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionKind.py" />
     <Compile Include="DetectsPoseLandmarksStructures.py" />
     <Compile Include="LoadPoseLandmarksModelStructures.py" />
-    <Compile Include="MediaPipeBodyTrackingRestServiceApp.py" />
+    <Compile Include="MainStructures.py" />
+    <Compile Include="MediaPipeBodyTrackingWebSocketServer.py" />
     <Compile Include="ModelInfo.py" />
     <Compile Include="PoseLandmarksModelWrapper.py" />
   </ItemGroup>
