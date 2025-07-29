@@ -547,7 +547,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			this.processingFramesTaskTokenSource?.Cancel();
 			this.processingFramesTaskTokenSource = null;
 
-			this.framesQueue.Writer.TryComplete();
+			this.framesQueue?.Writer.TryComplete();
 			this.framesQueue = null;
 
 			this.processingFramesSemaphore?.Dispose();
@@ -967,7 +967,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		private async Task<BodyDataWithColorSpacePoints[]> GetBodiesData(ColorFrame colorFrame, CancellationToken token)
 		{
 			var response = await DetectPoseLandmark(colorFrame.ColorData, colorFrame.Width, colorFrame.Height, token).ConfigureAwait(false);
-			return response.Map(0.5f, 0.75f);
+			//return response.Map(0.5f, 0.75f);
+			return await response.Map(0.5f, 0.75f).ConfigureAwait(false);
 		}
 
 		private async Task<DetectPoseLandmarksResponse> DetectPoseLandmark(byte[] image, int imageWidth, int imageHeight,

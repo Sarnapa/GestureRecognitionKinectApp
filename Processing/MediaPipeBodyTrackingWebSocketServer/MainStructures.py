@@ -5,7 +5,7 @@ class InvalidRequestResponse:
 
     def to_dict(self):
         return {
-            "status": "error",
+            "status": 0xFF,
             "message": self.message
         }
 #endregion

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using MessagePack;
 
 namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
@@ -116,6 +117,20 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
 		{
 			get; set;
 		} = new List<List<PoseLandmark>>();
+
+		[Key("hand_left_states")]
+		public List<HandState> HandLeftStates
+		{
+			get;
+			set;
+		} = new List<HandState>();
+
+		[Key("hand_right_states")]
+		public List<HandState> HandRightStates
+		{
+			get;
+			set;
+		} = new List<HandState>();
 
 		[Key("status")]
 		public DetectPoseLandmarksResponseStatus Status

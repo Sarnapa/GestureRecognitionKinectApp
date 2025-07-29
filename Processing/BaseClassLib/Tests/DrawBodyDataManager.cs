@@ -33,7 +33,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Tests
 		/// <summary>
 		/// Definition of bones
 		/// </summary>
-		private readonly List<Bone> bones = MediaPipesBonesDefinitions.AllBones; // KinectBonesDefinitions.AllBonesWithoutLegs;
+		private readonly List<Bone> bones = MediaPipeBonesDefinitions.AllBones; // KinectBonesDefinitions.AllBonesWithoutLegs;
 
 		private bool isInferredMode = false;
 		#endregion

@@ -117,10 +117,10 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 
 			var request = GetDetectPoseLandmarksRequest(filePath);
 
-			// var start = DateTime.Now;
+			var start = DateTime.Now;
 			var response = await this.client.DetectPoseLandmarksAsync(request, CancellationToken.None).ConfigureAwait(false);
-			// var finish = DateTime.Now;
-			// Debug.WriteLine($"[{DateTime.Now}] Detects duration: {(finish - start).TotalMilliseconds}");
+			var finish = DateTime.Now;
+			Debug.WriteLine($"[{DateTime.Now}] Detects duration: {(finish - start).TotalMilliseconds}");
 			Assert.IsNotNull(response);
 			Assert.AreNotEqual(DetectPoseLandmarksResponseStatus.Error, response.Status);
 
@@ -132,7 +132,16 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 				Assert.IsNotEmpty(response.WorldLandmarks);
 				Assert.AreEqual(response.Landmarks.Count, response.WorldLandmarks.Count);
 
-				var bodiesData = response.Map(this.notTrackedJointVisibilityThreshold, this.inferredJointVisibilityThreshold);
+				Assert.IsNotNull(response.HandLeftStates);
+				Assert.IsNotEmpty(response.HandLeftStates);
+				Assert.IsNotNull(response.HandRightStates);
+				Assert.IsNotEmpty(response.HandRightStates);
+				Assert.AreEqual(response.HandLeftStates.Count, response.HandRightStates.Count);
+
+				Assert.AreEqual(response.Landmarks.Count, response.HandLeftStates.Count);
+
+				// var bodiesData = response.Map(this.notTrackedJointVisibilityThreshold, this.inferredJointVisibilityThreshold);
+				var bodiesData = await response.Map(this.notTrackedJointVisibilityThreshold, this.inferredJointVisibilityThreshold).ConfigureAwait(false);
 				Assert.IsNotNull(bodiesData);
 				Assert.AreEqual(response.Landmarks.Count, bodiesData.Length);
 

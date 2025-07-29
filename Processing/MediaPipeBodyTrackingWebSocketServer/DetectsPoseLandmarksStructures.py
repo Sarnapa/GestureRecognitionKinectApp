@@ -57,15 +57,26 @@ class DetectPoseLandmarksResponseStatus(Enum):
     error = 0xFF
 #endregion
 
+#region HandState
+class HandState(Enum):
+    Unknown = 0x00
+    Open = 0x02
+    Closed = 0x03 
+#endregion
+
 #region DetectPoseLandmarksResponse
 class DetectPoseLandmarksResponse:
     def __init__(self, 
                 landmarks: List[List[PoseLandmark]], 
-                world_landmarks: List[List[PoseLandmark]], 
+                world_landmarks: List[List[PoseLandmark]],
+                hand_left_states: List[HandState],
+                hand_right_states: List[HandState], 
                 status: DetectPoseLandmarksResponseStatus, 
                 message: str):
         self.landmarks = [] if landmarks is None else landmarks
         self.world_landmarks = [] if world_landmarks is None else world_landmarks
+        self.hand_left_state = [] if hand_left_states is None else hand_left_states
+        self.hand_right_state = [] if hand_right_states is None else hand_right_states
         self.status = status
         self.message = message
 
@@ -73,6 +84,8 @@ class DetectPoseLandmarksResponse:
         return {
             "landmarks": [ [landmark.to_dict() for landmark in pose] for pose in self.landmarks ],
             "world_landmarks": [ [landmark.to_dict() for landmark in pose] for pose in self.world_landmarks ],
+            "hand_left_states": [state.value for state in self.hand_left_state],
+            "hand_right_states": [state.value for state in self.hand_right_state],
             "status": self.status.value,
             "message": self.message
         }

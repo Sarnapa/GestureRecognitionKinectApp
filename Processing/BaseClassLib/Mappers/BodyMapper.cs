@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe;
 
@@ -21,27 +22,42 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 		#endregion
 
 		#region DetectPoseLandmarksResponse -> BodyDataWithColorSpacePoints
-		public static BodyDataWithColorSpacePoints[] Map(this DetectPoseLandmarksResponse response,
+		public static async Task<BodyDataWithColorSpacePoints[]> Map(this DetectPoseLandmarksResponse response,
 			float notTrackedJointVisibilityThreshold, float inferredJointVisibilityThreshold)
 		{
-			var result = new List<BodyDataWithColorSpacePoints>();
+			//var results = new List<BodyDataWithColorSpacePoints>();	
+			var tasks = new List<Task<BodyDataWithColorSpacePoints>>();
 			if (response.Status == DetectPoseLandmarksResponseStatus.OK && response.Landmarks != null & response.WorldLandmarks != null
-				&& response.Landmarks.Count == response.WorldLandmarks.Count)
+				&& response.HandLeftStates != null && response.HandRightStates != null && response.Landmarks.Count == response.WorldLandmarks.Count
+				&& response.HandLeftStates.Count == response.HandRightStates.Count && response.Landmarks.Count == response.HandLeftStates.Count)
 			{
 				for (int i = 0; i < response.Landmarks.Count; i++)
 				{
-					result.Add(Map((ulong)i, response.Landmarks[i], response.WorldLandmarks[i],
+					tasks.Add(MapAsync((ulong)i, response.Landmarks[i], response.WorldLandmarks[i], response.HandLeftStates[i], response.HandRightStates[i],
 						notTrackedJointVisibilityThreshold, inferredJointVisibilityThreshold));
+					//results.Add(Map((ulong)i, response.Landmarks[i], response.WorldLandmarks[i], response.HandLeftStates[i], response.HandRightStates[i],
+					//	notTrackedJointVisibilityThreshold, inferredJointVisibilityThreshold));
 				}
 			}
 
-			return result.ToArray();
+			var results = await Task.WhenAll(tasks).ConfigureAwait(false);
+			results = results.OrderBy(r => r.TrackingId).ToArray();
+
+			return results;
+		}
+
+		private static async Task<BodyDataWithColorSpacePoints> MapAsync(ulong trackingId, List<PoseLandmark> poseLandmarks, List<PoseLandmark> worldPoseLandmarks,
+			HandState handLeftState, HandState handRightState, float notTrackedJointVisibilityThreshold, float inferredJointVisibilityThreshold)
+		{
+			return await Task.Run(() => Map(trackingId, poseLandmarks, worldPoseLandmarks, handLeftState, handRightState,
+				notTrackedJointVisibilityThreshold, inferredJointVisibilityThreshold)).ConfigureAwait(false);
 		}
 
 		private static BodyDataWithColorSpacePoints Map(ulong trackingId, List<PoseLandmark> poseLandmarks, List<PoseLandmark> worldPoseLandmarks,
-			float notTrackedJointVisibilityThreshold, float inferredJointVisibilityThreshold)
+			HandState handLeftState, HandState handRightState, float notTrackedJointVisibilityThreshold, float inferredJointVisibilityThreshold)
 		{
 			var joints = new Dictionary<JointType, Joint>();
+
 			foreach (var landmark in worldPoseLandmarks)
 			{
 				var joint = Map(landmark, notTrackedJointVisibilityThreshold, inferredJointVisibilityThreshold);
@@ -57,11 +73,17 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 					jointsColorSpacePoints.Add(jointType.Value, colorSpacePoint.Value);
 			}
 
+			var handLeftJoints = joints.Where(kv => IsHandLeftPartJoint(kv.Key)).Select(kv => kv.Value).ToArray();
+			var handRightJoints = joints.Where(kv => IsHandRightPartJoint(kv.Key)).Select(kv => kv.Value).ToArray();
+
+			var handLeftTrackingConfidence = GetHandTrackingConfidence(handLeftJoints);
+			var handRightTrackingConfidence = GetHandTrackingConfidence(handRightJoints);
+
 			bool isTracked = joints.Count > 0 && joints.Count == jointsColorSpacePoints.Count
 				&& joints.Any(j => j.Value.TrackingState == TrackingState.Tracked);
 
-			return new BodyDataWithColorSpacePoints(trackingId, isTracked, joints, HandState.Unknown, TrackingConfidence.Low,
-				HandState.Unknown, TrackingConfidence.Low, jointsColorSpacePoints);
+			return new BodyDataWithColorSpacePoints(trackingId, isTracked, joints, handLeftState, handLeftTrackingConfidence,
+				handRightState, handRightTrackingConfidence, jointsColorSpacePoints);
 		}
 
 		private static (JointType? jointType, Vector2? colorSpacePoint) Map(PoseLandmark landmark)
@@ -87,6 +109,18 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 
 			return new Joint(jointType.Value, new Vector3(landmark.X, landmark.Y, landmark.Z),
 				GetTrackingState(landmark.Visibility, notTrackedJointVisibilityThreshold, inferredJointVisibilityThreshold));
+		}
+
+		private static bool IsHandLeftPartJoint(JointType joint)
+		{
+			return joint == JointType.WristLeft || joint == JointType.PinkyLeft 
+				|| joint == JointType.IndexLeft || joint == JointType.ThumbLeft;
+		}
+
+		private static bool IsHandRightPartJoint(JointType joint)
+		{
+			return joint == JointType.WristRight || joint == JointType.PinkyRight
+				|| joint == JointType.IndexRight || joint == JointType.ThumbRight;
 		}
 
 		private static JointType? Map(int idx)
@@ -159,6 +193,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 					return JointType.FootIndexLeft;
 				case 32:
 					return JointType.FootIndexRight;
+				case 33:
+					return JointType.HandLeft;
+				case 34:
+					return JointType.HandRight;
 			}
 
 			return null;
@@ -172,6 +210,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 				return TrackingState.Inferred;
 
 			return TrackingState.Tracked;
+		}
+
+		private static TrackingConfidence GetHandTrackingConfidence(Joint[] handJoints)
+		{
+			if (handJoints == null || handJoints.Length != 4 || handJoints.Any(j => j.TrackingState == TrackingState.NotTracked))
+				return TrackingConfidence.Low;
+
+			return TrackingConfidence.High;
 		}
 		#endregion
 	}

@@ -2,4 +2,5 @@ mediapipe
 msgpack
 numpy
 opencv-python
+scipy
 websockets

@@ -6,7 +6,7 @@ using System.Windows.Media;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies;
 using KinectBonesDefinitions = GestureRecognition.Processing.BaseClassLib.Structures.Body.BonesDefinitions;
-using MediaPipesBonesDefinitions = GestureRecognition.Processing.BaseClassLib.Structures.Body.MediaPipesBonesDefinitions;
+using MediaPipeBonesDefinitions = GestureRecognition.Processing.BaseClassLib.Structures.Body.MediaPipeBonesDefinitions;
 using static GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures.GestureRecognitionDefinitions;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers
@@ -87,7 +87,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 		/// <summary>
 		/// Definition of bones
 		/// </summary>
-		private readonly List<Bone> bones = MediaPipesBonesDefinitions.AllBonesWithoutHeadAndLegs; // KinectBonesDefinitions.AllBonesWithoutLegs;
+		private readonly List<Bone> bones = MediaPipeBonesDefinitions.AllBonesWithoutHeadAndLegs; // KinectBonesDefinitions.AllBonesWithoutLegs;
 
 		/// <summary>
 		/// List of colors for each body tracked

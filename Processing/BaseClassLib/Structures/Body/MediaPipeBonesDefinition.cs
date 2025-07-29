@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 {
-	public static class MediaPipesBonesDefinitions
+	public static class MediaPipeBonesDefinitions
 	{
 		// Head
 		public static Bone MouthRightMouthLeftBone = new Bone(JointType.MouthRight, JointType.MouthLeft);
@@ -21,18 +21,26 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 		// Right Arm
 		public static Bone ShoulderRightElbowRightBone = new Bone(JointType.ShoulderRight, JointType.ElbowRight);
 		public static Bone ElbowRightWristRightBone = new Bone(JointType.ElbowRight, JointType.WristRight);
-		public static Bone WristRightPinkyRightBone = new Bone(JointType.WristRight, JointType.PinkyRight);
-		public static Bone WristRightIndexRightBone = new Bone(JointType.WristRight, JointType.IndexRight);
-		public static Bone WristRightThumbRightBone = new Bone(JointType.WristRight, JointType.ThumbRight);
-		public static Bone PinkyRightIndexRightBone = new Bone(JointType.PinkyRight, JointType.IndexRight);
+		public static Bone WristRightHandRightBone = new Bone(JointType.WristRight, JointType.HandRight);
+		public static Bone HandRightPinkyRightBone = new Bone(JointType.HandRight, JointType.PinkyRight);
+		public static Bone HandRightIndexRightBone = new Bone(JointType.HandRight, JointType.IndexRight);
+		public static Bone HandRightThumbRightBone = new Bone(JointType.HandRight, JointType.ThumbRight);
+		//public static Bone WristRightPinkyRightBone = new Bone(JointType.WristRight, JointType.PinkyRight);
+		//public static Bone WristRightIndexRightBone = new Bone(JointType.WristRight, JointType.IndexRight);
+		//public static Bone WristRightThumbRightBone = new Bone(JointType.WristRight, JointType.ThumbRight);
+		//public static Bone PinkyRightIndexRightBone = new Bone(JointType.PinkyRight, JointType.IndexRight);
 
 		// Left Arm
 		public static Bone ShoulderLeftElbowLeftBone = new Bone(JointType.ShoulderLeft, JointType.ElbowLeft);
 		public static Bone ElbowLeftWristLeftBone = new Bone(JointType.ElbowLeft, JointType.WristLeft);
-		public static Bone WristLeftPinkyLeftBone = new Bone(JointType.WristLeft, JointType.PinkyLeft);
-		public static Bone WristLeftIndexLeftBone = new Bone(JointType.WristLeft, JointType.IndexLeft);
-		public static Bone WristLeftThumbLeftBone = new Bone(JointType.WristLeft, JointType.ThumbLeft);
-		public static Bone PinkyLeftIndexLeftBone = new Bone(JointType.PinkyLeft, JointType.IndexLeft);
+		public static Bone WristLeftHandLeftBone = new Bone(JointType.WristLeft, JointType.HandLeft);
+		public static Bone HandLeftPinkyLeftBone = new Bone(JointType.HandLeft, JointType.PinkyLeft);
+		public static Bone HandLeftIndexLeftBone = new Bone(JointType.HandLeft, JointType.IndexLeft);
+		public static Bone HandLeftThumbLeftBone = new Bone(JointType.HandLeft, JointType.ThumbLeft);
+		//public static Bone WristLeftPinkyLeftBone = new Bone(JointType.WristLeft, JointType.PinkyLeft);
+		//public static Bone WristLeftIndexLeftBone = new Bone(JointType.WristLeft, JointType.IndexLeft);
+		//public static Bone WristLeftThumbLeftBone = new Bone(JointType.WristLeft, JointType.ThumbLeft);
+		//public static Bone PinkyLeftIndexLeftBone = new Bone(JointType.PinkyLeft, JointType.IndexLeft);
 
 		// Right Leg
 		public static Bone HipRightKneeRightBone = new Bone(JointType.HipRight, JointType.KneeRight);
@@ -53,9 +61,13 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 		public static List<Bone> TorsoBones = new[] { ShoulderRightShoulderLeftBone, HipRightHipLeftBone,
 			ShoulderRightHipRightBone, ShoulderLeftHipLeftBone }.ToList();
 		public static List<Bone> RightArmBones = new[] { ShoulderRightElbowRightBone, ElbowRightWristRightBone,
-			WristRightPinkyRightBone, WristRightIndexRightBone, WristRightThumbRightBone, PinkyRightIndexRightBone }.ToList();
+			WristRightHandRightBone, HandRightPinkyRightBone, HandRightIndexRightBone, HandRightThumbRightBone }.ToList();
 		public static List<Bone> LeftArmBones = new[] { ShoulderLeftElbowLeftBone, ElbowLeftWristLeftBone,
-			WristLeftPinkyLeftBone, WristLeftIndexLeftBone, WristLeftThumbLeftBone, PinkyLeftIndexLeftBone }.ToList();
+			WristLeftHandLeftBone, HandLeftPinkyLeftBone, HandLeftIndexLeftBone, HandLeftThumbLeftBone }.ToList();
+		//public static List<Bone> RightArmBones = new[] { ShoulderRightElbowRightBone, ElbowRightWristRightBone,
+		//	WristRightPinkyRightBone, WristRightIndexRightBone, WristRightThumbRightBone, PinkyRightIndexRightBone }.ToList();
+		//public static List<Bone> LeftArmBones = new[] { ShoulderLeftElbowLeftBone, ElbowLeftWristLeftBone,
+		//	WristLeftPinkyLeftBone, WristLeftIndexLeftBone, WristLeftThumbLeftBone, PinkyLeftIndexLeftBone }.ToList();
 		public static List<Bone> RightLegBones = new[] { HipRightKneeRightBone, KneeRightAnkleRightBone,
 			AnkleRightHeelRightBone, AnkleRightFootIndexRight, HeelRightFootIndexRight }.ToList();
 		public static List<Bone> LeftLegBones = new[] { HipLeftKneeLeftBone, KneeLeftAnkleLeftBone,
