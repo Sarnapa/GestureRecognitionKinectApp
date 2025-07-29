@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Threading;
+using System.Threading.Channels;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Threading;
-using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
-using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Kinect;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures.BodyTracking;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Utilities;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Processing.BaseClassLib.Mappers;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
@@ -53,7 +54,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// <summary>
 		/// Executes gesture recognition process
 		/// </summary>
-		private GestureRecognitionManager gestureRecognitionManager; 
+		private GestureRecognitionManager gestureRecognitionManager;
 
 		/// <summary>
 		/// Calculates features for gesture recognition process
@@ -84,6 +85,25 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// Drawing images height
 		/// </summary>
 		private int displayImageHeight;
+
+		/// <summary>
+		/// To queue received frames in chronological order
+		/// </summary>
+		private Channel<FrameData> framesQueue;
+
+		/// <summary>
+		/// Is the task that passes frames for processing running?
+		/// </summary>
+		private bool isProcessingFramesTaskRunning;
+
+		/// <summary>
+		/// To cancel frame processing
+		/// </summary>
+		private CancellationTokenSource processingFramesTaskTokenSource;
+
+		private TimeSpan lastProcessingFramesRelativeTime;
+
+		private SemaphoreSlim processingFramesSemaphore;
 
 		/// <summary>
 		/// Records gesture (color and skeleton data)
@@ -158,7 +178,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// <summary>
 		/// Specifies which frame is to be analyzed by the external model for tracking user movement.
 		/// </summary>
-		private const int FRAME_SKIP_FACTOR = 5;
+		private const int FRAME_SKIP_FACTOR = 3;
 
 		#region Code archived - failed attempt with mediapipe model in ONNX format
 		// Code archived - failed attempt with mediapipe model in ONNX format
@@ -281,7 +301,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		{
 			get
 			{
-				return this.gestureRecordFile?.Name ?? string.Empty; 
+				return this.gestureRecordFile?.Name ?? string.Empty;
 			}
 		}
 
@@ -340,6 +360,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 						if (isMediaPipe)
 							await TryToLoadExternalBodyTrackingModels(CancellationToken.None).ConfigureAwait(false);
+
+						StartProcessingFramesTask();
 
 						// Code archived - failed attempt with mediapipe model in ONNX format
 						//if (isExternalBodyTrackingModel)
@@ -455,22 +477,123 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#region Private / protected methods
 
 		#region Events handlers
+
+		#region Frame Arriving handling
 		/// <summary>
 		/// Handles the data arriving from the KinectServer.
 		/// </summary>
 		/// <param name="sender">Object sending the event</param>
 		/// <param name="e">Event arguments</param>
-		private async Task KinectClient_OnFrameArrived(object sender, FrameArrivedEventArgs e)
+		private Task KinectClient_OnFrameArrived(object sender, FrameArrivedEventArgs e)
 		{
 			if (e.Data == null)
-				return;
+				return Task.CompletedTask;
 
 			if (this.colorImage == null || this.bodyImage == null)
+				return Task.CompletedTask;
+
+			if (!this.isProcessingFramesTaskRunning)
+				return Task.CompletedTask;
+
+			Task.Run(() => StartProcessFrameData(e.Data, this.processingFramesTaskTokenSource.Token));
+
+			return Task.CompletedTask;
+		}
+
+		private void StartProcessingFramesTask()
+		{
+			if (!this.isProcessingFramesTaskRunning && ((this.TrackingMode == BodyTrackingMode.Kinect && this.IsKinectAvailable)
+				|| this.TrackingMode == BodyTrackingMode.MediaPipe && this.IsExternalBodyTrackingModelClientReadyToUseToTrackUserMovement))
+			{
+				this.processingFramesTaskTokenSource = new CancellationTokenSource();
+				this.processingFramesSemaphore = new SemaphoreSlim(1, 1);
+				this.framesQueue = Channel.CreateUnboundedPrioritized(new UnboundedPrioritizedChannelOptions<FrameData>()
+				{
+					SingleReader = true,
+					SingleWriter = false,
+					Comparer = new FrameDataRelativeTimeComparer()
+				});
+
+				try
+				{
+					Task.Run(async () =>
+					{
+						try
+						{
+							this.isProcessingFramesTaskRunning = true;
+							while (this.framesQueue != null && await this.framesQueue.Reader.WaitToReadAsync(this.processingFramesTaskTokenSource.Token))
+							{
+								var frameData = await this.framesQueue.Reader.ReadAsync(this.processingFramesTaskTokenSource.Token);
+								ProcessFrameData(frameData, this.processingFramesTaskTokenSource.Token);
+							}
+						}
+						catch (OperationCanceledException)
+						{
+						}
+						finally
+						{
+							this.isProcessingFramesTaskRunning = false;
+						}
+					}, this.processingFramesTaskTokenSource.Token);
+				}
+				catch (Exception)
+				{
+				}
+			}
+		}
+
+		private void StopProcessingFrames()
+		{
+			this.processingFramesTaskTokenSource?.Cancel();
+			this.processingFramesTaskTokenSource = null;
+
+			this.framesQueue.Writer.TryComplete();
+			this.framesQueue = null;
+
+			this.processingFramesSemaphore?.Dispose();
+			this.processingFramesSemaphore = null;
+
+			this.lastProcessingFramesRelativeTime = default;
+			this.isProcessingFramesTaskRunning = false;
+		}
+
+		private async Task StartProcessFrameData(FrameData frameData, CancellationToken token)
+		{
+			if (frameData?.ColorFrame == null || token.IsCancellationRequested)
 				return;
 
-			var colorFrame = e.Data.ColorFrame;
-			var bodyFrame = e.Data.BodyFrame;
-			var bodiesJointsColorSpacePointsDict = e.Data.BodiesJointsColorSpacePointsDict;
+			if (this.TrackingMode == BodyTrackingMode.MediaPipe)
+			{
+				bool isNewBodyData = false;
+				await this.processingFramesSemaphore.WaitAsync(token).ConfigureAwait(false);
+				this.framesCounter++;
+				isNewBodyData = this.framesCounter % FRAME_SKIP_FACTOR == 0;
+				frameData = await GetFrameData(frameData.ColorFrame, isNewBodyData, token).ConfigureAwait(false);
+				if (isNewBodyData)
+					this.framesCounter = 0;
+				this.processingFramesSemaphore.Release();
+			}
+
+			if (token.IsCancellationRequested)
+				return;
+
+			if (this.framesQueue != null)
+				await this.framesQueue.Writer.WriteAsync(frameData, token).ConfigureAwait(false);
+		}
+
+		private void ProcessFrameData(FrameData frameData, CancellationToken token)
+		{
+			if (frameData?.ColorFrame == null || token.IsCancellationRequested)
+				return;
+
+			if (frameData.ColorFrame.RelativeTime < this.lastProcessingFramesRelativeTime)
+				return;
+
+			var colorFrame = frameData.ColorFrame;
+			var bodyFrame = frameData.BodyFrame;
+			var bodiesJointsColorSpacePointsDict = frameData.BodiesJointsColorSpacePointsDict;
+			bool isNewBodyData = frameData.IsNewBodyData;
+
 			bool colorImageLocked = false;
 			BodyData prevTrackedBody = this.currentTrackedBody;
 			BodyJointsColorSpacePointsDict prevTrackedBodyJointsColorSpacePointsDict = this.currentTrackedBodyJointsColorSpacePointsDict;
@@ -478,17 +601,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			try
 			{
 				#region Processing color frame
-				if (colorFrame != null)
+				Application.Current?.Dispatcher.Invoke(() =>
 				{
-					Application.Current?.Dispatcher.Invoke(() =>
-					{
-						this.colorImage.Lock();
-						colorImageLocked = true;
+					this.colorImage.Lock();
+					colorImageLocked = true;
 
-						this.renderColorFrameManager.ProcessColorFrame(colorFrame, this.displayImageWidth, this.displayImageHeight, ref this.colorImage);
-					});
-					this.framesCounter++;
-				}
+					this.renderColorFrameManager.ProcessColorFrame(colorFrame, this.displayImageWidth, this.displayImageHeight, ref this.colorImage);
+				});
+				this.lastProcessingFramesRelativeTime = colorFrame.RelativeTime;
 				#endregion
 
 				#region Capturing color frames for testing
@@ -503,7 +623,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				#endregion
 
 				#region Getting bodies data
-				if (this.framesCounter % FRAME_SKIP_FACTOR == 0)
+				if (isNewBodyData)
 				{
 					if (colorFrame != null && !this.IsBodyTrackingStoppedYet)
 					{
@@ -573,69 +693,28 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						//}
 						#endregion
 
-						if (this.TrackingMode == BodyTrackingMode.MediaPipe)
+						if (bodyFrame != null && bodyFrame.BodiesCount > 0)
 						{
-							if (this.IsExternalBodyTrackingModelClientReadyToUseToTrackUserMovement)
+							this.bodyTrackingStoppedTime = null;
+
+							if (bodyFrame.TooMuchUsersForOneBodyTracking)
 							{
-								var bodiesData = await GetBodiesData(colorFrame, CancellationToken.None).ConfigureAwait(false);
-								if (bodiesData != null && bodiesData.Length > 0)
-								{
-									this.bodyTrackingStoppedTime = null;
-
-									var trackedBodies = bodiesData.Where(b => b.IsTracked).ToArray();
-									this.currentTrackedBodiesCount = trackedBodies.Length;
-									if (this.currentTrackedBodiesCount > 1)
-									{
-										this.currentTrackedBody = null;
-									}
-									else
-									{
-										var bodyData = trackedBodies.FirstOrDefault();
-										this.currentTrackedBody = bodyData;
-										if (bodiesJointsColorSpacePointsDict == null)
-											bodiesJointsColorSpacePointsDict = new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
-
-										bodiesJointsColorSpacePointsDict.Add(bodyData.TrackingId, bodyData.JointsColorSpacePoints);
-									}
-								}
-								else
-								{
-									this.currentTrackedBodiesCount = 0;
-									this.currentTrackedBody = null;
-								}
+								this.currentTrackedBodiesCount = bodyFrame.BodiesCount;
+								this.currentTrackedBody = null;
 							}
 							else
 							{
-								this.currentTrackedBodiesCount = 0;
-								this.currentTrackedBody = null;
+								var trackedBodies = bodyFrame.Bodies.Where(b => b != null && b.IsTracked);
+								this.currentTrackedBodiesCount = trackedBodies.Count();
+								this.currentTrackedBody = this.currentTrackedBodiesCount == 1 ? trackedBodies.FirstOrDefault() : null;
 							}
 						}
 						else
 						{
-							if (bodyFrame != null && bodyFrame.BodiesCount > 0)
-							{
-								this.bodyTrackingStoppedTime = null;
-
-								if (bodyFrame.TooMuchUsersForOneBodyTracking)
-								{
-									this.currentTrackedBodiesCount = bodyFrame.BodiesCount;
-									this.currentTrackedBody = null;
-								}
-								else
-								{
-									var trackedBodies = bodyFrame.Bodies.Where(b => b != null && b.IsTracked);
-									this.currentTrackedBodiesCount = trackedBodies.Count();
-									this.currentTrackedBody = this.currentTrackedBodiesCount == 1 ? trackedBodies.FirstOrDefault() : null;
-								}
-							}
-							else
-							{
-								this.currentTrackedBodiesCount = 0;
-								this.currentTrackedBody = null;
-							}
+							this.currentTrackedBodiesCount = 0;
+							this.currentTrackedBody = null;
 						}
 					}
-					this.framesCounter = 0;
 				}
 				#endregion
 
@@ -662,8 +741,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 									break;
 							}
 
-							if (bodiesJointsColorSpacePointsDict != null && bodiesJointsColorSpacePointsDict.ContainsKey(this.currentTrackedBody.TrackingId))
+							if (isNewBodyData && bodiesJointsColorSpacePointsDict != null
+								&& bodiesJointsColorSpacePointsDict.ContainsKey(this.currentTrackedBody.TrackingId))
+							{
 								this.currentTrackedBodyJointsColorSpacePointsDict = bodiesJointsColorSpacePointsDict[this.currentTrackedBody.TrackingId];
+							}
 
 							var trackedBodyColorSpacePoints = this.currentTrackedBodyJointsColorSpacePointsDict?.ToDictionary(
 								kv => kv.Key, kv => new Point(kv.Value.X, kv.Value.Y));
@@ -747,6 +829,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				}
 			}
 		}
+		#endregion
 
 		/// <summary>
 		/// Handles the event which the sensor becomes unavailable (E.g. paused, closed, unplugged)
@@ -769,14 +852,18 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				Text = statusText
 			});
 
-			if (!this.IsKinectAvailable)
+			if (this.IsKinectAvailable)
 			{
+				StartProcessingFramesTask();
+				SetStandardState();
+			}
+			else
+			{
+				StopProcessingFrames();
 				if (this.TrackingState == BodyTrackingState.GestureRecording)
 					StopGestureRecording(true);
 				UpdateBodyTrackingStoppedStatusAndSendMessage(true, Properties.Resources.LostKinectConnection);
 			}
-			else
-				SetStandardState();
 		}
 		#endregion
 
@@ -846,6 +933,34 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				MinTrackingConfidence = minTrackingConfidence,
 			};
 			return await this.externalBodyTrackingModelClient.LoadPoseLandmarksModelAsync(request, token).ConfigureAwait(false);
+		}
+
+		private async Task<FrameData> GetFrameData(ColorFrame colorFrame, bool isNewBodyData, CancellationToken token)
+		{
+			var bodyFrame = new BodyFrame();
+			var bodiesJointsColorSpacePointsDict = new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
+			if (this.IsExternalBodyTrackingModelClientReadyToUseToTrackUserMovement && isNewBodyData)
+			{
+				var bodiesData = await GetBodiesData(colorFrame, token).ConfigureAwait(false);
+				if (bodiesData.Length > 1)
+				{
+					bodyFrame = new BodyFrame(colorFrame.RelativeTime, bodiesData.Length, true);
+					isNewBodyData = false;
+				}
+				else
+				{
+					bodyFrame = new BodyFrame(colorFrame.RelativeTime, bodiesData);
+					bodiesJointsColorSpacePointsDict = bodiesData.ToDictionary(b => b.TrackingId, b => b.JointsColorSpacePoints);
+				}
+			}
+
+			return new FrameData()
+			{
+				ColorFrame = colorFrame,
+				BodyFrame = bodyFrame,
+				BodiesJointsColorSpacePointsDict = bodiesJointsColorSpacePointsDict,
+				IsNewBodyData = isNewBodyData,
+			};
 		}
 
 		// TODO: Providing from config

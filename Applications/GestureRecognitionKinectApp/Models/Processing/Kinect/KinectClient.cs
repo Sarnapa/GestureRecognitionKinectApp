@@ -256,10 +256,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 				switch (messageType)
 				{
 					case MessageType.Frame:
-						await HandleFrameMessage(message).ConfigureAwait(false);
+						HandleFrameMessage(message);
 						break;
 					case MessageType.KinectIsAvailableChanged:
-						await HandleKinectIsAvailableChangedMessage(message).ConfigureAwait(false);
+						HandleKinectIsAvailableChangedMessage(message);
 						break;
 					default:
 						// TODO: Better way for logging
@@ -271,7 +271,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 		#endregion
 
 		#region Frame message methods
-		private async Task HandleFrameMessage(Message message)
+		private void HandleFrameMessage(Message message)
 		{
 			string methodName = $"{nameof(KinectClient)}.{nameof(HandleFrameMessage)}";
 			if (message.Header.PayloadLength == 0 || message.Payload == null 
@@ -293,7 +293,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 					};
 
 					if (OnFrameArrived != null)
-						await OnFrameArrived.Invoke(this, new FrameArrivedEventArgs(data));
+						OnFrameArrived.Invoke(this, new FrameArrivedEventArgs(data));
 				}
 			}
 		}
@@ -393,7 +393,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 		#endregion
 
 		#region KinectIsAvailableChanged message methods
-		private async Task HandleKinectIsAvailableChangedMessage(Message message)
+		private void HandleKinectIsAvailableChangedMessage(Message message)
 		{
 			string methodName = $"{nameof(KinectClient)}.{nameof(HandleKinectIsAvailableChangedMessage)}";
 			if (message.Header.PayloadLength == 0 || message.Payload == null 
@@ -414,7 +414,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 					};
 
 					if (OnKinectIsAvailableChanged != null)
-						await OnKinectIsAvailableChanged.Invoke(this, new KinectIsAvailableChangedEventArgs(data));
+						OnKinectIsAvailableChanged.Invoke(this, new KinectIsAvailableChangedEventArgs(data));
 				}
 			}
 		}

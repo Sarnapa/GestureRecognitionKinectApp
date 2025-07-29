@@ -24,6 +24,27 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Dat
 			get;
 			set;
 		} = new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
+
+		public bool IsNewBodyData
+		{
+			get;
+			set;
+		} = true;
 		#endregion
 	}
+
+	#region FrameDataRelativeTimeComparer
+
+	// IComparer implementation for comparing FrameData based on RelativeTime
+	public class FrameDataRelativeTimeComparer: IComparer<FrameData>
+	{
+		public int Compare(FrameData x, FrameData y)
+		{
+			if (x?.ColorFrame == null || y?.ColorFrame == null)
+				return 0;
+
+			return x.ColorFrame.RelativeTime.CompareTo(y.ColorFrame.RelativeTime);
+		}
+	}
+	#endregion
 }

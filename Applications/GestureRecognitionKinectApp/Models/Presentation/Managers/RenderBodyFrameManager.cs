@@ -38,15 +38,15 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 		/// Not drawn joints
 		/// </summary>
 		private readonly JointType[] jointsToIgnore = {
-			//JointType.KneeLeft, JointType.KneeRight, JointType.AnkleLeft,
-			//JointType.AnkleRight, JointType.FootLeft, JointType.FootRight,
-			//// From MediaPipe
-			//JointType.EyeInnerLeft, JointType.EyeLeft, JointType.EyeOuterLeft,
-			//JointType.EyeInnerRight, JointType.EyeRight, JointType.EyeOuterRight,
-			//JointType.EarLeft, JointType.EarRight,
-			//JointType.MouthLeft, JointType.MouthRight,
-			//JointType.HeelLeft, JointType.HeelRight,
-			//JointType.FootIndexLeft, JointType.FootIndexRight
+			JointType.KneeLeft, JointType.KneeRight, JointType.AnkleLeft,
+			JointType.AnkleRight, JointType.FootLeft, JointType.FootRight,
+			// From MediaPipe
+			JointType.EyeInnerLeft, JointType.EyeLeft, JointType.EyeOuterLeft,
+			JointType.EyeInnerRight, JointType.EyeRight, JointType.EyeOuterRight,
+			JointType.EarLeft, JointType.EarRight,
+			JointType.MouthLeft, JointType.MouthRight,
+			JointType.HeelLeft, JointType.HeelRight,
+			JointType.FootIndexLeft, JointType.FootIndexRight
 			};
 
 		/// <summary>
@@ -87,7 +87,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 		/// <summary>
 		/// Definition of bones
 		/// </summary>
-		private readonly List<Bone> bones = MediaPipesBonesDefinitions.AllBones; // KinectBonesDefinitions.AllBonesWithoutLegs;
+		private readonly List<Bone> bones = MediaPipesBonesDefinitions.AllBonesWithoutHeadAndLegs; // KinectBonesDefinitions.AllBonesWithoutLegs;
 
 		/// <summary>
 		/// List of colors for each body tracked
