@@ -1,6 +1,4 @@
 ﻿using System.Net.WebSockets;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe;
 using MessagePack;
 using Newtonsoft.Json;
@@ -103,6 +101,44 @@ namespace GestureRecognition.Processing.MediaPipeBodyTrackingWebSocketClientProc
 			}
 		}
 
+		public async Task<LoadHandLandmarksModelResponse> LoadHandLandmarksModelAsync(LoadHandLandmarksModelRequest request, CancellationToken token)
+		{
+			try
+			{
+				byte[] requestBytes = SerializeToByteArray(request);
+				var response = await SendRequestAndWaitForResponse<LoadHandLandmarksModelResponse>(requestBytes, token).ConfigureAwait(false);
+				if (response.Status == LoadHandLandmarksModelResponseStatus.Error && string.IsNullOrEmpty(response.Message))
+				{
+					response.Message = "Loading hand landmarks model - received empty response.";
+				}
+				return response;
+			}
+			catch (WebSocketException wsEx)
+			{
+				return new LoadHandLandmarksModelResponse()
+				{
+					Status = LoadHandLandmarksModelResponseStatus.Error,
+					Message = $"Loading hand landmarks model - communication error: [{wsEx.Message}]."
+				};
+			}
+			catch (JsonException jsonEx)
+			{
+				return new LoadHandLandmarksModelResponse()
+				{
+					Status = LoadHandLandmarksModelResponseStatus.Error,
+					Message = $"Loading hand landmarks model - serialization error: [{jsonEx.Message}]."
+				};
+			}
+			catch (Exception ex)
+			{
+				return new LoadHandLandmarksModelResponse()
+				{
+					Status = LoadHandLandmarksModelResponseStatus.Error,
+					Message = $"Loading hand landmarks model - unexpected error: [{ex.Message}]."
+				};
+			}
+		}
+
 		public async Task<DetectPoseLandmarksResponse> DetectPoseLandmarksAsync(DetectPoseLandmarksRequest request, CancellationToken token)
 		{
 			try
@@ -137,6 +173,44 @@ namespace GestureRecognition.Processing.MediaPipeBodyTrackingWebSocketClientProc
 				{
 					Status = DetectPoseLandmarksResponseStatus.Error,
 					Message = $"Detecting pose landmarks - unexpected error: [{ex.Message}]."
+				};
+			}
+		}
+
+		public async Task<DetectHandLandmarksResponse> DetectHandLandmarksAsync(DetectHandLandmarksRequest request, CancellationToken token)
+		{
+			try
+			{
+				byte[] requestBytes = SerializeToByteArray(request);
+				var response = await SendRequestAndWaitForResponse<DetectHandLandmarksResponse>(requestBytes, token).ConfigureAwait(false);
+				if (response.Status == DetectHandLandmarksResponseStatus.Error && string.IsNullOrEmpty(response.Message))
+				{
+					response.Message = "Detecting hand landmarks - received empty response.";
+				}
+				return response;
+			}
+			catch (WebSocketException wsEx)
+			{
+				return new DetectHandLandmarksResponse()
+				{
+					Status = DetectHandLandmarksResponseStatus.Error,
+					Message = $"Detecting hand landmarks - communication error: [{wsEx.Message}]."
+				};
+			}
+			catch (JsonException jsonEx)
+			{
+				return new DetectHandLandmarksResponse()
+				{
+					Status = DetectHandLandmarksResponseStatus.Error,
+					Message = $"Detecting hand landmarks - serialization error: [{jsonEx.Message}]."
+				};
+			}
+			catch (Exception ex)
+			{
+				return new DetectHandLandmarksResponse()
+				{
+					Status = DetectHandLandmarksResponseStatus.Error,
+					Message = $"Detecting hand landmarks - unexpected error: [{ex.Message}]."
 				};
 			}
 		}
@@ -182,8 +256,12 @@ namespace GestureRecognition.Processing.MediaPipeBodyTrackingWebSocketClientProc
 			return MessagePackSerializer.Serialize(obj);
 		}
 
-		private T DeserializeFromByteArray<T>(byte[] byteArray)
+		private static T DeserializeFromByteArray<T>(byte[] byteArray)
+			where T : class, new()
 		{
+			if (byteArray == null || byteArray.Length == 0)
+				return new T();
+
 			return MessagePackSerializer.Deserialize<T>(byteArray);
 		}
 

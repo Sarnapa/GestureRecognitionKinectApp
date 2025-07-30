@@ -10,8 +10,8 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight.Ioc;
-using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Utilities;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Kinect;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures.BodyTracking;
@@ -35,6 +35,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 {
 	public class BodyTrackingModel
 	{
+		#region Private / protected consts
+		// TODO: To consider cancelling frames with big delay
+		// private const int NEXT_FRAME_MAX_DELAY_MILLISECONDS = 500;
+		#endregion
+
 		#region Private / protected fields
 		/// <summary>
 		/// Render skeleton data
@@ -175,10 +180,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// </summary>
 		private int framesCounter = 0;
 
+		// 3 - For Pose Landmarks Detection Model, 2 - For Hand Landmarks Detection Model
 		/// <summary>
 		/// Specifies which frame is to be analyzed by the external model for tracking user movement.
 		/// </summary>
-		private const int FRAME_SKIP_FACTOR = 3;
+		private const int FRAME_SKIP_FACTOR = 2;
 
 		#region Code archived - failed attempt with mediapipe model in ONNX format
 		// Code archived - failed attempt with mediapipe model in ONNX format
@@ -209,6 +215,23 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					&& DateTime.Now - this.bodyTrackingStoppedTime.Value < Consts.DefaultBodyTrackingStoppedTime;
 			}
 		}
+
+		private bool IsMediaPipeBodyTrackingMode
+		{
+			get
+			{
+				return this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmark || this.TrackingMode == BodyTrackingMode.MediaPipeHandLandmark;
+			}
+		}
+
+		// TODO: To consider cancelling frames with big delay
+		//private TimeSpan Now
+		//{
+		//	get
+		//	{
+		//		return TimeSpan.FromTicks(DateTime.UtcNow.Ticks);
+		//	}
+		//}
 
 		// Code archived - failed attempt with mediapipe model in ONNX format
 		//private bool IsExternalBodyTrackingModelLoaded
@@ -332,8 +355,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#region Public methods
 		public async Task Start()
 		{
-			this.TrackingMode = BodyTrackingMode.MediaPipe;
-			bool isMediaPipe = this.TrackingMode == BodyTrackingMode.MediaPipe;
+			this.TrackingMode = BodyTrackingMode.MediaPipeHandLandmark;
 
 			bool isKinectServerStarted = this.kinectClient.StartKinectServer();
 			if (isKinectServerStarted)
@@ -346,7 +368,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 					var startRequest = new StartRequestParams()
 					{
-						FrameSourceTypes = isMediaPipe ? FrameSourceTypes.Color : (FrameSourceTypes.Color | FrameSourceTypes.Body),
+						FrameSourceTypes = this.IsMediaPipeBodyTrackingMode ? FrameSourceTypes.Color : (FrameSourceTypes.Color | FrameSourceTypes.Body),
 						ColorImageFormat = ColorImageFormat.Bgra,
 						IsOneBodyTrackingEnabled = true,
 					};
@@ -358,7 +380,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						this.displayImageHeight = startResponse.ColorFrameHeight;
 						this.IsKinectAvailable = startResponse.KinectSensorIsAvailable;
 
-						if (isMediaPipe)
+						if (this.IsMediaPipeBodyTrackingMode)
 							await TryToLoadExternalBodyTrackingModels(CancellationToken.None).ConfigureAwait(false);
 
 						StartProcessingFramesTask();
@@ -369,7 +391,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						//else
 						//	CleanExternalBodyTrackingModels();
 
-						Application.Current.Dispatcher.Invoke(() =>
+						Application.Current?.Dispatcher.Invoke(() =>
 						{
 							// Create the color image
 							this.colorImage = new WriteableBitmap(this.displayImageWidth, this.displayImageHeight, 96.0, 96.0, PixelFormats.Bgra32, null);
@@ -380,7 +402,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 							this.bodyImage = new DrawingImage(this.bodyImageDrawingGroup);
 						});
 
-						Messenger.Default.Send(new DisplayImageChangedMessage() { ChangedDisplayImage = ImageKind.All });
+						MessengerUtils.SendMessage(new DisplayImageChangedMessage() { ChangedDisplayImage = ImageKind.All });
 					}
 					else
 					{
@@ -399,7 +421,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 			// Set the status text
 			string statusText = this.IsKinectAvailable ? Properties.Resources.RunningStatusText : Properties.Resources.NoSensorStatusText;
-			Messenger.Default.Send(new KinectStatusMessage() { Text = statusText });
+			MessengerUtils.SendMessage(new KinectStatusMessage() { Text = statusText });
 		}
 
 		public void StartStopGestureRecording()
@@ -503,7 +525,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		private void StartProcessingFramesTask()
 		{
 			if (!this.isProcessingFramesTaskRunning && ((this.TrackingMode == BodyTrackingMode.Kinect && this.IsKinectAvailable)
-				|| this.TrackingMode == BodyTrackingMode.MediaPipe && this.IsExternalBodyTrackingModelClientReadyToUseToTrackUserMovement))
+				|| (this.IsMediaPipeBodyTrackingMode && this.IsExternalBodyTrackingModelClientReadyToUseToTrackUserMovement)))
 			{
 				this.processingFramesTaskTokenSource = new CancellationTokenSource();
 				this.processingFramesSemaphore = new SemaphoreSlim(1, 1);
@@ -562,7 +584,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			if (frameData?.ColorFrame == null || token.IsCancellationRequested)
 				return;
 
-			if (this.TrackingMode == BodyTrackingMode.MediaPipe)
+			// TODO: To consider cancelling frames with big delay
+			//if ((this.Now - frameData.ColorFrame.RelativeTime).Milliseconds > NEXT_FRAME_MAX_DELAY_MILLISECONDS)
+			//	return;
+
+			if (this.IsMediaPipeBodyTrackingMode)
 			{
 				bool isNewBodyData = false;
 				await this.processingFramesSemaphore.WaitAsync(token).ConfigureAwait(false);
@@ -573,6 +599,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					this.framesCounter = 0;
 				this.processingFramesSemaphore.Release();
 			}
+
+			// TODO: To consider cancelling frames with big delay
+			//if ((this.Now - frameData.ColorFrame.RelativeTime).Milliseconds > NEXT_FRAME_MAX_DELAY_MILLISECONDS)
+			//	return;
 
 			if (token.IsCancellationRequested)
 				return;
@@ -588,6 +618,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 			if (frameData.ColorFrame.RelativeTime < this.lastProcessingFramesRelativeTime)
 				return;
+
+			// TODO: To consider cancelling frames with big delay
+			//if ((this.Now - frameData.ColorFrame.RelativeTime).Milliseconds > NEXT_FRAME_MAX_DELAY_MILLISECONDS)
+			//	return;
 
 			var colorFrame = frameData.ColorFrame;
 			var bodyFrame = frameData.BodyFrame;
@@ -605,8 +639,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				{
 					this.colorImage.Lock();
 					colorImageLocked = true;
-
 					this.renderColorFrameManager.ProcessColorFrame(colorFrame, this.displayImageWidth, this.displayImageHeight, ref this.colorImage);
+					this.colorImage.Unlock();
+					colorImageLocked = false;
 				});
 				this.lastProcessingFramesRelativeTime = colorFrame.RelativeTime;
 				#endregion
@@ -719,42 +754,47 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				#endregion
 
 				#region Handling and rendering bodies data
-				Application.Current?.Dispatcher.Invoke(() =>
+				Dictionary<JointType, Point> trackedBodyColorSpacePoints = null;
+				if (this.currentTrackedBody != null)
 				{
-					using (var dc = this.bodyImageDrawingGroup.Open())
+					UpdateBodyTrackingStoppedStatusAndSendMessage(false);
+
+					switch (this.TrackingState)
 					{
-						if (this.currentTrackedBody != null)
+						case BodyTrackingState.Standard:
+							if (!UpdateGestureToStartRecordingDetectionState(this.currentTrackedBody))
+								UpdateGestureToStartRecognizingDetectionState(this.currentTrackedBody);
+							break;
+						case BodyTrackingState.GestureToStartGestureRecording:
+							UpdateGestureToStartRecordingDetectionState(this.currentTrackedBody);
+							break;
+						case BodyTrackingState.GestureToStartGestureRecognizing:
+							UpdateGestureToStartRecognizingDetectionState(this.currentTrackedBody);
+							break;
+					}
+
+					if (isNewBodyData && bodiesJointsColorSpacePointsDict != null
+						&& bodiesJointsColorSpacePointsDict.ContainsKey(this.currentTrackedBody.TrackingId))
+					{
+						this.currentTrackedBodyJointsColorSpacePointsDict = bodiesJointsColorSpacePointsDict[this.currentTrackedBody.TrackingId];
+					}
+
+					trackedBodyColorSpacePoints = this.currentTrackedBodyJointsColorSpacePointsDict?.ToDictionary(
+						kv => kv.Key, kv => new Point(kv.Value.X, kv.Value.Y));
+				}
+
+
+				if (isNewBodyData)
+				{
+					Application.Current?.Dispatcher.Invoke(() =>
+					{
+						using (var dc = this.bodyImageDrawingGroup.Open())
 						{
-							UpdateBodyTrackingStoppedStatusAndSendMessage(false);
-
-							switch (this.TrackingState)
-							{
-								case BodyTrackingState.Standard:
-									if (!UpdateGestureToStartRecordingDetectionState(this.currentTrackedBody))
-										UpdateGestureToStartRecognizingDetectionState(this.currentTrackedBody);
-									break;
-								case BodyTrackingState.GestureToStartGestureRecording:
-									UpdateGestureToStartRecordingDetectionState(this.currentTrackedBody);
-									break;
-								case BodyTrackingState.GestureToStartGestureRecognizing:
-									UpdateGestureToStartRecognizingDetectionState(this.currentTrackedBody);
-									break;
-							}
-
-							if (isNewBodyData && bodiesJointsColorSpacePointsDict != null
-								&& bodiesJointsColorSpacePointsDict.ContainsKey(this.currentTrackedBody.TrackingId))
-							{
-								this.currentTrackedBodyJointsColorSpacePointsDict = bodiesJointsColorSpacePointsDict[this.currentTrackedBody.TrackingId];
-							}
-
-							var trackedBodyColorSpacePoints = this.currentTrackedBodyJointsColorSpacePointsDict?.ToDictionary(
-								kv => kv.Key, kv => new Point(kv.Value.X, kv.Value.Y));
-
 							// Draw a transparent background to set the render size
 							dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
 
 							// Process body data
-							if (trackedBodyColorSpacePoints != null)
+							if (this.currentTrackedBody != null && trackedBodyColorSpacePoints != null)
 							{
 								this.renderBodyFrameManager.DrawBody(this.currentTrackedBody.Joints, trackedBodyColorSpacePoints, dc, 0);
 
@@ -767,56 +807,53 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 								this.bodyImageDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayImageWidth, this.displayImageHeight));
 							}
 						}
-					}
+					});
+				}
 
-					switch (this.TrackingState)
-					{
-						case BodyTrackingState.Standard:
-							if (!CheckIfColorFrameIsNull(colorFrame, false) && !CheckIfNoneTrackedUsers(this.currentTrackedBodiesCount, false))
-								CheckIfMoreTrackedUsers(this.currentTrackedBodiesCount);
-							break;
-						case BodyTrackingState.GestureToStartGestureRecording:
-						case BodyTrackingState.GestureToStartGestureRecognizing:
-							if (!CheckIfColorFrameIsNull(colorFrame, false) && !CheckIfNoneTrackedUsers(this.currentTrackedBodiesCount, false))
-								CheckIfMoreTrackedUsers(this.currentTrackedBodiesCount);
-							break;
-						case BodyTrackingState.WaitingToStartGestureRecording:
-						case BodyTrackingState.WaitingToStartGestureRecognizing:
-							if (!CheckIfColorFrameIsNull(colorFrame) && !CheckIfNoneTrackedUsers(this.currentTrackedBodiesCount))
-								CheckIfMoreTrackedUsers(this.currentTrackedBodiesCount);
-							break;
-						case BodyTrackingState.GestureRecording:
-							if (CheckIfColorFrameIsNull(colorFrame) || CheckIfNoneTrackedUsers(this.currentTrackedBodiesCount) || CheckIfMoreTrackedUsers(this.currentTrackedBodiesCount))
-							{
-								StopGestureRecording(true);
-							}
-							else if (!CheckIfStopGestureRecording(prevTrackedBodyJointsColorSpacePointsDict))
-							{
-								if ((this.gestureRecorder.Options & RecordOptions.Color) != 0)
-									this.gestureRecorder.Record(colorFrame);
-								if ((this.gestureRecorder.Options & RecordOptions.Bodies) != 0)
-									this.gestureRecorder.Record(bodyFrame, new[] { (this.currentTrackedBody, this.currentTrackedBodyJointsColorSpacePointsDict) });
-							}
-							break;
-						case BodyTrackingState.GestureToRecognizeRecording:
-							if (!CheckIfColorFrameIsNull(colorFrame) && !CheckIfNoneTrackedUsers(this.currentTrackedBodiesCount) && !CheckIfMoreTrackedUsers(this.currentTrackedBodiesCount))
-							{
-								if (!CheckIfStopGestureRecording(prevTrackedBodyJointsColorSpacePointsDict))
-									this.gestureToRecognizeBodyFrames.Add(new BodyData(this.currentTrackedBody));
-							}
-							else
-								CleanGestureToRecognizeBodyFrames();
-							break;
-					}
+				switch (this.TrackingState)
+				{
+					case BodyTrackingState.Standard:
+						if (!CheckIfColorFrameIsNull(colorFrame, false) && !CheckIfNoneTrackedUsers(this.currentTrackedBodiesCount, false))
+							CheckIfMoreTrackedUsers(this.currentTrackedBodiesCount);
+						break;
+					case BodyTrackingState.GestureToStartGestureRecording:
+					case BodyTrackingState.GestureToStartGestureRecognizing:
+						if (!CheckIfColorFrameIsNull(colorFrame, false) && !CheckIfNoneTrackedUsers(this.currentTrackedBodiesCount, false))
+							CheckIfMoreTrackedUsers(this.currentTrackedBodiesCount);
+						break;
+					case BodyTrackingState.WaitingToStartGestureRecording:
+					case BodyTrackingState.WaitingToStartGestureRecognizing:
+						if (!CheckIfColorFrameIsNull(colorFrame) && !CheckIfNoneTrackedUsers(this.currentTrackedBodiesCount))
+							CheckIfMoreTrackedUsers(this.currentTrackedBodiesCount);
+						break;
+					case BodyTrackingState.GestureRecording:
+						if (CheckIfColorFrameIsNull(colorFrame) || CheckIfNoneTrackedUsers(this.currentTrackedBodiesCount) || CheckIfMoreTrackedUsers(this.currentTrackedBodiesCount))
+						{
+							StopGestureRecording(true);
+						}
+						else if (!CheckIfStopGestureRecording(prevTrackedBodyJointsColorSpacePointsDict))
+						{
+							if ((this.gestureRecorder.Options & RecordOptions.Color) != 0)
+								this.gestureRecorder.Record(colorFrame);
+							if ((this.gestureRecorder.Options & RecordOptions.Bodies) != 0)
+								this.gestureRecorder.Record(bodyFrame, new[] { (this.currentTrackedBody, this.currentTrackedBodyJointsColorSpacePointsDict) });
+						}
+						break;
+					case BodyTrackingState.GestureToRecognizeRecording:
+						if (!CheckIfColorFrameIsNull(colorFrame) && !CheckIfNoneTrackedUsers(this.currentTrackedBodiesCount) && !CheckIfMoreTrackedUsers(this.currentTrackedBodiesCount))
+						{
+							if (!CheckIfStopGestureRecording(prevTrackedBodyJointsColorSpacePointsDict))
+								this.gestureToRecognizeBodyFrames.Add(new BodyData(this.currentTrackedBody));
+						}
+						else
+							CleanGestureToRecognizeBodyFrames();
+						break;
+				}
 
-					SendTrackedUsersCountChangedMessage(this.currentTrackedBodiesCount);
-				});
+				SendTrackedUsersCountChangedMessage(this.currentTrackedBodiesCount);
 				#endregion
 
-				Application.Current?.Dispatcher.Invoke(() =>
-				{
-					UpdateLastDisplayedColorFrameTimeAndSendMessage(colorFrame != null);
-				});
+				UpdateLastDisplayedColorFrameTimeAndSendMessage(colorFrame != null);
 			}
 			finally
 			{
@@ -846,7 +883,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		{
 			this.IsKinectAvailable = isAvailable;
 			string statusText = this.IsKinectAvailable ? Properties.Resources.RunningStatusText : Properties.Resources.NoSensorStatusText;
-			Messenger.Default.Send(new KinectStatusMessage()
+			MessengerUtils.SendMessage(new KinectStatusMessage()
 			{
 				PrevState = this.TrackingState,
 				Text = statusText
@@ -878,15 +915,29 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				var connectResult = await ConnectToExternalBodyTrackingModelProviderServer(token).ConfigureAwait(false);
 				if (connectResult.IsSuccess)
 				{
-					var response = await LoadPoseLandmarksModel(ModelKind.PoseLandmarksLite, 1, 0.8f, 0.8f, 0.8f, token).ConfigureAwait(false);
-					if (response.Status == LoadPoseLandmarksModelResponseStatus.OK)
+					bool success = false;
+					string message = string.Empty;
+					if (this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmark)
+					{
+						var response = await LoadPoseLandmarksModel(ModelKind.PoseLandmarksLite, 1, 0.9f, 0.9f, 0.9f, token).ConfigureAwait(false);
+						success = response.Status == LoadPoseLandmarksModelResponseStatus.OK;
+						message = response.Message;
+					}
+					else
+					{
+						var response = await LoadHandLandmarksModel(2, 0.8f, 0.8f, 0.8f, token).ConfigureAwait(false);
+						success = response.Status == LoadHandLandmarksModelResponseStatus.OK;
+						message = response.Message;
+					}
+
+					if (success)
 					{
 						this.isExternalBodyTrackingModelLoaded = true;
 					}
 					else
 					{
 						this.isExternalBodyTrackingModelLoaded = false;
-						MessageBoxUtils.ShowMessage(response.Message, MessageBoxButton.OK, MessageBoxImage.Error);
+						MessageBoxUtils.ShowMessage(message, MessageBoxButton.OK, MessageBoxImage.Error);
 					}
 				}
 				else
@@ -935,6 +986,19 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			return await this.externalBodyTrackingModelClient.LoadPoseLandmarksModelAsync(request, token).ConfigureAwait(false);
 		}
 
+		private async Task<LoadHandLandmarksModelResponse> LoadHandLandmarksModel(int numHands, 
+			float minHandDetectionConfidence, float minHandPresenceConfidence, float minTrackingConfidence, CancellationToken token)
+		{
+			var request = new LoadHandLandmarksModelRequest()
+			{
+				NumHands = numHands,
+				MinHandDetectionConfidence = minHandDetectionConfidence,
+				MinHandPresenceConfidence = minHandPresenceConfidence,
+				MinTrackingConfidence = minTrackingConfidence,
+			};
+			return await this.externalBodyTrackingModelClient.LoadHandLandmarksModelAsync(request, token).ConfigureAwait(false);
+		}
+
 		private async Task<FrameData> GetFrameData(ColorFrame colorFrame, bool isNewBodyData, CancellationToken token)
 		{
 			var bodyFrame = new BodyFrame();
@@ -966,9 +1030,16 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		// TODO: Providing from config
 		private async Task<BodyDataWithColorSpacePoints[]> GetBodiesData(ColorFrame colorFrame, CancellationToken token)
 		{
-			var response = await DetectPoseLandmark(colorFrame.ColorData, colorFrame.Width, colorFrame.Height, token).ConfigureAwait(false);
-			//return response.Map(0.5f, 0.75f);
-			return await response.Map(0.5f, 0.75f).ConfigureAwait(false);
+			if (this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmark)
+			{
+				var response = await DetectPoseLandmark(colorFrame.ColorData, colorFrame.Width, colorFrame.Height, token).ConfigureAwait(false);
+				return await response.Map(0.5f, 0.75f).ConfigureAwait(false);
+			}
+			else
+			{
+				var response = await DetectHandLandmark(colorFrame.ColorData, colorFrame.Width, colorFrame.Height, token).ConfigureAwait(false);
+				return [response.Map(0.5f, 0.75f)];
+			}
 		}
 
 		private async Task<DetectPoseLandmarksResponse> DetectPoseLandmark(byte[] image, int imageWidth, int imageHeight,
@@ -981,6 +1052,18 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				ImageHeight = imageHeight
 			};
 			return await this.externalBodyTrackingModelClient.DetectPoseLandmarksAsync(request, token).ConfigureAwait(false);
+		}
+
+		private async Task<DetectHandLandmarksResponse> DetectHandLandmark(byte[] image, int imageWidth, int imageHeight,
+			CancellationToken token)
+		{
+			var request = new DetectHandLandmarksRequest()
+			{
+				Image = image,
+				ImageWidth = imageWidth,
+				ImageHeight = imageHeight
+			};
+			return await this.externalBodyTrackingModelClient.DetectHandLandmarksAsync(request, token).ConfigureAwait(false);
 		}
 
 		// Code archived - failed attempt with mediapipe model in ONNX format
@@ -996,77 +1079,77 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		//		this.poseDetectionModelWrapper = new PoseDetectionModelWrapper<ColorFrameFullHDInput>(modelWrapperParameters);
 		//		this.poseLandmarksDetectionModelWrapper = new PoseLandmarksDetectionModelWrapper<ColorFrameFullHDInput>(modelWrapperParameters);
 
-		//		var poseDetectionModelLoadParams = new LoadBodyTrackingModelParameters();
-		//		var poseDetectionModelLoadResult = this.poseDetectionModelWrapper.LoadModel(poseDetectionModelLoadParams);
-		//		if (poseDetectionModelLoadResult.IsSuccess)
-		//		{
-		//			var poseLandmarksDetectionModelLoadParams = new LoadBodyTrackingModelParameters();
-		//			var poseLandMarksDetectionModelLoadResult = this.poseLandmarksDetectionModelWrapper.LoadModel(poseLandmarksDetectionModelLoadParams);
-		//			if (!poseLandMarksDetectionModelLoadResult.IsSuccess)
-		//				MessageBoxUtils.ShowMessage(poseLandMarksDetectionModelLoadResult.ErrorMessage, MessageBoxButton.OK, MessageBoxImage.Error);
-		//		}
-		//		else
-		//		{
-		//			MessageBoxUtils.ShowMessage(poseDetectionModelLoadResult.ErrorMessage, MessageBoxButton.OK, MessageBoxImage.Error);
-		//		}
+			//		var poseDetectionModelLoadParams = new LoadBodyTrackingModelParameters();
+			//		var poseDetectionModelLoadResult = this.poseDetectionModelWrapper.LoadModel(poseDetectionModelLoadParams);
+			//		if (poseDetectionModelLoadResult.IsSuccess)
+			//		{
+			//			var poseLandmarksDetectionModelLoadParams = new LoadBodyTrackingModelParameters();
+			//			var poseLandMarksDetectionModelLoadResult = this.poseLandmarksDetectionModelWrapper.LoadModel(poseLandmarksDetectionModelLoadParams);
+			//			if (!poseLandMarksDetectionModelLoadResult.IsSuccess)
+			//				MessageBoxUtils.ShowMessage(poseLandMarksDetectionModelLoadResult.ErrorMessage, MessageBoxButton.OK, MessageBoxImage.Error);
+			//		}
+			//		else
+			//		{
+			//			MessageBoxUtils.ShowMessage(poseDetectionModelLoadResult.ErrorMessage, MessageBoxButton.OK, MessageBoxImage.Error);
+			//		}
 
-		//		if (!this.IsExternalBodyTrackingModelLoaded)
-		//			CleanExternalBodyTrackingModels();
-		//	}
-		//}
+			//		if (!this.IsExternalBodyTrackingModelLoaded)
+			//			CleanExternalBodyTrackingModels();
+			//	}
+			//}
 
-		// Code archived - failed attempt with mediapipe model in ONNX format
-		//private void CleanExternalBodyTrackingModels()
-		//{
-		//	if (this.poseDetectionModelWrapper != null)
-		//	{
-		//		this.poseDetectionModelWrapper.Cleanup();
-		//		this.poseDetectionModelWrapper = null;
-		//	}
+			// Code archived - failed attempt with mediapipe model in ONNX format
+			//private void CleanExternalBodyTrackingModels()
+			//{
+			//	if (this.poseDetectionModelWrapper != null)
+			//	{
+			//		this.poseDetectionModelWrapper.Cleanup();
+			//		this.poseDetectionModelWrapper = null;
+			//	}
 
-		//	if (this.poseLandmarksDetectionModelWrapper != null)
-		//	{
-		//		this.poseLandmarksDetectionModelWrapper.Cleanup();
-		//		this.poseLandmarksDetectionModelWrapper = null;
-		//	}
-		//}
-		#endregion
+			//	if (this.poseLandmarksDetectionModelWrapper != null)
+			//	{
+			//		this.poseLandmarksDetectionModelWrapper.Cleanup();
+			//		this.poseLandmarksDetectionModelWrapper = null;
+			//	}
+			//}
+			#endregion
 
-		#region Convert body joints coordinations to color coordinations methods
-		// TODO: Unnecessary for now, to be removed
-		//private BodyJointsColorSpacePointsDict ConvertToColorSpace(BodyData body)
-		//{
-		//	return ConvertToColorSpace(new[] { body }).FirstOrDefault().Item2;
-		//}
+			#region Convert body joints coordinations to color coordinations methods
+			// TODO: Unnecessary for now, to be removed
+			//private BodyJointsColorSpacePointsDict ConvertToColorSpace(BodyData body)
+			//{
+			//	return ConvertToColorSpace(new[] { body }).FirstOrDefault().Item2;
+			//}
 
-		//private (BodyData, BodyJointsColorSpacePointsDict)[] ConvertToColorSpace(IEnumerable<BodyData> bodies)
-		//{
-		//	if (bodies == null || !bodies.Any())
-		//		return new (BodyData, BodyJointsColorSpacePointsDict)[] { };
+			//private (BodyData, BodyJointsColorSpacePointsDict)[] ConvertToColorSpace(IEnumerable<BodyData> bodies)
+			//{
+			//	if (bodies == null || !bodies.Any())
+			//		return new (BodyData, BodyJointsColorSpacePointsDict)[] { };
 
-		//	return bodies.Select(b => (b, ConvertToColorSpace(b?.Joints))).ToArray();
-		//}
+			//	return bodies.Select(b => (b, ConvertToColorSpace(b?.Joints))).ToArray();
+			//}
 
-		//private BodyJointsColorSpacePointsDict ConvertToColorSpace(IReadOnlyDictionary<JointType, Joint> joints)
-		//{
-		//	var jointsPoints = new BodyJointsColorSpacePointsDict();
+			//private BodyJointsColorSpacePointsDict ConvertToColorSpace(IReadOnlyDictionary<JointType, Joint> joints)
+			//{
+			//	var jointsPoints = new BodyJointsColorSpacePointsDict();
 
-		//	if (joints != null)
-		//	{
-		//		foreach (var jointType in joints.Keys)
-		//		{
-		//			var position = joints[jointType].Position;
-		//			var kinectPosition = new Kinect.CameraSpacePoint() { X = position.X, Y = position.Y, Z = position.Z };
-		//			var kinectColorSpacePosition = this.coordinateMapper.MapCameraPointToColorSpace(kinectPosition);
-		//			jointsPoints[jointType] = kinectColorSpacePosition.Map();
-		//		}
-		//	}
+			//	if (joints != null)
+			//	{
+			//		foreach (var jointType in joints.Keys)
+			//		{
+			//			var position = joints[jointType].Position;
+			//			var kinectPosition = new Kinect.CameraSpacePoint() { X = position.X, Y = position.Y, Z = position.Z };
+			//			var kinectColorSpacePosition = this.coordinateMapper.MapCameraPointToColorSpace(kinectPosition);
+			//			jointsPoints[jointType] = kinectColorSpacePosition.Map();
+			//		}
+			//	}
 
-		//	return jointsPoints;
-		//}
-		#endregion
+			//	return jointsPoints;
+			//}
+			#endregion
 
-		#region Detecting gestures to start recording / recognizing given gesture
+			#region Detecting gestures to start recording / recognizing given gesture
 		private bool UpdateGestureToStartRecordingDetectionState(BodyData trackedBody)
 		{
 			bool isRightHandClosed = trackedBody.HandRightState == HandState.Closed && trackedBody.HandRightConfidence == TrackingConfidence.High;
@@ -1079,7 +1162,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					{
 						this.gestureToStartProcessStartTime = null;
 						this.TrackingState = BodyTrackingState.WaitingToStartGestureRecording;
-						Messenger.Default.Send(new TemporaryStateStartedMessage());
+						MessengerUtils.SendMessage(new TemporaryStateStartedMessage());
 					}
 				}
 				else
@@ -1109,7 +1192,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					{
 						this.gestureToStartProcessStartTime = null;
 						this.TrackingState = BodyTrackingState.WaitingToStartGestureRecognizing;
-						Messenger.Default.Send(new TemporaryStateStartedMessage());
+						MessengerUtils.SendMessage(new TemporaryStateStartedMessage());
 					}
 				}
 				else
@@ -1159,7 +1242,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				TimeSpan duration = DateTime.Now - this.gestureRecordStartTime.Value;
 				if (duration >= gestureRecordTimeLimit)
 				{
-					Messenger.Default.Send(new GestureRecordingFinishedMessage());
+					MessengerUtils.SendMessage(new GestureRecordingFinishedMessage());
 					this.gestureRecordUserWithoutMovementStartTime = null;
 					return true;
 				}
@@ -1170,7 +1253,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					{
 						if (DateTime.Now - this.gestureRecordUserWithoutMovementStartTime >= gestureRecordUserWithoutMovementTimeLimit)
 						{
-							Messenger.Default.Send(new GestureRecordingFinishedMessage());
+							MessengerUtils.SendMessage(new GestureRecordingFinishedMessage());
 							this.gestureRecordUserWithoutMovementStartTime = null;
 							return true;
 						}
@@ -1295,7 +1378,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 		private void SendTrackedUsersCountChangedMessage(int trackedBodiesCount)
 		{
-			Messenger.Default.Send(new TrackedUsersCountChangedMessage()
+			MessengerUtils.SendMessage(new TrackedUsersCountChangedMessage()
 			{
 				Count = trackedBodiesCount
 			});
@@ -1309,7 +1392,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				if (isStopped && !string.IsNullOrEmpty(text))
 					this.bodyTrackingStoppedTime = DateTime.Now;
 
-				Messenger.Default.Send(new BodyTrackingStoppedMessage()
+				MessengerUtils.SendMessage(new BodyTrackingStoppedMessage()
 				{
 					IsStopped = isStopped,
 					PrevState = this.TrackingState,
@@ -1323,11 +1406,13 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			if (isColorFrame)
 			{
 				var now = DateTime.Now;
-				Messenger.Default.Send(new FPSValueMessage() { Value = 1 / (now - this.lastDisplayedColorFrameTime).TotalSeconds });
+				MessengerUtils.SendMessage(new FPSValueMessage() { Value = 1 / (now - this.lastDisplayedColorFrameTime).TotalSeconds });
 				this.lastDisplayedColorFrameTime = now;
 			}
 			else
-				Messenger.Default.Send(new FPSValueMessage() { Value = 0d });
+			{
+				MessengerUtils.SendMessage(new FPSValueMessage() { Value = 0d });
+			}
 		}
 
 		private void CleanGestureToRecognizeBodyFrames()

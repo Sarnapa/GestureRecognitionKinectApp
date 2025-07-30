@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -25,7 +27,6 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 		public static async Task<BodyDataWithColorSpacePoints[]> Map(this DetectPoseLandmarksResponse response,
 			float notTrackedJointVisibilityThreshold, float inferredJointVisibilityThreshold)
 		{
-			//var results = new List<BodyDataWithColorSpacePoints>();	
 			var tasks = new List<Task<BodyDataWithColorSpacePoints>>();
 			if (response.Status == DetectPoseLandmarksResponseStatus.OK && response.Landmarks != null & response.WorldLandmarks != null
 				&& response.HandLeftStates != null && response.HandRightStates != null && response.Landmarks.Count == response.WorldLandmarks.Count
@@ -35,8 +36,6 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 				{
 					tasks.Add(MapAsync((ulong)i, response.Landmarks[i], response.WorldLandmarks[i], response.HandLeftStates[i], response.HandRightStates[i],
 						notTrackedJointVisibilityThreshold, inferredJointVisibilityThreshold));
-					//results.Add(Map((ulong)i, response.Landmarks[i], response.WorldLandmarks[i], response.HandLeftStates[i], response.HandRightStates[i],
-					//	notTrackedJointVisibilityThreshold, inferredJointVisibilityThreshold));
 				}
 			}
 
@@ -73,11 +72,11 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 					jointsColorSpacePoints.Add(jointType.Value, colorSpacePoint.Value);
 			}
 
-			var handLeftJoints = joints.Where(kv => IsHandLeftPartJoint(kv.Key)).Select(kv => kv.Value).ToArray();
-			var handRightJoints = joints.Where(kv => IsHandRightPartJoint(kv.Key)).Select(kv => kv.Value).ToArray();
+			var handLeftJoints = joints.Where(kv => IsHandLeftPartJointForPoseLandmarksModel(kv.Key)).Select(kv => kv.Value).ToArray();
+			var handRightJoints = joints.Where(kv => IsHandRightPartJointForPoseLandmarksModel(kv.Key)).Select(kv => kv.Value).ToArray();
 
-			var handLeftTrackingConfidence = GetHandTrackingConfidence(handLeftJoints);
-			var handRightTrackingConfidence = GetHandTrackingConfidence(handRightJoints);
+			var handLeftTrackingConfidence = GetHandTrackingConfidenceForPoseLandmarksModel(handLeftJoints);
+			var handRightTrackingConfidence = GetHandTrackingConfidenceForPoseLandmarksModel(handRightJoints);
 
 			bool isTracked = joints.Count > 0 && joints.Count == jointsColorSpacePoints.Count
 				&& joints.Any(j => j.Value.TrackingState == TrackingState.Tracked);
@@ -111,16 +110,34 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 				GetTrackingState(landmark.Visibility, notTrackedJointVisibilityThreshold, inferredJointVisibilityThreshold));
 		}
 
-		private static bool IsHandLeftPartJoint(JointType joint)
+		private static bool IsHandLeftPartJointForPoseLandmarksModel(JointType joint)
 		{
 			return joint == JointType.WristLeft || joint == JointType.PinkyLeft 
 				|| joint == JointType.IndexLeft || joint == JointType.ThumbLeft;
 		}
 
-		private static bool IsHandRightPartJoint(JointType joint)
+		private static bool IsHandRightPartJointForPoseLandmarksModel(JointType joint)
 		{
 			return joint == JointType.WristRight || joint == JointType.PinkyRight
 				|| joint == JointType.IndexRight || joint == JointType.ThumbRight;
+		}
+
+		private static TrackingConfidence GetHandTrackingConfidenceForPoseLandmarksModel(Joint[] handJoints)
+		{
+			if (handJoints == null || handJoints.Length != 4 || handJoints.Any(j => j.TrackingState == TrackingState.NotTracked))
+				return TrackingConfidence.Low;
+
+			return TrackingConfidence.High;
+		}
+
+		private static TrackingState GetTrackingStateForPoseLandmarksModel(float visibility, float notTrackedJointVisibilityThreshold, float inferredJointVisibilityThreshold)
+		{
+			if (visibility <= notTrackedJointVisibilityThreshold)
+				return TrackingState.NotTracked;
+			else if (visibility <= inferredJointVisibilityThreshold)
+				return TrackingState.Inferred;
+
+			return TrackingState.Tracked;
 		}
 
 		private static JointType? Map(int idx)
@@ -201,7 +218,201 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 
 			return null;
 		}
+		#endregion
 
+		#region DetectHandLandmarksResponse -> BodyDataWithColorSpacePoints
+		public static BodyDataWithColorSpacePoints Map(this DetectHandLandmarksResponse response, float notTrackedJointScoreThreshold,
+			float inferredJointScoreThreshold)
+		{
+			var result = new BodyDataWithColorSpacePoints();
+			// The case where there are a maximum of two hands is supported, but there is no way to distinguish which hand belongs to whom.
+			if (response.Status == DetectHandLandmarksResponseStatus.OK && response.Handedness != null && response.Landmarks != null & response.WorldLandmarks != null
+				&& response.Handedness.Count <= 2 && response.Landmarks.Count == response.WorldLandmarks.Count)
+			{
+				var handsData = response.Handedness.SelectMany(h => h).ToArray();
+				if (handsData.Length > 0 && handsData.Length <= 2 && response.Landmarks.Count == handsData.Length)
+				{
+					var handsDataCategories = handsData.GroupBy(h => h.CategoryName);
+					if (!handsDataCategories.Any(c => c.Count() > 1))
+					{
+						var (handLeftData, handLeftLandmarks, handLeftWorldLandmarks) = TryToGetHandData(handsData, response.Landmarks, response.WorldLandmarks, true);
+						var (handRightData, handRightLandmarks, handRightWorldLandmarks) = TryToGetHandData(handsData, response.Landmarks, response.WorldLandmarks, false);
+						if (handLeftData != null || handRightData != null)
+						{
+							result = Map(0, handLeftData, handLeftLandmarks, handLeftWorldLandmarks, handRightData, handRightLandmarks, handRightWorldLandmarks,
+								notTrackedJointScoreThreshold, inferredJointScoreThreshold);
+						}
+					}	
+				}
+			}
+
+			return result;
+		}
+
+		private static (HandData handData, List<HandLandmark> landmarks, List<HandLandmark> worldLandmarks) TryToGetHandData(HandData[] handsData,
+			List<List<HandLandmark>> handsLandmarks, List<List<HandLandmark>> handsWorldLandmarks, bool isLeft)
+		{
+			HandData handData;
+			List<HandLandmark> landmarks = null, worldLandmarks = null;
+
+			string categoryName = isLeft ? "left" : "right";
+
+			handData = handsData?.FirstOrDefault(h => h.CategoryName.ToLower() == categoryName);
+			if (handData != null && handData.Idx < handsLandmarks.Count)
+			{
+				landmarks = handsLandmarks[handData.Idx];
+				worldLandmarks = handsWorldLandmarks[handData.Idx];
+			}
+
+			return (handData, landmarks, worldLandmarks);
+		}
+
+		private static BodyDataWithColorSpacePoints Map(ulong trackingId, HandData handLeftData, List<HandLandmark> handLeftLandmarks, List<HandLandmark> handLeftWorldLandmarks,
+			HandData handRightData, List<HandLandmark> handRightLandmarks, List<HandLandmark> handRightWorldLandmarks, float notTrackedJointScoreThreshold, float inferredJointScoreThreshold)
+		{
+			var joints = new Dictionary<JointType, Joint>();
+			var jointsColorSpacePoints = new BodyJointsColorSpacePointsDict();
+
+			bool isHandLeft = handLeftData != null;
+			bool isHandRight = handRightData != null;
+
+			var handLeftTrackingState = TrackingState.NotTracked;
+			var handRightTrackingState = TrackingState.NotTracked;
+			var handLeftTrackingConfidence = TrackingConfidence.Low;
+			var handRightTrackingConfidence = TrackingConfidence.Low;
+
+			if (isHandLeft)
+				handLeftTrackingState = GetTrackingState(handLeftData.Score, notTrackedJointScoreThreshold, inferredJointScoreThreshold);
+			if (isHandRight)
+				handRightTrackingState = GetTrackingState(handRightData.Score, notTrackedJointScoreThreshold, inferredJointScoreThreshold);
+
+			AddJoints(ref joints, handLeftWorldLandmarks, handLeftTrackingState, true);
+			AddJoints(ref joints, handRightWorldLandmarks, handRightTrackingState, false);
+
+			AddColorSpacePoints(ref jointsColorSpacePoints, joints, handLeftLandmarks, true);
+			AddColorSpacePoints(ref jointsColorSpacePoints, joints, handRightLandmarks, false);
+
+			if (isHandLeft)
+				handLeftTrackingConfidence = GetHandTrackingConfidenceForHandLandmarksModel(handLeftData.Score, inferredJointScoreThreshold);
+			if (isHandRight)	
+				handRightTrackingConfidence = GetHandTrackingConfidenceForHandLandmarksModel(handRightData.Score, inferredJointScoreThreshold);
+
+			bool isTracked = joints.Count > 0 && joints.Count == jointsColorSpacePoints.Count
+				&& (handLeftTrackingState == TrackingState.Tracked || handRightTrackingState == TrackingState.Tracked);
+
+			return new BodyDataWithColorSpacePoints(trackingId, isTracked, joints, handLeftData?.HandState ?? HandState.Unknown, handLeftTrackingConfidence,
+				handRightData?.HandState ?? HandState.Unknown, handRightTrackingConfidence, jointsColorSpacePoints);
+		}
+
+		private static void AddJoints(ref Dictionary<JointType, Joint> joints, List<HandLandmark> worldHandLandmarks, TrackingState handTrackingState,
+			bool isLeft)
+		{
+			if (worldHandLandmarks != null)
+			{
+				foreach (var landmark in worldHandLandmarks)
+				{
+					var joint = MapWorldLandmark(landmark, handTrackingState, isLeft);
+					if (joint.HasValue)
+						joints.Add(joint.Value.JointType, joint.Value);
+				}
+			}
+		}
+
+		private static void AddColorSpacePoints(ref BodyJointsColorSpacePointsDict jointsColorSpacePoints, Dictionary<JointType, Joint> joints, List<HandLandmark> handLandmarks, bool isLeft)
+		{
+			if (handLandmarks != null)
+			{
+				foreach (var landmark in handLandmarks)
+				{
+					var (jointType, colorSpacePoint) = MapLandmark(landmark, isLeft);
+					if (jointType.HasValue && colorSpacePoint.HasValue && joints.ContainsKey(jointType.Value))
+						jointsColorSpacePoints.Add(jointType.Value, colorSpacePoint.Value);
+				}
+			}
+		}
+
+		private static Joint? MapWorldLandmark(HandLandmark landmark, TrackingState handTrackingState, bool isLeft)
+		{
+			if (landmark == null)
+				return null;
+
+			var jointType = MapHandJointType(landmark.Idx, isLeft);
+			if (!jointType.HasValue)
+				return null;
+
+			return new Joint(jointType.Value, new Vector3(landmark.X, landmark.Y, landmark.Z), handTrackingState);
+		}
+
+		private static (JointType? jointType, Vector2? colorSpacePoint) MapLandmark(HandLandmark landmark, bool isLeft)
+		{
+			if (landmark == null)
+				return (null, null);
+
+			var jointType = MapHandJointType(landmark.Idx, isLeft);
+			if (!jointType.HasValue)
+				return (null, null);
+
+			return (jointType.Value, new Vector2(landmark.X, landmark.Y));
+		}
+
+		private static TrackingConfidence GetHandTrackingConfidenceForHandLandmarksModel(float score, float inferredJointScoreThreshold)
+		{
+			return score > inferredJointScoreThreshold ? TrackingConfidence.High : TrackingConfidence.Low;
+		}
+
+		private static JointType? MapHandJointType(int idx, bool isLeft)
+		{
+			switch (idx)
+			{
+				case 0:
+					return isLeft ? JointType.WristLeft : JointType.WristRight;
+				case 1:
+					return isLeft ? JointType.ThumbCMCLeft : JointType.ThumbCMCRight;
+				case 2:
+					return isLeft ? JointType.ThumbMCPLeft : JointType.ThumbMCPRight;
+				case 3:
+					return isLeft ? JointType.ThumbIPLeft : JointType.ThumbIPRight;
+				case 4:
+					return isLeft ? JointType.ThumbTIPLeft : JointType.ThumbTIPRight;
+				case 5:
+					return isLeft ? JointType.IndexFingerMCPLeft : JointType.IndexFingerMCPRight;
+				case 6:
+					return isLeft ? JointType.IndexFingerPIPLeft : JointType.IndexFingerPIPRight;
+				case 7:
+					return isLeft ? JointType.IndexFingerDIPLeft : JointType.IndexFingerDIPRight;
+				case 8:
+					return isLeft ? JointType.IndexFingerTIPLeft : JointType.IndexFingerTIPRight;
+				case 9:
+					return isLeft ? JointType.MiddleFingerMCPLeft : JointType.MiddleFingerMCPRight;
+				case 10:
+					return isLeft ? JointType.MiddleFingerPIPLeft : JointType.MiddleFingerPIPRight;
+				case 11:
+					return isLeft ? JointType.MiddleFingerDIPLeft : JointType.MiddleFingerDIPRight;
+				case 12:
+					return isLeft ? JointType.MiddleFingerTIPLeft : JointType.MiddleFingerTIPRight;
+				case 13:
+					return isLeft ? JointType.RingFingerMCPLeft : JointType.RingFingerMCPRight;
+				case 14:
+					return isLeft ? JointType.RingFingerPIPLeft : JointType.RingFingerPIPRight;
+				case 15:
+					return isLeft ? JointType.RingFingerDIPLeft : JointType.RingFingerDIPRight;
+				case 16:
+					return isLeft ? JointType.RingFingerTIPLeft : JointType.RingFingerTIPRight;
+				case 17:
+					return isLeft ? JointType.PinkyMCPLeft : JointType.PinkyMCPRight;
+				case 18:
+					return isLeft ? JointType.PinkyPIPLeft : JointType.PinkyPIPRight;
+				case 19:
+					return isLeft ? JointType.PinkyDIPLeft : JointType.PinkyDIPRight;
+				case 20:
+					return isLeft ? JointType.PinkyTIPLeft : JointType.PinkyTIPRight;
+			}
+
+			return null;
+		}
+		#endregion
+
+		#region Private methods
 		private static TrackingState GetTrackingState(float visibility, float notTrackedJointVisibilityThreshold, float inferredJointVisibilityThreshold)
 		{
 			if (visibility <= notTrackedJointVisibilityThreshold)
@@ -210,14 +421,6 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 				return TrackingState.Inferred;
 
 			return TrackingState.Tracked;
-		}
-
-		private static TrackingConfidence GetHandTrackingConfidence(Joint[] handJoints)
-		{
-			if (handJoints == null || handJoints.Length != 4 || handJoints.Any(j => j.TrackingState == TrackingState.NotTracked))
-				return TrackingConfidence.Low;
-
-			return TrackingConfidence.High;
 		}
 		#endregion
 	}

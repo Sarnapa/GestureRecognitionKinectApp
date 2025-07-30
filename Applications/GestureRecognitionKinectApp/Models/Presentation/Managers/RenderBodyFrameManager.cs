@@ -6,7 +6,8 @@ using System.Windows.Media;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies;
 using KinectBonesDefinitions = GestureRecognition.Processing.BaseClassLib.Structures.Body.BonesDefinitions;
-using MediaPipeBonesDefinitions = GestureRecognition.Processing.BaseClassLib.Structures.Body.MediaPipeBonesDefinitions;
+using MediaPipeHandLandmarksBonesDefinitions = GestureRecognition.Processing.BaseClassLib.Structures.Body.MediaPipeHandLandmarksBonesDefinitions;
+// using MediaPipePoseLandmarksBonesDefinitions = GestureRecognition.Processing.BaseClassLib.Structures.Body.MediaPipePoseLandmarksBonesDefinitions;
 using static GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures.GestureRecognitionDefinitions;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers
@@ -17,22 +18,22 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 		/// <summary>
 		/// Radius of drawn hand circles
 		/// </summary>
-		private readonly double HandSize = 15;
+		private readonly double HandSize = 12;
 
 		/// <summary>
 		/// Thickness of drawn joint
 		/// </summary>
-		private readonly double JointThickness = 8;
+		private readonly double JointThickness = 6;
 
 		/// <summary>
 		/// Thickness of drawn joint (that joint taking part in gesture recognition processing)
 		/// </summary>
-		private readonly double GestureRecognitionJointThickness = 12;
+		private readonly double GestureRecognitionJointThickness = 10;
 
 		/// <summary>
 		/// Thickness of lines representing user skeleton
 		/// </summary>
-		private readonly double BodySkeletonThickness = 10;
+		private readonly double BodySkeletonThickness = 8;
 
 		/// <summary>
 		/// Not drawn joints
@@ -40,7 +41,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 		private readonly JointType[] jointsToIgnore = {
 			JointType.KneeLeft, JointType.KneeRight, JointType.AnkleLeft,
 			JointType.AnkleRight, JointType.FootLeft, JointType.FootRight,
-			// From MediaPipe
+			// From MediaPipe Pose Landmarks Detection Model
 			JointType.EyeInnerLeft, JointType.EyeLeft, JointType.EyeOuterLeft,
 			JointType.EyeInnerRight, JointType.EyeRight, JointType.EyeOuterRight,
 			JointType.EarLeft, JointType.EarRight,
@@ -87,7 +88,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 		/// <summary>
 		/// Definition of bones
 		/// </summary>
-		private readonly List<Bone> bones = MediaPipeBonesDefinitions.AllBonesWithoutHeadAndLegs; // KinectBonesDefinitions.AllBonesWithoutLegs;
+		private readonly List<Bone> bones = MediaPipeHandLandmarksBonesDefinitions.AllBones; // KinectBonesDefinitions.AllBonesWithoutLegs;
 
 		/// <summary>
 		/// List of colors for each body tracked
@@ -245,8 +246,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 		private void DrawBone(IReadOnlyDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, JointType jointType0, JointType jointType1, DrawingContext drawingContext,
 			Pen drawingPen)
 		{
-			Joint joint0 = joints[jointType0];
-			Joint joint1 = joints[jointType1];
+			if (!joints.TryGetValue(jointType0, out Joint joint0) || !joints.TryGetValue(jointType1, out Joint joint1))
+				return;
 
 			// If we can't find either of these joints, exit
 			if (joint0.TrackingState == TrackingState.NotTracked ||

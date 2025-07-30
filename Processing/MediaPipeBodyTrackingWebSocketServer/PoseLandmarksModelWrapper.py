@@ -8,6 +8,7 @@ import numpy as np
 from scipy.spatial.distance import euclidean
 import DetectsPoseLandmarksStructures as DetectsStructures
 import LoadPoseLandmarksModelStructures as LoadModelStructures
+from MainStructures import HandState
 import ModelInfo
 
 Tasks = mp.tasks
@@ -220,7 +221,9 @@ class PoseLandmarksModelWrapper:
         hand_lm = self.get_hand_lm(wrist_lm, wrist_pos, pinky_lm, pinky_pos, index_lm, index_pos,
                                    thumb_lm, thumb_pos, hand_idx)
         
-        hand_state = self.detect_hand_state(wrist_pos, pinky_pos, index_pos, thumb_pos)
+        # TODO: To be completed
+        hand_state = HandState.Unknown
+        # hand_state = self.detect_hand_state(wrist_pos, pinky_pos, index_pos, thumb_pos)
 
         return hand_lm, hand_state
 
@@ -273,24 +276,29 @@ class PoseLandmarksModelWrapper:
         visibility = (wrist_visibility * pinky_visibility * index_visibility * thumb_visibility) ** 0.25
 
         return presence, visibility
-                                                                                   
+
+    # TODO: To be completed - the study is incomplete, but this model had little chance of success due to poor finger tracking.                          
     def detect_hand_state(self, wrist_pos, pinky_pos, index_pos, thumb_pos):
-        pinky_open_threshold = 0.10
-        index_open_threshold = 0.10
-        thumb_open_threshold = 0.08
+        pinky_open_threshold = 0.055
+        index_open_threshold = 0.07
+        thumb_open_threshold = 0.0125
         pinky_closed_threshold = 0.05
         index_closed_threshold = 0.05
-        thumb_closed_threshold = 0.05
+        thumb_closed_threshold = 0.035
         
-        hand_state = DetectsStructures.HandState.Unknown
+        hand_state = HandState.Unknown
 
-        pinky_dist = euclidean(wrist_pos, pinky_pos)
-        index_dist = euclidean(wrist_pos, index_pos)
-        thumb_dist = euclidean(wrist_pos, thumb_pos)
+        pinky_thumb_dist = euclidean(pinky_pos, thumb_pos)
+
+        pinky_dist = euclidean(wrist_pos, pinky_pos) / pinky_thumb_dist
+        index_dist = euclidean(wrist_pos, index_pos) / pinky_thumb_dist
+        thumb_dist = euclidean(wrist_pos, thumb_pos) / pinky_thumb_dist
+
+        # print(f"[detect_hand_state] {is_left} {str(pinky_thumb_dist).replace(".",",")};{str(pinky_dist).replace(".",",")};{str(index_dist).replace(".",",")};{str(thumb_dist).replace(".",",")}")
 
         if pinky_dist <= pinky_closed_threshold and index_dist <= index_closed_threshold and thumb_dist <= thumb_closed_threshold:
-            hand_state = DetectsStructures.HandState.Closed
+            hand_state = HandState.Closed
         elif pinky_dist >= pinky_open_threshold and index_dist >= index_open_threshold and thumb_dist >= thumb_open_threshold:
-            hand_state =  DetectsStructures.HandState.Open
+            hand_state =  HandState.Open
 
         return hand_state

@@ -1,6 +1,7 @@
 from enum import Enum
 import json
 from typing import List
+from MainStructures import HandState
 
 #region DetectPoseLandmarksRequest
 class DetectPoseLandmarksRequest:
@@ -55,13 +56,6 @@ class DetectPoseLandmarksResponseStatus(Enum):
     ok = 0x00
     no_pose = 0x01
     error = 0xFF
-#endregion
-
-#region HandState
-class HandState(Enum):
-    Unknown = 0x00
-    Open = 0x02
-    Closed = 0x03 
 #endregion
 
 #region DetectPoseLandmarksResponse

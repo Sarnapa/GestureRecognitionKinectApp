@@ -39,7 +39,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionKind.py" />
+    <Compile Include="DetectsHandLandmarksStructures.py" />
     <Compile Include="DetectsPoseLandmarksStructures.py" />
+    <Compile Include="HandLandmarksModelWrapper.py" />
+    <Compile Include="LoadHandLandmarksModelStructures.py" />
     <Compile Include="LoadPoseLandmarksModelStructures.py" />
     <Compile Include="MainStructures.py" />
     <Compile Include="MediaPipeBodyTrackingWebSocketServer.py" />
@@ -48,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Models\HandLandmarksDetection\" />
     <Folder Include="Models\PoseLandmarksDetection\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />

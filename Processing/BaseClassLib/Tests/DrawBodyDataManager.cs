@@ -19,21 +19,21 @@ namespace GestureRecognition.Processing.BaseClassLib.Tests
 		/// Not drawn joints
 		/// </summary>
 		private readonly JointType[] jointsToIgnore = {
-			//JointType.KneeLeft, JointType.KneeRight, JointType.AnkleLeft,
-			//JointType.AnkleRight, JointType.FootLeft, JointType.FootRight,
-			//// From MediaPipe
-			//JointType.EyeInnerLeft, JointType.EyeLeft, JointType.EyeOuterLeft,
-			//JointType.EyeInnerRight, JointType.EyeRight, JointType.EyeOuterRight,
-			//JointType.EarLeft, JointType.EarRight,
-			//JointType.MouthLeft, JointType.MouthRight,
-			//JointType.HeelLeft, JointType.HeelRight,
-			//JointType.FootIndexLeft, JointType.FootIndexRight
+			JointType.KneeLeft, JointType.KneeRight, JointType.AnkleLeft,
+			JointType.AnkleRight, JointType.FootLeft, JointType.FootRight,
+			// From MediaPipe
+			JointType.EyeInnerLeft, JointType.EyeLeft, JointType.EyeOuterLeft,
+			JointType.EyeInnerRight, JointType.EyeRight, JointType.EyeOuterRight,
+			JointType.EarLeft, JointType.EarRight,
+			JointType.MouthLeft, JointType.MouthRight,
+			JointType.HeelLeft, JointType.HeelRight,
+			JointType.FootIndexLeft, JointType.FootIndexRight
 			};
 
 		/// <summary>
 		/// Definition of bones
 		/// </summary>
-		private readonly List<Bone> bones = MediaPipeBonesDefinitions.AllBones; // KinectBonesDefinitions.AllBonesWithoutLegs;
+		private readonly List<Bone> bones = MediaPipeHandLandmarksBonesDefinitions.AllBones;
 
 		private bool isInferredMode = false;
 		#endregion
@@ -55,7 +55,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Tests
 				var bonePaint = new SKPaint
 				{
 					Color = SKColors.Red,
-					StrokeWidth = 10f,
+					StrokeWidth = 8f,
 					Style = SKPaintStyle.Stroke,
 					IsAntialias = true
 				};
@@ -167,7 +167,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Tests
 						if (GestureRecognitionJoints.Contains(jointType))
 						{
 							circlePaint = specialJointPaint;
-							radius = 12f;
+							radius = 10f;
 						}
 						else
 						{
@@ -177,7 +177,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Tests
 					else if (joint.TrackingState == TrackingState.Inferred && this.isInferredMode)
 					{
 						circlePaint = inferredJointPaint;
-						radius = 8f;
+						radius = 6f;
 					}
 
 					if (circlePaint != null)
@@ -187,34 +187,36 @@ namespace GestureRecognition.Processing.BaseClassLib.Tests
 					}
 				}
 
-				if (jointPoints.TryGetValue(JointType.HandLeft, out SKPoint handLeftPos))
+				if (jointPoints.TryGetValue(JointType.HandLeft, out SKPoint handLeftPos) && body.Joints.TryGetValue(JointType.HandLeft, out Joint handLeftJoint)
+					&& (handLeftJoint.TrackingState == TrackingState.Tracked || handLeftJoint.TrackingState == TrackingState.Inferred && this.isInferredMode))
 				{
 					switch (body.HandLeftState)
 					{
 						case HandState.Closed:
-							canvas.DrawCircle(handLeftPos.X, handLeftPos.Y, 15f, handClosedPaint);
+							canvas.DrawCircle(handLeftPos.X, handLeftPos.Y, 12f, handClosedPaint);
 							break;
 						case HandState.Open:
-							canvas.DrawCircle(handLeftPos.X, handLeftPos.Y, 15f, handOpenPaint);
+							canvas.DrawCircle(handLeftPos.X, handLeftPos.Y, 12f, handOpenPaint);
 							break;
 						case HandState.Lasso:
-							canvas.DrawCircle(handLeftPos.X, handLeftPos.Y, 15f, handLassoPaint);
+							canvas.DrawCircle(handLeftPos.X, handLeftPos.Y, 12f, handLassoPaint);
 							break;
 					}
 				}
 
-				if (jointPoints.TryGetValue(JointType.HandRight, out SKPoint handRightPos))
+				if (jointPoints.TryGetValue(JointType.HandRight, out SKPoint handRightPos) && body.Joints.TryGetValue(JointType.HandRight, out Joint handRightJoint)
+					&& (handRightJoint.TrackingState == TrackingState.Tracked || handRightJoint.TrackingState == TrackingState.Inferred && this.isInferredMode))
 				{
 					switch (body.HandRightState)
 					{
 						case HandState.Closed:
-							canvas.DrawCircle(handRightPos.X, handRightPos.Y, 15f, handClosedPaint);
+							canvas.DrawCircle(handRightPos.X, handRightPos.Y, 12f, handClosedPaint);
 							break;
 						case HandState.Open:
-							canvas.DrawCircle(handRightPos.X, handRightPos.Y, 15f, handOpenPaint);
+							canvas.DrawCircle(handRightPos.X, handRightPos.Y, 12f, handOpenPaint);
 							break;
 						case HandState.Lasso:
-							canvas.DrawCircle(handRightPos.X, handRightPos.Y, 15f, handLassoPaint);
+							canvas.DrawCircle(handRightPos.X, handRightPos.Y, 12f, handLassoPaint);
 							break;
 					}
 				}

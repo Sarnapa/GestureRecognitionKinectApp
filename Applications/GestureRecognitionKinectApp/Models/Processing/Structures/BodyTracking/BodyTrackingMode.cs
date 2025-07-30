@@ -3,6 +3,7 @@
 	public enum BodyTrackingMode
 	{
 		Kinect,
-		MediaPipe,
+		MediaPipePoseLandmark,
+		MediaPipeHandLandmark
 	}
 }

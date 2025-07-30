@@ -7,8 +7,8 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight.Ioc;
-using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Utilities;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Processing.BaseClassLib.Mappers;
@@ -179,7 +179,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			// Create the image with body data
 			this.bodyImage = new DrawingImage(this.bodyImageDrawingGroup);
 
-			Messenger.Default.Send(new DisplayImageChangedMessage() { ChangedDisplayImage = ImageKind.Body });
+			MessengerUtils.SendMessage(new DisplayImageChangedMessage() { ChangedDisplayImage = ImageKind.Body });
 
 			try
 			{
@@ -288,10 +288,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			if (shouldBeFirstColorFrame && colorFrame != null)
 			{
 				this.gestureReplayStartTime = DateTime.Now;
-				Messenger.Default.Send(new DisplayImageChangedMessage() { ChangedDisplayImage = ImageKind.Color });
+				MessengerUtils.SendMessage(new DisplayImageChangedMessage() { ChangedDisplayImage = ImageKind.Color });
 			}
 
-			Messenger.Default.Send(new GestureRecordFrameProcessedMessage());
+			MessengerUtils.SendMessage(new GestureRecordFrameProcessedMessage());
 		}
 
 		private void GestureReplay_Finished()
@@ -308,12 +308,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					finally
 					{
 						CleanGestureBodyFrames();
-						Messenger.Default.Send(new GestureRecordFinishedMessage());
+						MessengerUtils.SendMessage(new GestureRecordFinishedMessage());
 					}
 				});
 			}
 			else
-				Messenger.Default.Send(new GestureRecordFinishedMessage());
+				MessengerUtils.SendMessage(new GestureRecordFinishedMessage());
 		}
 		#endregion
 

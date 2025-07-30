@@ -25,7 +25,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 			// Verify data and write the new color frame data to the display bitmap
 			if ((colorFrame.Width == frameWidth) && (colorFrame.Height == frameHeight))
 			{
-				colorImage.Lock();
 				try
 				{
 					var rect = new Int32Rect(0, 0, frameWidth, frameHeight);
@@ -35,7 +34,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pre
 				finally
 				{
 					colorImage.AddDirtyRect(new Int32Rect(0, 0, frameWidth, frameHeight));
-					colorImage.Unlock();
 				}
 			}
 			else

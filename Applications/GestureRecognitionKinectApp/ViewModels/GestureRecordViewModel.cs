@@ -6,6 +6,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Utilities;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.NavigationService;
@@ -249,7 +250,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			if (this.IsGestureFeaturesValid)
 			{
 				this.isCleanupPermission = false;
-				Messenger.Default.Send(new GestureDataMessage() { Features = this.model.GestureFeatures,
+				MessengerUtils.SendMessage(new GestureDataMessage() { Features = this.model.GestureFeatures,
 					Label = this.model.GestureLabel });
 			}
 		}
