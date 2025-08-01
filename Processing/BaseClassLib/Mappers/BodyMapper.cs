@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Numerics;
@@ -227,41 +226,36 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			var result = new BodyDataWithColorSpacePoints();
 			// The case where there are a maximum of two hands is supported, but there is no way to distinguish which hand belongs to whom.
 			if (response.Status == DetectHandLandmarksResponseStatus.OK && response.Handedness != null && response.Landmarks != null & response.WorldLandmarks != null
-				&& response.Handedness.Count <= 2 && response.Landmarks.Count == response.WorldLandmarks.Count)
+				&& response.Landmarks.Count == response.Handedness.Count && response.Landmarks.Count == response.WorldLandmarks.Count
+				&& response.Landmarks.Count > 0 && response.Landmarks.Count <= 2)
 			{
-				var handsData = response.Handedness.SelectMany(h => h).ToArray();
-				if (handsData.Length > 0 && handsData.Length <= 2 && response.Landmarks.Count == handsData.Length)
+				var (handLeftData, handLeftLandmarks, handLeftWorldLandmarks) = TryToGetHandData(response.Handedness, response.Landmarks, response.WorldLandmarks, true);
+				var (handRightData, handRightLandmarks, handRightWorldLandmarks) = TryToGetHandData(response.Handedness, response.Landmarks, response.WorldLandmarks, false);
+				if (handLeftData != null || handRightData != null)
 				{
-					var handsDataCategories = handsData.GroupBy(h => h.CategoryName);
-					if (!handsDataCategories.Any(c => c.Count() > 1))
-					{
-						var (handLeftData, handLeftLandmarks, handLeftWorldLandmarks) = TryToGetHandData(handsData, response.Landmarks, response.WorldLandmarks, true);
-						var (handRightData, handRightLandmarks, handRightWorldLandmarks) = TryToGetHandData(handsData, response.Landmarks, response.WorldLandmarks, false);
-						if (handLeftData != null || handRightData != null)
-						{
-							result = Map(0, handLeftData, handLeftLandmarks, handLeftWorldLandmarks, handRightData, handRightLandmarks, handRightWorldLandmarks,
-								notTrackedJointScoreThreshold, inferredJointScoreThreshold);
-						}
-					}	
+					result = Map(0, handLeftData, handLeftLandmarks, handLeftWorldLandmarks, handRightData, handRightLandmarks, handRightWorldLandmarks,
+						notTrackedJointScoreThreshold, inferredJointScoreThreshold);
 				}
 			}
 
 			return result;
 		}
 
-		private static (HandData handData, List<HandLandmark> landmarks, List<HandLandmark> worldLandmarks) TryToGetHandData(HandData[] handsData,
+		private static (HandData handData, List<HandLandmark> landmarks, List<HandLandmark> worldLandmarks) TryToGetHandData(List<HandData> handsData,
 			List<List<HandLandmark>> handsLandmarks, List<List<HandLandmark>> handsWorldLandmarks, bool isLeft)
 		{
 			HandData handData;
 			List<HandLandmark> landmarks = null, worldLandmarks = null;
 
-			string categoryName = isLeft ? "left" : "right";
+			// MediaPipe has them reversed, which is right and which is left.
+			string categoryName = isLeft ? "right" : "left";
 
 			handData = handsData?.FirstOrDefault(h => h.CategoryName.ToLower() == categoryName);
-			if (handData != null && handData.Idx < handsLandmarks.Count)
+			if (handData != null)
 			{
-				landmarks = handsLandmarks[handData.Idx];
-				worldLandmarks = handsWorldLandmarks[handData.Idx];
+				int idx = handsData.IndexOf(handData);
+				landmarks = handsLandmarks[idx];
+				worldLandmarks = handsWorldLandmarks[idx];
 			}
 
 			return (handData, landmarks, worldLandmarks);
@@ -270,8 +264,9 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 		private static BodyDataWithColorSpacePoints Map(ulong trackingId, HandData handLeftData, List<HandLandmark> handLeftLandmarks, List<HandLandmark> handLeftWorldLandmarks,
 			HandData handRightData, List<HandLandmark> handRightLandmarks, List<HandLandmark> handRightWorldLandmarks, float notTrackedJointScoreThreshold, float inferredJointScoreThreshold)
 		{
-			var joints = new Dictionary<JointType, Joint>();
-			var jointsColorSpacePoints = new BodyJointsColorSpacePointsDict();
+			int initialJointsCount = handLeftWorldLandmarks?.Count ?? 0 + handRightWorldLandmarks?.Count ?? 0;
+			var joints = new Dictionary<JointType, Joint>(initialJointsCount);
+			var jointsColorSpacePoints = new BodyJointsColorSpacePointsDict(initialJointsCount);
 
 			bool isHandLeft = handLeftData != null;
 			bool isHandRight = handRightData != null;
@@ -406,6 +401,8 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 					return isLeft ? JointType.PinkyDIPLeft : JointType.PinkyDIPRight;
 				case 20:
 					return isLeft ? JointType.PinkyTIPLeft : JointType.PinkyTIPRight;
+				case 21:
+					return isLeft ? JointType.HandLeft : JointType.HandRight;
 			}
 
 			return null;

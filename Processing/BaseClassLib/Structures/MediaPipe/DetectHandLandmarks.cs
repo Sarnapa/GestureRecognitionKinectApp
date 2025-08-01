@@ -38,6 +38,27 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
 			get;
 			set;
 		}
+
+		[Key("image_target_width")]
+		public int ImageTargetWidth
+		{
+			get;
+			set;
+		}
+
+		[Key("image_target_height")]
+		public int ImageTargetHeight
+		{
+			get;
+			set;
+		}
+
+		[Key("is_one_body_tracking_enabled")]
+		public bool IsOneBodyTrackingEnabled
+		{
+			get;
+			set;
+		}
 		#endregion
 	}
 	#endregion
@@ -47,13 +68,6 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
 	public class HandData
 	{
 		#region Public properties
-		[Key("idx")]
-		public int Idx
-		{
-			get;
-			set;
-		}
-
 		[Key("score")]
 		public float Score
 		{
@@ -119,6 +133,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
 	{
 		OK = 0x00,
 		NoHand = 0x01,
+		TooMuchUsersForOneBodyTracking = 0x02,
 		Error = 0xFF,
 	}
 	#endregion
@@ -129,11 +144,11 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
 	{
 		#region Public properties
 		[Key("handedness")]
-		public List<List<HandData>> Handedness
+		public List<HandData> Handedness
 		{
 			get;
 			set;
-		} = new List<List<HandData>>();
+		} = new List<HandData>();
 
 		[Key("landmarks")]
 		public List<List<HandLandmark>> Landmarks
@@ -148,6 +163,13 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
 			get;
 			set;
 		} = new List<List<HandLandmark>>();
+
+		[Key("bodies_count")]
+		public int BodiesCount
+		{
+			get;
+			set;
+		}
 
 		[Key("status")]
 		public DetectHandLandmarksResponseStatus Status

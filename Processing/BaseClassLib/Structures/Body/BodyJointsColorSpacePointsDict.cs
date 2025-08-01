@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Numerics;
 using MessagePack;
@@ -16,6 +17,11 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 		public BodyJointsColorSpacePointsDict()
 		{
 			this.internalDict = new Dictionary<JointType, Vector2>();
+		}
+
+		public BodyJointsColorSpacePointsDict(int initialCount)
+		{
+			this.internalDict = new Dictionary<JointType, Vector2>(initialCount);
 		}
 		#endregion
 

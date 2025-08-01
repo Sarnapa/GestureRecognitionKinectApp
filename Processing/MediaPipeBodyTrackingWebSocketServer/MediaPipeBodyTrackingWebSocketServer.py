@@ -20,8 +20,8 @@ async def handle_request(websocket):
     while True:
         try:
             message = await websocket.recv()
-            request_data = msgpack.loads(message)
             
+            request_data = msgpack.loads(message)
             response_data = None
 
             action = request_data.get("action")
@@ -60,6 +60,7 @@ async def handle_request(websocket):
                         response_data = msgpack.dumps(detects_response.to_dict())
 
             await websocket.send(response_data)
+
             # Commented out for performance reasons.
             # print(f"[{action}] Sent response: [{response_json}]")
         except ConnectionClosedOK:

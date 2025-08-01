@@ -1,7 +1,7 @@
 ﻿using System.Net.WebSockets;
-using GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe;
 using MessagePack;
 using Newtonsoft.Json;
+using GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe;
 
 namespace GestureRecognition.Processing.MediaPipeBodyTrackingWebSocketClientProcUnit
 {

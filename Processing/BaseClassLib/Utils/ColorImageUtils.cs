@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
-using SkiaSharp;
+using System.Runtime.InteropServices;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
+using SkiaSharp;
 
 namespace GestureRecognition.Processing.BaseClassLib.Utils
 {
@@ -24,6 +25,50 @@ namespace GestureRecognition.Processing.BaseClassLib.Utils
 			}
 
 			return 0;
+		}
+
+
+		public static byte[] PrepareBgraImageForMediaPipeModel(byte[] imageBytes, int currentImageWidth, int currentImageHeight, int targetWidth, int targetHeight)
+		{
+			using (var originalImage = new SKBitmap(new SKImageInfo(currentImageWidth, currentImageHeight, SKColorType.Bgra8888, SKAlphaType.Premul)))
+			{
+				Marshal.Copy(imageBytes, 0, originalImage.GetPixels(), imageBytes.Length);
+				using (SKBitmap scaledImage = originalImage.Resize(new SKImageInfo(targetWidth, targetHeight), SKFilterQuality.High))
+				{
+					if (scaledImage == null)
+						throw new Exception("Error resizing image.");
+
+					byte[] rawBitmap = GetRawBitmap(scaledImage);
+
+					int pixelsCount = scaledImage.Pixels.Length;
+					byte[] rgbRawBitamp = new byte[pixelsCount * 3];
+					for (int i = 0; i < pixelsCount; i++)
+					{
+						int rgbIdx = i * 3;
+						int bgraIdx = i * 4;
+						rgbRawBitamp[rgbIdx] = rawBitmap[bgraIdx + 2];
+						rgbRawBitamp[rgbIdx + 1] = rawBitmap[bgraIdx + 1];
+						rgbRawBitamp[rgbIdx + 2] = rawBitmap[bgraIdx];
+					}
+
+					return rgbRawBitamp;
+				}
+			}
+		}
+
+		public static byte[] GetRawBitmap(SKBitmap image)
+		{
+			if (image == null)
+				throw new ArgumentNullException(nameof(image));
+
+			int width = image.Width;
+			int height = image.Height;
+			int bytesCount = width * height * image.BytesPerPixel;
+			byte[] rawData = new byte[bytesCount];
+
+      Marshal.Copy(image.GetPixels(), rawData, 0, bytesCount);
+
+			return rawData;
 		}
 
 		public static byte[] LoadPngAsBgra(string filePath, out int width, out int height)

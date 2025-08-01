@@ -25,6 +25,7 @@ using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Data;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Events;
 using GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
+using GestureRecognition.Processing.BaseClassLib.Utils;
 using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
 using GestureRecognition.Processing.GestureRecognitionProcUnit;
 using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record;
@@ -180,11 +181,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// </summary>
 		private int framesCounter = 0;
 
-		// 3 - For Pose Landmarks Detection Model, 2 - For Hand Landmarks Detection Model
+		// For MediaPipe Pose Landmark Model - 3, For MediaPipe Hand Landmark - 1
 		/// <summary>
 		/// Specifies which frame is to be analyzed by the external model for tracking user movement.
 		/// </summary>
-		private const int FRAME_SKIP_FACTOR = 2;
+		private const int FRAME_SKIP_FACTOR = 1;
 
 		#region Code archived - failed attempt with mediapipe model in ONNX format
 		// Code archived - failed attempt with mediapipe model in ONNX format
@@ -593,10 +594,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				bool isNewBodyData = false;
 				await this.processingFramesSemaphore.WaitAsync(token).ConfigureAwait(false);
 				this.framesCounter++;
-				isNewBodyData = this.framesCounter % FRAME_SKIP_FACTOR == 0;
-				frameData = await GetFrameData(frameData.ColorFrame, isNewBodyData, token).ConfigureAwait(false);
+				isNewBodyData = this.framesCounter == FRAME_SKIP_FACTOR;
 				if (isNewBodyData)
 					this.framesCounter = 0;
+				frameData = await GetFrameData(frameData.ColorFrame, isNewBodyData, token).ConfigureAwait(false);
 				this.processingFramesSemaphore.Release();
 			}
 
@@ -647,7 +648,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				#endregion
 
 				#region Capturing color frames for testing
-				//if (capturedColorFramesCount < 100 && capturedColorFramesCounter != 0 && capturedColorFramesCounter % 24 == 0)
+				//if (capturedColorFramesCount < 50 && capturedColorFramesCounter != 0 && capturedColorFramesCounter % 24 == 0)
 				//{
 				//	string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"./ColorFrame_{capturedColorFramesCount}.png");
 				//	ColorImageUtils.SaveBgraAsPng(colorFrame.ColorData, colorFrame.Width, colorFrame.Height, imagePath);
@@ -925,7 +926,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					}
 					else
 					{
-						var response = await LoadHandLandmarksModel(2, 0.8f, 0.8f, 0.8f, token).ConfigureAwait(false);
+						var response = await LoadHandLandmarksModel(2, 0.6f, 0.6f, 0.6f, token).ConfigureAwait(false);
 						success = response.Status == LoadHandLandmarksModelResponseStatus.OK;
 						message = response.Message;
 					}
@@ -1005,10 +1006,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			var bodiesJointsColorSpacePointsDict = new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
 			if (this.IsExternalBodyTrackingModelClientReadyToUseToTrackUserMovement && isNewBodyData)
 			{
-				var bodiesData = await GetBodiesData(colorFrame, token).ConfigureAwait(false);
-				if (bodiesData.Length > 1)
+				var (bodiesData, bodiesCount) = await GetBodiesData(colorFrame, token).ConfigureAwait(false);
+				if (bodiesCount > 1)
 				{
-					bodyFrame = new BodyFrame(colorFrame.RelativeTime, bodiesData.Length, true);
+					bodyFrame = new BodyFrame(colorFrame.RelativeTime, bodiesCount, true);
 					isNewBodyData = false;
 				}
 				else
@@ -1028,17 +1029,31 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		}
 
 		// TODO: Providing from config
-		private async Task<BodyDataWithColorSpacePoints[]> GetBodiesData(ColorFrame colorFrame, CancellationToken token)
+		private async Task<(BodyDataWithColorSpacePoints[] bodiesData, int bodiesCount)> GetBodiesData(ColorFrame colorFrame, CancellationToken token)
 		{
 			if (this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmark)
 			{
 				var response = await DetectPoseLandmark(colorFrame.ColorData, colorFrame.Width, colorFrame.Height, token).ConfigureAwait(false);
-				return await response.Map(0.5f, 0.75f).ConfigureAwait(false);
+				var bodiesData = await response.Map(0.5f, 0.6f).ConfigureAwait(false);
+				return (bodiesData, bodiesData.Length);
 			}
 			else
 			{
-				var response = await DetectHandLandmark(colorFrame.ColorData, colorFrame.Width, colorFrame.Height, token).ConfigureAwait(false);
-				return [response.Map(0.5f, 0.75f)];
+				byte[] colorData = colorFrame.ColorData;
+				int scaledImageWidth = ModelConsts.HAND_LANDMARKS_MODEL_IMAGE_INPUT_WIDTH;
+				int scaledImageHeight = ModelConsts.HAND_LANDMARKS_MODEL_IMAGE_INPUT_HEIGHT;
+				if (colorFrame.Width != scaledImageWidth || colorFrame.Height != scaledImageHeight)
+				{
+					colorData = ColorImageUtils.PrepareBgraImageForMediaPipeModel(colorFrame.ColorData, colorFrame.Width, colorFrame.Height, scaledImageWidth, scaledImageHeight);
+				}
+
+				var response = await DetectHandLandmark(colorData, scaledImageWidth, scaledImageHeight, colorFrame.Width, colorFrame.Height, token).ConfigureAwait(false);
+
+				if (response.Status == DetectHandLandmarksResponseStatus.TooMuchUsersForOneBodyTracking)
+					return ([], response.BodiesCount);
+
+				var bodyData = response.Map(0.5f, 0.6f);
+				return ([bodyData], 1);
 			}
 		}
 
@@ -1055,13 +1070,16 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		}
 
 		private async Task<DetectHandLandmarksResponse> DetectHandLandmark(byte[] image, int imageWidth, int imageHeight,
-			CancellationToken token)
+			int imageTargetWidth, int imageTargetHeight, CancellationToken token)
 		{
 			var request = new DetectHandLandmarksRequest()
 			{
 				Image = image,
 				ImageWidth = imageWidth,
-				ImageHeight = imageHeight
+				ImageHeight = imageHeight,
+				ImageTargetWidth = imageTargetWidth,
+				ImageTargetHeight = imageTargetHeight,
+				IsOneBodyTrackingEnabled = true
 			};
 			return await this.externalBodyTrackingModelClient.DetectHandLandmarksAsync(request, token).ConfigureAwait(false);
 		}

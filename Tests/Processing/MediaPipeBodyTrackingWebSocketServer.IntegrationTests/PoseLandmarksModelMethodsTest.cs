@@ -26,11 +26,11 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 		private float inferredJointVisibilityThreshold = 0.75f;
 
 		private int handLandmarksModelNumHands = 2;
-		private float handLandmarksModelMinHandDetectionConfidence = 0.8f;
-		private float handLandmarksModelMinHandPresenceConfidence = 0.8f;
-		private float handLandmarksModelMinTrackingConfidence = 0.8f;
+		private float handLandmarksModelMinHandDetectionConfidence = 0.6f;
+		private float handLandmarksModelMinHandPresenceConfidence = 0.6f;
+		private float handLandmarksModelMinTrackingConfidence = 0.6f;
 		private float notTrackedJointScoreThreshold = 0.5f;
-		private float inferredJointScoreThreshold = 0.75f;
+		private float inferredJointScoreThreshold = 0.6f;
 
 		#endregion
 
@@ -58,7 +58,6 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 			string[] colorFrameImageFilePaths = Directory.GetFiles(@"../../../Input", "*.png").ToArray();
 			foreach (string filePath in colorFrameImageFilePaths)
 			{
-				//string filePath = @"C:\Users\Michal\source\repos\GestureRecognitionKinectApp\Tests\Processing\MediaPipeBodyTrackingWebSocketServer.IntegrationTests\Input\ColorFrame_22.png";
 				await DetectsPoseLandmarks(filePath).ConfigureAwait(false);
 			}
 		}
@@ -77,7 +76,7 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 			string[] colorFrameImageFilePaths = Directory.GetFiles(@"../../../Input", "*.png").ToArray();
 			foreach (string filePath in colorFrameImageFilePaths)
 			{
-				//string filePath = @"C:\Users\Michal\source\repos\GestureRecognitionKinectApp\Tests\Processing\MediaPipeBodyTrackingWebSocketServer.IntegrationTests\Input\ColorFrame_22.png";
+				//string filePath = @"C:\Users\Michal\source\repos\GestureRecognitionKinectApp\Tests\Processing\MediaPipeBodyTrackingWebSocketServer.IntegrationTests\Input\ColorFrame_6.png";
 				await DetectsHandLandmarks(filePath).ConfigureAwait(false);
 			}
 		}
@@ -145,10 +144,10 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 
 			var request = GetDetectPoseLandmarksRequest(filePath);
 
-			var start = DateTime.Now;
+			// var start = DateTime.Now;
 			var response = await this.client.DetectPoseLandmarksAsync(request, CancellationToken.None).ConfigureAwait(false);
-			var finish = DateTime.Now;
-			Debug.WriteLine($"[{DateTime.Now}] Detects duration: {(finish - start).TotalMilliseconds}");
+			// var finish = DateTime.Now;
+			// Debug.WriteLine($"[{DateTime.Now}] Detects duration: {(finish - start).Milliseconds}");
 			Assert.IsNotNull(response);
 			Assert.AreNotEqual(DetectPoseLandmarksResponseStatus.Error, response.Status);
 
@@ -206,15 +205,28 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 		#region Detecting hand landmarks methods
 		private static DetectHandLandmarksRequest GetDetectHandLandmarksRequest(string filePath)
 		{
-			byte[] imageData = ColorImageUtils.LoadPngAsBgra(filePath, out int width, out int height);
+			byte[] imageData = ColorImageUtils.LoadPngAsBgra(filePath, out int currentImageWidth, out int currentImageHeight);
 			Assert.IsNotNull(imageData);
-			Assert.AreEqual(width * height * 4, imageData.Length);
+			Assert.AreEqual(currentImageWidth * currentImageHeight * 4, imageData.Length);
+
+			int scaledImageWidth = ModelConsts.HAND_LANDMARKS_MODEL_IMAGE_INPUT_WIDTH;
+			int scaledImageHeight = ModelConsts.HAND_LANDMARKS_MODEL_IMAGE_INPUT_HEIGHT;
+
+			if (currentImageWidth != scaledImageWidth || currentImageHeight != scaledImageHeight)
+			{
+				imageData = ColorImageUtils.PrepareBgraImageForMediaPipeModel(imageData, currentImageWidth, currentImageHeight, scaledImageWidth, scaledImageHeight);
+			}
+
+			Assert.IsNotNull(imageData);
 
 			return new DetectHandLandmarksRequest()
 			{
 				Image = imageData,
-				ImageWidth = width,
-				ImageHeight = height
+				ImageWidth = scaledImageWidth,
+				ImageHeight = scaledImageHeight,
+				ImageTargetWidth = currentImageWidth,
+				ImageTargetHeight = currentImageHeight,
+				IsOneBodyTrackingEnabled = true
 			};
 		}
 
@@ -224,22 +236,24 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 
 			var request = GetDetectHandLandmarksRequest(filePath);
 
-			var start = DateTime.Now;
+			// var start = DateTime.Now;
 			var response = await this.client.DetectHandLandmarksAsync(request, CancellationToken.None).ConfigureAwait(false);
-			var finish = DateTime.Now;
-			Debug.WriteLine($"[{DateTime.Now}] Detects duration: {(finish - start).TotalMilliseconds}");
+			// var finish = DateTime.Now;
+			// Debug.WriteLine($"[{DateTime.Now}] Detects duration: {(finish - start).Milliseconds}");
 			Assert.IsNotNull(response);
 			Assert.AreNotEqual(DetectHandLandmarksResponseStatus.Error, response.Status);
 
 			if (response.Status == DetectHandLandmarksResponseStatus.OK)
 			{
-				Assert.IsNotNull(response.Handedness);
-				Assert.IsTrue(response.Handedness.Count <= 2);
+				Assert.AreEqual(1, response.BodiesCount);
 
+				Assert.IsNotNull(response.Handedness);
+				Assert.IsNotEmpty(response.Handedness);
 				Assert.IsNotNull(response.Landmarks);
 				Assert.IsNotEmpty(response.Landmarks);
 				Assert.IsNotNull(response.WorldLandmarks);
 				Assert.IsNotEmpty(response.WorldLandmarks);
+				Assert.AreEqual(response.Landmarks.Count, response.Handedness.Count);
 				Assert.AreEqual(response.Landmarks.Count, response.WorldLandmarks.Count);
 				Assert.IsTrue(response.Landmarks.Count <= this.handLandmarksModelNumHands);
 
