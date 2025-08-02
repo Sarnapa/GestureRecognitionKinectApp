@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -11,15 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight.Ioc;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Structures.Managers;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Utilities;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Kinect;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
-using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures.BodyTracking;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Utilities;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Processing.BaseClassLib.Mappers;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
+using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Data;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Events;
@@ -181,11 +183,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// </summary>
 		private int framesCounter = 0;
 
-		// For MediaPipe Pose Landmark Model - 3, For MediaPipe Hand Landmark - 1
+		// For MediaPipe Pose Landmark Model - 2, For MediaPipe Hand Landmark - 2
 		/// <summary>
 		/// Specifies which frame is to be analyzed by the external model for tracking user movement.
 		/// </summary>
-		private const int FRAME_SKIP_FACTOR = 1;
+		private const int FRAME_SKIP_FACTOR = 2;
 
 		#region Code archived - failed attempt with mediapipe model in ONNX format
 		// Code archived - failed attempt with mediapipe model in ONNX format
@@ -221,7 +223,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		{
 			get
 			{
-				return this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmark || this.TrackingMode == BodyTrackingMode.MediaPipeHandLandmark;
+				return this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmarks || this.TrackingMode == BodyTrackingMode.MediaPipeHandLandmarks;
 			}
 		}
 
@@ -345,8 +347,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		public BodyTrackingModel()
 		{
 			this.renderColorFrameManager = new RenderColorFrameManager();
-			this.renderBodyFrameManager = new RenderBodyFrameManager();
+			
+			this.TrackingMode = BodyTrackingMode.MediaPipePoseLandmarks;
+			this.renderBodyFrameManager = new RenderBodyFrameManager(GetRenderBodyFrameManagerParameters());
+			
 			this.kinectClient = new KinectClient();
+			
 			this.gestureRecognitionManager = SimpleIoc.Default.GetInstance<GestureRecognitionManager>();
 			this.gestureRecognitionFeaturesManager = SimpleIoc.Default.GetInstance<GestureRecognitionFeaturesManager>();
 			this.gestureToRecognizeBodyFrames = new List<BodyData>();
@@ -356,8 +362,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#region Public methods
 		public async Task Start()
 		{
-			this.TrackingMode = BodyTrackingMode.MediaPipeHandLandmark;
-
 			bool isKinectServerStarted = this.kinectClient.StartKinectServer();
 			if (isKinectServerStarted)
 			{
@@ -918,9 +922,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				{
 					bool success = false;
 					string message = string.Empty;
-					if (this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmark)
+					if (this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmarks)
 					{
-						var response = await LoadPoseLandmarksModel(ModelKind.PoseLandmarksLite, 1, 0.9f, 0.9f, 0.9f, token).ConfigureAwait(false);
+						var response = await LoadPoseLandmarksModel(ModelKind.PoseLandmarksLite, 1, 0.8f, 0.8f, 0.8f, token).ConfigureAwait(false);
 						success = response.Status == LoadPoseLandmarksModelResponseStatus.OK;
 						message = response.Message;
 					}
@@ -1031,40 +1035,47 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		// TODO: Providing from config
 		private async Task<(BodyDataWithColorSpacePoints[] bodiesData, int bodiesCount)> GetBodiesData(ColorFrame colorFrame, CancellationToken token)
 		{
-			if (this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmark)
+			bool isMediaPipePoseLandmark = this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmarks; 
+
+			int scaledImageWidth = isMediaPipePoseLandmark ? ModelConsts.POSE_LANDMARKS_MODEL_IMAGE_INPUT_WIDTH : ModelConsts.HAND_LANDMARKS_MODEL_IMAGE_INPUT_WIDTH;
+			int scaledImageHeight = isMediaPipePoseLandmark ? ModelConsts.POSE_LANDMARKS_MODEL_IMAGE_INPUT_HEIGHT : ModelConsts.HAND_LANDMARKS_MODEL_IMAGE_INPUT_HEIGHT;
+			byte[] colorData = colorFrame.ColorData;
+			if (colorFrame.Width != scaledImageWidth || colorFrame.Height != scaledImageHeight)
+				colorData = ColorImageUtils.PrepareBgraImageForMediaPipeModel(colorFrame.ColorData, colorFrame.Width, colorFrame.Height, scaledImageWidth, scaledImageHeight);
+
+			if (isMediaPipePoseLandmark)
 			{
-				var response = await DetectPoseLandmark(colorFrame.ColorData, colorFrame.Width, colorFrame.Height, token).ConfigureAwait(false);
-				var bodiesData = await response.Map(0.5f, 0.6f).ConfigureAwait(false);
-				return (bodiesData, bodiesData.Length);
+				var response = await DetectPoseLandmark(colorData, scaledImageWidth, scaledImageHeight, colorFrame.Width, colorFrame.Height, token).ConfigureAwait(false);
+				
+				if (response.Status == DetectPoseLandmarksResponseStatus.TooMuchUsersForOneBodyTracking)
+					return ([], response.BodiesCount);
+
+				var bodyData = await response.Map(0.6f, 0.5f).ConfigureAwait(false);
+				return (bodyData, 1);
 			}
 			else
 			{
-				byte[] colorData = colorFrame.ColorData;
-				int scaledImageWidth = ModelConsts.HAND_LANDMARKS_MODEL_IMAGE_INPUT_WIDTH;
-				int scaledImageHeight = ModelConsts.HAND_LANDMARKS_MODEL_IMAGE_INPUT_HEIGHT;
-				if (colorFrame.Width != scaledImageWidth || colorFrame.Height != scaledImageHeight)
-				{
-					colorData = ColorImageUtils.PrepareBgraImageForMediaPipeModel(colorFrame.ColorData, colorFrame.Width, colorFrame.Height, scaledImageWidth, scaledImageHeight);
-				}
-
 				var response = await DetectHandLandmark(colorData, scaledImageWidth, scaledImageHeight, colorFrame.Width, colorFrame.Height, token).ConfigureAwait(false);
 
 				if (response.Status == DetectHandLandmarksResponseStatus.TooMuchUsersForOneBodyTracking)
 					return ([], response.BodiesCount);
 
-				var bodyData = response.Map(0.5f, 0.6f);
+				var bodyData = response.Map(0.6f, 0.5f);
 				return ([bodyData], 1);
 			}
 		}
 
 		private async Task<DetectPoseLandmarksResponse> DetectPoseLandmark(byte[] image, int imageWidth, int imageHeight,
-			CancellationToken token)
+			int imageTargetWidth, int imageTargetHeight, CancellationToken token)
 		{
 			var request = new DetectPoseLandmarksRequest()
 			{
 				Image = image,
 				ImageWidth = imageWidth,
-				ImageHeight = imageHeight
+				ImageHeight = imageHeight,
+				ImageTargetWidth = imageTargetWidth,
+				ImageTargetHeight = imageTargetHeight,
+				IsOneBodyTrackingEnabled = true
 			};
 			return await this.externalBodyTrackingModelClient.DetectPoseLandmarksAsync(request, token).ConfigureAwait(false);
 		}
@@ -1097,77 +1108,77 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		//		this.poseDetectionModelWrapper = new PoseDetectionModelWrapper<ColorFrameFullHDInput>(modelWrapperParameters);
 		//		this.poseLandmarksDetectionModelWrapper = new PoseLandmarksDetectionModelWrapper<ColorFrameFullHDInput>(modelWrapperParameters);
 
-			//		var poseDetectionModelLoadParams = new LoadBodyTrackingModelParameters();
-			//		var poseDetectionModelLoadResult = this.poseDetectionModelWrapper.LoadModel(poseDetectionModelLoadParams);
-			//		if (poseDetectionModelLoadResult.IsSuccess)
-			//		{
-			//			var poseLandmarksDetectionModelLoadParams = new LoadBodyTrackingModelParameters();
-			//			var poseLandMarksDetectionModelLoadResult = this.poseLandmarksDetectionModelWrapper.LoadModel(poseLandmarksDetectionModelLoadParams);
-			//			if (!poseLandMarksDetectionModelLoadResult.IsSuccess)
-			//				MessageBoxUtils.ShowMessage(poseLandMarksDetectionModelLoadResult.ErrorMessage, MessageBoxButton.OK, MessageBoxImage.Error);
-			//		}
-			//		else
-			//		{
-			//			MessageBoxUtils.ShowMessage(poseDetectionModelLoadResult.ErrorMessage, MessageBoxButton.OK, MessageBoxImage.Error);
-			//		}
+		//		var poseDetectionModelLoadParams = new LoadBodyTrackingModelParameters();
+		//		var poseDetectionModelLoadResult = this.poseDetectionModelWrapper.LoadModel(poseDetectionModelLoadParams);
+		//		if (poseDetectionModelLoadResult.IsSuccess)
+		//		{
+		//			var poseLandmarksDetectionModelLoadParams = new LoadBodyTrackingModelParameters();
+		//			var poseLandMarksDetectionModelLoadResult = this.poseLandmarksDetectionModelWrapper.LoadModel(poseLandmarksDetectionModelLoadParams);
+		//			if (!poseLandMarksDetectionModelLoadResult.IsSuccess)
+		//				MessageBoxUtils.ShowMessage(poseLandMarksDetectionModelLoadResult.ErrorMessage, MessageBoxButton.OK, MessageBoxImage.Error);
+		//		}
+		//		else
+		//		{
+		//			MessageBoxUtils.ShowMessage(poseDetectionModelLoadResult.ErrorMessage, MessageBoxButton.OK, MessageBoxImage.Error);
+		//		}
 
-			//		if (!this.IsExternalBodyTrackingModelLoaded)
-			//			CleanExternalBodyTrackingModels();
-			//	}
-			//}
+		//		if (!this.IsExternalBodyTrackingModelLoaded)
+		//			CleanExternalBodyTrackingModels();
+		//	}
+		//}
 
-			// Code archived - failed attempt with mediapipe model in ONNX format
-			//private void CleanExternalBodyTrackingModels()
-			//{
-			//	if (this.poseDetectionModelWrapper != null)
-			//	{
-			//		this.poseDetectionModelWrapper.Cleanup();
-			//		this.poseDetectionModelWrapper = null;
-			//	}
+		// Code archived - failed attempt with mediapipe model in ONNX format
+		//private void CleanExternalBodyTrackingModels()
+		//{
+		//	if (this.poseDetectionModelWrapper != null)
+		//	{
+		//		this.poseDetectionModelWrapper.Cleanup();
+		//		this.poseDetectionModelWrapper = null;
+		//	}
 
-			//	if (this.poseLandmarksDetectionModelWrapper != null)
-			//	{
-			//		this.poseLandmarksDetectionModelWrapper.Cleanup();
-			//		this.poseLandmarksDetectionModelWrapper = null;
-			//	}
-			//}
-			#endregion
+		//	if (this.poseLandmarksDetectionModelWrapper != null)
+		//	{
+		//		this.poseLandmarksDetectionModelWrapper.Cleanup();
+		//		this.poseLandmarksDetectionModelWrapper = null;
+		//	}
+		//}
+		#endregion
 
-			#region Convert body joints coordinations to color coordinations methods
-			// TODO: Unnecessary for now, to be removed
-			//private BodyJointsColorSpacePointsDict ConvertToColorSpace(BodyData body)
-			//{
-			//	return ConvertToColorSpace(new[] { body }).FirstOrDefault().Item2;
-			//}
+		#region Convert body joints coordinations to color coordinations methods
+		// TODO: Unnecessary for now, to be removed
+		//private BodyJointsColorSpacePointsDict ConvertToColorSpace(BodyData body)
+		//{
+		//	return ConvertToColorSpace(new[] { body }).FirstOrDefault().Item2;
+		//}
 
-			//private (BodyData, BodyJointsColorSpacePointsDict)[] ConvertToColorSpace(IEnumerable<BodyData> bodies)
-			//{
-			//	if (bodies == null || !bodies.Any())
-			//		return new (BodyData, BodyJointsColorSpacePointsDict)[] { };
+		//private (BodyData, BodyJointsColorSpacePointsDict)[] ConvertToColorSpace(IEnumerable<BodyData> bodies)
+		//{
+		//	if (bodies == null || !bodies.Any())
+		//		return new (BodyData, BodyJointsColorSpacePointsDict)[] { };
 
-			//	return bodies.Select(b => (b, ConvertToColorSpace(b?.Joints))).ToArray();
-			//}
+		//	return bodies.Select(b => (b, ConvertToColorSpace(b?.Joints))).ToArray();
+		//}
 
-			//private BodyJointsColorSpacePointsDict ConvertToColorSpace(IReadOnlyDictionary<JointType, Joint> joints)
-			//{
-			//	var jointsPoints = new BodyJointsColorSpacePointsDict();
+		//private BodyJointsColorSpacePointsDict ConvertToColorSpace(IReadOnlyDictionary<JointType, Joint> joints)
+		//{
+		//	var jointsPoints = new BodyJointsColorSpacePointsDict();
 
-			//	if (joints != null)
-			//	{
-			//		foreach (var jointType in joints.Keys)
-			//		{
-			//			var position = joints[jointType].Position;
-			//			var kinectPosition = new Kinect.CameraSpacePoint() { X = position.X, Y = position.Y, Z = position.Z };
-			//			var kinectColorSpacePosition = this.coordinateMapper.MapCameraPointToColorSpace(kinectPosition);
-			//			jointsPoints[jointType] = kinectColorSpacePosition.Map();
-			//		}
-			//	}
+		//	if (joints != null)
+		//	{
+		//		foreach (var jointType in joints.Keys)
+		//		{
+		//			var position = joints[jointType].Position;
+		//			var kinectPosition = new Kinect.CameraSpacePoint() { X = position.X, Y = position.Y, Z = position.Z };
+		//			var kinectColorSpacePosition = this.coordinateMapper.MapCameraPointToColorSpace(kinectPosition);
+		//			jointsPoints[jointType] = kinectColorSpacePosition.Map();
+		//		}
+		//	}
 
-			//	return jointsPoints;
-			//}
-			#endregion
+		//	return jointsPoints;
+		//}
+		#endregion
 
-			#region Detecting gestures to start recording / recognizing given gesture
+		#region Detecting gestures to start recording / recognizing given gesture
 		private bool UpdateGestureToStartRecordingDetectionState(BodyData trackedBody)
 		{
 			bool isRightHandClosed = trackedBody.HandRightState == HandState.Closed && trackedBody.HandRightConfidence == TrackingConfidence.High;
@@ -1343,6 +1354,55 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#endregion
 
 		#region Others methods
+		private RenderBodyFrameManagerParameters GetRenderBodyFrameManagerParameters()
+		{
+			RenderBodyFrameManagerParameters parameters;
+			switch (this.TrackingMode)
+			{
+				case BodyTrackingMode.MediaPipePoseLandmarks:
+					parameters = new RenderBodyFrameManagerParameters()
+					{
+						HandSize = MediaPipePoseLandmarksRenderBodyFrameConsts.HAND_SIZE,
+						JointThickness = MediaPipePoseLandmarksRenderBodyFrameConsts.JOINT_THICKNESS,
+						GestureRecognitionJointThickness = MediaPipePoseLandmarksRenderBodyFrameConsts.GESTURE_RECOGNITION_JOINT_THICKNESS,
+						BodySkeletonThickness = MediaPipePoseLandmarksRenderBodyFrameConsts.BODY_SKELETON_THICKNESS,
+						JointsToIgnore = MediaPipePoseLandmarksRenderBodyFrameConsts.JOINTS_TO_IGNORE,
+						GestureRecognitionJoints = MediaPipePoseLandmarksGestureRecognitionDefinitions.GestureRecognitionJoints,
+						Bones = MediaPipePoseLandmarksBonesDefinitions.AllBonesWithoutHeadAndLegs.ToArray(),
+						IsInferredMode = false,
+					};
+					break;
+				case BodyTrackingMode.MediaPipeHandLandmarks:
+					parameters = new RenderBodyFrameManagerParameters()
+					{
+						HandSize = (float)MediaPipeHandLandmarksRenderBodyFrameConsts.HAND_SIZE,
+						JointThickness = (float)MediaPipeHandLandmarksRenderBodyFrameConsts.JOINT_THICKNESS,
+						GestureRecognitionJointThickness = (float)MediaPipeHandLandmarksRenderBodyFrameConsts.GESTURE_RECOGNITION_JOINT_THICKNESS,
+						BodySkeletonThickness = (float)MediaPipeHandLandmarksRenderBodyFrameConsts.BODY_SKELETON_THICKNESS,
+						JointsToIgnore = MediaPipeHandLandmarksRenderBodyFrameConsts.JOINTS_TO_IGNORE,
+						GestureRecognitionJoints = MediaPipeHandLandmarksGestureRecognitionDefinitions.GestureRecognitionJoints,
+						Bones = MediaPipeHandLandmarksBonesDefinitions.AllBones.ToArray(),
+						IsInferredMode = false,
+					};
+					break;
+				default:
+					parameters = new RenderBodyFrameManagerParameters()
+					{
+						HandSize = (float)KinectRenderBodyFrameConsts.HAND_SIZE,
+						JointThickness = (float)KinectRenderBodyFrameConsts.JOINT_THICKNESS,
+						GestureRecognitionJointThickness = (float)KinectRenderBodyFrameConsts.GESTURE_RECOGNITION_JOINT_THICKNESS,
+						BodySkeletonThickness = (float)KinectRenderBodyFrameConsts.BODY_SKELETON_THICKNESS,
+						JointsToIgnore = KinectRenderBodyFrameConsts.JOINTS_TO_IGNORE,
+						GestureRecognitionJoints = KinectGestureRecognitionDefinitions.GestureRecognitionJoints,
+						Bones = KinectBonesDefinitions.AllBonesWithoutLegs.ToArray(),
+						IsInferredMode = false,
+					};
+					break;
+			}
+
+			return parameters;
+		}
+
 		private void SetStandardState()
 		{
 			this.TrackingState = BodyTrackingState.Standard;

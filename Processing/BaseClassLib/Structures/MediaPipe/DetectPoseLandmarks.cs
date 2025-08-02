@@ -38,6 +38,27 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
 			get;
 			set;
 		}
+
+		[Key("image_target_width")]
+		public int ImageTargetWidth
+		{
+			get;
+			set;
+		}
+
+		[Key("image_target_height")]
+		public int ImageTargetHeight
+		{
+			get;
+			set;
+		}
+
+		[Key("is_one_body_tracking_enabled")]
+		public bool IsOneBodyTrackingEnabled
+		{
+			get;
+			set;
+		}
 		#endregion
 	}
 	#endregion
@@ -97,6 +118,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
 	{
 		OK = 0x00,
 		NoPose = 0x01,
+		TooMuchUsersForOneBodyTracking = 0x02,
 		Error = 0xFF,
 	}
 	#endregion
@@ -131,6 +153,13 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
 			get;
 			set;
 		} = new List<HandState>();
+
+		[Key("bodies_count")]
+		public int BodiesCount
+		{
+			get;
+			set;
+		}
 
 		[Key("status")]
 		public DetectPoseLandmarksResponseStatus Status

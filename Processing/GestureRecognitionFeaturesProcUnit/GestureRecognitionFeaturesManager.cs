@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
+using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures;
 
 namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 {
@@ -15,19 +14,23 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#endregion
 
 		#region Constructors
-		public GestureRecognitionFeaturesManager(IEnumerable<JointType> joints, IEnumerable<Bone> bones)
+		public GestureRecognitionFeaturesManager(BodyTrackingMode mode)
 		{
-			if (joints == null)
-				throw new ArgumentNullException(nameof(joints));
-			if (!joints.Any())
-				throw new ArgumentException(nameof(joints));
-			if (bones == null)
-				throw new ArgumentNullException(nameof(bones));
-			if (!bones.Any())
-				throw new ArgumentException(nameof(bones));
-
-			this.joints = joints;
-			this.bones = bones;
+			switch (mode)
+			{
+				case BodyTrackingMode.MediaPipePoseLandmarks:
+					this.joints = MediaPipePoseLandmarksGestureRecognitionDefinitions.GestureRecognitionJoints;
+					this.bones = MediaPipePoseLandmarksGestureRecognitionDefinitions.GestureRecognitionBones;
+					break;
+				case BodyTrackingMode.MediaPipeHandLandmarks:
+					this.joints = MediaPipeHandLandmarksGestureRecognitionDefinitions.GestureRecognitionJoints;
+					this.bones = MediaPipeHandLandmarksGestureRecognitionDefinitions.GestureRecognitionBones;
+					break;
+				default:
+					this.joints = KinectGestureRecognitionDefinitions.GestureRecognitionJoints;
+					this.bones = KinectGestureRecognitionDefinitions.GestureRecognitionBones;
+					break;
+			}
 		}
 		#endregion
 

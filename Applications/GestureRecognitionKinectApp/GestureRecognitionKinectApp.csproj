@@ -98,4 +98,9 @@
     <Resource Include="Resources\ExportModel.png" />
     <Resource Include="Resources\ImportModel.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="App.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

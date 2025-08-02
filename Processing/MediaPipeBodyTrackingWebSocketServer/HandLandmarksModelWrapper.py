@@ -86,7 +86,6 @@ class HandLandmarksModelWrapper:
         is_one_body_tracking_enabled = request.is_one_body_tracking_enabled
 
         # start = time.time()
-
         np_image = np.frombuffer(image, dtype=np.uint8).reshape((image_height, image_width, 3))
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=np_image)
         # finish = time.time()

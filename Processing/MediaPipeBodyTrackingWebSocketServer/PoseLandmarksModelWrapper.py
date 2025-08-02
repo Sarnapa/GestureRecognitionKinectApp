@@ -86,26 +86,20 @@ class PoseLandmarksModelWrapper:
                     landmarks=landmarks,
                     world_landmarks=world_landmarks,
                     hand_left_states=left_hand_states,
-                    hand_right_states=right_hand_states
+                    hand_right_states=right_hand_states,
+                    bodies_count=0
             )
         
         image = request.image
         image_width = request.image_width
         image_height = request.image_height
+        image_target_width = request.image_target_width
+        image_target_height = request.image_target_height
+        is_one_body_tracking_enabled = request.is_one_body_tracking_enabled
 
         # start = time.time()
-        np_image = np.frombuffer(image, dtype=np.uint8).reshape((image_height, image_width, 4))
-        
-        # TODO: Scaling factor as a parameter and minimum values
-        # scale_factor = 0.
-        # resized_image_width = int(image_width * scale_factor)
-        # resized_image_height = int(image_height * scale_factor)
-        
-        # resized_image = cv2.resize(np_image, (resized_image_width, resized_image_height), interpolation=cv2.INTER_AREA)
-
-        # TODO: image format as a request parameter
-        rgb_image = cv2.cvtColor(np_image, cv2.COLOR_BGRA2RGB)
-        mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_image)
+        np_image = np.frombuffer(image, dtype=np.uint8).reshape((image_height, image_width, 3))
+        mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=np_image)
         # finish = time.time()
         # duration = finish - start
         # print(f"[image] {duration:.6f} seconds")
@@ -124,7 +118,8 @@ class PoseLandmarksModelWrapper:
                 landmarks=landmarks,
                 world_landmarks=world_landmarks,
                 hand_left_states=left_hand_states,
-                hand_right_states=right_hand_states
+                hand_right_states=right_hand_states,
+                bodies_count=0
             )
 
         if not result.pose_landmarks or not result.pose_world_landmarks:
@@ -134,23 +129,37 @@ class PoseLandmarksModelWrapper:
                 landmarks=landmarks,
                 world_landmarks=world_landmarks,
                 hand_left_states=left_hand_states,
-                hand_right_states=right_hand_states
+                hand_right_states=right_hand_states,
+                bodies_count=0
             )
 
-        poses_count = len(result.pose_landmarks)
+        bodies_count = len(result.pose_landmarks)
 
-        if len(result.pose_world_landmarks) != poses_count:
+        if len(result.pose_world_landmarks) != bodies_count:
             return DetectsStructures.DetectPoseLandmarksResponse(
                 status=DetectsStructures.DetectPoseLandmarksResponseStatus.error,
                 message='Invalid structure of model response.',
                 landmarks=landmarks,
                 world_landmarks=world_landmarks,
                 hand_left_states=left_hand_states,
-                hand_right_states=right_hand_states
+                hand_right_states=right_hand_states,
+                bodies_count=0
             )
 
+        if is_one_body_tracking_enabled:
+            if bodies_count > 1:
+                return DetectsStructures.DetectHandLandmarksResponse(
+                    status=DetectsStructures.DetectHandLandmarksResponseStatus.too_much_users_for_one_body_tracking,
+                    message='',
+                    landmarks=landmarks,
+                    world_landmarks=world_landmarks,
+                    hand_left_states=left_hand_states,
+                    hand_right_states=right_hand_states,
+                    bodies_count=bodies_count
+                )
+
         for pose_landmarks in result.pose_landmarks:
-            pose = [DetectsStructures.PoseLandmark(idx, (lm.x * image_width), (lm.y * image_height), lm.z, lm.visibility, lm.presence) for idx, lm in enumerate(pose_landmarks)]
+            pose = [DetectsStructures.PoseLandmark(idx, (lm.x * image_target_width), (lm.y * image_target_height), lm.z, lm.visibility, lm.presence) for idx, lm in enumerate(pose_landmarks)]
             landmarks.append(pose)
 
         for world_pose_landmarks in result.pose_world_landmarks:
@@ -162,7 +171,7 @@ class PoseLandmarksModelWrapper:
         # print(f"[prepare result] {duration:.6f} seconds")
 
         # start = time.time()
-        for i in range(poses_count):
+        for i in range(bodies_count):
             # TODO: In parallel for each pose
             with ThreadPoolExecutor() as executor:
                 left_hand_state = DetectsStructures.HandState.Unknown
@@ -195,7 +204,8 @@ class PoseLandmarksModelWrapper:
             landmarks=landmarks,
             world_landmarks=world_landmarks,
             hand_left_states=left_hand_states,
-            hand_right_states=right_hand_states
+            hand_right_states=right_hand_states,
+            bodies_count=bodies_count
         )
 
     def get_hand_rgb_lm(self, lms: List[List[DetectsStructures.PoseLandmark]], is_left: bool) -> DetectsStructures.PoseLandmark:

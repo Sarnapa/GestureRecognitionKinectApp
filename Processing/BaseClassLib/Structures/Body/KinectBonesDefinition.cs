@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 {
-	public static class BonesDefinitions
+	public static class KinectBonesDefinitions
 	{
 		// Torso
 		public static Bone HeadNeckBone = new Bone(JointType.Head, JointType.Neck);

@@ -1,7 +1,7 @@
 ﻿using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures;
-using static GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures.GestureRecognitionDefinitions;
-using static GestureRecognition.Processing.BaseClassLib.Structures.Body.BonesDefinitions;
+using static GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures.KinectGestureRecognitionDefinitions;
+using static GestureRecognition.Processing.BaseClassLib.Structures.Body.KinectBonesDefinitions;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 
 namespace GestureRecognition.Processing.BaseClassLib.Mappers

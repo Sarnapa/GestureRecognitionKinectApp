@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using SkiaSharp;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
-using static GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures.GestureRecognitionDefinitions;
+using GestureRecognition.Processing.BaseClassLib.Structures.Tests;
+using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures;
 
 namespace GestureRecognition.Processing.BaseClassLib.Tests
 {
@@ -16,96 +16,168 @@ namespace GestureRecognition.Processing.BaseClassLib.Tests
 		private readonly string outputImagePath;
 
 		/// <summary>
+		/// Radius of drawn hand circles
+		/// </summary>
+		private readonly float handSize = (float)KinectRenderBodyFrameConsts.HAND_SIZE;
+
+		/// <summary>
+		/// Thickness of drawn joint
+		/// </summary>
+		private readonly float jointThickness = (float)KinectRenderBodyFrameConsts.JOINT_THICKNESS;
+
+		/// <summary>
+		/// Thickness of drawn joint (that joint taking part in gesture recognition processing)
+		/// </summary>
+		private readonly float gestureRecognitionJointThickness = (float)KinectRenderBodyFrameConsts.GESTURE_RECOGNITION_JOINT_THICKNESS;
+
+		/// <summary>
+		/// Thickness of lines representing user skeleton
+		/// </summary>
+		private readonly float bodySkeletonThickness = (float)KinectRenderBodyFrameConsts.BODY_SKELETON_THICKNESS;
+
+		/// <summary>
 		/// Not drawn joints
 		/// </summary>
-		private readonly JointType[] jointsToIgnore = {
-			JointType.KneeLeft, JointType.KneeRight, JointType.AnkleLeft,
-			JointType.AnkleRight, JointType.FootLeft, JointType.FootRight,
-			// From MediaPipe
-			JointType.EyeInnerLeft, JointType.EyeLeft, JointType.EyeOuterLeft,
-			JointType.EyeInnerRight, JointType.EyeRight, JointType.EyeOuterRight,
-			JointType.EarLeft, JointType.EarRight,
-			JointType.MouthLeft, JointType.MouthRight,
-			JointType.HeelLeft, JointType.HeelRight,
-			JointType.FootIndexLeft, JointType.FootIndexRight
-			};
+		private readonly JointType[] jointsToIgnore = KinectRenderBodyFrameConsts.JOINTS_TO_IGNORE;
+
+		/// <summary>
+		/// Joints involved in the gesture recognition process
+		/// </summary>
+		private readonly JointType[] gestureRecognitionJoints = KinectGestureRecognitionDefinitions.GestureRecognitionJoints;
+
+		/// <summary>
+		/// Color used for drawing hands that are currently tracked as closed
+		/// </summary>
+		private readonly SKColor handClosedColor = new SKColor(255, 0, 0, 128);
+
+		/// <summary>
+		/// Color used for drawing hands that are currently tracked as opened
+		/// </summary>
+		private readonly SKColor handOpenColor = new SKColor(0, 255, 0, 128);
+
+		/// <summary>
+		/// Color used for drawing hands that are currently tracked as in lasso (pointer) position
+		/// </summary>
+		private readonly SKColor handLassoColor = new SKColor(0, 0, 255, 128);
+
+		/// <summary>
+		/// Color used for drawing joints that are currently tracked
+		/// </summary>
+		private readonly SKColor trackedJointColor = new SKColor(68, 192, 68, 255);
+
+		/// <summary>
+		/// Color used for drawing joints that are currently tracked (that joint taking part in gesture recognition processing)
+		/// </summary>
+		private readonly SKColor trackedGestureRecognitionJointColor = new SKColor(128, 0, 128, 255);
+
+		/// <summary>
+		/// Color used for drawing joints that are currently inferred
+		/// </summary>        
+		private readonly SKColor inferredJointColor = SKColors.Yellow;
+
+		/// <summary>
+		/// Color used for drawing bones
+		/// </summary>        
+		private readonly SKColor boneColor = SKColors.Red;
+
+		/// <summary>
+		/// Color used for drawing bones that are currently inferred
+		/// </summary>        
+		private readonly SKColor inferredBoneColor = SKColors.Gray;
 
 		/// <summary>
 		/// Definition of bones
 		/// </summary>
-		private readonly List<Bone> bones = MediaPipeHandLandmarksBonesDefinitions.AllBones;
+		private readonly Bone[] bones = KinectBonesDefinitions.AllBonesWithoutLegs.ToArray();
 
-		private bool isInferredMode = false;
+		// TODO: Facilitate to set this option in user settings.
+		/// <summary>
+		/// Is it enabled mode to draw inferred bones and joints?
+		/// </summary>
+		private readonly bool isInferredMode = false;
 		#endregion
 
 		#region Constructors
-		public DrawBodyDataManager(string inputImagePath, string outputImagePath)
+		public DrawBodyDataManager(DrawBodyDataManagerParameters parameters)
 		{
-			this.inputImagePath = inputImagePath;
-			this.outputImagePath = outputImagePath;
+			if (string.IsNullOrEmpty(parameters?.InputImagePath))
+				throw new ArgumentNullException(nameof(parameters.InputImagePath));
+			if (string.IsNullOrEmpty(parameters?.OutputImagePath))
+				throw new ArgumentNullException(nameof(parameters.OutputImagePath));
+
+			this.inputImagePath = parameters.InputImagePath;
+			this.outputImagePath = parameters.OutputImagePath;
+			this.handSize = parameters.HandSize;
+			this.jointThickness = parameters.JointThickness;
+			this.gestureRecognitionJointThickness = parameters.GestureRecognitionJointThickness;
+			this.bodySkeletonThickness = parameters.BodySkeletonThickness;
+			this.jointsToIgnore = parameters.JointsToIgnore ?? new JointType[0];
+			this.gestureRecognitionJoints = parameters.GestureRecognitionJoints ?? new JointType[0];
+			this.bones = parameters.Bones ?? new Bone[0];
+			this.isInferredMode = parameters.IsInferredMode;
 		}
 		#endregion
 
 		#region Public methods
 		public void DrawBodyData(BodyDataWithColorSpacePoints body, RectangleF boundingBox)
 		{
-			using (SKBitmap baseBitmap = SKBitmap.Decode(inputImagePath))
+			using (SKBitmap baseBitmap = SKBitmap.Decode(this.inputImagePath))
 			using (SKCanvas canvas = new SKCanvas(baseBitmap))
 			{
-				var bonePaint = new SKPaint
-				{
-					Color = SKColors.Red,
-					StrokeWidth = 8f,
-					Style = SKPaintStyle.Stroke,
-					IsAntialias = true
-				};
-
-				var inferredBonePaint = new SKPaint
-				{
-					Color = SKColors.Gray,
-					StrokeWidth = 1f,
-					Style = SKPaintStyle.Stroke,
-					IsAntialias = true
-				};
-
 				var trackedJointPaint = new SKPaint
 				{
-					Color = new SKColor(68, 192, 68, 255),
+					Color = this.trackedJointColor,
 					Style = SKPaintStyle.Fill,
 					IsAntialias = true
 				};
 
-				var specialJointPaint = new SKPaint
+				var gestureRecognitionJointPaint = new SKPaint
 				{
-					Color = new SKColor(128, 0, 128, 255),
+					Color = this.trackedGestureRecognitionJointColor,
 					Style = SKPaintStyle.Fill,
 					IsAntialias = true
 				};
 
 				var inferredJointPaint = new SKPaint
 				{
-					Color = SKColors.Yellow,
+					Color = this.inferredJointColor,
 					Style = SKPaintStyle.Fill,
+					IsAntialias = true
+				};
+
+				var bonePaint = new SKPaint
+				{
+					Color = this.boneColor,
+					StrokeWidth = this.bodySkeletonThickness,
+					Style = SKPaintStyle.Stroke,
+					IsAntialias = true
+				};
+
+				var inferredBonePaint = new SKPaint
+				{
+					Color = this.inferredBoneColor,
+					StrokeWidth = 1f,
+					Style = SKPaintStyle.Stroke,
 					IsAntialias = true
 				};
 
 				var handClosedPaint = new SKPaint
 				{
-					Color = new SKColor(255, 0, 0, 128),
+					Color = this.handClosedColor,
 					Style = SKPaintStyle.Fill,
 					IsAntialias = true
 				};
 
 				var handOpenPaint = new SKPaint
 				{
-					Color = new SKColor(0, 255, 0, 128),
+					Color = this.handOpenColor,
 					Style = SKPaintStyle.Fill,
 					IsAntialias = true
 				};
 
 				var handLassoPaint = new SKPaint
 				{
-					Color = new SKColor(0, 0, 255, 128),
+					Color = this.handLassoColor,
 					Style = SKPaintStyle.Fill,
 					IsAntialias = true
 				};
@@ -160,14 +232,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Tests
 						continue;
 
 					SKPaint circlePaint = null;
-					float radius = 8f;
+					float radius = this.jointThickness;
 
 					if (joint.TrackingState == TrackingState.Tracked)
 					{
-						if (GestureRecognitionJoints.Contains(jointType))
+						if (this.gestureRecognitionJoints.Contains(jointType))
 						{
-							circlePaint = specialJointPaint;
-							radius = 10f;
+							circlePaint = gestureRecognitionJointPaint;
+							radius = this.gestureRecognitionJointThickness;
 						}
 						else
 						{
@@ -177,7 +249,6 @@ namespace GestureRecognition.Processing.BaseClassLib.Tests
 					else if (joint.TrackingState == TrackingState.Inferred && this.isInferredMode)
 					{
 						circlePaint = inferredJointPaint;
-						radius = 6f;
 					}
 
 					if (circlePaint != null)
@@ -193,13 +264,13 @@ namespace GestureRecognition.Processing.BaseClassLib.Tests
 					switch (body.HandLeftState)
 					{
 						case HandState.Closed:
-							canvas.DrawCircle(handLeftPos.X, handLeftPos.Y, 12f, handClosedPaint);
+							canvas.DrawCircle(handLeftPos.X, handLeftPos.Y, this.handSize, handClosedPaint);
 							break;
 						case HandState.Open:
-							canvas.DrawCircle(handLeftPos.X, handLeftPos.Y, 12f, handOpenPaint);
+							canvas.DrawCircle(handLeftPos.X, handLeftPos.Y, this.handSize, handOpenPaint);
 							break;
 						case HandState.Lasso:
-							canvas.DrawCircle(handLeftPos.X, handLeftPos.Y, 12f, handLassoPaint);
+							canvas.DrawCircle(handLeftPos.X, handLeftPos.Y, this.handSize, handLassoPaint);
 							break;
 					}
 				}
@@ -210,13 +281,13 @@ namespace GestureRecognition.Processing.BaseClassLib.Tests
 					switch (body.HandRightState)
 					{
 						case HandState.Closed:
-							canvas.DrawCircle(handRightPos.X, handRightPos.Y, 12f, handClosedPaint);
+							canvas.DrawCircle(handRightPos.X, handRightPos.Y, this.handSize, handClosedPaint);
 							break;
 						case HandState.Open:
-							canvas.DrawCircle(handRightPos.X, handRightPos.Y, 12f, handOpenPaint);
+							canvas.DrawCircle(handRightPos.X, handRightPos.Y, this.handSize, handOpenPaint);
 							break;
 						case HandState.Lasso:
-							canvas.DrawCircle(handRightPos.X, handRightPos.Y, 12f, handLassoPaint);
+							canvas.DrawCircle(handRightPos.X, handRightPos.Y, this.handSize, handLassoPaint);
 							break;
 					}
 				}
