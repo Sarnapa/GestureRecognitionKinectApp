@@ -3,11 +3,13 @@ import json
 
 #region LoadHandLandmarksModelRequest
 class LoadHandLandmarksModelRequest:
-    def __init__(self, 
+    def __init__(self,
+                 force_reload: bool, 
                  num_hands: int, 
                  min_hand_detection_confidence: float, 
                  min_hand_presence_confidence: float, 
                  min_tracking_confidence: float):
+        self.force_reload = force_reload
         self.num_hands = num_hands
         self.min_hand_detection_confidence = min_hand_detection_confidence
         self.min_hand_presence_confidence = min_hand_presence_confidence
@@ -15,6 +17,7 @@ class LoadHandLandmarksModelRequest:
 
     def to_dict(self):
         return {
+            "force_reload": self.force_reload,
             "num_hands": self.num_hands,
             "min_hand_detection_confidence": self.min_hand_detection_confidence,
             "min_hand_presence_confidence": self.min_hand_presence_confidence,

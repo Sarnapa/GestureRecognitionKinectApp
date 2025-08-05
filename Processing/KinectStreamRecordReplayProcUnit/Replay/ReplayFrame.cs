@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using MessagePack;
 
-namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
+namespace GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay
 {
 	public abstract class ReplayFrame
 	{

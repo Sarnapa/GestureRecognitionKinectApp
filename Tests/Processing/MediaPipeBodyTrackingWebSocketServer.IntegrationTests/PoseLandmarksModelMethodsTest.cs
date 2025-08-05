@@ -36,13 +36,13 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 		[TestMethod]
 		public async Task LoadPoseLandmarksModelTest()
 		{
-			await LoadPoseLandmarksModel().ConfigureAwait(false);
+			await LoadPoseLandmarksModel(true).ConfigureAwait(false);
 		}
 
 		[TestMethod]
 		public async Task DetectsPoseLandmarksTest()
 		{
-			await LoadPoseLandmarksModel().ConfigureAwait(false);
+			await LoadPoseLandmarksModel(true).ConfigureAwait(false);
 
 			string[] colorFrameImageFilePaths = Directory.GetFiles(@"../../../Input", "*.png").ToArray();
 			foreach (string filePath in colorFrameImageFilePaths)
@@ -66,11 +66,11 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 		#region Private methods
 
 		#region Loading pose landmarks model methods
-		private async Task LoadPoseLandmarksModel()
+		private async Task LoadPoseLandmarksModel(bool forceReload)
 		{
 			Assert.IsNotNull(this.client);
 
-			var request = GetLoadPoseLandmarksModelRequest(this.poseLandmarksModelKind, this.poseLandmarksModelNumPoses,
+			var request = GetLoadPoseLandmarksModelRequest(forceReload, this.poseLandmarksModelKind, this.poseLandmarksModelNumPoses,
 				this.poseLandmarksModelMinPoseDetectionConfidence, this.poseLandmarksModelMinPosePresenceConfidence,
 				this.poseLandmarksModelMinTrackingConfidence);
 
@@ -79,11 +79,12 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 			Assert.AreEqual(LoadPoseLandmarksModelResponseStatus.OK, response.Status);
 		}
 
-		private static LoadPoseLandmarksModelRequest GetLoadPoseLandmarksModelRequest(ModelKind kind, int numPoses,
+		private static LoadPoseLandmarksModelRequest GetLoadPoseLandmarksModelRequest(bool forceReload, ModelKind kind, int numPoses,
 			float minPoseDetectionConfidence, float minPosePresenceConfidence, float minTrackingConfidence)
 		{
 			return new LoadPoseLandmarksModelRequest()
 			{
+				ForceReload = forceReload,
 				Kind = kind,
 				NumPoses = numPoses,
 				MinPoseDetectionConfidence = minPoseDetectionConfidence,

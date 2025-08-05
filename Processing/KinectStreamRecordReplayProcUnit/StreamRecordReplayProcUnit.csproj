@@ -2,8 +2,8 @@
   <PropertyGroup>
     <TargetFramework>net9.0-windows10.0.26100.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <RootNamespace>GestureRecognition.Processing.KinectStreamRecordReplayProcUnit</RootNamespace>
-    <AssemblyName>KinectStreamRecordReplayProcUnit</AssemblyName>
+    <RootNamespace>GestureRecognition.Processing.StreamRecordReplayProcUnit</RootNamespace>
+    <AssemblyName>StreamRecordReplayProcUnit</AssemblyName>
     <UseWPF>true</UseWPF>
     <UseCsWinRT>true</UseCsWinRT>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>

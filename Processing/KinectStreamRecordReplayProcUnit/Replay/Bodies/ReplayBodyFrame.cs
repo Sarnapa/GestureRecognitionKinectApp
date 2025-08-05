@@ -6,7 +6,7 @@ using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 using MessagePack;
 
-namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies
+namespace GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay.Bodies
 {
 	public class ReplayBodyFrame : ReplayFrame
 	{

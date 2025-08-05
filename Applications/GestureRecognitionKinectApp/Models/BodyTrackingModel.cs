@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using GalaSoft.MvvmLight.Ioc;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Configuration;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Structures.Managers;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Utilities;
@@ -21,7 +21,6 @@ using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Mes
 using GestureRecognition.Processing.BaseClassLib.Mappers;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
-using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Data;
 using GestureRecognition.Processing.BaseClassLib.Structures.KinectServer.Events;
@@ -30,8 +29,8 @@ using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 using GestureRecognition.Processing.BaseClassLib.Utils;
 using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
 using GestureRecognition.Processing.GestureRecognitionProcUnit;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record;
 using GestureRecognition.Processing.MediaPipeBodyTrackingWebSocketClientProcUnit;
+using GestureRecognition.Processing.StreamRecordReplayProcUnit.Record;
 using Consts = GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures.Consts;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
@@ -47,12 +46,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// <summary>
 		/// Render skeleton data
 		/// </summary>
-		private readonly RenderBodyFrameManager renderBodyFrameManager;
+		private RenderBodyFrameManager renderBodyFrameManager;
 
 		/// <summary>
 		/// Render color frame
 		/// </summary>
-		private readonly RenderColorFrameManager renderColorFrameManager;
+		private RenderColorFrameManager renderColorFrameManager;
 
 		/// <summary>
 		/// Client for communication with Kinect server
@@ -174,20 +173,27 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		private MediaPipeBodyTrackingWebSocketClient externalBodyTrackingModelClient;
 
 		/// <summary>
-		/// Stores information about whether the model was successfully loaded onto the server.
-		/// </summary>
-		private bool isExternalBodyTrackingModelLoaded;
-
-		/// <summary>
 		/// Frame counter, essential for skipping frames when we have an external model loaded to track user movement
 		/// </summary>
 		private int framesCounter = 0;
 
-		// For MediaPipe Pose Landmark Model - 2, For MediaPipe Hand Landmark - 2
 		/// <summary>
 		/// Specifies which frame is to be analyzed by the external model for tracking user movement.
 		/// </summary>
-		private const int FRAME_SKIP_FACTOR = 2;
+		private int frameSkipFactor = 1;
+
+		#region MediaPipe models fields
+		private bool isPoseLandmarksModelLoaded = false;
+		private float minPoseDetectionConfidence = 0.6f;
+		private float minPosePresenceConfidence = 0.6f;
+		private float poseLandmarksMinTrackingConfidence = 0.6f;
+
+		private bool isHandLandmarksModelLoaded = false;
+		private int numHands = 2;
+		private float minHandDetectionConfidence = 0.6f;
+		private float minHandPresenceConfidence = 0.6f;
+		private float handLandmarksMinTrackingConfidence = 0.6f;
+		#endregion
 
 		#region Code archived - failed attempt with mediapipe model in ONNX format
 		// Code archived - failed attempt with mediapipe model in ONNX format
@@ -219,11 +225,30 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			}
 		}
 
+		/// <summary>
+		/// Indicates which model is currently used to track user movement
+		/// </summary>
+		private BodyTrackingMode TrackingMode
+		{
+			get
+			{
+				return ConfigService.TrackingMode;
+			}
+		}
+
 		private bool IsMediaPipeBodyTrackingMode
 		{
 			get
 			{
 				return this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmarks || this.TrackingMode == BodyTrackingMode.MediaPipeHandLandmarks;
+			}
+		}
+
+		private MainSettings MainSettings
+		{
+			get
+			{
+				return ConfigService.MainSettings;
 			}
 		}
 
@@ -280,15 +305,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		}
 
 		/// <summary>
-		/// Indicates which model is currently used to track user movement
-		/// </summary>
-		public BodyTrackingMode TrackingMode
-		{
-			get;
-			private set;
-		}
-
-		/// <summary>
 		/// Is the external model for tracking user movement ready for use?
 		/// </summary>
 		public bool IsExternalBodyTrackingModelClientReadyToUseToTrackUserMovement
@@ -296,7 +312,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			get
 			{
 				return this.externalBodyTrackingModelClient != null && this.externalBodyTrackingModelClient.IsConnected
-					&& this.isExternalBodyTrackingModelLoaded;
+					&& ((this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmarks && this.isPoseLandmarksModelLoaded)
+					|| (this.TrackingMode == BodyTrackingMode.MediaPipeHandLandmarks && this.isHandLandmarksModelLoaded));
 			}
 		}
 
@@ -346,15 +363,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#region Constructors
 		public BodyTrackingModel()
 		{
-			this.renderColorFrameManager = new RenderColorFrameManager();
-			
-			this.TrackingMode = BodyTrackingMode.MediaPipePoseLandmarks;
-			this.renderBodyFrameManager = new RenderBodyFrameManager(GetRenderBodyFrameManagerParameters());
-			
 			this.kinectClient = new KinectClient();
-			
-			this.gestureRecognitionManager = SimpleIoc.Default.GetInstance<GestureRecognitionManager>();
-			this.gestureRecognitionFeaturesManager = SimpleIoc.Default.GetInstance<GestureRecognitionFeaturesManager>();
 			this.gestureToRecognizeBodyFrames = new List<BodyData>();
 		}
 		#endregion
@@ -362,6 +371,20 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#region Public methods
 		public async Task Start()
 		{
+			Application.Current?.Dispatcher.Invoke(() =>
+			{
+				this.renderColorFrameManager = new RenderColorFrameManager();
+				this.renderBodyFrameManager = new RenderBodyFrameManager(RenderBodyFrameManagerParameters.GetParameters(this.TrackingMode));
+			});
+
+			if (this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmarks)
+				this.frameSkipFactor = 2;
+			else if (this.TrackingMode == BodyTrackingMode.MediaPipeHandLandmarks)
+				this.frameSkipFactor = 2;
+
+			this.gestureRecognitionManager = new GestureRecognitionManager();
+			this.gestureRecognitionFeaturesManager = new GestureRecognitionFeaturesManager(this.TrackingMode);
+
 			bool isKinectServerStarted = this.kinectClient.StartKinectServer();
 			if (isKinectServerStarted)
 			{
@@ -476,8 +499,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		{
 			CleanGestureRecorder(appFinished);
 			CleanGestureToRecognizeBodyFrames();
-			if (appFinished)
-				await DisconnectFromExternalBodyTrackingModelProviderServer(CancellationToken.None).ConfigureAwait(false);
+			await DisconnectFromExternalBodyTrackingModelProviderServer(CancellationToken.None).ConfigureAwait(false);
 
 			// Code archived - failed attempt with mediapipe model in ONNX format
 			//if (appFinished)
@@ -548,10 +570,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						try
 						{
 							this.isProcessingFramesTaskRunning = true;
-							while (this.framesQueue != null && await this.framesQueue.Reader.WaitToReadAsync(this.processingFramesTaskTokenSource.Token))
+							while (this.framesQueue != null && await this.framesQueue.Reader.WaitToReadAsync(this.processingFramesTaskTokenSource?.Token ?? default))
 							{
-								var frameData = await this.framesQueue.Reader.ReadAsync(this.processingFramesTaskTokenSource.Token);
-								ProcessFrameData(frameData, this.processingFramesTaskTokenSource.Token);
+								var frameData = await this.framesQueue.Reader.ReadAsync(this.processingFramesTaskTokenSource?.Token ?? default);
+								ProcessFrameData(frameData, this.processingFramesTaskTokenSource?.Token ?? default);
 							}
 						}
 						catch (OperationCanceledException)
@@ -561,7 +583,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						{
 							this.isProcessingFramesTaskRunning = false;
 						}
-					}, this.processingFramesTaskTokenSource.Token);
+					}, this.processingFramesTaskTokenSource?.Token ?? default);
 				}
 				catch (Exception)
 				{
@@ -572,13 +594,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		private void StopProcessingFrames()
 		{
 			this.processingFramesTaskTokenSource?.Cancel();
-			this.processingFramesTaskTokenSource = null;
 
 			this.framesQueue?.Writer.TryComplete();
-			this.framesQueue = null;
 
 			this.processingFramesSemaphore?.Dispose();
-			this.processingFramesSemaphore = null;
 
 			this.lastProcessingFramesRelativeTime = default;
 			this.isProcessingFramesTaskRunning = false;
@@ -598,7 +617,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				bool isNewBodyData = false;
 				await this.processingFramesSemaphore.WaitAsync(token).ConfigureAwait(false);
 				this.framesCounter++;
-				isNewBodyData = this.framesCounter == FRAME_SKIP_FACTOR;
+				isNewBodyData = this.framesCounter == frameSkipFactor;
 				if (isNewBodyData)
 					this.framesCounter = 0;
 				frameData = await GetFrameData(frameData.ColorFrame, isNewBodyData, token).ConfigureAwait(false);
@@ -910,46 +929,99 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#endregion
 
 		#region External body tracking model methods
-		// TODO: Providing from config
 		// TODO: Launching REST service from app
 		// TODO: Support for multiple resolutions
+		// TODO: Problem with closing connection to MediaPipeBodyTrackingWebSocketServer, therefore constantly reconnecting
 		private async Task TryToLoadExternalBodyTrackingModels(CancellationToken token)
 		{
-			if (!this.IsExternalBodyTrackingModelClientReadyToUseToTrackUserMovement)
+			var connectResult = await ConnectToExternalBodyTrackingModelProviderServer(token).ConfigureAwait(false);
+			if (connectResult.IsSuccess)
 			{
-				var connectResult = await ConnectToExternalBodyTrackingModelProviderServer(token).ConfigureAwait(false);
-				if (connectResult.IsSuccess)
+				bool isModelChanged = UpdateMediaPipeModelsParametersAndCheckIfNecessaryToReloadModel();
+				//if (isModelChanged || !this.IsExternalBodyTrackingModelClientReadyToUseToTrackUserMovement)
+				if (isModelChanged || (this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmarks && !this.isPoseLandmarksModelLoaded)
+					|| (this.TrackingMode == BodyTrackingMode.MediaPipeHandLandmarks && !this.isHandLandmarksModelLoaded))
 				{
 					bool success = false;
 					string message = string.Empty;
 					if (this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmarks)
 					{
-						var response = await LoadPoseLandmarksModel(ModelKind.PoseLandmarksLite, 1, 0.8f, 0.8f, 0.8f, token).ConfigureAwait(false);
-						success = response.Status == LoadPoseLandmarksModelResponseStatus.OK;
+						var response = await LoadPoseLandmarksModel(isModelChanged,
+							ModelKind.PoseLandmarksLite,
+							1,
+							this.minPoseDetectionConfidence,
+							this.minPosePresenceConfidence,
+							this.poseLandmarksMinTrackingConfidence, token).ConfigureAwait(false);
+						success = this.isPoseLandmarksModelLoaded = response.Status == LoadPoseLandmarksModelResponseStatus.OK;
 						message = response.Message;
 					}
 					else
 					{
-						var response = await LoadHandLandmarksModel(2, 0.6f, 0.6f, 0.6f, token).ConfigureAwait(false);
-						success = response.Status == LoadHandLandmarksModelResponseStatus.OK;
+						var response = await LoadHandLandmarksModel(isModelChanged,
+							this.numHands,
+							this.minHandDetectionConfidence,
+							this.minHandPresenceConfidence,
+							this.handLandmarksMinTrackingConfidence, token).ConfigureAwait(false);
+						success = this.isHandLandmarksModelLoaded = response.Status == LoadHandLandmarksModelResponseStatus.OK;
 						message = response.Message;
 					}
 
-					if (success)
-					{
-						this.isExternalBodyTrackingModelLoaded = true;
-					}
-					else
-					{
-						this.isExternalBodyTrackingModelLoaded = false;
+					if (!success)
 						MessageBoxUtils.ShowMessage(message, MessageBoxButton.OK, MessageBoxImage.Error);
-					}
-				}
-				else
-				{
-					MessageBoxUtils.ShowMessage(connectResult.ErrorMessage, MessageBoxButton.OK, MessageBoxImage.Error);
 				}
 			}
+			else
+			{
+				MessageBoxUtils.ShowMessage(connectResult.ErrorMessage, MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+		}
+
+		private bool UpdateMediaPipeModelsParametersAndCheckIfNecessaryToReloadModel()
+		{
+			bool isChanged = false;
+			if (this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmarks)
+			{
+				if (this.minPoseDetectionConfidence != ConfigService.MediaPipePoseLandmarksSettings.MinPoseDetectionConfidence)
+				{
+					this.minPoseDetectionConfidence = ConfigService.MediaPipePoseLandmarksSettings.MinPoseDetectionConfidence;
+					isChanged = true;
+				}
+				if (this.minPosePresenceConfidence != ConfigService.MediaPipePoseLandmarksSettings.MinPosePresenceConfidence)
+				{
+					this.minPosePresenceConfidence = ConfigService.MediaPipePoseLandmarksSettings.MinPosePresenceConfidence;
+					isChanged = true;
+				}
+				if (this.poseLandmarksMinTrackingConfidence != ConfigService.MediaPipePoseLandmarksSettings.MinTrackingConfidence)
+				{
+					this.poseLandmarksMinTrackingConfidence = ConfigService.MediaPipePoseLandmarksSettings.MinTrackingConfidence;
+					isChanged = true;
+				}
+			}
+			else if (this.TrackingMode == BodyTrackingMode.MediaPipeHandLandmarks)
+			{
+				if (this.numHands != ConfigService.MediaPipeHandLandmarksSettings.NumHands)
+				{
+					this.numHands = ConfigService.MediaPipeHandLandmarksSettings.NumHands;
+					isChanged = true;
+				}
+				if (this.minHandDetectionConfidence != ConfigService.MediaPipeHandLandmarksSettings.MinHandDetectionConfidence)
+				{
+					this.minHandDetectionConfidence = ConfigService.MediaPipeHandLandmarksSettings.MinHandDetectionConfidence;
+					isChanged = true;
+				}
+				if (this.minHandPresenceConfidence != ConfigService.MediaPipeHandLandmarksSettings.MinHandPresenceConfidence)
+				{
+					this.minHandPresenceConfidence = ConfigService.MediaPipeHandLandmarksSettings.MinHandPresenceConfidence;
+					isChanged = true;
+				}
+				if (this.handLandmarksMinTrackingConfidence != ConfigService.MediaPipeHandLandmarksSettings.MinTrackingConfidence)
+				{
+					this.handLandmarksMinTrackingConfidence = ConfigService.MediaPipeHandLandmarksSettings.MinTrackingConfidence;
+					isChanged = true;
+				}
+			}
+
+			return isChanged;
 		}
 
 		private async Task<ConnectAsyncResult> ConnectToExternalBodyTrackingModelProviderServer(CancellationToken token)
@@ -972,16 +1044,19 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			if (this.externalBodyTrackingModelClient != null)
 			{
 				result = await this.externalBodyTrackingModelClient.DisconnectAsync(token).ConfigureAwait(false);
+				if (result.IsSuccess)
+					this.externalBodyTrackingModelClient = null;
 			}
 
 			return result;			
 		}
 
-		private async Task<LoadPoseLandmarksModelResponse> LoadPoseLandmarksModel(ModelKind kind, int numPoses,
+		private async Task<LoadPoseLandmarksModelResponse> LoadPoseLandmarksModel(bool forceReload, ModelKind kind, int numPoses,
 			float minPoseDetectionConfidence, float minPosePresenceConfidence, float minTrackingConfidence, CancellationToken token)
 		{
 			var request = new LoadPoseLandmarksModelRequest()
 			{
+				ForceReload = forceReload,
 				Kind = kind,
 				NumPoses = numPoses,
 				MinPoseDetectionConfidence = minPoseDetectionConfidence,
@@ -991,11 +1066,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			return await this.externalBodyTrackingModelClient.LoadPoseLandmarksModelAsync(request, token).ConfigureAwait(false);
 		}
 
-		private async Task<LoadHandLandmarksModelResponse> LoadHandLandmarksModel(int numHands, 
+		private async Task<LoadHandLandmarksModelResponse> LoadHandLandmarksModel(bool forceReload, int numHands, 
 			float minHandDetectionConfidence, float minHandPresenceConfidence, float minTrackingConfidence, CancellationToken token)
 		{
 			var request = new LoadHandLandmarksModelRequest()
 			{
+				ForceReload = forceReload,
 				NumHands = numHands,
 				MinHandDetectionConfidence = minHandDetectionConfidence,
 				MinHandPresenceConfidence = minHandPresenceConfidence,
@@ -1032,7 +1108,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			};
 		}
 
-		// TODO: Providing from config
 		private async Task<(BodyDataWithColorSpacePoints[] bodiesData, int bodiesCount)> GetBodiesData(ColorFrame colorFrame, CancellationToken token)
 		{
 			bool isMediaPipePoseLandmark = this.TrackingMode == BodyTrackingMode.MediaPipePoseLandmarks; 
@@ -1050,7 +1125,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				if (response.Status == DetectPoseLandmarksResponseStatus.TooMuchUsersForOneBodyTracking)
 					return ([], response.BodiesCount);
 
-				var bodyData = await response.Map(0.6f, 0.5f).ConfigureAwait(false);
+				var bodyData = await response.Map(this.MainSettings.TrackedJointScoreThreshold, this.MainSettings.InferredJointScoreThreshold).ConfigureAwait(false);
 				return (bodyData, 1);
 			}
 			else
@@ -1060,7 +1135,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				if (response.Status == DetectHandLandmarksResponseStatus.TooMuchUsersForOneBodyTracking)
 					return ([], response.BodiesCount);
 
-				var bodyData = response.Map(0.6f, 0.5f);
+				var bodyData = response.Map(this.MainSettings.TrackedJointScoreThreshold, this.MainSettings.InferredJointScoreThreshold);
 				return ([bodyData], 1);
 			}
 		}
@@ -1252,7 +1327,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		{
 			CreateTemporaryRecordFile();
 			this.gestureRecorder = new Recorder(isGestureToRecognize ? RecordOptions.Bodies : RecordOptions.All,
-				this.gestureRecordFile, Consts.GestureRecordResizingCoef);
+				this.TrackingMode, this.gestureRecordFile, Consts.GestureRecordResizingCoef);
 			this.gestureToStartProcessStartTime = null;
 			this.gestureRecordStartTime = DateTime.Now;
 			this.TrackingState = BodyTrackingState.GestureRecording;
@@ -1354,55 +1429,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#endregion
 
 		#region Others methods
-		private RenderBodyFrameManagerParameters GetRenderBodyFrameManagerParameters()
-		{
-			RenderBodyFrameManagerParameters parameters;
-			switch (this.TrackingMode)
-			{
-				case BodyTrackingMode.MediaPipePoseLandmarks:
-					parameters = new RenderBodyFrameManagerParameters()
-					{
-						HandSize = MediaPipePoseLandmarksRenderBodyFrameConsts.HAND_SIZE,
-						JointThickness = MediaPipePoseLandmarksRenderBodyFrameConsts.JOINT_THICKNESS,
-						GestureRecognitionJointThickness = MediaPipePoseLandmarksRenderBodyFrameConsts.GESTURE_RECOGNITION_JOINT_THICKNESS,
-						BodySkeletonThickness = MediaPipePoseLandmarksRenderBodyFrameConsts.BODY_SKELETON_THICKNESS,
-						JointsToIgnore = MediaPipePoseLandmarksRenderBodyFrameConsts.JOINTS_TO_IGNORE,
-						GestureRecognitionJoints = MediaPipePoseLandmarksGestureRecognitionDefinitions.GestureRecognitionJoints,
-						Bones = MediaPipePoseLandmarksBonesDefinitions.AllBonesWithoutHeadAndLegs.ToArray(),
-						IsInferredMode = false,
-					};
-					break;
-				case BodyTrackingMode.MediaPipeHandLandmarks:
-					parameters = new RenderBodyFrameManagerParameters()
-					{
-						HandSize = (float)MediaPipeHandLandmarksRenderBodyFrameConsts.HAND_SIZE,
-						JointThickness = (float)MediaPipeHandLandmarksRenderBodyFrameConsts.JOINT_THICKNESS,
-						GestureRecognitionJointThickness = (float)MediaPipeHandLandmarksRenderBodyFrameConsts.GESTURE_RECOGNITION_JOINT_THICKNESS,
-						BodySkeletonThickness = (float)MediaPipeHandLandmarksRenderBodyFrameConsts.BODY_SKELETON_THICKNESS,
-						JointsToIgnore = MediaPipeHandLandmarksRenderBodyFrameConsts.JOINTS_TO_IGNORE,
-						GestureRecognitionJoints = MediaPipeHandLandmarksGestureRecognitionDefinitions.GestureRecognitionJoints,
-						Bones = MediaPipeHandLandmarksBonesDefinitions.AllBones.ToArray(),
-						IsInferredMode = false,
-					};
-					break;
-				default:
-					parameters = new RenderBodyFrameManagerParameters()
-					{
-						HandSize = (float)KinectRenderBodyFrameConsts.HAND_SIZE,
-						JointThickness = (float)KinectRenderBodyFrameConsts.JOINT_THICKNESS,
-						GestureRecognitionJointThickness = (float)KinectRenderBodyFrameConsts.GESTURE_RECOGNITION_JOINT_THICKNESS,
-						BodySkeletonThickness = (float)KinectRenderBodyFrameConsts.BODY_SKELETON_THICKNESS,
-						JointsToIgnore = KinectRenderBodyFrameConsts.JOINTS_TO_IGNORE,
-						GestureRecognitionJoints = KinectGestureRecognitionDefinitions.GestureRecognitionJoints,
-						Bones = KinectBonesDefinitions.AllBonesWithoutLegs.ToArray(),
-						IsInferredMode = false,
-					};
-					break;
-			}
-
-			return parameters;
-		}
-
 		private void SetStandardState()
 		{
 			this.TrackingState = BodyTrackingState.Standard;

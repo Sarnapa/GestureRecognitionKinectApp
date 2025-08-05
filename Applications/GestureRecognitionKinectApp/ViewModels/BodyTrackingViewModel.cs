@@ -15,6 +15,7 @@ using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Mes
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.NavigationService;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
 using GestureRecognition.Processing.BaseClassLib.Utils;
+using static GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.ViewModelLocator;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 {
@@ -254,6 +255,31 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			}
 		}
 
+		public Visibility SettingsButtonVisibility
+		{
+			get
+			{
+				return this.model.TrackingState == BodyTrackingState.Standard
+					? Visibility.Visible : Visibility.Hidden;
+			}
+		}
+
+		public string SettingsButtonTip
+		{
+			get
+			{
+				return Properties.Resources.SettingsTip;
+			}
+		}
+
+		public string SettingsButtonImageUri
+		{
+			get
+			{
+				return ViewModelsUtils.GetImageUri("SettingsIcon.png");
+			}
+		}
+
 		public Visibility StartStopGestureRecordButtonVisibility
 		{
 			get
@@ -354,6 +380,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get; private set;
 		}
+		public RelayCommand SettingsCommand
+		{
+			get; private set;
+		}
 		public RelayCommand StartStopGestureRecordCommand
 		{
 			get; private set;
@@ -378,6 +408,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			this.ImportGestureRecognitionModelCommand = new RelayCommand(this.ImportGestureRecognitionModelCommandAction);
 			this.ImportGestureRecordCommand = new RelayCommand(this.ImportGestureRecordCommandAction);
 			this.PrepareGesturesDataCommand = new RelayCommand(this.PrepareGesturesDataCommandAction);
+			this.SettingsCommand = new RelayCommand(this.SettingsAction);
 			this.StartStopGestureRecordCommand = new RelayCommand(this.StartStopGestureRecordCommandAction);
 			this.CleanupCommand = new RelayCommand(this.CleanupCommandAction);
 			Messenger.Default.Register<DisplayImageChangedMessage>(this, m => DisplayImageChangedMessageHandler(m));
@@ -395,7 +426,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		#region Actions
 		private void StartCommandAction()
 		{
-			Task.Run(async () => await this.model.Start());
+			Task.Run(async () => await this.model.Start().ConfigureAwait(false));
 		}
 
 		private void ImportGestureRecognitionModelCommandAction()
@@ -465,6 +496,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				MessengerUtils.SendMessage<GestureRecordMessage, GestureRecordViewModel>(
 					new GestureRecordMessage() { IsTemporaryFile = true, FilePath = gestureRecordFilePath });
 			}
+		}
+
+		private void SettingsAction()
+		{
+			Application.Current?.Dispatcher.Invoke(() =>
+			{
+				this.navigationService.NavigateTo(SettingsPageKey);
+			});
 		}
 
 		private void CleanupCommandAction()
@@ -683,7 +722,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		public void Dispose()
 		{
 			if (this.model != null)
+			{
 				Task.Run(async () => await this.model.Cleanup(true).ConfigureAwait(false));
+			}
 		}
 		#endregion
 	}

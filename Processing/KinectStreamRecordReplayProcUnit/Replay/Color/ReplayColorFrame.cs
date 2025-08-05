@@ -3,7 +3,7 @@ using System.IO;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 using MessagePack;
 
-namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Color
+namespace GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay.Color
 {
 	public class ReplayColorFrame : ReplayFrame
 	{

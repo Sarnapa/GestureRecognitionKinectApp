@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System.Windows;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.NavigationService;
 using static GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.ViewModelLocator;
@@ -21,7 +22,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 						?? (this.loadedCommand = new RelayCommand(
 						() =>
 						{
-							this.navigationService.NavigateTo(BodyTrackingPageKey);
+							Application.Current?.Dispatcher.Invoke(() =>
+							{
+								this.navigationService.NavigateTo(BodyTrackingPageKey);
+							});
 						}));
 			}
 		}

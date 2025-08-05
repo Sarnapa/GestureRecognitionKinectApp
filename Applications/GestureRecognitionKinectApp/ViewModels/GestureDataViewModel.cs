@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -187,7 +188,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				this.handJointsDistances = new HandJointsDistanceViewModel(m.Features.BetweenHandJointsDistanceMax, m.Features.BetweenHandJointsDistanceMean);
 				this.gestureLabel = m.Label;
 				RaisePropertyChanged(nameof(CurrentJointFeatures));
-				this.navigationService.NavigateTo(GestureDataPageKey);
+				Application.Current?.Dispatcher.Invoke(() =>
+				{
+					this.navigationService.NavigateTo(GestureDataPageKey);
+				});
 			}
 		}
 		#endregion

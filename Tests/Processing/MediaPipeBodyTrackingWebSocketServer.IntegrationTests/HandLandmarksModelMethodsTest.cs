@@ -36,13 +36,13 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 		[TestMethod]
 		public async Task LoadHandLandmarksModelTest()
 		{
-			await LoadHandLandmarksModel().ConfigureAwait(false);
+			await LoadHandLandmarksModel(true).ConfigureAwait(false);
 		}
 
 		[TestMethod]
 		public async Task DetectsHandLandmarksTest()
 		{
-			await LoadHandLandmarksModel().ConfigureAwait(false);
+			await LoadHandLandmarksModel(true).ConfigureAwait(false);
 
 			string[] colorFrameImageFilePaths = Directory.GetFiles(@"../../../Input", "*.png").ToArray();
 			foreach (string filePath in colorFrameImageFilePaths)
@@ -67,11 +67,11 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 		#region Private methods
 
 		#region Loading hand landmarks model methods
-		private async Task LoadHandLandmarksModel()
+		private async Task LoadHandLandmarksModel(bool forceReload)
 		{
 			Assert.IsNotNull(this.client);
 
-			var request = GetLoadHandLandmarksModelRequest(this.handLandmarksModelNumHands, this.handLandmarksModelMinHandDetectionConfidence,
+			var request = GetLoadHandLandmarksModelRequest(forceReload, this.handLandmarksModelNumHands, this.handLandmarksModelMinHandDetectionConfidence,
 				this.handLandmarksModelMinHandPresenceConfidence, this.handLandmarksModelMinTrackingConfidence);
 
 			var response = await this.client.LoadHandLandmarksModelAsync(request, CancellationToken.None).ConfigureAwait(false);
@@ -79,11 +79,12 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 			Assert.AreEqual(LoadHandLandmarksModelResponseStatus.OK, response.Status);
 		}
 
-		private static LoadHandLandmarksModelRequest GetLoadHandLandmarksModelRequest(int numHands,
+		private static LoadHandLandmarksModelRequest GetLoadHandLandmarksModelRequest(bool forceReload, int numHands,
 			float minHandDetectionConfidence, float minHandPresenceConfidence, float minTrackingConfidence)
 		{
 			return new LoadHandLandmarksModelRequest()
 			{
+				ForceReload = forceReload,
 				NumHands = numHands,
 				MinHandDetectionConfidence = minHandDetectionConfidence,
 				MinHandPresenceConfidence = minHandPresenceConfidence,

@@ -6,7 +6,7 @@ using System.Windows.Media;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Structures.Managers;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies;
+using GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay.Bodies;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers
 {

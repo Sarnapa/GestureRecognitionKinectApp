@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using GalaSoft.MvvmLight.Ioc;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Structures.Managers;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Utilities;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Structures;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
@@ -17,8 +17,8 @@ using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.D
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures;
 using GestureRecognition.Processing.BaseClassLib.Utils;
 using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.All;
+using GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay;
+using GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay.All;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 {
@@ -28,12 +28,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// <summary>
 		/// Render skeleton data
 		/// </summary>
-		private readonly RenderBodyFrameManager renderBodyFrameManager;
+		private RenderBodyFrameManager renderBodyFrameManager;
 
 		/// <summary>
 		/// Render color frame
 		/// </summary>
-		private readonly RenderColorFrameManager renderColorFrameManager;
+		private RenderColorFrameManager renderColorFrameManager;
 
 		/// <summary>
 		/// Calculates features for gesture recognition process
@@ -157,10 +157,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		#region Constructors
 		public GestureRecordModel()
 		{
-			this.renderColorFrameManager = new RenderColorFrameManager();
-			this.renderBodyFrameManager = new RenderBodyFrameManager(Consts.GestureRecordResizingCoef);
-			this.gestureRecognitionFeaturesManager = SimpleIoc.Default.GetInstance<GestureRecognitionFeaturesManager>();
-
 			this.gestureBodyFrames = new List<BodyData>();
 		}
 		#endregion
@@ -188,6 +184,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					LoadGestureData();
 
 				this.gestureReplay = new Replay(this.gestureRecordFile);
+
+				this.renderColorFrameManager = new RenderColorFrameManager();
+				this.renderBodyFrameManager = new RenderBodyFrameManager(RenderBodyFrameManagerParameters.GetParameters(this.gestureReplay.TrackingMode, Consts.GestureRecordResizingCoef));
+				this.gestureRecognitionFeaturesManager = new GestureRecognitionFeaturesManager(this.gestureReplay.TrackingMode);
+
 				this.gestureReplay.AllFramesReady += GestureReplay_AllFramesReady;
 				this.gestureReplay.Finished += GestureReplay_Finished;
 				this.gestureReplay.Start();

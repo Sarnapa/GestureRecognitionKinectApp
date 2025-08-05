@@ -2,22 +2,24 @@
 {
 	public sealed class Settings
 	{
-		public required MainSettings MainSettings
+		#region Public properties
+		public MainSettings MainSettings
 		{
 			get;
 			set;
-		}
+		} = new MainSettings();
 
-		public required MediaPipePoseLandmarksBodyTrackingModeSettings MediaPipePoseLandmarksBodyTrackingModeSettings
+		public MediaPipePoseLandmarksBodyTrackingModeSettings MediaPipePoseLandmarksBodyTrackingModeSettings
 		{
 			get;
 			set;
-		}
+		} = new MediaPipePoseLandmarksBodyTrackingModeSettings();
 
-		public required MediaPipeHandLandmarksBodyTrackingModeSettings MediaPipeHandLandmarksBodyTrackingModeSettings
+		public MediaPipeHandLandmarksBodyTrackingModeSettings MediaPipeHandLandmarksBodyTrackingModeSettings
 		{
 			get;
 			set;
-		}
+		} = new MediaPipeHandLandmarksBodyTrackingModeSettings();
+		#endregion
 	}
 }

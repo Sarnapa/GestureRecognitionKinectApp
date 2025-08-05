@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Color;
+using GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay.Bodies;
+using GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay.Color;
 using MessagePack;
 
-namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.All
+namespace GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay.All
 {
 	public class ReplayAllFrames : ReplayFrame
 	{

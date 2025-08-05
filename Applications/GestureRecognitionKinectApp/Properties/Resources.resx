@@ -213,6 +213,9 @@ Further actions canceled.</value>
   <data name="SettingsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SettingsIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="SettingsTip" xml:space="preserve">
+    <value>Settings</value>
+  </data>
   <data name="StartRecordIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\StartRecordIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

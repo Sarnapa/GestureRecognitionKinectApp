@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MessagePack;
 
-namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
+namespace GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay
 {
 	#region ReplaySystem
 	internal class ReplaySystem<T> : ReplayBase<T> where T : ReplayFrame, new()

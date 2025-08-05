@@ -8,7 +8,7 @@ using GestureRecognition.Processing.BaseClassLib.Mappers;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 
-namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.Bodies
+namespace GestureRecognition.Processing.StreamRecordReplayProcUnit.Record.Bodies
 {
 	internal class BodyRecorder
 	{
@@ -34,8 +34,6 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.
 		{
 			if (bodyFrame == null)
 				throw new ArgumentNullException(nameof(bodyFrame));
-			if (bodyFrame.Bodies == null || bodyFrame.Bodies.Length <= 0)
-				throw new ArgumentException(nameof(bodyFrame.Bodies));
 			if (bodies == null)
 				throw new ArgumentNullException(nameof(bodies));
 

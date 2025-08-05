@@ -3,9 +3,6 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Configuration;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.NavigationService;
-using GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit;
-using GestureRecognition.Processing.GestureRecognitionProcUnit;
-using static GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognitionFeatures.KinectGestureRecognitionDefinitions;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 {
@@ -15,6 +12,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		public const string BodyTrackingPageKey = "BodyTrackingPage";
 		public const string GestureRecordPageKey = "GestureRecordPage";
 		public const string GestureDataPageKey = "GestureDataPage";
+		public const string SettingsPageKey = "SettingsPage";
 		#endregion
 
 		#region ViewModels
@@ -49,30 +47,36 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				return ServiceLocator.Current.GetInstance<GestureDataViewModel>();
 			}
 		}
+
+		public SettingsViewModel Settings
+		{
+			get
+			{
+				return ServiceLocator.Current.GetInstance<SettingsViewModel>();
+			}
+		}
 		#endregion
 
 		#region Constructors
 		// The constructor of ViewModelLocator registers viewModels instances to the SimpleIoc service.
 		public ViewModelLocator()
 		{
+			ConfigService.LoadSettings();
+
 			ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
 			var navigationService = new FrameNavigationService();
 			navigationService.Configure(BodyTrackingPageKey, new Uri("../Views/BodyTrackingPage.xaml", UriKind.Relative));
 			navigationService.Configure(GestureRecordPageKey, new Uri("../Views/GestureRecordPage.xaml", UriKind.Relative));
 			navigationService.Configure(GestureDataPageKey, new Uri("../Views/GestureDataPage.xaml", UriKind.Relative));
+			navigationService.Configure(SettingsPageKey, new Uri("../Views/SettingsPage.xaml", UriKind.Relative));
 			SimpleIoc.Default.Register<IFrameNavigationService>(() => navigationService);
-
-			var gestureRecognitionFeaturesManager = new GestureRecognitionFeaturesManager(Processing.BaseClassLib.Structures.Body.BodyTrackingMode.Kinect);
-			SimpleIoc.Default.Register(() => gestureRecognitionFeaturesManager);
-
-			var gestureRecognitionManager = new GestureRecognitionManager();
-			SimpleIoc.Default.Register(() => gestureRecognitionManager);
 
 			SimpleIoc.Default.Register<MainViewModel>();
 			SimpleIoc.Default.Register<BodyTrackingViewModel>(true);
 			SimpleIoc.Default.Register<GestureRecordViewModel>(true);
 			SimpleIoc.Default.Register<GestureDataViewModel>(true);
+			SimpleIoc.Default.Register<SettingsViewModel>(true);
 		}
 		#endregion
 	}

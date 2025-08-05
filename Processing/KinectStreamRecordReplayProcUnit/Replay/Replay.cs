@@ -1,14 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
-using GestureRecognition.Processing.BaseClassLib.Serialization.Body;
-using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.All;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Color;
 using MessagePack;
+using GestureRecognition.Processing.BaseClassLib.Serialization.Body;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
+using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
+using GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay.All;
+using GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay.Bodies;
+using GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay.Color;
 
-namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
+namespace GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay
 {
 	public class Replay : IDisposable
 	{
@@ -23,6 +24,12 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 		#endregion
 
 		#region Public properties
+		public BodyTrackingMode TrackingMode
+		{
+			get;
+			internal set;
+		}
+
 		public bool Started
 		{
 			get; internal set;
@@ -62,6 +69,7 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
 			this.synchronizationContext = SynchronizationContext.Current;
 
 			var options = (RecordOptions)reader.ReadInt32();
+			this.TrackingMode = (BodyTrackingMode)reader.ReadByte();
 			var serializerOptions = MessagePackSerializerOptions.Standard.WithResolver(BodyDataResolver.Instance);
 
 			if ((options & RecordOptions.All) != 0)

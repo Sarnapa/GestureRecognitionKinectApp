@@ -1,8 +1,8 @@
-from concurrent.futures import ThreadPoolExecutor, as_completed, wait
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import datetime
 import os
 import time
 from typing import List
-import cv2
 import mediapipe as mp
 import numpy as np
 from scipy.spatial.distance import euclidean
@@ -27,12 +27,14 @@ class HandLandmarksModelWrapper:
     def is_model_loaded(self) -> bool:
         return self.model
     
-    def load_model(self, request: LoadModelStructures.LoadHandLandmarksModelRequest) -> LoadModelStructures.LoadHandLandmarksModelResponse:
-        if self.is_model_loaded():
+    def load_model(self, request: LoadModelStructures.LoadHandLandmarksModelRequest) -> LoadModelStructures.LoadHandLandmarksModelResponse: 
+        if not request.force_reload and self.is_model_loaded():
             return LoadModelStructures.LoadHandLandmarksModelResponse(
                     status=LoadModelStructures.LoadHandLandmarksModelResponseStatus.ok,
                     message=''
             )
+        
+        # print(f"[HandLandmarksModelWrapper.load_model - {datetime.datetime.now()}] Params: force_reload: {request.force_reload}, num_hands: {request.num_hands}, min_hand_detection_confidence: {request.min_hand_detection_confidence}, min_hand_presence_confidence: {request.min_hand_presence_confidence}, min_tracking_confidence: {request.min_tracking_confidence}")
         
         if not request:
             return LoadModelStructures.LoadHandLandmarksModelResponse(

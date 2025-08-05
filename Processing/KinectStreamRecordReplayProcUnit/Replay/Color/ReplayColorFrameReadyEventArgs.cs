@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Color
+namespace GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay.Color
 {
 	public class ReplayColorFrameReadyEventArgs : EventArgs
 	{

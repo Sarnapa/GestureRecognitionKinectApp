@@ -4,7 +4,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 
-namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.Color
+namespace GestureRecognition.Processing.StreamRecordReplayProcUnit.Record.Color
 {
 	internal class ColorRecorder
 	{

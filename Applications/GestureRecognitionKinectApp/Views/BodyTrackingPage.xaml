@@ -35,6 +35,9 @@
             <Button Visibility="{Binding PrepareGesturesDataButtonVisibility}" ToolTip="{Binding PrepareGesturesDataButtonTip}" Command="{Binding PrepareGesturesDataCommand}">
                 <Image Source="{Binding PrepareGesturesDataButtonImageUri}"/>
             </Button>
+            <Button Visibility="{Binding SettingsButtonVisibility}" ToolTip="{Binding SettingsButtonTip}" Command="{Binding SettingsCommand}">
+                <Image Source="{Binding SettingsButtonImageUri}"/>
+            </Button>
             <Button Visibility="{Binding StartStopGestureRecordButtonVisibility}" ToolTip="{Binding StartStopGestureRecordButtonTip}" Command="{Binding StartStopGestureRecordCommand}">
                 <Image Source="{Binding StartStopGestureRecordButtonImageUri}"/>
             </Button>

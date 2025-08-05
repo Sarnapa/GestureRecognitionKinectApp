@@ -4,22 +4,24 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Configurat
 {
 	public sealed class MainSettings
 	{
-		public required BodyTrackingMode BodyTrackingMode
+		#region Public properties
+		public BodyTrackingMode BodyTrackingMode
 		{
 			get;
 			set;
-		}
+		} = BodyTrackingMode.Kinect;
 
-		public required float TrackedJointScoreThreshold
+		public float TrackedJointScoreThreshold
 		{
 			get;
 			set;
-		}
+		} = 0.6f;
 
-		public required float InferredJointScoreThreshold
+		public float InferredJointScoreThreshold
 		{
 			get;
 			set;
-		}
+		} = 0.5f;
+		#endregion
 	}
 }

@@ -16,6 +16,13 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
 			}
 		}
 
+		[Key("force_reload")]
+		public bool ForceReload
+		{
+			get;
+			set;
+		}
+
 		[Key("model_kind")]
 		public ModelKind Kind
 		{

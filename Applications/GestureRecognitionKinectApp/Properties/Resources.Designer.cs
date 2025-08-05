@@ -347,6 +347,15 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
             }
         }
         
+		        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string SettingsTip {
+            get {
+                return ResourceManager.GetString("SettingsTip", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>

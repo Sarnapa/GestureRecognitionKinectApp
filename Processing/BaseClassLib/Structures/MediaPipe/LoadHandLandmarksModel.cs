@@ -16,6 +16,12 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MediaPipe
 			}
 		}
 
+		[Key("force_reload")]
+		public bool ForceReload
+		{
+			get;
+			set;
+		}
 
 		[Key("num_hands")]
 		public int NumHands

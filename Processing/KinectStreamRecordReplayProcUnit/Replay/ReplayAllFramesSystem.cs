@@ -1,12 +1,12 @@
 ﻿using System.IO;
 using System.Linq;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.All;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Bodies;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.Color;
+using GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay.All;
+using GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay.Bodies;
+using GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay.Color;
 using MessagePack;
 
-namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay
+namespace GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay
 {
 	internal class ReplayAllFramesSystem : ReplayBase<ReplayAllFrames>
 	{

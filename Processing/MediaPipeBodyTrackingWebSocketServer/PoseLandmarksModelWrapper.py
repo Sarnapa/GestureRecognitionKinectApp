@@ -1,8 +1,8 @@
 from concurrent.futures import ThreadPoolExecutor
+import datetime
 import os
 import time
 from typing import List
-import cv2
 import mediapipe as mp
 import numpy as np
 from scipy.spatial.distance import euclidean
@@ -28,12 +28,14 @@ class PoseLandmarksModelWrapper:
         return self.model
     
     def load_model(self, request: LoadModelStructures.LoadPoseLandmarksModelRequest) -> LoadModelStructures.LoadPoseLandmarksModelResponse:
-        if self.is_model_loaded():
+        if not request.force_reload and self.is_model_loaded():
             return LoadModelStructures.LoadPoseLandmarksModelResponse(
                     status=LoadModelStructures.LoadPoseLandmarksModelResponseStatus.ok,
                     message=''
             )
         
+        # print(f"[PoseLandmarksModelWrapper.load_model - {datetime.datetime.now()}] Params: force_reload: {request.force_reload}, model_kind: {request.model_kind}, num_poses: {request.num_poses}, min_pose_detection_confidence: {request.min_pose_detection_confidence}, min_pose_presence_confidence: {request.min_pose_presence_confidence}, min_tracking_confidence: {request.min_tracking_confidence}")
+
         if not request:
             return LoadModelStructures.LoadPoseLandmarksModelResponse(
                     status=LoadModelStructures.LoadPoseLandmarksModelResponseStatus.error,

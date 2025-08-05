@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Configuration;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp
@@ -11,6 +12,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp
 		protected override void OnExit(ExitEventArgs e)
 		{
 			base.OnExit(e);
+
+			ConfigService.SaveSettings();
 
 			if (this.TryFindResource("Locator") is ViewModelLocator viewModelLocator)
 			{

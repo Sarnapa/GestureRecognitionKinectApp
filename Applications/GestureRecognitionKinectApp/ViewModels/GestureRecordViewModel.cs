@@ -270,7 +270,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			this.gestureRecordFilePath = m.FilePath;
 			this.isTemporaryGestureRecordFile = m.IsTemporaryFile;
-			this.navigationService.NavigateTo(GestureRecordPageKey);
+			Application.Current?.Dispatcher.Invoke(() =>
+			{
+				this.navigationService.NavigateTo(GestureRecordPageKey);
+			});
 		}
 
 		private void DisplayImageChangedMessageHandler(DisplayImageChangedMessage m)

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Replay.All
+namespace GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay.All
 {
 	public class ReplayAllFramesReadyEventArgs : EventArgs
 	{

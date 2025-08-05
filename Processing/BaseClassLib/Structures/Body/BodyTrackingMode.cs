@@ -1,6 +1,6 @@
 ﻿namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 {
-	public enum BodyTrackingMode
+	public enum BodyTrackingMode: byte
 	{
 		Kinect,
 		MediaPipePoseLandmarks,

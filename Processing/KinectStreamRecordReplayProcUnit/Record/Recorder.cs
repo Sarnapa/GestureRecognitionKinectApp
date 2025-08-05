@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
+using MessagePack;
 using GestureRecognition.Processing.BaseClassLib.Serialization.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.Bodies;
-using GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record.Color;
-using MessagePack;
+using GestureRecognition.Processing.StreamRecordReplayProcUnit.Record.Bodies;
+using GestureRecognition.Processing.StreamRecordReplayProcUnit.Record.Color;
 
-namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record
+namespace GestureRecognition.Processing.StreamRecordReplayProcUnit.Record
 {
 	public class Recorder : IDisposable
 	{
@@ -26,20 +26,27 @@ namespace GestureRecognition.Processing.KinectStreamRecordReplayProcUnit.Record
 		{
 			get; set;
 		}
+
+		public BodyTrackingMode TrackingMode
+		{
+			get; set;
+		}
 		#endregion
 
 		#region Constructors
-		public Recorder(RecordOptions options, Stream recordStream) : this(options, recordStream, 1.0f)
+		public Recorder(RecordOptions options, BodyTrackingMode trackingMode, Stream recordStream) : this(options, trackingMode, recordStream, 1.0f)
 		{}
 
-		public Recorder(RecordOptions options, Stream recordStream, float resizingCoef)
+		public Recorder(RecordOptions options, BodyTrackingMode trackingMode, Stream recordStream, float resizingCoef)
 		{
 			this.Options = options;
+			this.TrackingMode = trackingMode;
 
 			this.recordStream = recordStream;
 			this.writer = new BinaryWriter(this.recordStream);
 
 			this.writer.Write((int)this.Options);
+			this.writer.Write((byte)this.TrackingMode);
 
 			if ((this.Options & RecordOptions.Color) != 0)
 			{
