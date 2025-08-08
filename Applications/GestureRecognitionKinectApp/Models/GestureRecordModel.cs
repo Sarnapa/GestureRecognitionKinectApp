@@ -122,6 +122,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			}
 		}
 
+		public BodyTrackingMode? GestureTrackingMode
+		{
+			get
+			{
+				return this.gestureReplay?.TrackingMode;
+			}
+		}
+
 		/// <summary>
 		/// Calculated gesture features
 		/// </summary>
@@ -180,18 +188,25 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			try
 			{
 				this.gestureRecordFile = File.OpenRead(gestureRecordFilePath);
-				if (tryLoadGestureData)
-					LoadGestureData();
-
 				this.gestureReplay = new Replay(this.gestureRecordFile);
 
-				this.renderColorFrameManager = new RenderColorFrameManager();
-				this.renderBodyFrameManager = new RenderBodyFrameManager(RenderBodyFrameManagerParameters.GetParameters(this.gestureReplay.TrackingMode, Consts.GestureRecordResizingCoef));
-				this.gestureRecognitionFeaturesManager = new GestureRecognitionFeaturesManager(this.gestureReplay.TrackingMode);
+				if (this.GestureTrackingMode.HasValue)
+				{
+					if (tryLoadGestureData)
+						LoadGestureData();
 
-				this.gestureReplay.AllFramesReady += GestureReplay_AllFramesReady;
-				this.gestureReplay.Finished += GestureReplay_Finished;
-				this.gestureReplay.Start();
+					this.renderColorFrameManager = new RenderColorFrameManager();
+					this.renderBodyFrameManager = new RenderBodyFrameManager(RenderBodyFrameManagerParameters.GetParameters(this.GestureTrackingMode.Value, Consts.GestureRecordResizingCoef));
+					this.gestureRecognitionFeaturesManager = new GestureRecognitionFeaturesManager(this.GestureTrackingMode.Value);
+
+					this.gestureReplay.AllFramesReady += GestureReplay_AllFramesReady;
+					this.gestureReplay.Finished += GestureReplay_Finished;
+					this.gestureReplay.Start();
+				}
+				else
+				{
+					// TODO: Handle case
+				}
 			}
 			catch (FileNotFoundException e)
 			{
@@ -230,12 +245,22 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		public bool ExportGestureData()
 		{
 			string gestureDataFilePath = GetGestureDataFilePath();
-			if (!string.IsNullOrEmpty(gestureDataFilePath) && this.AreGestureFeaturesCalculated && this.IsGestureLabel)
+			if (!string.IsNullOrEmpty(gestureDataFilePath) && this.GestureTrackingMode.HasValue 
+				&& (this.GestureTrackingMode == BodyTrackingMode.Kinect || this.GestureTrackingMode == BodyTrackingMode.MediaPipeHandLandmarks) 
+				&& this.AreGestureFeaturesCalculated && this.IsGestureLabel)
 			{
 				try
 				{
-					var gestureDataView = this.gestureFeatures.Map(this.GestureLabel);
-					CsvHelperUtils.WriteGesturesToFile(new List<GestureDataView>() { gestureDataView }, gestureDataFilePath);
+					if (this.GestureTrackingMode == BodyTrackingMode.Kinect)
+					{
+						var gestureDataView = this.gestureFeatures.MapToKinectGestureDataView(this.GestureLabel);
+						CsvHelperUtils.WriteGesturesToFile([gestureDataView], gestureDataFilePath);
+					}
+					else
+					{
+						var gestureDataView = this.gestureFeatures.MapToMediaPipeHandLandmarksGestureDataView(this.GestureLabel);
+						CsvHelperUtils.WriteGesturesToFile([gestureDataView], gestureDataFilePath);
+					}
 					return true;
 				}
 				catch (Exception e)
@@ -323,22 +348,39 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		{
 			string gestureDataFilePath = GetGestureDataFilePath();
 			if (!string.IsNullOrEmpty(gestureDataFilePath) && File.Exists(gestureDataFilePath)
+				&& this.GestureTrackingMode.HasValue && (this.GestureTrackingMode == BodyTrackingMode.Kinect || this.GestureTrackingMode == BodyTrackingMode.MediaPipeHandLandmarks) 
 				&& (!this.AreGestureFeaturesCalculated || !this.IsGestureLabel))
 			{
 				try
 				{
-					var gestureDataView = CsvHelperUtils.GetGesturesFromFile(gestureDataFilePath)?.FirstOrDefault();
-					if (gestureDataView != null)
+					GestureFeatures gestureFeatures = null;
+					string gestureLabel = string.Empty;
+					if (this.GestureTrackingMode == BodyTrackingMode.Kinect)
 					{
-						var gesturePair = gestureDataView.Map();
-						var gestureFeatures = gesturePair.features;
-						string gestureLabel = gesturePair.label;
-						if (gestureFeatures.IsValid)
+						var gestureDataView = CsvHelperUtils.GetGesturesFromFile<KinectGestureDataView>(gestureDataFilePath)?.FirstOrDefault();
+						if (gestureDataView != null)
 						{
-							this.gestureFeatures = gestureFeatures;
-							this.GestureLabel = gestureLabel;
-							return true;
+							var gesturePair = gestureDataView.MapFromKinectGestureDataView();
+							gestureFeatures = gesturePair.features;
+							gestureLabel = gesturePair.label;
 						}
+					}
+					else
+					{
+						var gestureDataView = CsvHelperUtils.GetGesturesFromFile<MediaPipeHandLandmarksGestureDataView>(gestureDataFilePath)?.FirstOrDefault();
+						if (gestureDataView != null)
+						{
+							var gesturePair = gestureDataView.MapFromMediaPipeHandLandmarksGestureDataView();
+							gestureFeatures = gesturePair.features;
+							gestureLabel = gesturePair.label;
+						}
+					}
+
+					if (gestureFeatures != null && gestureFeatures.IsValid)
+					{
+						this.gestureFeatures = gestureFeatures;
+						this.GestureLabel = gestureLabel;
+						return true;
 					}
 				}
 				catch (Exception e)

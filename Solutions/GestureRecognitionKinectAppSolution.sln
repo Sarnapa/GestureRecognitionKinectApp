@@ -29,13 +29,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLNETProcUnit", "..\Process
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectServer", "..\Processing\KinectServer\KinectServer.csproj", "{7BD7CCD9-19F1-48F2-BD6E-798B13D9EA19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecordsServiceConsoleApp", "..\Applications\GestureRecordsServiceConsoleApp\GestureRecordsServiceConsoleApp.csproj", "{4333556C-B9DA-4E74-8B53-8EF6359CBF8A}"
-EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "MediaPipeBodyTrackingWebSocketServer", "..\Processing\MediaPipeBodyTrackingWebSocketServer\MediaPipeBodyTrackingWebSocketServer.pyproj", "{BC9A30C1-8E5D-43A5-A0C9-B6BE48349B0F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaPipeBodyTrackingWebSocketClientProcUnit", "..\Processing\MediaPipeBodyTrackingWebSocketClient\MediaPipeBodyTrackingWebSocketClientProcUnit.csproj", "{540BCEA2-DDBC-4BDE-DEC0-4511D1931DF0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaPipeBodyTrackingWebSocketServer.IntegrationTests", "..\Tests\Processing\MediaPipeBodyTrackingWebSocketServer.IntegrationTests\MediaPipeBodyTrackingWebSocketServer.IntegrationTests.csproj", "{6FF41D04-4A7B-05E9-AD1E-C04867A54739}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecordsServiceNetFrameworkConsoleApp", "..\Applications\GestureRecordsServiceNetFrameworkConsoleApp\GestureRecordsServiceNetFrameworkConsoleApp.csproj", "{4333556C-B9DA-4E74-8B53-8EF6359CBF8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecordsServiceConsoleApp", "..\Applications\GestureRecordsServiceConsoleApp\GestureRecordsServiceConsoleApp.csproj", "{45B48538-7768-4E21-944D-03638D2799D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,10 +81,6 @@ Global
 		{7BD7CCD9-19F1-48F2-BD6E-798B13D9EA19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BD7CCD9-19F1-48F2-BD6E-798B13D9EA19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BD7CCD9-19F1-48F2-BD6E-798B13D9EA19}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4333556C-B9DA-4E74-8B53-8EF6359CBF8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4333556C-B9DA-4E74-8B53-8EF6359CBF8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4333556C-B9DA-4E74-8B53-8EF6359CBF8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4333556C-B9DA-4E74-8B53-8EF6359CBF8A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BC9A30C1-8E5D-43A5-A0C9-B6BE48349B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BC9A30C1-8E5D-43A5-A0C9-B6BE48349B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC9A30C1-8E5D-43A5-A0C9-B6BE48349B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -95,6 +93,14 @@ Global
 		{6FF41D04-4A7B-05E9-AD1E-C04867A54739}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FF41D04-4A7B-05E9-AD1E-C04867A54739}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FF41D04-4A7B-05E9-AD1E-C04867A54739}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4333556C-B9DA-4E74-8B53-8EF6359CBF8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4333556C-B9DA-4E74-8B53-8EF6359CBF8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4333556C-B9DA-4E74-8B53-8EF6359CBF8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4333556C-B9DA-4E74-8B53-8EF6359CBF8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45B48538-7768-4E21-944D-03638D2799D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45B48538-7768-4E21-944D-03638D2799D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45B48538-7768-4E21-944D-03638D2799D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45B48538-7768-4E21-944D-03638D2799D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,10 +116,11 @@ Global
 		{EFB1F9D9-20FF-45A6-8497-42251B1E2313} = {96E3129E-DD6E-4CFA-80DB-DE3A14387239}
 		{A5132625-78EB-40BB-8AC0-29363C780CB3} = {3781FC4E-1641-4B92-B381-17C7800ECE70}
 		{7BD7CCD9-19F1-48F2-BD6E-798B13D9EA19} = {3781FC4E-1641-4B92-B381-17C7800ECE70}
-		{4333556C-B9DA-4E74-8B53-8EF6359CBF8A} = {A41A560A-D1F0-47F1-9ED1-D79118B968B7}
 		{BC9A30C1-8E5D-43A5-A0C9-B6BE48349B0F} = {3781FC4E-1641-4B92-B381-17C7800ECE70}
 		{540BCEA2-DDBC-4BDE-DEC0-4511D1931DF0} = {3781FC4E-1641-4B92-B381-17C7800ECE70}
 		{6FF41D04-4A7B-05E9-AD1E-C04867A54739} = {96E3129E-DD6E-4CFA-80DB-DE3A14387239}
+		{4333556C-B9DA-4E74-8B53-8EF6359CBF8A} = {A41A560A-D1F0-47F1-9ED1-D79118B968B7}
+		{45B48538-7768-4E21-944D-03638D2799D1} = {A41A560A-D1F0-47F1-9ED1-D79118B968B7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {08987FA6-B986-4650-AD85-E1111EBF06CC}

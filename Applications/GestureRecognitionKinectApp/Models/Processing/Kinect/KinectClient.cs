@@ -351,7 +351,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Pro
 			var handRightConfidence = (TrackingConfidence)payloadReader.ReadInt32();
 
 			return new BodyData(trackingId, isTracked, joints, handLeftState, handLeftConfidence,
-				handRightState, handRightConfidence);
+				handRightState, handRightConfidence, HandDominance.Unknown);
 		}
 
 		private Joint ReadJoint(BinaryReader payloadReader)

@@ -21,8 +21,8 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 		public BodyDataWithColorSpacePoints(ulong trackingId, bool isTracked, IReadOnlyDictionary<JointType, Joint> joints,
 			HandState handLeftState, TrackingConfidence handLeftConfidence,
 			HandState handRightState, TrackingConfidence handRightConfidence,
-			BodyJointsColorSpacePointsDict jointsColorSpacePoints)
-			: base(trackingId, isTracked, joints, handLeftState, handLeftConfidence, handRightState, handRightConfidence)
+			HandDominance handDominance, BodyJointsColorSpacePointsDict jointsColorSpacePoints)
+			: base(trackingId, isTracked, joints, handLeftState, handLeftConfidence, handRightState, handRightConfidence, handDominance)
 		{
 			this.JointsColorSpacePoints = jointsColorSpacePoints ?? new BodyJointsColorSpacePointsDict();
 		}

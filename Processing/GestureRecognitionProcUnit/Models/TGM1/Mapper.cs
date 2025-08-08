@@ -6,7 +6,7 @@ namespace GestureRecognition.Processing.GestureRecognitionProcUnit.Models.TGM1
 	public static class Mapper
 	{
 		#region Public methods
-		public static TGM1.ModelInput MapToModelInput(this GestureDataView data)
+		public static TGM1.ModelInput MapToModelInput(this KinectGestureDataView data)
 		{
 			if (data == null)
 				return null;

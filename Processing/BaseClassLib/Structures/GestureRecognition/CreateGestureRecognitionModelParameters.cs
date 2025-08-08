@@ -4,7 +4,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecogniti
 {
 	public class CreateGestureRecognitionModelParameters
 	{
-		public GestureDataView[] TrainData
+		public KinectGestureDataView[] TrainData
 		{
 			get;
 			set;

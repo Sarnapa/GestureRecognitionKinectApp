@@ -38,6 +38,12 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecogniti
 			set;
 		}
 
+		public HandDominance HandDominance
+		{
+			get;
+			set;
+		}
+
 		public bool IsValid
 		{
 			get

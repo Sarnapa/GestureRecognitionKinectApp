@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using MessagePack;
 using GestureRecognition.Processing.BaseClassLib.Mappers;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
-using MessagePack;
 
 namespace GestureRecognition.Processing.StreamRecordReplayProcUnit.Replay.Bodies
 {

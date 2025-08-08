@@ -50,6 +50,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 				gestureFeaturesTasks.Add(CalculateBoneJointsAngleDataTask(gestureFeatures, bodyFrames, bone));
 
 			gestureFeaturesTasks.Add(CalculateBetweenHandJointsDistanceFeaturesTask(gestureFeatures, bodyFrames));
+			gestureFeaturesTasks.Add(GetHandDominanceTask(gestureFeatures, bodyFrames));
 
 			await Task.WhenAll(gestureFeaturesTasks);
 
@@ -136,6 +137,24 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 
 			gestureFeatures.BetweenHandJointsDistanceMax = betweenHandJointsDistanceMax;
 			gestureFeatures.BetweenHandJointsDistanceMean = betweenHandJointsDistanceMean;
+		}
+
+		private Task GetHandDominanceTask(GestureFeatures gestureFeatures, BodyData[] bodyFrames)
+		{
+			return Task.Run(() => GetHandDominance(gestureFeatures, bodyFrames));
+		}
+
+		private void GetHandDominance(GestureFeatures gestureFeatures, BodyData[] bodyFrames)
+		{
+			int leftHandDominanceFramesCount = bodyFrames.Where(f => f.HandDominance == HandDominance.Left).Count();
+			int rightHandDominanceFramesCount = bodyFrames.Where(f => f.HandDominance == HandDominance.Right).Count();
+
+			if (leftHandDominanceFramesCount > rightHandDominanceFramesCount)
+				gestureFeatures.HandDominance = HandDominance.Left;
+			else if (leftHandDominanceFramesCount < rightHandDominanceFramesCount)
+				gestureFeatures.HandDominance = HandDominance.Right;
+			else
+				gestureFeatures.HandDominance = HandDominance.Unknown;
 		}
 		#endregion
 	}

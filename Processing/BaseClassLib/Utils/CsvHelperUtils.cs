@@ -15,7 +15,8 @@ namespace GestureRecognition.Processing.BaseClassLib.Utils
 		#endregion
 
 		#region Public methods
-		public static void WriteGesturesToFile(List<GestureDataView> gestures, string filePath)
+		public static void WriteGesturesToFile<T>(List<T> gestures, string filePath)
+			where T: GestureDataView
 		{
 			if (gestures == null)
 				throw new ArgumentNullException(nameof(gestures));
@@ -43,7 +44,8 @@ namespace GestureRecognition.Processing.BaseClassLib.Utils
 			}
 		}
 
-		public static List<GestureDataView> GetGesturesFromFile(string filePath)
+		public static List<T> GetGesturesFromFile<T>(string filePath)
+			where T : GestureDataView
 		{
 			if (string.IsNullOrEmpty(filePath))
 				throw new ArgumentException(filePath);
@@ -55,13 +57,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Utils
 			using (var reader = new StreamReader(filePath))
 			using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
 			{
-				return csv.GetRecords<GestureDataView>()?.ToList() ?? new List<GestureDataView>();
+				return csv.GetRecords<T>()?.ToList() ?? new List<T>();
 			}
 		}
 		#endregion
 
 		#region Private methods
-		public static void WriteGesturesToFile(List<GestureDataView> gestures, StreamWriter writer)
+		public static void WriteGesturesToFile<T>(List<T> gestures, StreamWriter writer)
+			where T : GestureDataView
 		{
 			using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
 			{

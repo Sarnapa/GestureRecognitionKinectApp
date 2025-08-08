@@ -5,9 +5,9 @@ using MSKinect = Microsoft.Kinect;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using OldStructures = GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
 
-namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.Serialization
+namespace GestureRecognition.Applications.GestureRecordsServiceNetFrameworkConsoleApp.Serialization
 {
-	public static class NewStructuresMapper
+	internal static class NewStructuresMapper
 	{
 		#region OldStructures.BodyData -> BodyData
 		public static BodyData Map(this OldStructures.BodyData body)
@@ -22,7 +22,8 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.Serial
 				body.HandLeftState.Map(),
 				body.HandLeftConfidence.Map(),
 				body.HandRightState.Map(),
-				body.HandRightConfidence.Map());
+				body.HandRightConfidence.Map(),
+				HandDominance.Unknown);
 		}
 
 		public static BodyData[] Map(this IEnumerable<OldStructures.BodyData> bodies)
@@ -45,6 +46,7 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.Serial
 				body.HandLeftConfidence.Map(),
 				body.HandRightState.Map(),
 				body.HandRightConfidence.Map(),
+				HandDominance.Unknown,
 				body.JointsColorSpacePoints?.Map() ?? new BodyJointsColorSpacePointsDict()
 			);
 		}

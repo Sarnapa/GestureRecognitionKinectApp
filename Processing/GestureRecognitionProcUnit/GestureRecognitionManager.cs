@@ -70,7 +70,7 @@ namespace GestureRecognition.Processing.GestureRecognitionProcUnit
 
 			if (parameters.Features.IsValid)
 			{
-				var gestureDataView = parameters.Features.Map(string.Empty);
+				var gestureDataView = parameters.Features.MapToKinectGestureDataView(string.Empty);
 				var modelInput = gestureDataView.MapToModelInput();
 				try
 				{
@@ -110,18 +110,18 @@ namespace GestureRecognition.Processing.GestureRecognitionProcUnit
 		#region Private methods
 
 		#region Gestures from / to .csv files methods
-		private List<GestureDataView> LoadGesturesDataFromFiles(string[] filesPaths)
+		private List<KinectGestureDataView> LoadGesturesDataFromFiles(string[] filesPaths)
 		{
 			if (filesPaths == null)
 				throw new ArgumentNullException(nameof(filesPaths));
 
-			var result = new List<GestureDataView>();
+			var result = new List<KinectGestureDataView>();
 
 			foreach (string filePath in filesPaths) 
 			{
 				if (filePath.EndsWith(CsvHelperUtils.CsvFileExtension) && File.Exists(filePath))
 				{
-					var fileGestureData = CsvHelperUtils.GetGesturesFromFile(filePath);
+					var fileGestureData = CsvHelperUtils.GetGesturesFromFile<KinectGestureDataView>(filePath);
 					if (fileGestureData != null)
 						result.AddRange(fileGestureData);
 				}
@@ -130,7 +130,7 @@ namespace GestureRecognition.Processing.GestureRecognitionProcUnit
 			return result;
 		}
 
-		private bool SaveGesturesData(List<GestureDataView> gestures, string filePath)
+		private bool SaveGesturesData(List<KinectGestureDataView> gestures, string filePath)
 		{
 			if (gestures == null) 
 				throw new ArgumentNullException(nameof(gestures));

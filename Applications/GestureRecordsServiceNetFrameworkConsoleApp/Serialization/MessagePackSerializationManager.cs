@@ -8,9 +8,9 @@ using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.Streaming;
 using OldStructures = GestureRecognition.Processing.BaseClassLib.Structures.Kinect;
 
-namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.Serialization
+namespace GestureRecognition.Applications.GestureRecordsServiceNetFrameworkConsoleApp.Serialization
 {
-	public class MessagePackSerializationManager
+	internal class MessagePackSerializationManager
 	{
 		#region Private fields
 		private readonly SerializationMode mode;
@@ -109,6 +109,7 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.Serial
 				var options = (RecordOptions)reader.ReadInt32();
 				Console.WriteLine($"[{methodName}][{DateTime.Now}] Record options: {options}.");
 				writer.Write((int)options);
+				writer.Write((byte)BodyTrackingMode.Kinect);
 
 				while (reader.BaseStream.Position != reader.BaseStream.Length)
 				{

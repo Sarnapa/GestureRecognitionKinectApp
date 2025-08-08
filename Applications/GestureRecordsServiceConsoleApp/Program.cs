@@ -1,58 +1,98 @@
-﻿using System;
-using GestureRecognition.Applications.GestureRecordsServiceConsoleApp.Serialization;
+﻿using GestureRecognition.Applications.GestureRecordsServiceConsoleApp.GestureRecognitionFeatures;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 
 namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp
 {
 	internal class Program
 	{
-		static void Main(string[] args)
+		static async Task Main(string[] args)
 		{
 			string methodName = $"{nameof(Main)}";
 			Console.WriteLine($"[{methodName}][{DateTime.Now}] Starting GestureRecordsServiceConsoleApp...");
 
-			// For testing purposes
-			//args = new string[]
-			//{
-			//	ArgumentsConsts.SERIALIZATION_MODE_DIRECTORY,
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Hello\2025_02_02\",
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Hello\2025_07_21\"
-			//};
+			//// For testing purposes
+			//args =
+			//[
+			//	ArgumentsConsts.CALCULATION_FEATURES_METHOD,
+			//	ArgumentsConsts.FILE_MODE,
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Yes\OldData\2025_02_02",
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Yes\2025_08_07\"
+			//];
 
-			if (args.Length < 3)
+
+			if (args.Length < 4 && args.Length > 5)
 			{
-				Console.WriteLine($"[{methodName}][{DateTime.Now}] Invalid arguments count - given: {args.Length}, expected: 3.");
+				Console.WriteLine($"[{methodName}][{DateTime.Now}] Invalid arguments count - given: {args.Length}, expected: 4 - 5.");
 				Console.WriteLine($"[{methodName}][{DateTime.Now}] Press key to close console app.");
 				Console.ReadKey();
 				return;
 			}
 
-			string mode = args[0];
-			string inputPath = args[1];
-			string outputPath = args[2];
+			string methodKindArg = args[0];
+			string fileProcessModeArg = args[1];
+			string inputPath = args[2];
+			string outputPath = args[3];
 
-			SerializationMode? serializationMode = null;
-			if (mode.Equals(ArgumentsConsts.SERIALIZATION_MODE_FILE, StringComparison.OrdinalIgnoreCase))
+			MethodKind? methodKind = null;
+			if (methodKindArg.Equals(ArgumentsConsts.CALCULATION_FEATURES_METHOD, StringComparison.OrdinalIgnoreCase))
 			{
-				serializationMode = SerializationMode.File;
-			}
-			else if (mode.Equals(ArgumentsConsts.SERIALIZATION_MODE_DIRECTORY, StringComparison.OrdinalIgnoreCase))
-			{
-				serializationMode = SerializationMode.Directory;
+				methodKind = MethodKind.CalculationGestureFeatures;
 			}
 			else
 			{
-				Console.WriteLine($"[{methodName}][{DateTime.Now}] Invalid serialization mode argument - given: {mode}, expected: {ArgumentsConsts.SERIALIZATION_MODE_FILE} or {ArgumentsConsts.SERIALIZATION_MODE_DIRECTORY}.");
+				Console.WriteLine($"[{methodName}][{DateTime.Now}] Invalid method argument - given: {methodKindArg}, expected: {ArgumentsConsts.CALCULATION_FEATURES_METHOD}.");
 			}
 
-			if (serializationMode.HasValue)
+			if (methodKind.HasValue)
 			{
-				Console.WriteLine($"[{methodName}][{DateTime.Now}] Initializing {nameof(MessagePackSerializationManager)}.\n" +
-					$"Input parameters:\n" +
-					$"Mode: {serializationMode.Value}\n" +
-					$"Input file: {inputPath}\n" +
-					$"Output file: {outputPath}\n");
-				var serializationManager = new MessagePackSerializationManager(serializationMode.Value, inputPath, outputPath);
-				serializationManager.ExecuteReserializationProcess();
+				FileProcessMode? fileProcessMode = null;
+				if (fileProcessModeArg.Equals(ArgumentsConsts.FILE_MODE, StringComparison.OrdinalIgnoreCase))
+				{
+					fileProcessMode = FileProcessMode.File;
+				}
+				else if (fileProcessModeArg.Equals(ArgumentsConsts.DIRECTORY_MODE, StringComparison.OrdinalIgnoreCase))
+				{
+					fileProcessMode = FileProcessMode.Directory;
+				}
+				else
+				{
+					Console.WriteLine($"[{methodName}][{DateTime.Now}] Invalid file processing mode argument - given: {fileProcessModeArg}, expected: {ArgumentsConsts.FILE_MODE} or {ArgumentsConsts.DIRECTORY_MODE}.");
+				}
+
+				if (fileProcessMode.HasValue)
+				{
+					switch (methodKind)
+					{
+						case MethodKind.CalculationGestureFeatures:
+							BodyTrackingMode? trackingMode = null;
+							bool validArgs = true;
+							if (args.Length == 5)
+							{
+								string trackingModeArgs = args[4];
+								switch (trackingModeArgs)
+								{
+									case ArgumentsConsts.CALCULATION_FEATURES_KINECT_TRACKING_MODE:
+										trackingMode = BodyTrackingMode.Kinect;
+										break;
+									case ArgumentsConsts.CALCULATION_FEATURES_MEDIAPIPE_HAND_LANDMARKS_TRACKING_MODE:
+										trackingMode = BodyTrackingMode.MediaPipeHandLandmarks;
+										break;
+									default:
+										validArgs = false;
+										Console.WriteLine($"[{methodName}][{DateTime.Now}] Unsupported tracking mode for CalculationGestureFeatures method." +
+											$"Supported modes: [{BodyTrackingMode.Kinect}, {BodyTrackingMode.MediaPipeHandLandmarks}]. Method execution abandoned.");
+										break;
+								}
+
+								if (validArgs)
+								{
+									var gestureFeaturesManager = new GestureFeaturesManager(fileProcessMode.Value, inputPath, outputPath, trackingMode);
+									await gestureFeaturesManager.ExecuteCalculationFeaturesProcess().ConfigureAwait(false);
+								}
+							}
+							break;
+					}
+				}
 			}
 
 			Console.WriteLine($"[{methodName}][{DateTime.Now}] Press key to close console app.");

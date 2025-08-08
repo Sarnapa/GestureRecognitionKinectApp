@@ -101,7 +101,8 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 				body.HandLeftState.Map(),
 				body.HandLeftConfidence.Map(),
 				body.HandRightState.Map(),
-				body.HandRightConfidence.Map());
+				body.HandRightConfidence.Map(),
+				HandDominance.Unknown);
 		}
 
 		public static BodyData[] Map(this IEnumerable<MSKinect.Body> bodies)
@@ -124,6 +125,7 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 				body.HandLeftConfidence.Map(),
 				body.HandRightState.Map(),
 				body.HandRightConfidence.Map(),
+				HandDominance.Unknown,
 				jointsColorSpacePoints
 				);
 		}
