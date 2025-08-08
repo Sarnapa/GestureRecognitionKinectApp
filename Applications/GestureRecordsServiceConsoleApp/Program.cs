@@ -14,13 +14,12 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp
 			//args =
 			//[
 			//	ArgumentsConsts.CALCULATION_FEATURES_METHOD,
-			//	ArgumentsConsts.FILE_MODE,
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Yes\OldData\2025_02_02",
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Yes\2025_08_07\"
+			//	ArgumentsConsts.DIRECTORY_MODE,
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Yes\2025_08_07",
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Yes\2025_08_08"
 			//];
 
-
-			if (args.Length < 4 && args.Length > 5)
+			if (args.Length < 4 || args.Length > 5)
 			{
 				Console.WriteLine($"[{methodName}][{DateTime.Now}] Invalid arguments count - given: {args.Length}, expected: 4 - 5.");
 				Console.WriteLine($"[{methodName}][{DateTime.Now}] Press key to close console app.");
@@ -83,12 +82,12 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp
 											$"Supported modes: [{BodyTrackingMode.Kinect}, {BodyTrackingMode.MediaPipeHandLandmarks}]. Method execution abandoned.");
 										break;
 								}
+							}
 
-								if (validArgs)
-								{
-									var gestureFeaturesManager = new GestureFeaturesManager(fileProcessMode.Value, inputPath, outputPath, trackingMode);
-									await gestureFeaturesManager.ExecuteCalculationFeaturesProcess().ConfigureAwait(false);
-								}
+							if (validArgs)
+							{
+								var gestureFeaturesManager = new GestureFeaturesManager(fileProcessMode.Value, inputPath, outputPath, trackingMode);
+								await gestureFeaturesManager.ExecuteCalculationFeaturesProcess().ConfigureAwait(false);
 							}
 							break;
 					}
