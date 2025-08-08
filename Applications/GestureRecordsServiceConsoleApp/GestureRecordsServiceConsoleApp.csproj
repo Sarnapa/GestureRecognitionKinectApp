@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Processing\BaseClassLib\BaseClassLib.csproj" />
     <ProjectReference Include="..\..\Processing\GestureRecognitionFeaturesProcUnit\GestureRecognitionFeaturesProcUnit.csproj" />
+    <ProjectReference Include="..\..\Processing\MediaPipeBodyTrackingWebSocketClient\MediaPipeBodyTrackingWebSocketClientProcUnit.csproj" />
   </ItemGroup>
 
 </Project>

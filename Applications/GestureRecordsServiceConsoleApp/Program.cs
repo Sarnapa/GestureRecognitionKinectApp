@@ -15,14 +15,15 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp
 			//[
 			//	ArgumentsConsts.CALCULATION_FEATURES_METHOD,
 			//	ArgumentsConsts.DIRECTORY_MODE,
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Yes\2025_08_07",
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Yes\2025_08_08"
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_08\Kinect",
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_08\MediaPipeHandLandmarks",
+			//	ArgumentsConsts.CALCULATION_FEATURES_MEDIAPIPE_HAND_LANDMARKS_TRACKING_MODE,
 			//];
 
 			if (args.Length < 4 || args.Length > 5)
 			{
-				Console.WriteLine($"[{methodName}][{DateTime.Now}] Invalid arguments count - given: {args.Length}, expected: 4 - 5.");
-				Console.WriteLine($"[{methodName}][{DateTime.Now}] Press key to close console app.");
+				Console.WriteLine($"[{methodName}][{DateTime.Now}] Invalid arguments count - given: {args.Length}, expected: 4 - 5.\n");
+				Console.WriteLine($"[{methodName}][{DateTime.Now}] Press key to close console app.\n");
 				Console.ReadKey();
 				return;
 			}
@@ -39,7 +40,7 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp
 			}
 			else
 			{
-				Console.WriteLine($"[{methodName}][{DateTime.Now}] Invalid method argument - given: {methodKindArg}, expected: {ArgumentsConsts.CALCULATION_FEATURES_METHOD}.");
+				Console.WriteLine($"[{methodName}][{DateTime.Now}] Invalid method argument - given: {methodKindArg}, expected: {ArgumentsConsts.CALCULATION_FEATURES_METHOD}.\n");
 			}
 
 			if (methodKind.HasValue)
@@ -55,7 +56,7 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp
 				}
 				else
 				{
-					Console.WriteLine($"[{methodName}][{DateTime.Now}] Invalid file processing mode argument - given: {fileProcessModeArg}, expected: {ArgumentsConsts.FILE_MODE} or {ArgumentsConsts.DIRECTORY_MODE}.");
+					Console.WriteLine($"[{methodName}][{DateTime.Now}] Invalid file processing mode argument - given: {fileProcessModeArg}, expected: {ArgumentsConsts.FILE_MODE} or {ArgumentsConsts.DIRECTORY_MODE}.\n");
 				}
 
 				if (fileProcessMode.HasValue)
@@ -70,16 +71,13 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp
 								string trackingModeArgs = args[4];
 								switch (trackingModeArgs)
 								{
-									case ArgumentsConsts.CALCULATION_FEATURES_KINECT_TRACKING_MODE:
-										trackingMode = BodyTrackingMode.Kinect;
-										break;
 									case ArgumentsConsts.CALCULATION_FEATURES_MEDIAPIPE_HAND_LANDMARKS_TRACKING_MODE:
 										trackingMode = BodyTrackingMode.MediaPipeHandLandmarks;
 										break;
 									default:
 										validArgs = false;
-										Console.WriteLine($"[{methodName}][{DateTime.Now}] Unsupported tracking mode for CalculationGestureFeatures method." +
-											$"Supported modes: [{BodyTrackingMode.Kinect}, {BodyTrackingMode.MediaPipeHandLandmarks}]. Method execution abandoned.");
+										Console.WriteLine($"[{methodName}][{DateTime.Now}] Unsupported tracking mode as conversion output for CalculationGestureFeatures method." +
+											$"Supported modes: [{BodyTrackingMode.MediaPipeHandLandmarks}]. Method execution abandoned.\n");
 										break;
 								}
 							}
