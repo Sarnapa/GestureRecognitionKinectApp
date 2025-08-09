@@ -234,8 +234,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get
 			{
-				return this.model.TrackingState == BodyTrackingState.Standard
-					? Visibility.Visible : Visibility.Hidden;
+				// Moved to GestureRecordsAndDataServiceConsoleApp
+				//return this.model.TrackingState == BodyTrackingState.Standard
+				//	? Visibility.Visible : Visibility.Hidden;
+				return Visibility.Collapsed;
 			}
 		}
 

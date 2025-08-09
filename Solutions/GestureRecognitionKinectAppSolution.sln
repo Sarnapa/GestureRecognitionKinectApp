@@ -37,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaPipeBodyTrackingWebSoc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecordsServiceNetFrameworkConsoleApp", "..\Applications\GestureRecordsServiceNetFrameworkConsoleApp\GestureRecordsServiceNetFrameworkConsoleApp.csproj", "{4333556C-B9DA-4E74-8B53-8EF6359CBF8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecordsServiceConsoleApp", "..\Applications\GestureRecordsServiceConsoleApp\GestureRecordsServiceConsoleApp.csproj", "{45B48538-7768-4E21-944D-03638D2799D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecordsAndDataServiceConsoleApp", "..\Applications\GestureRecordsServiceConsoleApp\GestureRecordsAndDataServiceConsoleApp.csproj", "{45B48538-7768-4E21-944D-03638D2799D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

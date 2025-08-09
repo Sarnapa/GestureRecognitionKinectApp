@@ -7,5 +7,11 @@
 			get;
 			set;
 		}
+
+		public string ErrorMessage
+		{
+			get;
+			set;
+		}
 	}
 }

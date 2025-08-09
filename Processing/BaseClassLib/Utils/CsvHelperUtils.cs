@@ -15,7 +15,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Utils
 		#endregion
 
 		#region Public methods
-		public static void WriteGesturesToFile<T>(List<T> gestures, string filePath)
+		public static void WriteGesturesToFile<T>(T[] gestures, string filePath)
 			where T: GestureDataView
 		{
 			if (gestures == null)
@@ -63,7 +63,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Utils
 		#endregion
 
 		#region Private methods
-		public static void WriteGesturesToFile<T>(List<T> gestures, StreamWriter writer)
+		public static void WriteGesturesToFile<T>(T[] gestures, StreamWriter writer)
 			where T : GestureDataView
 		{
 			using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))

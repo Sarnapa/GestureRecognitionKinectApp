@@ -3,5 +3,6 @@
 	internal enum MethodKind
 	{
 		CalculationGestureFeatures,
+		PrepareGestureData,
 	}
 }
