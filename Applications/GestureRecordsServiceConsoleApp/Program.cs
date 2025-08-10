@@ -16,19 +16,19 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp
 			//[
 			//	ArgumentsConsts.CALCULATION_FEATURES_METHOD,
 			//	ArgumentsConsts.DIRECTORY_MODE,
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_08\Kinect",
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_09\MediaPipeHandLandmarks",
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Yes\2025_08_08\Kinect",
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Yes\2025_08_10\MediaPipeHandLandmarks",
 			//	ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_TRACKING_MODE,
 			//];
 
 			// For testing purposes
-			args =
-			[
-				ArgumentsConsts.PREPARE_GESTURE_DATA_METHOD,
-				@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_08\Kinect",
-				@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_08\Kinect\20250202_Goodbye.csv",
-				ArgumentsConsts.KINECT_TRACKING_MODE,
-			];
+			//args =
+			//[
+			//	ArgumentsConsts.PREPARE_GESTURE_DATA_METHOD,
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_08\Kinect",
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_08\Kinect\20250202_Goodbye.csv",
+			//	ArgumentsConsts.KINECT_TRACKING_MODE,
+			//];
 
 			if (args.Length < 4 || args.Length > 5)
 			{

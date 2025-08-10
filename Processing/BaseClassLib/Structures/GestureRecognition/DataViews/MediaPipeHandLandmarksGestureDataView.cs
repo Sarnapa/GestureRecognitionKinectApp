@@ -2708,26 +2708,26 @@
 		}
 		#endregion
 
-		#region ThumbIPIndexFingerMCPDominantBone bone features
-		public double? ThumbIPIndexFingerMCPDominantBoneInitialAngle
+		#region ThumbMCPIndexFingerMCPDominantBone bone features
+		public double? ThumbMCPIndexFingerMCPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPIndexFingerMCPDominantBoneFinalAngle
+		public double? ThumbMCPIndexFingerMCPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPIndexFingerMCPDominantBoneMeanAngle
+		public double? ThumbMCPIndexFingerMCPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPIndexFingerMCPDominantBoneMaximumAngle
+		public double? ThumbMCPIndexFingerMCPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -3280,26 +3280,26 @@
 		}
 		#endregion
 
-		#region ThumbIPIndexFingerMCPNondominantBone bone features
-		public double? ThumbIPIndexFingerMCPNondominantBoneInitialAngle
+		#region ThumbMCPIndexFingerMCPNondominantBone bone features
+		public double? ThumbMCPIndexFingerMCPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPIndexFingerMCPNondominantBoneFinalAngle
+		public double? ThumbMCPIndexFingerMCPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPIndexFingerMCPNondominantBoneMeanAngle
+		public double? ThumbMCPIndexFingerMCPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPIndexFingerMCPNondominantBoneMaximumAngle
+		public double? ThumbMCPIndexFingerMCPNondominantBoneMaximumAngle
 		{
 			get;
 			set;

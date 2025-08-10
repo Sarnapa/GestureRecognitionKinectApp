@@ -29,7 +29,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 		public static Bone PinkyPIPPinkyDIPRightBone = new Bone(JointType.PinkyPIPRight, JointType.PinkyDIPRight);
 		public static Bone PinkyDIPPinkyTIPRightBone = new Bone(JointType.PinkyDIPRight, JointType.PinkyTIPRight);
 
-		public static Bone ThumbIPIndexFingerMCPRightBone = new Bone(JointType.ThumbIPRight, JointType.IndexFingerMCPRight);
+		public static Bone ThumbMCPIndexFingerMCPRightBone = new Bone(JointType.ThumbMCPRight, JointType.IndexFingerMCPRight);
 		public static Bone IndexFingerMCPMiddleFingerMCPRightBone = new Bone(JointType.IndexFingerMCPRight, JointType.MiddleFingerMCPRight);
 		public static Bone MiddleFingerMCPRingFingerMCPRightBone = new Bone(JointType.MiddleFingerMCPRight, JointType.RingFingerMCPRight);
 		public static Bone RingFingerMCPPinkyMCPRightBone = new Bone(JointType.RingFingerMCPRight, JointType.PinkyMCPRight);
@@ -58,7 +58,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 		public static Bone PinkyPIPPinkyDIPLeftBone = new Bone(JointType.PinkyPIPLeft, JointType.PinkyDIPLeft);
 		public static Bone PinkyDIPPinkyTIPLeftBone = new Bone(JointType.PinkyDIPLeft, JointType.PinkyTIPLeft);
 
-		public static Bone ThumbIPIndexFingerMCPLeftBone = new Bone(JointType.ThumbIPLeft, JointType.IndexFingerMCPLeft);
+		public static Bone ThumbMCPIndexFingerMCPLeftBone = new Bone(JointType.ThumbMCPLeft, JointType.IndexFingerMCPLeft);
 		public static Bone IndexFingerMCPMiddleFingerMCPLeftBone = new Bone(JointType.IndexFingerMCPLeft, JointType.MiddleFingerMCPLeft);
 		public static Bone MiddleFingerMCPRingFingerMCPLeftBone = new Bone(JointType.MiddleFingerMCPLeft, JointType.RingFingerMCPLeft);
 		public static Bone RingFingerMCPPinkyMCPLeftBone = new Bone(JointType.RingFingerMCPLeft, JointType.PinkyMCPLeft);
@@ -68,14 +68,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 			MiddleFingerMCPMiddleFingerPIPRightBone, MiddleFingerPIPMiddleFingerDIPRightBone, MiddleFingerDIPMiddleFingerTIPRightBone,
 			RingFingerMCPRingFingerPIPRightBone, RingFingerPIPRingFingerDIPRightBone, RingFingerDIPRingFingerTIPRightBone,
 			WristPinkyMCPRightBone, PinkyMCPPinkyPIPRightBone, PinkyPIPPinkyDIPRightBone, PinkyDIPPinkyTIPRightBone,
-			ThumbIPIndexFingerMCPRightBone, IndexFingerMCPMiddleFingerMCPRightBone, MiddleFingerMCPRingFingerMCPRightBone, RingFingerMCPPinkyMCPRightBone}.ToList();
+			ThumbMCPIndexFingerMCPRightBone, IndexFingerMCPMiddleFingerMCPRightBone, MiddleFingerMCPRingFingerMCPRightBone, RingFingerMCPPinkyMCPRightBone}.ToList();
 
 		public static List<Bone> LeftHandBones = new[] { WristThumbCMCLeftBone, ThumbCMCThumbMCPLeftBone, ThumbMCPThumbIPLeftBone, ThumbIPThumbTIPLeftBone,
 			WristIndexFingerMCPLeftBone, IndexFingerMCPIndexFingerPIPLeftBone, IndexFingerPIPIndexFingerDIPLeftBone, IndexFingerDIPIndexFingerTIPLeftBone,
 			MiddleFingerMCPMiddleFingerPIPLeftBone, MiddleFingerPIPMiddleFingerDIPLeftBone, MiddleFingerDIPMiddleFingerTIPLeftBone,
 			RingFingerMCPRingFingerPIPLeftBone, RingFingerPIPRingFingerDIPLeftBone, RingFingerDIPRingFingerTIPLeftBone,
 			WristPinkyMCPLeftBone, PinkyMCPPinkyPIPLeftBone, PinkyPIPPinkyDIPLeftBone, PinkyDIPPinkyTIPLeftBone,
-			ThumbIPIndexFingerMCPLeftBone, IndexFingerMCPMiddleFingerMCPLeftBone, MiddleFingerMCPRingFingerMCPLeftBone, RingFingerMCPPinkyMCPLeftBone}.ToList();
+			ThumbMCPIndexFingerMCPLeftBone, IndexFingerMCPMiddleFingerMCPLeftBone, MiddleFingerMCPRingFingerMCPLeftBone, RingFingerMCPPinkyMCPLeftBone}.ToList();
 
 		public static List<Bone> AllBones = RightHandBones.Concat(LeftHandBones).ToList();
 	}

@@ -2034,18 +2034,18 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			}
 			#endregion
 
-			#region ThumbIPIndexFingerMCPDominant bone features
-			double? thumbIPIndexFingerMCPDominantBoneInitialAngle = null;
-			double? thumbIPIndexFingerMCPDominantBoneFinalAngle = null;
-			double? thumbIPIndexFingerMCPDominantBoneMeanAngle = null;
-			double? thumbIPIndexFingerMCPDominantBoneMaximumAngle = null;
-			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbIPIndexFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbIPIndexFingerMCPRightBone,
-				features.HandDominance, true), out var thumbIPIndexFingerMCPDominantBoneAngleData))
+			#region ThumbMCPIndexFingerMCPDominant bone features
+			double? thumbMCPIndexFingerMCPDominantBoneInitialAngle = null;
+			double? thumbMCPIndexFingerMCPDominantBoneFinalAngle = null;
+			double? thumbMCPIndexFingerMCPDominantBoneMeanAngle = null;
+			double? thumbMCPIndexFingerMCPDominantBoneMaximumAngle = null;
+			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbMCPIndexFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbMCPIndexFingerMCPRightBone,
+				features.HandDominance, true), out var thumbMCPIndexFingerMCPDominantBoneAngleData))
 			{
-				thumbIPIndexFingerMCPDominantBoneInitialAngle = thumbIPIndexFingerMCPDominantBoneAngleData.InitialAngle;
-				thumbIPIndexFingerMCPDominantBoneFinalAngle = thumbIPIndexFingerMCPDominantBoneAngleData.FinalAngle;
-				thumbIPIndexFingerMCPDominantBoneMeanAngle = thumbIPIndexFingerMCPDominantBoneAngleData.MeanAngle;
-				thumbIPIndexFingerMCPDominantBoneMaximumAngle = thumbIPIndexFingerMCPDominantBoneAngleData.MaximumAngle;
+				thumbMCPIndexFingerMCPDominantBoneInitialAngle = thumbMCPIndexFingerMCPDominantBoneAngleData.InitialAngle;
+				thumbMCPIndexFingerMCPDominantBoneFinalAngle = thumbMCPIndexFingerMCPDominantBoneAngleData.FinalAngle;
+				thumbMCPIndexFingerMCPDominantBoneMeanAngle = thumbMCPIndexFingerMCPDominantBoneAngleData.MeanAngle;
+				thumbMCPIndexFingerMCPDominantBoneMaximumAngle = thumbMCPIndexFingerMCPDominantBoneAngleData.MaximumAngle;
 			}
 			#endregion
 
@@ -2364,18 +2364,18 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			}
 			#endregion
 
-			#region ThumbIPIndexFingerMCPNondominant bone features
-			double? thumbIPIndexFingerMCPNondominantBoneInitialAngle = null;
-			double? thumbIPIndexFingerMCPNondominantBoneFinalAngle = null;
-			double? thumbIPIndexFingerMCPNondominantBoneMeanAngle = null;
-			double? thumbIPIndexFingerMCPNondominantBoneMaximumAngle = null;
-			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbIPIndexFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbIPIndexFingerMCPRightBone,
-				features.HandDominance, true), out var thumbIPIndexFingerMCPNondominantBoneAngleData))
+			#region ThumbMCPIndexFingerMCPNondominant bone features
+			double? thumbMCPIndexFingerMCPNondominantBoneInitialAngle = null;
+			double? thumbMCPIndexFingerMCPNondominantBoneFinalAngle = null;
+			double? thumbMCPIndexFingerMCPNondominantBoneMeanAngle = null;
+			double? thumbMCPIndexFingerMCPNondominantBoneMaximumAngle = null;
+			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbMCPIndexFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbMCPIndexFingerMCPRightBone,
+				features.HandDominance, true), out var thumbMCPIndexFingerMCPNondominantBoneAngleData))
 			{
-				thumbIPIndexFingerMCPNondominantBoneInitialAngle = thumbIPIndexFingerMCPNondominantBoneAngleData.InitialAngle;
-				thumbIPIndexFingerMCPNondominantBoneFinalAngle = thumbIPIndexFingerMCPNondominantBoneAngleData.FinalAngle;
-				thumbIPIndexFingerMCPNondominantBoneMeanAngle = thumbIPIndexFingerMCPNondominantBoneAngleData.MeanAngle;
-				thumbIPIndexFingerMCPNondominantBoneMaximumAngle = thumbIPIndexFingerMCPNondominantBoneAngleData.MaximumAngle;
+				thumbMCPIndexFingerMCPNondominantBoneInitialAngle = thumbMCPIndexFingerMCPNondominantBoneAngleData.InitialAngle;
+				thumbMCPIndexFingerMCPNondominantBoneFinalAngle = thumbMCPIndexFingerMCPNondominantBoneAngleData.FinalAngle;
+				thumbMCPIndexFingerMCPNondominantBoneMeanAngle = thumbMCPIndexFingerMCPNondominantBoneAngleData.MeanAngle;
+				thumbMCPIndexFingerMCPNondominantBoneMaximumAngle = thumbMCPIndexFingerMCPNondominantBoneAngleData.MaximumAngle;
 			}
 			#endregion
 
@@ -3047,11 +3047,11 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 				PinkyDIPPinkyTIPDominantBoneMaximumAngle = pinkyDIPPinkyTIPDominantBoneMaximumAngle,
 				#endregion
 
-				#region ThumbIPIndexFingerMCPDominantBone bone features
-				ThumbIPIndexFingerMCPDominantBoneInitialAngle = thumbIPIndexFingerMCPDominantBoneInitialAngle,
-				ThumbIPIndexFingerMCPDominantBoneFinalAngle = thumbIPIndexFingerMCPDominantBoneFinalAngle,
-				ThumbIPIndexFingerMCPDominantBoneMeanAngle = thumbIPIndexFingerMCPDominantBoneMeanAngle,
-				ThumbIPIndexFingerMCPDominantBoneMaximumAngle = thumbIPIndexFingerMCPDominantBoneMaximumAngle,
+				#region ThumbMCPIndexFingerMCPDominantBone bone features
+				ThumbMCPIndexFingerMCPDominantBoneInitialAngle = thumbMCPIndexFingerMCPDominantBoneInitialAngle,
+				ThumbMCPIndexFingerMCPDominantBoneFinalAngle = thumbMCPIndexFingerMCPDominantBoneFinalAngle,
+				ThumbMCPIndexFingerMCPDominantBoneMeanAngle = thumbMCPIndexFingerMCPDominantBoneMeanAngle,
+				ThumbMCPIndexFingerMCPDominantBoneMaximumAngle = thumbMCPIndexFingerMCPDominantBoneMaximumAngle,
 				#endregion
 
 				#region IndexFingerMCPMiddleFingerMCPDominantBone bone features
@@ -3201,11 +3201,11 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 				PinkyDIPPinkyTIPNondominantBoneMaximumAngle = pinkyDIPPinkyTIPNondominantBoneMaximumAngle,
 				#endregion
 
-				#region ThumbIPIndexFingerMCPNondominantBone bone features
-				ThumbIPIndexFingerMCPNondominantBoneInitialAngle = thumbIPIndexFingerMCPNondominantBoneInitialAngle,
-				ThumbIPIndexFingerMCPNondominantBoneFinalAngle = thumbIPIndexFingerMCPNondominantBoneFinalAngle,
-				ThumbIPIndexFingerMCPNondominantBoneMeanAngle = thumbIPIndexFingerMCPNondominantBoneMeanAngle,
-				ThumbIPIndexFingerMCPNondominantBoneMaximumAngle = thumbIPIndexFingerMCPNondominantBoneMaximumAngle,
+				#region ThumbMCPIndexFingerMCPNondominantBone bone features
+				ThumbMCPIndexFingerMCPNondominantBoneInitialAngle = thumbMCPIndexFingerMCPNondominantBoneInitialAngle,
+				ThumbMCPIndexFingerMCPNondominantBoneFinalAngle = thumbMCPIndexFingerMCPNondominantBoneFinalAngle,
+				ThumbMCPIndexFingerMCPNondominantBoneMeanAngle = thumbMCPIndexFingerMCPNondominantBoneMeanAngle,
+				ThumbMCPIndexFingerMCPNondominantBoneMaximumAngle = thumbMCPIndexFingerMCPNondominantBoneMaximumAngle,
 				#endregion
 
 				#region IndexFingerMCPMiddleFingerMCPNondominantBone bone features
@@ -4097,14 +4097,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 				pinkyDIPPinkyTIPDominantBoneMeanAngle, pinkyDIPPinkyTIPDominantBoneMaximumAngle));
 			#endregion
 
-			#region ThumbIPIndexFingerMCPDominant bone features
-			double? thumbIPIndexFingerMCPDominantBoneInitialAngle = gesture.ThumbIPIndexFingerMCPDominantBoneInitialAngle;
-			double? thumbIPIndexFingerMCPDominantBoneFinalAngle = gesture.ThumbIPIndexFingerMCPDominantBoneFinalAngle;
-			double? thumbIPIndexFingerMCPDominantBoneMeanAngle = gesture.ThumbIPIndexFingerMCPDominantBoneMeanAngle;
-			double? thumbIPIndexFingerMCPDominantBoneMaximumAngle = gesture.ThumbIPIndexFingerMCPDominantBoneMaximumAngle;
-			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbIPIndexFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbIPIndexFingerMCPRightBone,
-				features.HandDominance, true), new BoneJointsAngleData(thumbIPIndexFingerMCPDominantBoneInitialAngle, thumbIPIndexFingerMCPDominantBoneFinalAngle,
-				thumbIPIndexFingerMCPDominantBoneMeanAngle, thumbIPIndexFingerMCPDominantBoneMaximumAngle));
+			#region ThumbMCPIndexFingerMCPDominant bone features
+			double? thumbMCPIndexFingerMCPDominantBoneInitialAngle = gesture.ThumbMCPIndexFingerMCPDominantBoneInitialAngle;
+			double? thumbMCPIndexFingerMCPDominantBoneFinalAngle = gesture.ThumbMCPIndexFingerMCPDominantBoneFinalAngle;
+			double? thumbMCPIndexFingerMCPDominantBoneMeanAngle = gesture.ThumbMCPIndexFingerMCPDominantBoneMeanAngle;
+			double? thumbMCPIndexFingerMCPDominantBoneMaximumAngle = gesture.ThumbMCPIndexFingerMCPDominantBoneMaximumAngle;
+			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbMCPIndexFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbMCPIndexFingerMCPRightBone,
+				features.HandDominance, true), new BoneJointsAngleData(thumbMCPIndexFingerMCPDominantBoneInitialAngle, thumbMCPIndexFingerMCPDominantBoneFinalAngle,
+				thumbMCPIndexFingerMCPDominantBoneMeanAngle, thumbMCPIndexFingerMCPDominantBoneMaximumAngle));
 			#endregion
 
 			#region IndexFingerMCPMiddleFingerMCPDominant bone features
@@ -4317,14 +4317,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 				pinkyDIPPinkyTIPNondominantBoneMeanAngle, pinkyDIPPinkyTIPNondominantBoneMaximumAngle));
 			#endregion
 
-			#region ThumbIPIndexFingerMCPNondominant bone features
-			double? thumbIPIndexFingerMCPNondominantBoneInitialAngle = gesture.ThumbIPIndexFingerMCPNondominantBoneInitialAngle;
-			double? thumbIPIndexFingerMCPNondominantBoneFinalAngle = gesture.ThumbIPIndexFingerMCPNondominantBoneFinalAngle;
-			double? thumbIPIndexFingerMCPNondominantBoneMeanAngle = gesture.ThumbIPIndexFingerMCPNondominantBoneMeanAngle;
-			double? thumbIPIndexFingerMCPNondominantBoneMaximumAngle = gesture.ThumbIPIndexFingerMCPNondominantBoneMaximumAngle;
-			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbIPIndexFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbIPIndexFingerMCPRightBone,
-				features.HandDominance, false), new BoneJointsAngleData(thumbIPIndexFingerMCPNondominantBoneInitialAngle, thumbIPIndexFingerMCPNondominantBoneFinalAngle,
-				thumbIPIndexFingerMCPNondominantBoneMeanAngle, thumbIPIndexFingerMCPNondominantBoneMaximumAngle));
+			#region ThumbMCPIndexFingerMCPNondominant bone features
+			double? thumbMCPIndexFingerMCPNondominantBoneInitialAngle = gesture.ThumbMCPIndexFingerMCPNondominantBoneInitialAngle;
+			double? thumbMCPIndexFingerMCPNondominantBoneFinalAngle = gesture.ThumbMCPIndexFingerMCPNondominantBoneFinalAngle;
+			double? thumbMCPIndexFingerMCPNondominantBoneMeanAngle = gesture.ThumbMCPIndexFingerMCPNondominantBoneMeanAngle;
+			double? thumbMCPIndexFingerMCPNondominantBoneMaximumAngle = gesture.ThumbMCPIndexFingerMCPNondominantBoneMaximumAngle;
+			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbMCPIndexFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbMCPIndexFingerMCPRightBone,
+				features.HandDominance, false), new BoneJointsAngleData(thumbMCPIndexFingerMCPNondominantBoneInitialAngle, thumbMCPIndexFingerMCPNondominantBoneFinalAngle,
+				thumbMCPIndexFingerMCPNondominantBoneMeanAngle, thumbMCPIndexFingerMCPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region IndexFingerMCPMiddleFingerMCPNondominant bone features

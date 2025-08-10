@@ -15,9 +15,9 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 		private MediaPipeBodyTrackingWebSocketClient? client;
 
 		private int handLandmarksModelNumHands = 2;
-		private float handLandmarksModelMinHandDetectionConfidence = 0.6f;
-		private float handLandmarksModelMinHandPresenceConfidence = 0.6f;
-		private float handLandmarksModelMinTrackingConfidence = 0.6f;
+		private float handLandmarksModelMinHandDetectionConfidence = 0.3f;
+		private float handLandmarksModelMinHandPresenceConfidence = 0.5f;
+		private float handLandmarksModelMinTrackingConfidence = 0.5f;
 		private float trackedJointScoreThreshold = 0.6f;
 		private float inferredJointScoreThreshold = 0.5f;
 
@@ -47,7 +47,7 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 			string[] colorFrameImageFilePaths = Directory.GetFiles(@"../../../Input", "*.png").ToArray();
 			foreach (string filePath in colorFrameImageFilePaths)
 			{
-				//string filePath = @"C:\Users\Michal\source\repos\GestureRecognitionKinectApp\Tests\Processing\MediaPipeBodyTrackingWebSocketServer.IntegrationTests\Input\ColorFrame_6.png";
+				// string filePath = @"C:\Users\Michal\source\repos\GestureRecognitionKinectApp\Tests\Processing\MediaPipeBodyTrackingWebSocketServer.IntegrationTests\Input\ColorFrame_31.png";
 				await DetectsHandLandmarks(filePath).ConfigureAwait(false);
 			}
 		}
