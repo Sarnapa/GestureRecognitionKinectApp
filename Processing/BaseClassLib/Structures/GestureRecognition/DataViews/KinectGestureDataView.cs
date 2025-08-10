@@ -697,6 +697,58 @@
 		}
 		#endregion
 
+		#region WristLeftThumbLeft bone features
+		public double? WristLeftThumbLeftBoneInitialAngle
+		{
+			get;
+			set;
+		}
+
+		public double? WristLeftThumbLeftBoneFinalAngle
+		{
+			get;
+			set;
+		}
+
+		public double? WristLeftThumbLeftBoneMeanAngle
+		{
+			get;
+			set;
+		}
+
+		public double? WristLeftThumbLeftBoneMaximumAngle
+		{
+			get;
+			set;
+		}
+		#endregion
+
+		#region WristRightThumbRight bone features
+		public double? WristRightThumbRightBoneInitialAngle
+		{
+			get;
+			set;
+		}
+
+		public double? WristRightThumbRightBoneFinalAngle
+		{
+			get;
+			set;
+		}
+
+		public double? WristRightThumbRightBoneMeanAngle
+		{
+			get;
+			set;
+		}
+
+		public double? WristRightThumbRightBoneMaximumAngle
+		{
+			get;
+			set;
+		}
+		#endregion
+
 		#region Hands distances features
 		public double? BetweenHandJointsDistanceMax
 		{

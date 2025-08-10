@@ -337,6 +337,34 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			}
 			#endregion
 
+			#region WristLeftThumbLeft bone features
+			double? wristLeftThumbLeftBoneInitialAngle = null;
+			double? wristLeftThumbLeftBoneFinalAngle = null;
+			double? wristLeftThumbLeftBoneMeanAngle = null;
+			double? wristLeftThumbLeftBoneMaximumAngle = null;
+			if (features.BoneJointsAngleDataDict.TryGetValue(KinectBonesDefs.WristLeftThumbLeftBone, out var wristLeftThumbLeftBoneAngleData))
+			{
+				wristLeftThumbLeftBoneInitialAngle = wristLeftThumbLeftBoneAngleData.InitialAngle;
+				wristLeftThumbLeftBoneFinalAngle = wristLeftThumbLeftBoneAngleData.FinalAngle;
+				wristLeftThumbLeftBoneMeanAngle = wristLeftThumbLeftBoneAngleData.MeanAngle;
+				wristLeftThumbLeftBoneMaximumAngle = wristLeftThumbLeftBoneAngleData.MaximumAngle;
+			}
+			#endregion
+
+			#region WristRightThumbRight bone features
+			double? wristRightThumbRightBoneInitialAngle = null;
+			double? wristRightThumbRightBoneFinalAngle = null;
+			double? wristRightThumbRightBoneMeanAngle = null;
+			double? wristRightThumbRightBoneMaximumAngle = null;
+			if (features.BoneJointsAngleDataDict.TryGetValue(KinectBonesDefs.WristRightThumbRightBone, out var wristRightThumbRightBoneAngleData))
+			{
+				wristRightThumbRightBoneInitialAngle = wristRightThumbRightBoneAngleData.InitialAngle;
+				wristRightThumbRightBoneFinalAngle = wristRightThumbRightBoneAngleData.FinalAngle;
+				wristRightThumbRightBoneMeanAngle = wristRightThumbRightBoneAngleData.MeanAngle;
+				wristRightThumbRightBoneMaximumAngle = wristRightThumbRightBoneAngleData.MaximumAngle;
+			}
+			#endregion
+
 			#region Hands distances features
 			double? betweenHandJointsDistanceMax = features.BetweenHandJointsDistanceMax;
 			double? betweenHandJointsDistanceMean = features.BetweenHandJointsDistanceMean;
@@ -500,6 +528,20 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 				HandRightHandTipRightBoneFinalAngle = handRightHandTipRightBoneFinalAngle,
 				HandRightHandTipRightBoneMeanAngle = handRightHandTipRightBoneMeanAngle,
 				HandRightHandTipRightBoneMaximumAngle = handRightHandTipRightBoneMaximumAngle,
+				#endregion
+
+				#region WristLeftThumbLeft bone features
+				WristLeftThumbLeftBoneInitialAngle = wristLeftThumbLeftBoneInitialAngle,
+				WristLeftThumbLeftBoneFinalAngle = wristLeftThumbLeftBoneFinalAngle,
+				WristLeftThumbLeftBoneMeanAngle = wristLeftThumbLeftBoneMeanAngle,
+				WristLeftThumbLeftBoneMaximumAngle = wristLeftThumbLeftBoneMaximumAngle,
+				#endregion
+
+				#region WristRightThumbRight bone features
+				WristRightThumbRightBoneInitialAngle = wristRightThumbRightBoneInitialAngle,
+				WristRightThumbRightBoneFinalAngle = wristRightThumbRightBoneFinalAngle,
+				WristRightThumbRightBoneMeanAngle = wristRightThumbRightBoneMeanAngle,
+				WristRightThumbRightBoneMaximumAngle = wristRightThumbRightBoneMaximumAngle,
 				#endregion
 
 				#region Hands distances features
@@ -720,6 +762,26 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			double? handRightHandTipRightBoneMaximumAngle = gesture.HandRightHandTipRightBoneMaximumAngle;
 			features.AddBoneJointsAngleData(KinectBonesDefs.HandRightHandTipRightBone, new BoneJointsAngleData(handRightHandTipRightBoneInitialAngle,
 				handRightHandTipRightBoneFinalAngle, handRightHandTipRightBoneMeanAngle, handRightHandTipRightBoneMaximumAngle));
+			#endregion
+
+
+			#region WristLeftThumbLeft bone features
+			double? wristLeftThumbLeftBoneInitialAngle = gesture.WristLeftThumbLeftBoneInitialAngle;
+			double? wristLeftThumbLeftBoneFinalAngle = gesture.WristLeftThumbLeftBoneFinalAngle;
+			double? wristLeftThumbLeftBoneMeanAngle = gesture.WristLeftThumbLeftBoneMeanAngle;
+			double? wristLeftThumbLeftBoneMaximumAngle = gesture.WristLeftThumbLeftBoneMaximumAngle;
+			features.AddBoneJointsAngleData(KinectBonesDefs.WristLeftThumbLeftBone, new BoneJointsAngleData(wristLeftThumbLeftBoneInitialAngle,
+				wristLeftThumbLeftBoneFinalAngle, wristLeftThumbLeftBoneMeanAngle, wristLeftThumbLeftBoneMaximumAngle));
+			#endregion
+
+
+			#region WristRightThumbRight bone features
+			double? wristRightThumbRightBoneInitialAngle = gesture.WristRightThumbRightBoneInitialAngle;
+			double? wristRightThumbRightBoneFinalAngle = gesture.WristRightThumbRightBoneFinalAngle;
+			double? wristRightThumbRightBoneMeanAngle = gesture.WristRightThumbRightBoneMeanAngle;
+			double? wristRightThumbRightBoneMaximumAngle = gesture.WristRightThumbRightBoneMaximumAngle;
+			features.AddBoneJointsAngleData(KinectBonesDefs.WristRightThumbRightBone, new BoneJointsAngleData(wristRightThumbRightBoneInitialAngle,
+				wristRightThumbRightBoneFinalAngle, wristRightThumbRightBoneMeanAngle, wristRightThumbRightBoneMaximumAngle));
 			#endregion
 
 			#region Hands distances features

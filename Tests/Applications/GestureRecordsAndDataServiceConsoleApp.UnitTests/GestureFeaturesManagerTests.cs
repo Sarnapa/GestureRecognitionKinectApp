@@ -113,7 +113,7 @@ namespace GestureRecognition.Tests.Applications.GestureRecordsAndDataServiceCons
 
 			var inputGesturesData = LoadGestureDataFromFiles<T>(inputFilePath, isDirectory);
 			
-			var gestureFeaturesManager = new GestureFeaturesManager(fileProcessMode, inputFilePath, outputFilePath, null);
+			var gestureFeaturesManager = new GestureFeaturesManager(fileProcessMode, inputFilePath, outputFilePath, null, null);
 			Assert.IsNotNull(gestureFeaturesManager);
 
 			await gestureFeaturesManager.ExecuteCalculationFeaturesProcess().ConfigureAwait(false);

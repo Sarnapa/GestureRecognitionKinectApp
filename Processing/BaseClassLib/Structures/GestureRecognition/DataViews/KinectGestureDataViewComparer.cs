@@ -180,6 +180,20 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecogniti
 			NullableEquals(x.HandRightHandTipRightBoneMaximumAngle, y.HandRightHandTipRightBoneMaximumAngle) &&
 			#endregion
 
+			#region WristLeftThumbLeft bone features
+			NullableEquals(x.WristLeftThumbLeftBoneInitialAngle, y.WristLeftThumbLeftBoneInitialAngle) &&
+			NullableEquals(x.WristLeftThumbLeftBoneFinalAngle, y.WristLeftThumbLeftBoneFinalAngle) &&
+			NullableEquals(x.WristLeftThumbLeftBoneMeanAngle, y.WristLeftThumbLeftBoneMeanAngle) &&
+			NullableEquals(x.WristLeftThumbLeftBoneMaximumAngle, y.WristLeftThumbLeftBoneMaximumAngle) &&
+			#endregion
+
+			#region WristRightThumbRight bone features
+			NullableEquals(x.WristRightThumbRightBoneInitialAngle, y.WristRightThumbRightBoneInitialAngle) &&
+			NullableEquals(x.WristRightThumbRightBoneFinalAngle, y.WristRightThumbRightBoneFinalAngle) &&
+			NullableEquals(x.WristRightThumbRightBoneMeanAngle, y.WristRightThumbRightBoneMeanAngle) &&
+			NullableEquals(x.WristRightThumbRightBoneMaximumAngle, y.WristRightThumbRightBoneMaximumAngle) &&
+			#endregion
+
 			#region Hands distances features
 			NullableEquals(x.BetweenHandJointsDistanceMax, y.BetweenHandJointsDistanceMax) &&
 			NullableEquals(x.BetweenHandJointsDistanceMean, y.BetweenHandJointsDistanceMean) &&
@@ -355,6 +369,20 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecogniti
 			hash.Add(obj.HandRightHandTipRightBoneFinalAngle);
 			hash.Add(obj.HandRightHandTipRightBoneMeanAngle);
 			hash.Add(obj.HandRightHandTipRightBoneMaximumAngle);
+			#endregion
+
+			#region WristLeftThumbLeft bone features
+			hash.Add(obj.WristLeftThumbLeftBoneInitialAngle);
+			hash.Add(obj.WristLeftThumbLeftBoneFinalAngle);
+			hash.Add(obj.WristLeftThumbLeftBoneMeanAngle);
+			hash.Add(obj.WristLeftThumbLeftBoneMaximumAngle);
+			#endregion
+
+			#region WristRightThumbRight bone features
+			hash.Add(obj.WristRightThumbRightBoneInitialAngle);
+			hash.Add(obj.WristRightThumbRightBoneFinalAngle);
+			hash.Add(obj.WristRightThumbRightBoneMeanAngle);
+			hash.Add(obj.WristRightThumbRightBoneMaximumAngle);
 			#endregion
 
 			#region Hands distances features

@@ -28,11 +28,12 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.Gestur
 		private string inputFilePath;
 		private string outputFilePath;
 		private BodyTrackingMode? outputTrackingMode;
+		private string? gestureLabel;
 		private DateTime previousFlushDate;
 		#endregion
 
 		#region Constructors
-		public GestureFeaturesManager(FileProcessMode mode, string inputFilePath, string outputFilePath, BodyTrackingMode? outputTrackingMode)
+		public GestureFeaturesManager(FileProcessMode mode, string inputFilePath, string outputFilePath, BodyTrackingMode? outputTrackingMode, string? gestureLabel)
 		{
 			this.mode = mode;
 			this.serializerOptions = MessagePackSerializerOptions.Standard.WithResolver(BodyDataResolver.Instance);
@@ -40,6 +41,7 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.Gestur
 			this.inputFilePath = inputFilePath;
 			this.outputFilePath = string.IsNullOrEmpty(outputFilePath) ? inputFilePath : outputFilePath;
 			this.outputTrackingMode = outputTrackingMode;
+			this.gestureLabel = gestureLabel;
 		}
 		#endregion
 
@@ -215,7 +217,16 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.Gestur
 			var (getBodyFramesSuccess, bodyFrames) = GetBodyFramesFromFile(outputFilePath);
 			if (getBodyFramesSuccess)
 			{
-				var (getGestureLabel, gestureLabel) = GetGestureLabelFromGestureDataFile(inputFilePath, inputTrackingMode);
+				bool getGestureLabel = false;
+				string gestureLabel;
+				if (string.IsNullOrEmpty(this.gestureLabel))
+					(getGestureLabel, gestureLabel) = GetGestureLabelFromGestureDataFile(inputFilePath, inputTrackingMode);
+				else
+				{
+					getGestureLabel = true;
+					gestureLabel = this.gestureLabel;
+				}
+
 				if (getGestureLabel)
 				{
 					var gestureFeatures = await CalculateGestureFeatures(bodyFrames, outputTrackingMode).ConfigureAwait(false);

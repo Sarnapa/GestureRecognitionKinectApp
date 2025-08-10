@@ -23,6 +23,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecogniti
 			ElbowLeftWristLeftBone, ElbowRightWristRightBone,
 			WristLeftHandLeftBone, WristRightHandRightBone, 
 			HandLeftHandTipLeftBone, HandRightHandTipRightBone,
+			WristLeftThumbLeftBone, WristRightThumbRightBone
 			};
 	}
 }
