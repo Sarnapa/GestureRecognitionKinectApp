@@ -16,6 +16,7 @@ using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Nav
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
 using GestureRecognition.Processing.BaseClassLib.Utils;
 using static GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.ViewModelLocator;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 {
@@ -694,7 +695,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 
 		private void UpdateStartStopGestureRecordButtonState(Visibility visibility)
 		{
+			// Recording / recognizing disabled for this tracking mode.
+			if (this.model.TrackingMode != BodyTrackingMode.MediaPipePoseLandmarks)
 				this.StartStopGestureRecordButtonVisibility = visibility;
+			else
+				this.StartStopGestureRecordButtonVisibility = Visibility.Collapsed;
+
 			RaisePropertyChanged(nameof(StartStopGestureRecordButtonImageUri));
 			RaisePropertyChanged(nameof(StartStopGestureRecordButtonTip));
 		}

@@ -87,7 +87,8 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="4*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="3*" />
                 </Grid.RowDefinitions>
 
                 <Label Style="{StaticResource SettingsLabel}" Content="General settings"/>
@@ -128,6 +129,11 @@
                         <Slider Name="inferredJointScoreThresholdSlider" Style="{StaticResource DecimalRangeSliderStyle}" Value="{Binding InferredJointScoreThreshold}" />
                         <TextBox Grid.Column="1" Text="{Binding ElementName=inferredJointScoreThresholdSlider, Path=Value, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:F2}'}" Margin="5,0,0,0" IsEnabled="False"/>
                     </Grid>
+                </DockPanel>
+
+                <DockPanel Grid.Row="4" Margin="10,0,100,0">
+                    <Label Style="{StaticResource SettingsOptionLabel}" Content="Allow body tracking lost&#x0a;for recording and recognizing&#x0a;using MediaPipe models:" />
+                    <CheckBox HorizontalAlignment="Stretch" VerticalAlignment="Center" IsChecked="{Binding Path=AllowBodyTrackingLostForRecordingAndRecognizingUsingMediaPipeModels, Mode=TwoWay}" />
                 </DockPanel>
             </Grid>
         </Border>

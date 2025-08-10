@@ -22,6 +22,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Configurat
 			get;
 			set;
 		} = 0.5f;
+
+		public bool AllowBodyTrackingLostForRecordingAndRecognizingUsingMediaPipeModels
+		{
+			get;
+			set;
+		} = false;
 		#endregion
 	}
 }

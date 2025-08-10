@@ -297,11 +297,11 @@ class HandLandmarksModelWrapper:
     def detect_hand_state(self, wrist_pos, thumb_mcp_pos, thumb_tip_pos, index_finger_mcp_pos, index_finger_tip_pos,
                           middle_finger_mcp_pos, middle_finger_tip_pos, ring_finger_mcp_pos, ring_finger_tip_pos,
                           pinky_mcp_pos, pinky_dip_pos, pinky_tip_pos, category_name):
-        thumb_open_threshold = 1.35
-        index_finger_open_threshold = 1.75
-        middle_finger_open_threshold = 1.85
-        ring_finger_open_threshold = 1.7
-        pinky_open_threshold = 1.6
+        thumb_open_threshold = 1.25
+        index_finger_open_threshold = 1.65
+        middle_finger_open_threshold = 1.75
+        ring_finger_open_threshold = 1.65
+        pinky_open_threshold = 1.55
 
         thumb_closed_threshold = 1.3
         index_finger_closed_threshold = 0.8

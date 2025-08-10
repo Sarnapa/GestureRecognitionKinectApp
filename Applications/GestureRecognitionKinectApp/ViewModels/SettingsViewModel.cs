@@ -68,6 +68,18 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			}
 		}
 
+		public bool AllowBodyTrackingLostForRecordingAndRecognizingUsingMediaPipeModels
+		{
+			get
+			{
+				return ConfigService.MainSettings.AllowBodyTrackingLostForRecordingAndRecognizingUsingMediaPipeModels;
+			}
+			set
+			{
+				ConfigService.MainSettings.AllowBodyTrackingLostForRecordingAndRecognizingUsingMediaPipeModels = value;
+			}
+		}
+
 		public float MinPoseDetectionConfidence
 		{
 			get

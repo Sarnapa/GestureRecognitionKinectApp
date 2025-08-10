@@ -105,6 +105,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Configurat
 							mainSettingsElement.Element(nameof(Settings.MainSettings.BodyTrackingMode))?.SetValue(Settings.MainSettings.BodyTrackingMode);
 							mainSettingsElement.Element(nameof(Settings.MainSettings.TrackedJointScoreThreshold))?.SetValue(Settings.MainSettings.TrackedJointScoreThreshold);
 							mainSettingsElement.Element(nameof(Settings.MainSettings.InferredJointScoreThreshold))?.SetValue(Settings.MainSettings.InferredJointScoreThreshold);
+							mainSettingsElement.Element(nameof(Settings.MainSettings.AllowBodyTrackingLostForRecordingAndRecognizingUsingMediaPipeModels))?.SetValue(Settings.MainSettings.AllowBodyTrackingLostForRecordingAndRecognizingUsingMediaPipeModels);
 						}
 
 						var mediaPipePoseLandmarksSettingsElement = settingsElement.Element(nameof(Settings.MediaPipePoseLandmarksBodyTrackingModeSettings));
