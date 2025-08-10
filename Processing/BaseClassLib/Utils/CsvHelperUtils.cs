@@ -27,7 +27,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Utils
 
 			if (File.Exists(filePath))
 			{
-				using (var writer = new StreamWriter(filePath))
+				using (var writer = new StreamWriter(filePath, false))
 				{
 					WriteGesturesToFile(gestures, writer);
 				}

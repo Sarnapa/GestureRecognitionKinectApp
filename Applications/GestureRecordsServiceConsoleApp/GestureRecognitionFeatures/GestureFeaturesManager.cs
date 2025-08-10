@@ -13,7 +13,7 @@ using GestureRecognition.Processing.MediaPipeBodyTrackingWebSocketClientProcUnit
 
 namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.GestureRecognitionFeatures
 {
-	internal class GestureFeaturesManager
+	public class GestureFeaturesManager
 	{
 		#region Private fields
 		private readonly FileProcessMode mode;

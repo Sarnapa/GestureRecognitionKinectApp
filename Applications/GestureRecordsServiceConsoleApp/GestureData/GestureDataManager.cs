@@ -5,7 +5,7 @@ using GestureRecognition.Processing.GestureRecognitionProcUnit;
 
 namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.GestureData
 {
-	internal class GestureDataManager
+	public class GestureDataManager
 	{
 		#region Constructors
 		public GestureDataManager() 
