@@ -5,20 +5,20 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 	public static class ViewModelsUtils
 	{
 		#region Public methods
-		public static string Format(double? value)
+		public static string Format(float value)
 		{
-			if (value.HasValue)
-				return string.Format("{0:0.###}", value.Value);
+			if (!float.IsNaN(value))
+				return string.Format("{0:0.###}", value);
 
 			return string.Empty;
 		}
 
-		public static double? Round(double? value, int decimalPlaces)
+		public static float Round(float value, int decimalPlaces)
 		{
-			if (value.HasValue)
-				return Math.Round(value.Value, decimalPlaces);
+			if (!float.IsNaN(value))
+				return Convert.ToSingle(Math.Round(value, decimalPlaces));
 
-			return null;
+			return float.NaN;
 		}
 
 		public static string GetImageUri(string imageName)

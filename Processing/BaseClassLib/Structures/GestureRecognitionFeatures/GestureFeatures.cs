@@ -26,13 +26,13 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecogniti
 			private set;
 		}
 
-		public double? BetweenHandJointsDistanceMax
+		public float BetweenHandJointsDistanceMax
 		{
 			get;
 			set;
 		}
 
-		public double? BetweenHandJointsDistanceMean
+		public float BetweenHandJointsDistanceMean
 		{
 			get;
 			set;

@@ -69,24 +69,24 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		{
 			bool isHand = jointType == JointType.HandLeft || jointType == JointType.HandRight;
 
-			double?[] angleVector = FeaturesHelper.CalculateAngleVector(bodyFrames, jointType);
-			double? f1F2SpatialAngle = FeaturesHelper.GetF1F2SpatialAngle(angleVector);
-			double? fN_1FNSpatialAngle = FeaturesHelper.GetFN_1FNSpatialAngle(angleVector);
-			double? f1FNSpatialAngle = FeaturesHelper.CalculateF1FNSpatialAngle(bodyFrames.FirstOrDefault(),
+			float[] angleVector = FeaturesHelper.CalculateAngleVector(bodyFrames, jointType);
+			float f1F2SpatialAngle = FeaturesHelper.GetF1F2SpatialAngle(angleVector);
+			float fN_1FNSpatialAngle = FeaturesHelper.GetFN_1FNSpatialAngle(angleVector);
+			float f1FNSpatialAngle = FeaturesHelper.CalculateF1FNSpatialAngle(bodyFrames.FirstOrDefault(),
 				bodyFrames.LastOrDefault(), jointType);
-			double? totalVectorAngle = FeaturesHelper.CalculateTotalVectorAngle(angleVector);
-			double? squaredTotalVectorAngle = FeaturesHelper.CalculateSquaredTotalVectorAngle(angleVector);
+			float totalVectorAngle = FeaturesHelper.CalculateTotalVectorAngle(angleVector);
+			float squaredTotalVectorAngle = FeaturesHelper.CalculateSquaredTotalVectorAngle(angleVector);
 
-			double?[] displacementVector = FeaturesHelper.CalculateDisplacementVector(bodyFrames, jointType);
-			double? totalVectorDisplacement = FeaturesHelper.CalculateTotalVectorDisplacement(bodyFrames.FirstOrDefault(),
+			float[] displacementVector = FeaturesHelper.CalculateDisplacementVector(bodyFrames, jointType);
+			float totalVectorDisplacement = FeaturesHelper.CalculateTotalVectorDisplacement(bodyFrames.FirstOrDefault(),
 				bodyFrames.LastOrDefault(), jointType);
-			double? totalDisplacement = FeaturesHelper.CalculateTotalDisplacement(displacementVector);
-			double? maximumDisplacement = FeaturesHelper.CalculateMaximumDisplacement(displacementVector);
+			float totalDisplacement = FeaturesHelper.CalculateTotalDisplacement(displacementVector);
+			float maximumDisplacement = FeaturesHelper.CalculateMaximumDisplacement(displacementVector);
 
 			if (isHand)
 			{
 				var boundingBox = FeaturesHelper.GetBoundingBox(bodyFrames, jointType);
-				double? boundingBoxDiagonalLength = null, boundingBoxAngle = null;
+				float boundingBoxDiagonalLength = float.NaN, boundingBoxAngle = float.NaN;
 				if (boundingBox != null)
 				{
 					boundingBoxDiagonalLength = FeaturesHelper.CalculateBoundingBoxDiagonalLength(boundingBox);
@@ -114,11 +114,11 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 
 		private void CalculateBoneJointsAngleData(GestureFeatures gestureFeatures, BodyData[] bodyFrames, Bone bone)
 		{
-			double?[] angleVector = FeaturesHelper.CalculateAngleVector(bodyFrames, bone);
-			double? initialAngle = FeaturesHelper.GetInitialAngle(angleVector);
-			double? finalAngle = FeaturesHelper.GetFinalAngle(angleVector);
-			double? meanAngle = FeaturesHelper.CalculateMeanAngle(angleVector);
-			double? maximumAngle = FeaturesHelper.CalculateMaximumAngle(angleVector);
+			float[] angleVector = FeaturesHelper.CalculateAngleVector(bodyFrames, bone);
+			float initialAngle = FeaturesHelper.GetInitialAngle(angleVector);
+			float finalAngle = FeaturesHelper.GetFinalAngle(angleVector);
+			float meanAngle = FeaturesHelper.CalculateMeanAngle(angleVector);
+			float maximumAngle = FeaturesHelper.CalculateMaximumAngle(angleVector);
 
 			gestureFeatures.AddBoneJointsAngleData(bone, new BoneJointsAngleData(initialAngle, finalAngle, meanAngle,
 				maximumAngle));
@@ -131,9 +131,9 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 
 		private void CalculateBetweenHandJointsDistanceFeatures(GestureFeatures gestureFeatures, BodyData[] bodyFrames)
 		{
-			double?[] distanceVector = FeaturesHelper.CalculateDistanceVector(bodyFrames, JointType.HandLeft, JointType.HandRight);
-			double? betweenHandJointsDistanceMax = FeaturesHelper.CalculateBetweenHandJointsDistanceMax(distanceVector);
-			double? betweenHandJointsDistanceMean = FeaturesHelper.CalculateBetweenHandJointsDistanceMean(distanceVector);
+			float[] distanceVector = FeaturesHelper.CalculateDistanceVector(bodyFrames, JointType.HandLeft, JointType.HandRight);
+			float betweenHandJointsDistanceMax = FeaturesHelper.CalculateBetweenHandJointsDistanceMax(distanceVector);
+			float betweenHandJointsDistanceMean = FeaturesHelper.CalculateBetweenHandJointsDistanceMean(distanceVector);
 
 			gestureFeatures.BetweenHandJointsDistanceMax = betweenHandJointsDistanceMax;
 			gestureFeatures.BetweenHandJointsDistanceMean = betweenHandJointsDistanceMean;

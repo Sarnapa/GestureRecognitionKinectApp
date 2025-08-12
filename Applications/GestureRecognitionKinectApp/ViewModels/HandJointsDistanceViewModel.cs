@@ -3,8 +3,8 @@
 	public class HandJointsDistanceViewModel
 	{
 		#region Private fields
-		private double? betweenHandJointsDistanceMax;
-		private double? betweenHandJointsDistanceMean;
+		private float betweenHandJointsDistanceMax;
+		private float betweenHandJointsDistanceMean;
 		#endregion
 
 		#region Public properties
@@ -26,7 +26,7 @@
 		#endregion
 
 		#region Constructors
-		public HandJointsDistanceViewModel(double? betweenHandJointsDistanceMax, double? betweenHandJointsDistanceMean)
+		public HandJointsDistanceViewModel(float betweenHandJointsDistanceMax, float betweenHandJointsDistanceMean)
 		{
 			this.betweenHandJointsDistanceMax = betweenHandJointsDistanceMax;
 			this.betweenHandJointsDistanceMean = betweenHandJointsDistanceMean;

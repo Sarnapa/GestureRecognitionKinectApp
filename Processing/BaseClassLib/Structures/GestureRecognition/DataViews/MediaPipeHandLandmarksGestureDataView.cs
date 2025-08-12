@@ -1,51 +1,53 @@
-﻿namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews
+﻿using Microsoft.ML.Data;
+
+namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews
 {
 	public class MediaPipeHandLandmarksGestureDataView: GestureDataView
 	{
 		#region WristDominant joint features
-		public double? WristDominantF1F2SpatialAngle
+		public float WristDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristDominantFN_1FNSpatialAngle
+		public float WristDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristDominantF1FNSpatialAngle
+		public float WristDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristDominantTotalVectorAngle
+		public float WristDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristDominantSquaredTotalVectorAngle
+		public float WristDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristDominantTotalVectorDisplacement
+		public float WristDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? WristDominantTotalDisplacement
+		public float WristDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? WristDominantMaximumDisplacement
+		public float WristDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -53,49 +55,49 @@
 		#endregion
 
 		#region ThumbCMCDominant joint features
-		public double? ThumbCMCDominantF1F2SpatialAngle
+		public float ThumbCMCDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCDominantFN_1FNSpatialAngle
+		public float ThumbCMCDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCDominantF1FNSpatialAngle
+		public float ThumbCMCDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCDominantTotalVectorAngle
+		public float ThumbCMCDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCDominantSquaredTotalVectorAngle
+		public float ThumbCMCDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCDominantTotalVectorDisplacement
+		public float ThumbCMCDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCDominantTotalDisplacement
+		public float ThumbCMCDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCDominantMaximumDisplacement
+		public float ThumbCMCDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -103,49 +105,49 @@
 		#endregion
 
 		#region ThumbMCPDominant joint features
-		public double? ThumbMCPDominantF1F2SpatialAngle
+		public float ThumbMCPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPDominantFN_1FNSpatialAngle
+		public float ThumbMCPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPDominantF1FNSpatialAngle
+		public float ThumbMCPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPDominantTotalVectorAngle
+		public float ThumbMCPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPDominantSquaredTotalVectorAngle
+		public float ThumbMCPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPDominantTotalVectorDisplacement
+		public float ThumbMCPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPDominantTotalDisplacement
+		public float ThumbMCPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPDominantMaximumDisplacement
+		public float ThumbMCPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -153,49 +155,49 @@
 		#endregion
 
 		#region ThumbIPDominant joint features
-		public double? ThumbIPDominantF1F2SpatialAngle
+		public float ThumbIPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPDominantFN_1FNSpatialAngle
+		public float ThumbIPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPDominantF1FNSpatialAngle
+		public float ThumbIPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPDominantTotalVectorAngle
+		public float ThumbIPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPDominantSquaredTotalVectorAngle
+		public float ThumbIPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPDominantTotalVectorDisplacement
+		public float ThumbIPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPDominantTotalDisplacement
+		public float ThumbIPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPDominantMaximumDisplacement
+		public float ThumbIPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -203,49 +205,49 @@
 		#endregion
 
 		#region ThumbTIPDominant joint features
-		public double? ThumbTIPDominantF1F2SpatialAngle
+		public float ThumbTIPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbTIPDominantFN_1FNSpatialAngle
+		public float ThumbTIPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbTIPDominantF1FNSpatialAngle
+		public float ThumbTIPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbTIPDominantTotalVectorAngle
+		public float ThumbTIPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbTIPDominantSquaredTotalVectorAngle
+		public float ThumbTIPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbTIPDominantTotalVectorDisplacement
+		public float ThumbTIPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbTIPDominantTotalDisplacement
+		public float ThumbTIPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbTIPDominantMaximumDisplacement
+		public float ThumbTIPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -253,49 +255,49 @@
 		#endregion
 
 		#region IndexFingerMCPDominant joint features
-		public double? IndexFingerMCPDominantF1F2SpatialAngle
+		public float IndexFingerMCPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPDominantFN_1FNSpatialAngle
+		public float IndexFingerMCPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPDominantF1FNSpatialAngle
+		public float IndexFingerMCPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPDominantTotalVectorAngle
+		public float IndexFingerMCPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPDominantSquaredTotalVectorAngle
+		public float IndexFingerMCPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPDominantTotalVectorDisplacement
+		public float IndexFingerMCPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPDominantTotalDisplacement
+		public float IndexFingerMCPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPDominantMaximumDisplacement
+		public float IndexFingerMCPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -303,49 +305,49 @@
 		#endregion
 
 		#region IndexFingerPIPDominant joint features
-		public double? IndexFingerPIPDominantF1F2SpatialAngle
+		public float IndexFingerPIPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPDominantFN_1FNSpatialAngle
+		public float IndexFingerPIPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPDominantF1FNSpatialAngle
+		public float IndexFingerPIPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPDominantTotalVectorAngle
+		public float IndexFingerPIPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPDominantSquaredTotalVectorAngle
+		public float IndexFingerPIPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPDominantTotalVectorDisplacement
+		public float IndexFingerPIPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPDominantTotalDisplacement
+		public float IndexFingerPIPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPDominantMaximumDisplacement
+		public float IndexFingerPIPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -353,49 +355,49 @@
 		#endregion
 
 		#region IndexFingerDIPDominant joint features
-		public double? IndexFingerDIPDominantF1F2SpatialAngle
+		public float IndexFingerDIPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPDominantFN_1FNSpatialAngle
+		public float IndexFingerDIPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPDominantF1FNSpatialAngle
+		public float IndexFingerDIPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPDominantTotalVectorAngle
+		public float IndexFingerDIPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPDominantSquaredTotalVectorAngle
+		public float IndexFingerDIPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPDominantTotalVectorDisplacement
+		public float IndexFingerDIPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPDominantTotalDisplacement
+		public float IndexFingerDIPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPDominantMaximumDisplacement
+		public float IndexFingerDIPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -403,49 +405,49 @@
 		#endregion
 
 		#region IndexFingerTIPDominant joint features
-		public double? IndexFingerTIPDominantF1F2SpatialAngle
+		public float IndexFingerTIPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerTIPDominantFN_1FNSpatialAngle
+		public float IndexFingerTIPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerTIPDominantF1FNSpatialAngle
+		public float IndexFingerTIPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerTIPDominantTotalVectorAngle
+		public float IndexFingerTIPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerTIPDominantSquaredTotalVectorAngle
+		public float IndexFingerTIPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerTIPDominantTotalVectorDisplacement
+		public float IndexFingerTIPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerTIPDominantTotalDisplacement
+		public float IndexFingerTIPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerTIPDominantMaximumDisplacement
+		public float IndexFingerTIPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -453,49 +455,49 @@
 		#endregion
 
 		#region MiddleFingerMCPDominant joint features
-		public double? MiddleFingerMCPDominantF1F2SpatialAngle
+		public float MiddleFingerMCPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPDominantFN_1FNSpatialAngle
+		public float MiddleFingerMCPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPDominantF1FNSpatialAngle
+		public float MiddleFingerMCPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPDominantTotalVectorAngle
+		public float MiddleFingerMCPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPDominantSquaredTotalVectorAngle
+		public float MiddleFingerMCPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPDominantTotalVectorDisplacement
+		public float MiddleFingerMCPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPDominantTotalDisplacement
+		public float MiddleFingerMCPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPDominantMaximumDisplacement
+		public float MiddleFingerMCPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -503,49 +505,49 @@
 		#endregion
 
 		#region MiddleFingerPIPDominant joint features
-		public double? MiddleFingerPIPDominantF1F2SpatialAngle
+		public float MiddleFingerPIPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPDominantFN_1FNSpatialAngle
+		public float MiddleFingerPIPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPDominantF1FNSpatialAngle
+		public float MiddleFingerPIPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPDominantTotalVectorAngle
+		public float MiddleFingerPIPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPDominantSquaredTotalVectorAngle
+		public float MiddleFingerPIPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPDominantTotalVectorDisplacement
+		public float MiddleFingerPIPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPDominantTotalDisplacement
+		public float MiddleFingerPIPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPDominantMaximumDisplacement
+		public float MiddleFingerPIPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -553,49 +555,49 @@
 		#endregion
 
 		#region MiddleFingerDIPDominant joint features
-		public double? MiddleFingerDIPDominantF1F2SpatialAngle
+		public float MiddleFingerDIPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPDominantFN_1FNSpatialAngle
+		public float MiddleFingerDIPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPDominantF1FNSpatialAngle
+		public float MiddleFingerDIPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPDominantTotalVectorAngle
+		public float MiddleFingerDIPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPDominantSquaredTotalVectorAngle
+		public float MiddleFingerDIPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPDominantTotalVectorDisplacement
+		public float MiddleFingerDIPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPDominantTotalDisplacement
+		public float MiddleFingerDIPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPDominantMaximumDisplacement
+		public float MiddleFingerDIPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -603,49 +605,49 @@
 		#endregion
 
 		#region MiddleFingerTIPDominant joint features
-		public double? MiddleFingerTIPDominantF1F2SpatialAngle
+		public float MiddleFingerTIPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerTIPDominantFN_1FNSpatialAngle
+		public float MiddleFingerTIPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerTIPDominantF1FNSpatialAngle
+		public float MiddleFingerTIPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerTIPDominantTotalVectorAngle
+		public float MiddleFingerTIPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerTIPDominantSquaredTotalVectorAngle
+		public float MiddleFingerTIPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerTIPDominantTotalVectorDisplacement
+		public float MiddleFingerTIPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerTIPDominantTotalDisplacement
+		public float MiddleFingerTIPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerTIPDominantMaximumDisplacement
+		public float MiddleFingerTIPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -653,49 +655,49 @@
 		#endregion
 
 		#region RingFingerMCPDominant joint features
-		public double? RingFingerMCPDominantF1F2SpatialAngle
+		public float RingFingerMCPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPDominantFN_1FNSpatialAngle
+		public float RingFingerMCPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPDominantF1FNSpatialAngle
+		public float RingFingerMCPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPDominantTotalVectorAngle
+		public float RingFingerMCPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPDominantSquaredTotalVectorAngle
+		public float RingFingerMCPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPDominantTotalVectorDisplacement
+		public float RingFingerMCPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPDominantTotalDisplacement
+		public float RingFingerMCPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPDominantMaximumDisplacement
+		public float RingFingerMCPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -703,49 +705,49 @@
 		#endregion
 
 		#region RingFingerPIPDominant joint features
-		public double? RingFingerPIPDominantF1F2SpatialAngle
+		public float RingFingerPIPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPDominantFN_1FNSpatialAngle
+		public float RingFingerPIPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPDominantF1FNSpatialAngle
+		public float RingFingerPIPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPDominantTotalVectorAngle
+		public float RingFingerPIPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPDominantSquaredTotalVectorAngle
+		public float RingFingerPIPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPDominantTotalVectorDisplacement
+		public float RingFingerPIPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPDominantTotalDisplacement
+		public float RingFingerPIPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPDominantMaximumDisplacement
+		public float RingFingerPIPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -753,49 +755,49 @@
 		#endregion
 
 		#region RingFingerDIPDominant joint features
-		public double? RingFingerDIPDominantF1F2SpatialAngle
+		public float RingFingerDIPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPDominantFN_1FNSpatialAngle
+		public float RingFingerDIPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPDominantF1FNSpatialAngle
+		public float RingFingerDIPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPDominantTotalVectorAngle
+		public float RingFingerDIPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPDominantSquaredTotalVectorAngle
+		public float RingFingerDIPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPDominantTotalVectorDisplacement
+		public float RingFingerDIPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPDominantTotalDisplacement
+		public float RingFingerDIPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPDominantMaximumDisplacement
+		public float RingFingerDIPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -803,49 +805,49 @@
 		#endregion
 
 		#region RingFingerTIPDominant joint features
-		public double? RingFingerTIPDominantF1F2SpatialAngle
+		public float RingFingerTIPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerTIPDominantFN_1FNSpatialAngle
+		public float RingFingerTIPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerTIPDominantF1FNSpatialAngle
+		public float RingFingerTIPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerTIPDominantTotalVectorAngle
+		public float RingFingerTIPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerTIPDominantSquaredTotalVectorAngle
+		public float RingFingerTIPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerTIPDominantTotalVectorDisplacement
+		public float RingFingerTIPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerTIPDominantTotalDisplacement
+		public float RingFingerTIPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerTIPDominantMaximumDisplacement
+		public float RingFingerTIPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -853,49 +855,49 @@
 		#endregion
 
 		#region PinkyMCPDominant joint features
-		public double? PinkyMCPDominantF1F2SpatialAngle
+		public float PinkyMCPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPDominantFN_1FNSpatialAngle
+		public float PinkyMCPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPDominantF1FNSpatialAngle
+		public float PinkyMCPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPDominantTotalVectorAngle
+		public float PinkyMCPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPDominantSquaredTotalVectorAngle
+		public float PinkyMCPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPDominantTotalVectorDisplacement
+		public float PinkyMCPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPDominantTotalDisplacement
+		public float PinkyMCPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPDominantMaximumDisplacement
+		public float PinkyMCPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -903,49 +905,49 @@
 		#endregion
 
 		#region PinkyPIPDominant joint features
-		public double? PinkyPIPDominantF1F2SpatialAngle
+		public float PinkyPIPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPDominantFN_1FNSpatialAngle
+		public float PinkyPIPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPDominantF1FNSpatialAngle
+		public float PinkyPIPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPDominantTotalVectorAngle
+		public float PinkyPIPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPDominantSquaredTotalVectorAngle
+		public float PinkyPIPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPDominantTotalVectorDisplacement
+		public float PinkyPIPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPDominantTotalDisplacement
+		public float PinkyPIPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPDominantMaximumDisplacement
+		public float PinkyPIPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -953,49 +955,49 @@
 		#endregion
 
 		#region PinkyDIPDominant joint features
-		public double? PinkyDIPDominantF1F2SpatialAngle
+		public float PinkyDIPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPDominantFN_1FNSpatialAngle
+		public float PinkyDIPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPDominantF1FNSpatialAngle
+		public float PinkyDIPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPDominantTotalVectorAngle
+		public float PinkyDIPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPDominantSquaredTotalVectorAngle
+		public float PinkyDIPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPDominantTotalVectorDisplacement
+		public float PinkyDIPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPDominantTotalDisplacement
+		public float PinkyDIPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPDominantMaximumDisplacement
+		public float PinkyDIPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1003,49 +1005,49 @@
 		#endregion
 
 		#region PinkyTIPDominant joint features
-		public double? PinkyTIPDominantF1F2SpatialAngle
+		public float PinkyTIPDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyTIPDominantFN_1FNSpatialAngle
+		public float PinkyTIPDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyTIPDominantF1FNSpatialAngle
+		public float PinkyTIPDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyTIPDominantTotalVectorAngle
+		public float PinkyTIPDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyTIPDominantSquaredTotalVectorAngle
+		public float PinkyTIPDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyTIPDominantTotalVectorDisplacement
+		public float PinkyTIPDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyTIPDominantTotalDisplacement
+		public float PinkyTIPDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyTIPDominantMaximumDisplacement
+		public float PinkyTIPDominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1053,61 +1055,61 @@
 		#endregion
 
 		#region HandDominant joint features
-		public double? HandDominantF1F2SpatialAngle
+		public float HandDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandDominantFN_1FNSpatialAngle
+		public float HandDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandDominantF1FNSpatialAngle
+		public float HandDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandDominantTotalVectorAngle
+		public float HandDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandDominantSquaredTotalVectorAngle
+		public float HandDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandDominantTotalVectorDisplacement
+		public float HandDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? HandDominantTotalDisplacement
+		public float HandDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? HandDominantMaximumDisplacement
+		public float HandDominantMaximumDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? HandDominantBoundingBoxDiagonalLength
+		public float HandDominantBoundingBoxDiagonalLength
 		{
 			get;
 			set;
 		}
 
-		public double? HandDominantBoundingBoxAngle
+		public float HandDominantBoundingBoxAngle
 		{
 			get;
 			set;
@@ -1122,49 +1124,49 @@
 		#endregion
 
 		#region WristNondominant joint features
-		public double? WristNondominantF1F2SpatialAngle
+		public float WristNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristNondominantFN_1FNSpatialAngle
+		public float WristNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristNondominantF1FNSpatialAngle
+		public float WristNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristNondominantTotalVectorAngle
+		public float WristNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristNondominantSquaredTotalVectorAngle
+		public float WristNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristNondominantTotalVectorDisplacement
+		public float WristNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? WristNondominantTotalDisplacement
+		public float WristNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? WristNondominantMaximumDisplacement
+		public float WristNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1172,49 +1174,49 @@
 		#endregion
 
 		#region ThumbCMCNondominant joint features
-		public double? ThumbCMCNondominantF1F2SpatialAngle
+		public float ThumbCMCNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCNondominantFN_1FNSpatialAngle
+		public float ThumbCMCNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCNondominantF1FNSpatialAngle
+		public float ThumbCMCNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCNondominantTotalVectorAngle
+		public float ThumbCMCNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCNondominantSquaredTotalVectorAngle
+		public float ThumbCMCNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCNondominantTotalVectorDisplacement
+		public float ThumbCMCNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCNondominantTotalDisplacement
+		public float ThumbCMCNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCNondominantMaximumDisplacement
+		public float ThumbCMCNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1222,49 +1224,49 @@
 		#endregion
 
 		#region ThumbMCPNondominant joint features
-		public double? ThumbMCPNondominantF1F2SpatialAngle
+		public float ThumbMCPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPNondominantFN_1FNSpatialAngle
+		public float ThumbMCPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPNondominantF1FNSpatialAngle
+		public float ThumbMCPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPNondominantTotalVectorAngle
+		public float ThumbMCPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPNondominantSquaredTotalVectorAngle
+		public float ThumbMCPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPNondominantTotalVectorDisplacement
+		public float ThumbMCPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPNondominantTotalDisplacement
+		public float ThumbMCPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPNondominantMaximumDisplacement
+		public float ThumbMCPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1272,49 +1274,49 @@
 		#endregion
 
 		#region ThumbIPNondominant joint features
-		public double? ThumbIPNondominantF1F2SpatialAngle
+		public float ThumbIPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPNondominantFN_1FNSpatialAngle
+		public float ThumbIPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPNondominantF1FNSpatialAngle
+		public float ThumbIPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPNondominantTotalVectorAngle
+		public float ThumbIPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPNondominantSquaredTotalVectorAngle
+		public float ThumbIPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPNondominantTotalVectorDisplacement
+		public float ThumbIPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPNondominantTotalDisplacement
+		public float ThumbIPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPNondominantMaximumDisplacement
+		public float ThumbIPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1322,49 +1324,49 @@
 		#endregion
 
 		#region ThumbTIPNondominant joint features
-		public double? ThumbTIPNondominantF1F2SpatialAngle
+		public float ThumbTIPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbTIPNondominantFN_1FNSpatialAngle
+		public float ThumbTIPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbTIPNondominantF1FNSpatialAngle
+		public float ThumbTIPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbTIPNondominantTotalVectorAngle
+		public float ThumbTIPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbTIPNondominantSquaredTotalVectorAngle
+		public float ThumbTIPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbTIPNondominantTotalVectorDisplacement
+		public float ThumbTIPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbTIPNondominantTotalDisplacement
+		public float ThumbTIPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbTIPNondominantMaximumDisplacement
+		public float ThumbTIPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1372,49 +1374,49 @@
 		#endregion
 
 		#region IndexFingerMCPNondominant joint features
-		public double? IndexFingerMCPNondominantF1F2SpatialAngle
+		public float IndexFingerMCPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPNondominantFN_1FNSpatialAngle
+		public float IndexFingerMCPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPNondominantF1FNSpatialAngle
+		public float IndexFingerMCPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPNondominantTotalVectorAngle
+		public float IndexFingerMCPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPNondominantSquaredTotalVectorAngle
+		public float IndexFingerMCPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPNondominantTotalVectorDisplacement
+		public float IndexFingerMCPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPNondominantTotalDisplacement
+		public float IndexFingerMCPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPNondominantMaximumDisplacement
+		public float IndexFingerMCPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1422,49 +1424,49 @@
 		#endregion
 
 		#region IndexFingerPIPNondominant joint features
-		public double? IndexFingerPIPNondominantF1F2SpatialAngle
+		public float IndexFingerPIPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPNondominantFN_1FNSpatialAngle
+		public float IndexFingerPIPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPNondominantF1FNSpatialAngle
+		public float IndexFingerPIPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPNondominantTotalVectorAngle
+		public float IndexFingerPIPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPNondominantSquaredTotalVectorAngle
+		public float IndexFingerPIPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPNondominantTotalVectorDisplacement
+		public float IndexFingerPIPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPNondominantTotalDisplacement
+		public float IndexFingerPIPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPNondominantMaximumDisplacement
+		public float IndexFingerPIPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1472,49 +1474,49 @@
 		#endregion
 
 		#region IndexFingerDIPNondominant joint features
-		public double? IndexFingerDIPNondominantF1F2SpatialAngle
+		public float IndexFingerDIPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPNondominantFN_1FNSpatialAngle
+		public float IndexFingerDIPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPNondominantF1FNSpatialAngle
+		public float IndexFingerDIPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPNondominantTotalVectorAngle
+		public float IndexFingerDIPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPNondominantSquaredTotalVectorAngle
+		public float IndexFingerDIPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPNondominantTotalVectorDisplacement
+		public float IndexFingerDIPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPNondominantTotalDisplacement
+		public float IndexFingerDIPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPNondominantMaximumDisplacement
+		public float IndexFingerDIPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1522,49 +1524,49 @@
 		#endregion
 
 		#region IndexFingerTIPNondominant joint features
-		public double? IndexFingerTIPNondominantF1F2SpatialAngle
+		public float IndexFingerTIPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerTIPNondominantFN_1FNSpatialAngle
+		public float IndexFingerTIPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerTIPNondominantF1FNSpatialAngle
+		public float IndexFingerTIPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerTIPNondominantTotalVectorAngle
+		public float IndexFingerTIPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerTIPNondominantSquaredTotalVectorAngle
+		public float IndexFingerTIPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerTIPNondominantTotalVectorDisplacement
+		public float IndexFingerTIPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerTIPNondominantTotalDisplacement
+		public float IndexFingerTIPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerTIPNondominantMaximumDisplacement
+		public float IndexFingerTIPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1572,49 +1574,49 @@
 		#endregion
 
 		#region MiddleFingerMCPNondominant joint features
-		public double? MiddleFingerMCPNondominantF1F2SpatialAngle
+		public float MiddleFingerMCPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPNondominantFN_1FNSpatialAngle
+		public float MiddleFingerMCPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPNondominantF1FNSpatialAngle
+		public float MiddleFingerMCPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPNondominantTotalVectorAngle
+		public float MiddleFingerMCPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPNondominantSquaredTotalVectorAngle
+		public float MiddleFingerMCPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPNondominantTotalVectorDisplacement
+		public float MiddleFingerMCPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPNondominantTotalDisplacement
+		public float MiddleFingerMCPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPNondominantMaximumDisplacement
+		public float MiddleFingerMCPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1622,49 +1624,49 @@
 		#endregion
 
 		#region MiddleFingerPIPNondominant joint features
-		public double? MiddleFingerPIPNondominantF1F2SpatialAngle
+		public float MiddleFingerPIPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPNondominantFN_1FNSpatialAngle
+		public float MiddleFingerPIPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPNondominantF1FNSpatialAngle
+		public float MiddleFingerPIPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPNondominantTotalVectorAngle
+		public float MiddleFingerPIPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPNondominantSquaredTotalVectorAngle
+		public float MiddleFingerPIPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPNondominantTotalVectorDisplacement
+		public float MiddleFingerPIPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPNondominantTotalDisplacement
+		public float MiddleFingerPIPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPNondominantMaximumDisplacement
+		public float MiddleFingerPIPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1672,49 +1674,49 @@
 		#endregion
 
 		#region MiddleFingerDIPNondominant joint features
-		public double? MiddleFingerDIPNondominantF1F2SpatialAngle
+		public float MiddleFingerDIPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPNondominantFN_1FNSpatialAngle
+		public float MiddleFingerDIPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPNondominantF1FNSpatialAngle
+		public float MiddleFingerDIPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPNondominantTotalVectorAngle
+		public float MiddleFingerDIPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPNondominantSquaredTotalVectorAngle
+		public float MiddleFingerDIPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPNondominantTotalVectorDisplacement
+		public float MiddleFingerDIPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPNondominantTotalDisplacement
+		public float MiddleFingerDIPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPNondominantMaximumDisplacement
+		public float MiddleFingerDIPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1722,49 +1724,49 @@
 		#endregion
 
 		#region MiddleFingerTIPNondominant joint features
-		public double? MiddleFingerTIPNondominantF1F2SpatialAngle
+		public float MiddleFingerTIPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerTIPNondominantFN_1FNSpatialAngle
+		public float MiddleFingerTIPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerTIPNondominantF1FNSpatialAngle
+		public float MiddleFingerTIPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerTIPNondominantTotalVectorAngle
+		public float MiddleFingerTIPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerTIPNondominantSquaredTotalVectorAngle
+		public float MiddleFingerTIPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerTIPNondominantTotalVectorDisplacement
+		public float MiddleFingerTIPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerTIPNondominantTotalDisplacement
+		public float MiddleFingerTIPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerTIPNondominantMaximumDisplacement
+		public float MiddleFingerTIPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1772,49 +1774,49 @@
 		#endregion
 
 		#region RingFingerMCPNondominant joint features
-		public double? RingFingerMCPNondominantF1F2SpatialAngle
+		public float RingFingerMCPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPNondominantFN_1FNSpatialAngle
+		public float RingFingerMCPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPNondominantF1FNSpatialAngle
+		public float RingFingerMCPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPNondominantTotalVectorAngle
+		public float RingFingerMCPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPNondominantSquaredTotalVectorAngle
+		public float RingFingerMCPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPNondominantTotalVectorDisplacement
+		public float RingFingerMCPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPNondominantTotalDisplacement
+		public float RingFingerMCPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPNondominantMaximumDisplacement
+		public float RingFingerMCPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1822,49 +1824,49 @@
 		#endregion
 
 		#region RingFingerPIPNondominant joint features
-		public double? RingFingerPIPNondominantF1F2SpatialAngle
+		public float RingFingerPIPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPNondominantFN_1FNSpatialAngle
+		public float RingFingerPIPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPNondominantF1FNSpatialAngle
+		public float RingFingerPIPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPNondominantTotalVectorAngle
+		public float RingFingerPIPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPNondominantSquaredTotalVectorAngle
+		public float RingFingerPIPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPNondominantTotalVectorDisplacement
+		public float RingFingerPIPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPNondominantTotalDisplacement
+		public float RingFingerPIPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPNondominantMaximumDisplacement
+		public float RingFingerPIPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1872,49 +1874,49 @@
 		#endregion
 
 		#region RingFingerDIPNondominant joint features
-		public double? RingFingerDIPNondominantF1F2SpatialAngle
+		public float RingFingerDIPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPNondominantFN_1FNSpatialAngle
+		public float RingFingerDIPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPNondominantF1FNSpatialAngle
+		public float RingFingerDIPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPNondominantTotalVectorAngle
+		public float RingFingerDIPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPNondominantSquaredTotalVectorAngle
+		public float RingFingerDIPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPNondominantTotalVectorDisplacement
+		public float RingFingerDIPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPNondominantTotalDisplacement
+		public float RingFingerDIPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPNondominantMaximumDisplacement
+		public float RingFingerDIPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1922,49 +1924,49 @@
 		#endregion
 
 		#region RingFingerTIPNondominant joint features
-		public double? RingFingerTIPNondominantF1F2SpatialAngle
+		public float RingFingerTIPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerTIPNondominantFN_1FNSpatialAngle
+		public float RingFingerTIPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerTIPNondominantF1FNSpatialAngle
+		public float RingFingerTIPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerTIPNondominantTotalVectorAngle
+		public float RingFingerTIPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerTIPNondominantSquaredTotalVectorAngle
+		public float RingFingerTIPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerTIPNondominantTotalVectorDisplacement
+		public float RingFingerTIPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerTIPNondominantTotalDisplacement
+		public float RingFingerTIPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerTIPNondominantMaximumDisplacement
+		public float RingFingerTIPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -1972,49 +1974,49 @@
 		#endregion
 
 		#region PinkyMCPNondominant joint features
-		public double? PinkyMCPNondominantF1F2SpatialAngle
+		public float PinkyMCPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPNondominantFN_1FNSpatialAngle
+		public float PinkyMCPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPNondominantF1FNSpatialAngle
+		public float PinkyMCPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPNondominantTotalVectorAngle
+		public float PinkyMCPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPNondominantSquaredTotalVectorAngle
+		public float PinkyMCPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPNondominantTotalVectorDisplacement
+		public float PinkyMCPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPNondominantTotalDisplacement
+		public float PinkyMCPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPNondominantMaximumDisplacement
+		public float PinkyMCPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -2022,49 +2024,49 @@
 		#endregion
 
 		#region PinkyPIPNondominant joint features
-		public double? PinkyPIPNondominantF1F2SpatialAngle
+		public float PinkyPIPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPNondominantFN_1FNSpatialAngle
+		public float PinkyPIPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPNondominantF1FNSpatialAngle
+		public float PinkyPIPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPNondominantTotalVectorAngle
+		public float PinkyPIPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPNondominantSquaredTotalVectorAngle
+		public float PinkyPIPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPNondominantTotalVectorDisplacement
+		public float PinkyPIPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPNondominantTotalDisplacement
+		public float PinkyPIPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPNondominantMaximumDisplacement
+		public float PinkyPIPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -2072,49 +2074,49 @@
 		#endregion
 
 		#region PinkyDIPNondominant joint features
-		public double? PinkyDIPNondominantF1F2SpatialAngle
+		public float PinkyDIPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPNondominantFN_1FNSpatialAngle
+		public float PinkyDIPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPNondominantF1FNSpatialAngle
+		public float PinkyDIPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPNondominantTotalVectorAngle
+		public float PinkyDIPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPNondominantSquaredTotalVectorAngle
+		public float PinkyDIPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPNondominantTotalVectorDisplacement
+		public float PinkyDIPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPNondominantTotalDisplacement
+		public float PinkyDIPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPNondominantMaximumDisplacement
+		public float PinkyDIPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -2122,49 +2124,49 @@
 		#endregion
 
 		#region PinkyTIPNondominant joint features
-		public double? PinkyTIPNondominantF1F2SpatialAngle
+		public float PinkyTIPNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyTIPNondominantFN_1FNSpatialAngle
+		public float PinkyTIPNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyTIPNondominantF1FNSpatialAngle
+		public float PinkyTIPNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyTIPNondominantTotalVectorAngle
+		public float PinkyTIPNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyTIPNondominantSquaredTotalVectorAngle
+		public float PinkyTIPNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyTIPNondominantTotalVectorDisplacement
+		public float PinkyTIPNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyTIPNondominantTotalDisplacement
+		public float PinkyTIPNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyTIPNondominantMaximumDisplacement
+		public float PinkyTIPNondominantMaximumDisplacement
 		{
 			get;
 			set;
@@ -2172,61 +2174,61 @@
 		#endregion
 
 		#region HandNondominant joint features
-		public double? HandNondominantF1F2SpatialAngle
+		public float HandNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandNondominantFN_1FNSpatialAngle
+		public float HandNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandNondominantF1FNSpatialAngle
+		public float HandNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandNondominantTotalVectorAngle
+		public float HandNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandNondominantSquaredTotalVectorAngle
+		public float HandNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandNondominantTotalVectorDisplacement
+		public float HandNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? HandNondominantTotalDisplacement
+		public float HandNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? HandNondominantMaximumDisplacement
+		public float HandNondominantMaximumDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? HandNondominantBoundingBoxDiagonalLength
+		public float HandNondominantBoundingBoxDiagonalLength
 		{
 			get;
 			set;
 		}
 
-		public double? HandNondominantBoundingBoxAngle
+		public float HandNondominantBoundingBoxAngle
 		{
 			get;
 			set;
@@ -2241,25 +2243,25 @@
 		#endregion
 
 		#region WristThumbCMCDominantBone bone features
-		public double? WristThumbCMCDominantBoneInitialAngle
+		public float WristThumbCMCDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristThumbCMCDominantBoneFinalAngle
+		public float WristThumbCMCDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristThumbCMCDominantBoneMeanAngle
+		public float WristThumbCMCDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristThumbCMCDominantBoneMaximumAngle
+		public float WristThumbCMCDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2267,25 +2269,25 @@
 		#endregion
 
 		#region ThumbCMCThumbMCPDominantBone bone features
-		public double? ThumbCMCThumbMCPDominantBoneInitialAngle
+		public float ThumbCMCThumbMCPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCThumbMCPDominantBoneFinalAngle
+		public float ThumbCMCThumbMCPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCThumbMCPDominantBoneMeanAngle
+		public float ThumbCMCThumbMCPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCThumbMCPDominantBoneMaximumAngle
+		public float ThumbCMCThumbMCPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2293,25 +2295,25 @@
 		#endregion
 
 		#region ThumbMCPThumbIPDominantBone bone features
-		public double? ThumbMCPThumbIPDominantBoneInitialAngle
+		public float ThumbMCPThumbIPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPThumbIPDominantBoneFinalAngle
+		public float ThumbMCPThumbIPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPThumbIPDominantBoneMeanAngle
+		public float ThumbMCPThumbIPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPThumbIPDominantBoneMaximumAngle
+		public float ThumbMCPThumbIPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2319,25 +2321,25 @@
 		#endregion
 
 		#region ThumbIPThumbTIPDominantBone bone features
-		public double? ThumbIPThumbTIPDominantBoneInitialAngle
+		public float ThumbIPThumbTIPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPThumbTIPDominantBoneFinalAngle
+		public float ThumbIPThumbTIPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPThumbTIPDominantBoneMeanAngle
+		public float ThumbIPThumbTIPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPThumbTIPDominantBoneMaximumAngle
+		public float ThumbIPThumbTIPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2345,25 +2347,25 @@
 		#endregion
 
 		#region WristIndexFingerMCPDominantBone bone features
-		public double? WristIndexFingerMCPDominantBoneInitialAngle
+		public float WristIndexFingerMCPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristIndexFingerMCPDominantBoneFinalAngle
+		public float WristIndexFingerMCPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristIndexFingerMCPDominantBoneMeanAngle
+		public float WristIndexFingerMCPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristIndexFingerMCPDominantBoneMaximumAngle
+		public float WristIndexFingerMCPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2371,25 +2373,25 @@
 		#endregion
 
 		#region IndexFingerMCPIndexFingerPIPDominantBone bone features
-		public double? IndexFingerMCPIndexFingerPIPDominantBoneInitialAngle
+		public float IndexFingerMCPIndexFingerPIPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPIndexFingerPIPDominantBoneFinalAngle
+		public float IndexFingerMCPIndexFingerPIPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPIndexFingerPIPDominantBoneMeanAngle
+		public float IndexFingerMCPIndexFingerPIPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPIndexFingerPIPDominantBoneMaximumAngle
+		public float IndexFingerMCPIndexFingerPIPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2397,25 +2399,25 @@
 		#endregion
 
 		#region IndexFingerPIPIndexFingerDIPDominantBone bone features
-		public double? IndexFingerPIPIndexFingerDIPDominantBoneInitialAngle
+		public float IndexFingerPIPIndexFingerDIPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPIndexFingerDIPDominantBoneFinalAngle
+		public float IndexFingerPIPIndexFingerDIPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPIndexFingerDIPDominantBoneMeanAngle
+		public float IndexFingerPIPIndexFingerDIPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPIndexFingerDIPDominantBoneMaximumAngle
+		public float IndexFingerPIPIndexFingerDIPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2423,25 +2425,25 @@
 		#endregion
 
 		#region IndexFingerDIPIndexFingerTIPDominantBone bone features
-		public double? IndexFingerDIPIndexFingerTIPDominantBoneInitialAngle
+		public float IndexFingerDIPIndexFingerTIPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPIndexFingerTIPDominantBoneFinalAngle
+		public float IndexFingerDIPIndexFingerTIPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPIndexFingerTIPDominantBoneMeanAngle
+		public float IndexFingerDIPIndexFingerTIPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPIndexFingerTIPDominantBoneMaximumAngle
+		public float IndexFingerDIPIndexFingerTIPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2449,25 +2451,25 @@
 		#endregion
 
 		#region MiddleFingerMCPMiddleFingerPIPDominantBone bone features
-		public double? MiddleFingerMCPMiddleFingerPIPDominantBoneInitialAngle
+		public float MiddleFingerMCPMiddleFingerPIPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPMiddleFingerPIPDominantBoneFinalAngle
+		public float MiddleFingerMCPMiddleFingerPIPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPMiddleFingerPIPDominantBoneMeanAngle
+		public float MiddleFingerMCPMiddleFingerPIPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPMiddleFingerPIPDominantBoneMaximumAngle
+		public float MiddleFingerMCPMiddleFingerPIPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2475,25 +2477,25 @@
 		#endregion
 
 		#region MiddleFingerPIPMiddleFingerDIPDominantBone bone features
-		public double? MiddleFingerPIPMiddleFingerDIPDominantBoneInitialAngle
+		public float MiddleFingerPIPMiddleFingerDIPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPMiddleFingerDIPDominantBoneFinalAngle
+		public float MiddleFingerPIPMiddleFingerDIPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPMiddleFingerDIPDominantBoneMeanAngle
+		public float MiddleFingerPIPMiddleFingerDIPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPMiddleFingerDIPDominantBoneMaximumAngle
+		public float MiddleFingerPIPMiddleFingerDIPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2501,25 +2503,25 @@
 		#endregion
 
 		#region MiddleFingerDIPMiddleFingerTIPDominantBone bone features
-		public double? MiddleFingerDIPMiddleFingerTIPDominantBoneInitialAngle
+		public float MiddleFingerDIPMiddleFingerTIPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPMiddleFingerTIPDominantBoneFinalAngle
+		public float MiddleFingerDIPMiddleFingerTIPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPMiddleFingerTIPDominantBoneMeanAngle
+		public float MiddleFingerDIPMiddleFingerTIPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPMiddleFingerTIPDominantBoneMaximumAngle
+		public float MiddleFingerDIPMiddleFingerTIPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2527,25 +2529,25 @@
 		#endregion
 
 		#region RingFingerMCPRingFingerPIPDominantBone bone features
-		public double? RingFingerMCPRingFingerPIPDominantBoneInitialAngle
+		public float RingFingerMCPRingFingerPIPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPRingFingerPIPDominantBoneFinalAngle
+		public float RingFingerMCPRingFingerPIPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPRingFingerPIPDominantBoneMeanAngle
+		public float RingFingerMCPRingFingerPIPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPRingFingerPIPDominantBoneMaximumAngle
+		public float RingFingerMCPRingFingerPIPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2553,25 +2555,25 @@
 		#endregion
 
 		#region RingFingerPIPRingFingerDIPDominantBone bone features
-		public double? RingFingerPIPRingFingerDIPDominantBoneInitialAngle
+		public float RingFingerPIPRingFingerDIPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPRingFingerDIPDominantBoneFinalAngle
+		public float RingFingerPIPRingFingerDIPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPRingFingerDIPDominantBoneMeanAngle
+		public float RingFingerPIPRingFingerDIPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPRingFingerDIPDominantBoneMaximumAngle
+		public float RingFingerPIPRingFingerDIPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2579,25 +2581,25 @@
 		#endregion
 
 		#region RingFingerDIPRingFingerTIPDominantBone bone features
-		public double? RingFingerDIPRingFingerTIPDominantBoneInitialAngle
+		public float RingFingerDIPRingFingerTIPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPRingFingerTIPDominantBoneFinalAngle
+		public float RingFingerDIPRingFingerTIPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPRingFingerTIPDominantBoneMeanAngle
+		public float RingFingerDIPRingFingerTIPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPRingFingerTIPDominantBoneMaximumAngle
+		public float RingFingerDIPRingFingerTIPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2605,25 +2607,25 @@
 		#endregion
 
 		#region WristPinkyMCPDominantBone bone features
-		public double? WristPinkyMCPDominantBoneInitialAngle
+		public float WristPinkyMCPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristPinkyMCPDominantBoneFinalAngle
+		public float WristPinkyMCPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristPinkyMCPDominantBoneMeanAngle
+		public float WristPinkyMCPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristPinkyMCPDominantBoneMaximumAngle
+		public float WristPinkyMCPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2631,25 +2633,25 @@
 		#endregion
 
 		#region PinkyMCPPinkyPIPDominantBone bone features
-		public double? PinkyMCPPinkyPIPDominantBoneInitialAngle
+		public float PinkyMCPPinkyPIPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPPinkyPIPDominantBoneFinalAngle
+		public float PinkyMCPPinkyPIPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPPinkyPIPDominantBoneMeanAngle
+		public float PinkyMCPPinkyPIPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPPinkyPIPDominantBoneMaximumAngle
+		public float PinkyMCPPinkyPIPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2657,25 +2659,25 @@
 		#endregion
 
 		#region PinkyPIPPinkyDIPDominantBone bone features
-		public double? PinkyPIPPinkyDIPDominantBoneInitialAngle
+		public float PinkyPIPPinkyDIPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPPinkyDIPDominantBoneFinalAngle
+		public float PinkyPIPPinkyDIPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPPinkyDIPDominantBoneMeanAngle
+		public float PinkyPIPPinkyDIPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPPinkyDIPDominantBoneMaximumAngle
+		public float PinkyPIPPinkyDIPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2683,25 +2685,25 @@
 		#endregion
 
 		#region PinkyDIPPinkyTIPDominantBone bone features
-		public double? PinkyDIPPinkyTIPDominantBoneInitialAngle
+		public float PinkyDIPPinkyTIPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPPinkyTIPDominantBoneFinalAngle
+		public float PinkyDIPPinkyTIPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPPinkyTIPDominantBoneMeanAngle
+		public float PinkyDIPPinkyTIPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPPinkyTIPDominantBoneMaximumAngle
+		public float PinkyDIPPinkyTIPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2709,25 +2711,25 @@
 		#endregion
 
 		#region ThumbMCPIndexFingerMCPDominantBone bone features
-		public double? ThumbMCPIndexFingerMCPDominantBoneInitialAngle
+		public float ThumbMCPIndexFingerMCPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPIndexFingerMCPDominantBoneFinalAngle
+		public float ThumbMCPIndexFingerMCPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPIndexFingerMCPDominantBoneMeanAngle
+		public float ThumbMCPIndexFingerMCPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPIndexFingerMCPDominantBoneMaximumAngle
+		public float ThumbMCPIndexFingerMCPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2735,25 +2737,25 @@
 		#endregion
 
 		#region IndexFingerMCPMiddleFingerMCPDominantBone bone features
-		public double? IndexFingerMCPMiddleFingerMCPDominantBoneInitialAngle
+		public float IndexFingerMCPMiddleFingerMCPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPMiddleFingerMCPDominantBoneFinalAngle
+		public float IndexFingerMCPMiddleFingerMCPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPMiddleFingerMCPDominantBoneMeanAngle
+		public float IndexFingerMCPMiddleFingerMCPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPMiddleFingerMCPDominantBoneMaximumAngle
+		public float IndexFingerMCPMiddleFingerMCPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2761,25 +2763,25 @@
 		#endregion
 
 		#region MiddleFingerMCPRingFingerMCPDominantBone bone features
-		public double? MiddleFingerMCPRingFingerMCPDominantBoneInitialAngle
+		public float MiddleFingerMCPRingFingerMCPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPRingFingerMCPDominantBoneFinalAngle
+		public float MiddleFingerMCPRingFingerMCPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPRingFingerMCPDominantBoneMeanAngle
+		public float MiddleFingerMCPRingFingerMCPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPRingFingerMCPDominantBoneMaximumAngle
+		public float MiddleFingerMCPRingFingerMCPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2787,25 +2789,25 @@
 		#endregion
 
 		#region RingFingerMCPPinkyMCPDominantBone bone features
-		public double? RingFingerMCPPinkyMCPDominantBoneInitialAngle
+		public float RingFingerMCPPinkyMCPDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPPinkyMCPDominantBoneFinalAngle
+		public float RingFingerMCPPinkyMCPDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPPinkyMCPDominantBoneMeanAngle
+		public float RingFingerMCPPinkyMCPDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPPinkyMCPDominantBoneMaximumAngle
+		public float RingFingerMCPPinkyMCPDominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2813,25 +2815,25 @@
 		#endregion
 
 		#region WristThumbCMCNondominantBone bone features
-		public double? WristThumbCMCNondominantBoneInitialAngle
+		public float WristThumbCMCNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristThumbCMCNondominantBoneFinalAngle
+		public float WristThumbCMCNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristThumbCMCNondominantBoneMeanAngle
+		public float WristThumbCMCNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristThumbCMCNondominantBoneMaximumAngle
+		public float WristThumbCMCNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2839,25 +2841,25 @@
 		#endregion
 
 		#region ThumbCMCThumbMCPNondominantBone bone features
-		public double? ThumbCMCThumbMCPNondominantBoneInitialAngle
+		public float ThumbCMCThumbMCPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCThumbMCPNondominantBoneFinalAngle
+		public float ThumbCMCThumbMCPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCThumbMCPNondominantBoneMeanAngle
+		public float ThumbCMCThumbMCPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbCMCThumbMCPNondominantBoneMaximumAngle
+		public float ThumbCMCThumbMCPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2865,25 +2867,25 @@
 		#endregion
 
 		#region ThumbMCPThumbIPNondominantBone bone features
-		public double? ThumbMCPThumbIPNondominantBoneInitialAngle
+		public float ThumbMCPThumbIPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPThumbIPNondominantBoneFinalAngle
+		public float ThumbMCPThumbIPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPThumbIPNondominantBoneMeanAngle
+		public float ThumbMCPThumbIPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPThumbIPNondominantBoneMaximumAngle
+		public float ThumbMCPThumbIPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2891,25 +2893,25 @@
 		#endregion
 
 		#region ThumbIPThumbTIPNondominantBone bone features
-		public double? ThumbIPThumbTIPNondominantBoneInitialAngle
+		public float ThumbIPThumbTIPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPThumbTIPNondominantBoneFinalAngle
+		public float ThumbIPThumbTIPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPThumbTIPNondominantBoneMeanAngle
+		public float ThumbIPThumbTIPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbIPThumbTIPNondominantBoneMaximumAngle
+		public float ThumbIPThumbTIPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2917,25 +2919,25 @@
 		#endregion
 
 		#region WristIndexFingerMCPNondominantBone bone features
-		public double? WristIndexFingerMCPNondominantBoneInitialAngle
+		public float WristIndexFingerMCPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristIndexFingerMCPNondominantBoneFinalAngle
+		public float WristIndexFingerMCPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristIndexFingerMCPNondominantBoneMeanAngle
+		public float WristIndexFingerMCPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristIndexFingerMCPNondominantBoneMaximumAngle
+		public float WristIndexFingerMCPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2943,25 +2945,25 @@
 		#endregion
 
 		#region IndexFingerMCPIndexFingerPIPNondominantBone bone features
-		public double? IndexFingerMCPIndexFingerPIPNondominantBoneInitialAngle
+		public float IndexFingerMCPIndexFingerPIPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPIndexFingerPIPNondominantBoneFinalAngle
+		public float IndexFingerMCPIndexFingerPIPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPIndexFingerPIPNondominantBoneMeanAngle
+		public float IndexFingerMCPIndexFingerPIPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPIndexFingerPIPNondominantBoneMaximumAngle
+		public float IndexFingerMCPIndexFingerPIPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2969,25 +2971,25 @@
 		#endregion
 
 		#region IndexFingerPIPIndexFingerDIPNondominantBone bone features
-		public double? IndexFingerPIPIndexFingerDIPNondominantBoneInitialAngle
+		public float IndexFingerPIPIndexFingerDIPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPIndexFingerDIPNondominantBoneFinalAngle
+		public float IndexFingerPIPIndexFingerDIPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPIndexFingerDIPNondominantBoneMeanAngle
+		public float IndexFingerPIPIndexFingerDIPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerPIPIndexFingerDIPNondominantBoneMaximumAngle
+		public float IndexFingerPIPIndexFingerDIPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -2995,25 +2997,25 @@
 		#endregion
 
 		#region IndexFingerDIPIndexFingerTIPNondominantBone bone features
-		public double? IndexFingerDIPIndexFingerTIPNondominantBoneInitialAngle
+		public float IndexFingerDIPIndexFingerTIPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPIndexFingerTIPNondominantBoneFinalAngle
+		public float IndexFingerDIPIndexFingerTIPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPIndexFingerTIPNondominantBoneMeanAngle
+		public float IndexFingerDIPIndexFingerTIPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerDIPIndexFingerTIPNondominantBoneMaximumAngle
+		public float IndexFingerDIPIndexFingerTIPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -3021,25 +3023,25 @@
 		#endregion
 
 		#region MiddleFingerMCPMiddleFingerPIPNondominantBone bone features
-		public double? MiddleFingerMCPMiddleFingerPIPNondominantBoneInitialAngle
+		public float MiddleFingerMCPMiddleFingerPIPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPMiddleFingerPIPNondominantBoneFinalAngle
+		public float MiddleFingerMCPMiddleFingerPIPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPMiddleFingerPIPNondominantBoneMeanAngle
+		public float MiddleFingerMCPMiddleFingerPIPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPMiddleFingerPIPNondominantBoneMaximumAngle
+		public float MiddleFingerMCPMiddleFingerPIPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -3047,25 +3049,25 @@
 		#endregion
 
 		#region MiddleFingerPIPMiddleFingerDIPNondominantBone bone features
-		public double? MiddleFingerPIPMiddleFingerDIPNondominantBoneInitialAngle
+		public float MiddleFingerPIPMiddleFingerDIPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPMiddleFingerDIPNondominantBoneFinalAngle
+		public float MiddleFingerPIPMiddleFingerDIPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPMiddleFingerDIPNondominantBoneMeanAngle
+		public float MiddleFingerPIPMiddleFingerDIPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerPIPMiddleFingerDIPNondominantBoneMaximumAngle
+		public float MiddleFingerPIPMiddleFingerDIPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -3073,25 +3075,25 @@
 		#endregion
 
 		#region MiddleFingerDIPMiddleFingerTIPNondominantBone bone features
-		public double? MiddleFingerDIPMiddleFingerTIPNondominantBoneInitialAngle
+		public float MiddleFingerDIPMiddleFingerTIPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPMiddleFingerTIPNondominantBoneFinalAngle
+		public float MiddleFingerDIPMiddleFingerTIPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPMiddleFingerTIPNondominantBoneMeanAngle
+		public float MiddleFingerDIPMiddleFingerTIPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerDIPMiddleFingerTIPNondominantBoneMaximumAngle
+		public float MiddleFingerDIPMiddleFingerTIPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -3099,25 +3101,25 @@
 		#endregion
 
 		#region RingFingerMCPRingFingerPIPNondominantBone bone features
-		public double? RingFingerMCPRingFingerPIPNondominantBoneInitialAngle
+		public float RingFingerMCPRingFingerPIPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPRingFingerPIPNondominantBoneFinalAngle
+		public float RingFingerMCPRingFingerPIPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPRingFingerPIPNondominantBoneMeanAngle
+		public float RingFingerMCPRingFingerPIPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPRingFingerPIPNondominantBoneMaximumAngle
+		public float RingFingerMCPRingFingerPIPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -3125,25 +3127,25 @@
 		#endregion
 
 		#region RingFingerPIPRingFingerDIPNondominantBone bone features
-		public double? RingFingerPIPRingFingerDIPNondominantBoneInitialAngle
+		public float RingFingerPIPRingFingerDIPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPRingFingerDIPNondominantBoneFinalAngle
+		public float RingFingerPIPRingFingerDIPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPRingFingerDIPNondominantBoneMeanAngle
+		public float RingFingerPIPRingFingerDIPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerPIPRingFingerDIPNondominantBoneMaximumAngle
+		public float RingFingerPIPRingFingerDIPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -3151,25 +3153,25 @@
 		#endregion
 
 		#region RingFingerDIPRingFingerTIPNondominantBone bone features
-		public double? RingFingerDIPRingFingerTIPNondominantBoneInitialAngle
+		public float RingFingerDIPRingFingerTIPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPRingFingerTIPNondominantBoneFinalAngle
+		public float RingFingerDIPRingFingerTIPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPRingFingerTIPNondominantBoneMeanAngle
+		public float RingFingerDIPRingFingerTIPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerDIPRingFingerTIPNondominantBoneMaximumAngle
+		public float RingFingerDIPRingFingerTIPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -3177,25 +3179,25 @@
 		#endregion
 
 		#region WristPinkyMCPNondominantBone bone features
-		public double? WristPinkyMCPNondominantBoneInitialAngle
+		public float WristPinkyMCPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristPinkyMCPNondominantBoneFinalAngle
+		public float WristPinkyMCPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristPinkyMCPNondominantBoneMeanAngle
+		public float WristPinkyMCPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristPinkyMCPNondominantBoneMaximumAngle
+		public float WristPinkyMCPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -3203,25 +3205,25 @@
 		#endregion
 
 		#region PinkyMCPPinkyPIPNondominantBone bone features
-		public double? PinkyMCPPinkyPIPNondominantBoneInitialAngle
+		public float PinkyMCPPinkyPIPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPPinkyPIPNondominantBoneFinalAngle
+		public float PinkyMCPPinkyPIPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPPinkyPIPNondominantBoneMeanAngle
+		public float PinkyMCPPinkyPIPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyMCPPinkyPIPNondominantBoneMaximumAngle
+		public float PinkyMCPPinkyPIPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -3229,25 +3231,25 @@
 		#endregion
 
 		#region PinkyPIPPinkyDIPNondominantBone bone features
-		public double? PinkyPIPPinkyDIPNondominantBoneInitialAngle
+		public float PinkyPIPPinkyDIPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPPinkyDIPNondominantBoneFinalAngle
+		public float PinkyPIPPinkyDIPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPPinkyDIPNondominantBoneMeanAngle
+		public float PinkyPIPPinkyDIPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyPIPPinkyDIPNondominantBoneMaximumAngle
+		public float PinkyPIPPinkyDIPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -3255,25 +3257,25 @@
 		#endregion
 
 		#region PinkyDIPPinkyTIPNondominantBone bone features
-		public double? PinkyDIPPinkyTIPNondominantBoneInitialAngle
+		public float PinkyDIPPinkyTIPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPPinkyTIPNondominantBoneFinalAngle
+		public float PinkyDIPPinkyTIPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPPinkyTIPNondominantBoneMeanAngle
+		public float PinkyDIPPinkyTIPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? PinkyDIPPinkyTIPNondominantBoneMaximumAngle
+		public float PinkyDIPPinkyTIPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -3281,25 +3283,25 @@
 		#endregion
 
 		#region ThumbMCPIndexFingerMCPNondominantBone bone features
-		public double? ThumbMCPIndexFingerMCPNondominantBoneInitialAngle
+		public float ThumbMCPIndexFingerMCPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPIndexFingerMCPNondominantBoneFinalAngle
+		public float ThumbMCPIndexFingerMCPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPIndexFingerMCPNondominantBoneMeanAngle
+		public float ThumbMCPIndexFingerMCPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbMCPIndexFingerMCPNondominantBoneMaximumAngle
+		public float ThumbMCPIndexFingerMCPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -3307,25 +3309,25 @@
 		#endregion
 
 		#region IndexFingerMCPMiddleFingerMCPNondominantBone bone features
-		public double? IndexFingerMCPMiddleFingerMCPNondominantBoneInitialAngle
+		public float IndexFingerMCPMiddleFingerMCPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPMiddleFingerMCPNondominantBoneFinalAngle
+		public float IndexFingerMCPMiddleFingerMCPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPMiddleFingerMCPNondominantBoneMeanAngle
+		public float IndexFingerMCPMiddleFingerMCPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? IndexFingerMCPMiddleFingerMCPNondominantBoneMaximumAngle
+		public float IndexFingerMCPMiddleFingerMCPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -3333,25 +3335,25 @@
 		#endregion
 
 		#region MiddleFingerMCPRingFingerMCPNondominantBone bone features
-		public double? MiddleFingerMCPRingFingerMCPNondominantBoneInitialAngle
+		public float MiddleFingerMCPRingFingerMCPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPRingFingerMCPNondominantBoneFinalAngle
+		public float MiddleFingerMCPRingFingerMCPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPRingFingerMCPNondominantBoneMeanAngle
+		public float MiddleFingerMCPRingFingerMCPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? MiddleFingerMCPRingFingerMCPNondominantBoneMaximumAngle
+		public float MiddleFingerMCPRingFingerMCPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -3359,25 +3361,25 @@
 		#endregion
 
 		#region RingFingerMCPPinkyMCPNondominantBone bone features
-		public double? RingFingerMCPPinkyMCPNondominantBoneInitialAngle
+		public float RingFingerMCPPinkyMCPNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPPinkyMCPNondominantBoneFinalAngle
+		public float RingFingerMCPPinkyMCPNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPPinkyMCPNondominantBoneMeanAngle
+		public float RingFingerMCPPinkyMCPNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? RingFingerMCPPinkyMCPNondominantBoneMaximumAngle
+		public float RingFingerMCPPinkyMCPNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -3385,13 +3387,13 @@
 		#endregion
 
 		#region Hands distances features
-		public double? BetweenHandJointsDistanceMax
+		public float BetweenHandJointsDistanceMax
 		{
 			get;
 			set;
 		}
 
-		public double? BetweenHandJointsDistanceMean
+		public float BetweenHandJointsDistanceMean
 		{
 			get;
 			set;

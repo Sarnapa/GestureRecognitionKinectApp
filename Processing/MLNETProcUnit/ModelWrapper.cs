@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
 using System.Threading.Tasks;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
@@ -15,40 +16,53 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 			get;
 		}
 
-		public ModelKind ModelKind
+		ModelKind ModelKind
 		{
 			get;
 		}
 
-		public ModelUsageKind ModelUsageKind
+		ModelUsageKind ModelUsageKind
 		{
 			get;
 		}
 
-		public bool IsLoaded
+		bool IsLoaded
+		{
+			get;
+		}
+
+		bool IsTrainData
+		{
+			get;
+		}
+
+		bool IsTestData
 		{
 			get;
 		}
 		#endregion
 
 		#region Methods
+		SetDataResult SetData(BaseSetDataParameters parameters);
+		BaseTrainResult TrainModel(BaseTrainParameters parameters);
+		BasePredictResult Predict(BasePredictParameters parameters);
+		EvaluateResult Evaluate(BaseEvaluateParameters parameters);
 		LoadModelResult LoadModel(BaseLoadModelParameters parameters);
-		Task<BasePredictResult> Predict(BasePredictParameters parameters);
+		SaveModelResult SaveModel(BaseSaveModelParameters parameters);
 		void Cleanup();
 		#endregion
 	}
 	#endregion
 
 	#region ModelWrapper<Input, Output>
-	public abstract class ModelWrapper<Input, Output> : IModelWrapper
-		where Input : class
-		where Output : class, new()
+	public abstract class ModelWrapper: IModelWrapper
 	{
 		#region Protected fields
 		protected readonly int? seed;
 		protected readonly MLContext mlContext;
 		protected ITransformer model;
-		protected PredictionEngine<Input, Output> predictionEngine;
+		protected IDataView trainData;
+		protected IDataView testData;
 		#endregion
 
 		#region Public properties
@@ -70,11 +84,27 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 			protected set;
 		}
 
-		public bool IsLoaded
+		public virtual bool IsLoaded
 		{
 			get
 			{
-				return this.model != null && this.predictionEngine != null;
+				return this.model != null;
+			}
+		}
+
+		public bool IsTrainData
+		{
+			get
+			{
+				return this.trainData != null;
+			}
+		}
+
+		public bool IsTestData
+		{
+			get
+			{
+				return this.testData != null;
 			}
 		}
 		#endregion
@@ -88,15 +118,13 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 		#endregion
 
 		#region Public methods
+		public abstract SetDataResult SetData(BaseSetDataParameters parameters);
+		public abstract BaseTrainResult TrainModel(BaseTrainParameters parameters);
+		public abstract BasePredictResult Predict(BasePredictParameters parameters);
+		public abstract EvaluateResult Evaluate(BaseEvaluateParameters parameters);
 		public abstract LoadModelResult LoadModel(BaseLoadModelParameters parameters);
-		public abstract Task<BasePredictResult> Predict(BasePredictParameters parameters);
-		public void Cleanup()
-		{
-			this.model = null;
-			this.predictionEngine?.Dispose();
-			this.predictionEngine = null;
-			this.ModelPath = null;
-		}
+		public abstract SaveModelResult SaveModel(BaseSaveModelParameters parameters);
+		public abstract void Cleanup();
 		#endregion
 
 		#region Protected methods
@@ -114,13 +142,27 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 			return (true, null);
 		}
 
-		protected static (bool success, LoadModelResult failedResult) CheckIfSupportedModelFileExtension(string modelPathExtension)
+		protected static (bool success, LoadModelResult failedResult) CheckIfSupportedModelFileExtensionToLoad(string modelPathExtension)
 		{
 			if (!Consts.SupportedModelFileExtension.Contains(modelPathExtension))
 			{
 				return (false, new LoadModelResult()
 				{
 					ErrorKind = LoadModelErrorKind.UnsupportedModelFileExtension,
+					ErrorMessage = $"Unsupported model file extension: [{modelPathExtension}]. Only supported: [{string.Join(", ", Consts.SupportedModelFileExtension)}]."
+				});
+			}
+
+			return (true, null);
+		}
+
+		protected static (bool success, SaveModelResult failedResult) CheckIfSupportedModelFileExtensionToSave(string modelPathExtension)
+		{
+			if (!Consts.SupportedModelFileExtension.Contains(modelPathExtension))
+			{
+				return (false, new SaveModelResult()
+				{
+					ErrorKind = SaveModelErrorKind.UnsupportedModelFileExtension,
 					ErrorMessage = $"Unsupported model file extension: [{modelPathExtension}]. Only supported: [{string.Join(", ", Consts.SupportedModelFileExtension)}]."
 				});
 			}

@@ -59,11 +59,6 @@ namespace GestureRecognition.Processing.GestureRecognitionProcUnit
 			return new PrepareGesturesDataForRecognitionModelResult() { Success = success, ErrorMessage = message };
 		}
 
-		public CreateGestureRecognitionModelResult CreateGestureRecognitionModel(CreateGestureRecognitionModelParameters parameters)
-		{
-			return new CreateGestureRecognitionModelResult();
-		}
-
 		public LoadGestureRecognitionModelResult LoadGestureRecognitionModel(LoadGestureRecognitionModelParameters parameters)
 		{
 			return new LoadGestureRecognitionModelResult();

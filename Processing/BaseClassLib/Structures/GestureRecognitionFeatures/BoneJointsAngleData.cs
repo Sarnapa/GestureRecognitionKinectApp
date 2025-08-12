@@ -3,25 +3,25 @@
 	public class BoneJointsAngleData
 	{
 		#region Public properties
-		public double? InitialAngle
+		public float InitialAngle
 		{
 			get;
 			private set;
 		}
 
-		public double? FinalAngle
+		public float FinalAngle
 		{
 			get;
 			private set;
 		}
 
-		public double? MeanAngle
+		public float MeanAngle
 		{
 			get;
 			private set;
 		}
 
-		public double? MaximumAngle
+		public float MaximumAngle
 		{
 			get;
 			private set;
@@ -29,7 +29,7 @@
 		#endregion
 
 		#region Constructors
-		public BoneJointsAngleData(double? initialAngle, double? finalAngle, double? meanAngle, double? maximumAngle)
+		public BoneJointsAngleData(float initialAngle, float finalAngle, float meanAngle, float maximumAngle)
 		{
 			this.InitialAngle = initialAngle;
 			this.FinalAngle = finalAngle;

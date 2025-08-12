@@ -1,52 +1,54 @@
-﻿namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews
+﻿using Microsoft.ML.Data;
+
+namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews
 {
 	// TODO: Problem, że tutaj podajemy na sztywno te cechy, żeby nowy dodać punkt charakterystyczny trzeba będzie podać tutaj na sztywno do kodu.
 	public class KinectGestureDataView : GestureDataView
 	{
 		#region ElbowLeft joint features
-		public double? ElbowLeftF1F2SpatialAngle
+		public float ElbowLeftF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowLeftFN_1FNSpatialAngle
+		public float ElbowLeftFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowLeftF1FNSpatialAngle
+		public float ElbowLeftF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowLeftTotalVectorAngle
+		public float ElbowLeftTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowLeftSquaredTotalVectorAngle
+		public float ElbowLeftSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowLeftTotalVectorDisplacement
+		public float ElbowLeftTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowLeftTotalDisplacement
+		public float ElbowLeftTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowLeftMaximumDisplacement
+		public float ElbowLeftMaximumDisplacement
 		{
 			get;
 			set;
@@ -54,49 +56,49 @@
 		#endregion
 
 		#region ElbowRight joint features
-		public double? ElbowRightF1F2SpatialAngle
+		public float ElbowRightF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowRightFN_1FNSpatialAngle
+		public float ElbowRightFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowRightF1FNSpatialAngle
+		public float ElbowRightF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowRightTotalVectorAngle
+		public float ElbowRightTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowRightSquaredTotalVectorAngle
+		public float ElbowRightSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowRightTotalVectorDisplacement
+		public float ElbowRightTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowRightTotalDisplacement
+		public float ElbowRightTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowRightMaximumDisplacement
+		public float ElbowRightMaximumDisplacement
 		{
 			get;
 			set;
@@ -104,49 +106,49 @@
 		#endregion
 
 		#region WristLeft joint features
-		public double? WristLeftF1F2SpatialAngle
+		public float WristLeftF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristLeftFN_1FNSpatialAngle
+		public float WristLeftFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristLeftF1FNSpatialAngle
+		public float WristLeftF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristLeftTotalVectorAngle
+		public float WristLeftTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristLeftSquaredTotalVectorAngle
+		public float WristLeftSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristLeftTotalVectorDisplacement
+		public float WristLeftTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? WristLeftTotalDisplacement
+		public float WristLeftTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? WristLeftMaximumDisplacement
+		public float WristLeftMaximumDisplacement
 		{
 			get;
 			set;
@@ -154,49 +156,49 @@
 		#endregion
 
 		#region WristRight joint features
-		public double? WristRightF1F2SpatialAngle
+		public float WristRightF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristRightFN_1FNSpatialAngle
+		public float WristRightFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristRightF1FNSpatialAngle
+		public float WristRightF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristRightTotalVectorAngle
+		public float WristRightTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristRightSquaredTotalVectorAngle
+		public float WristRightSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristRightTotalVectorDisplacement
+		public float WristRightTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? WristRightTotalDisplacement
+		public float WristRightTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? WristRightMaximumDisplacement
+		public float WristRightMaximumDisplacement
 		{
 			get;
 			set;
@@ -204,61 +206,61 @@
 		#endregion
 
 		#region HandLeft joint features
-		public double? HandLeftF1F2SpatialAngle
+		public float HandLeftF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandLeftFN_1FNSpatialAngle
+		public float HandLeftFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandLeftF1FNSpatialAngle
+		public float HandLeftF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandLeftTotalVectorAngle
+		public float HandLeftTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandLeftSquaredTotalVectorAngle
+		public float HandLeftSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandLeftTotalVectorDisplacement
+		public float HandLeftTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? HandLeftTotalDisplacement
+		public float HandLeftTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? HandLeftMaximumDisplacement
+		public float HandLeftMaximumDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? HandLeftBoundingBoxDiagonalLength
+		public float HandLeftBoundingBoxDiagonalLength
 		{
 			get;
 			set;
 		}
 
-		public double? HandLeftBoundingBoxAngle
+		public float HandLeftBoundingBoxAngle
 		{
 			get;
 			set;
@@ -273,61 +275,61 @@
 		#endregion
 
 		#region HandRight joint features
-		public double? HandRightF1F2SpatialAngle
+		public float HandRightF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandRightFN_1FNSpatialAngle
+		public float HandRightFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandRightF1FNSpatialAngle
+		public float HandRightF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandRightTotalVectorAngle
+		public float HandRightTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandRightSquaredTotalVectorAngle
+		public float HandRightSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandRightTotalVectorDisplacement
+		public float HandRightTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? HandRightTotalDisplacement
+		public float HandRightTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? HandRightMaximumDisplacement
+		public float HandRightMaximumDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? HandRightBoundingBoxDiagonalLength
+		public float HandRightBoundingBoxDiagonalLength
 		{
 			get;
 			set;
 		}
 
-		public double? HandRightBoundingBoxAngle
+		public float HandRightBoundingBoxAngle
 		{
 			get;
 			set;
@@ -342,49 +344,49 @@
 		#endregion
 
 		#region ThumbLeft joint features
-		public double? ThumbLeftF1F2SpatialAngle
+		public float ThumbLeftF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbLeftFN_1FNSpatialAngle
+		public float ThumbLeftFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbLeftF1FNSpatialAngle
+		public float ThumbLeftF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbLeftTotalVectorAngle
+		public float ThumbLeftTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbLeftSquaredTotalVectorAngle
+		public float ThumbLeftSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbLeftTotalVectorDisplacement
+		public float ThumbLeftTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbLeftTotalDisplacement
+		public float ThumbLeftTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbLeftMaximumDisplacement
+		public float ThumbLeftMaximumDisplacement
 		{
 			get;
 			set;
@@ -392,49 +394,49 @@
 		#endregion
 
 		#region ThumbRight joint features
-		public double? ThumbRightF1F2SpatialAngle
+		public float ThumbRightF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbRightFN_1FNSpatialAngle
+		public float ThumbRightFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbRightF1FNSpatialAngle
+		public float ThumbRightF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbRightTotalVectorAngle
+		public float ThumbRightTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbRightSquaredTotalVectorAngle
+		public float ThumbRightSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbRightTotalVectorDisplacement
+		public float ThumbRightTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbRightTotalDisplacement
+		public float ThumbRightTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? ThumbRightMaximumDisplacement
+		public float ThumbRightMaximumDisplacement
 		{
 			get;
 			set;
@@ -442,49 +444,49 @@
 		#endregion
 
 		#region HandTipLeft joint features
-		public double? HandTipLeftF1F2SpatialAngle
+		public float HandTipLeftF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandTipLeftFN_1FNSpatialAngle
+		public float HandTipLeftFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandTipLeftF1FNSpatialAngle
+		public float HandTipLeftF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandTipLeftTotalVectorAngle
+		public float HandTipLeftTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandTipLeftSquaredTotalVectorAngle
+		public float HandTipLeftSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandTipLeftTotalVectorDisplacement
+		public float HandTipLeftTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? HandTipLeftTotalDisplacement
+		public float HandTipLeftTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? HandTipLeftMaximumDisplacement
+		public float HandTipLeftMaximumDisplacement
 		{
 			get;
 			set;
@@ -492,49 +494,49 @@
 		#endregion
 
 		#region HandTipRight joint features
-		public double? HandTipRightF1F2SpatialAngle
+		public float HandTipRightF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandTipRightFN_1FNSpatialAngle
+		public float HandTipRightFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandTipRightF1FNSpatialAngle
+		public float HandTipRightF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandTipRightTotalVectorAngle
+		public float HandTipRightTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandTipRightSquaredTotalVectorAngle
+		public float HandTipRightSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandTipRightTotalVectorDisplacement
+		public float HandTipRightTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? HandTipRightTotalDisplacement
+		public float HandTipRightTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public double? HandTipRightMaximumDisplacement
+		public float HandTipRightMaximumDisplacement
 		{
 			get;
 			set;
@@ -542,25 +544,25 @@
 		#endregion
 
 		#region ElbowLeftWristLeft bone features
-		public double? ElbowLeftWristLeftBoneInitialAngle
+		public float ElbowLeftWristLeftBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowLeftWristLeftBoneFinalAngle
+		public float ElbowLeftWristLeftBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowLeftWristLeftBoneMeanAngle
+		public float ElbowLeftWristLeftBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowLeftWristLeftBoneMaximumAngle
+		public float ElbowLeftWristLeftBoneMaximumAngle
 		{
 			get;
 			set;
@@ -568,25 +570,25 @@
 		#endregion
 
 		#region ElbowRightWristRight bone features
-		public double? ElbowRightWristRightBoneInitialAngle
+		public float ElbowRightWristRightBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowRightWristRightBoneFinalAngle
+		public float ElbowRightWristRightBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowRightWristRightBoneMeanAngle
+		public float ElbowRightWristRightBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? ElbowRightWristRightBoneMaximumAngle
+		public float ElbowRightWristRightBoneMaximumAngle
 		{
 			get;
 			set;
@@ -594,25 +596,25 @@
 		#endregion
 
 		#region WristLeftHandLeft bone features
-		public double? WristLeftHandLeftBoneInitialAngle
+		public float WristLeftHandLeftBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristLeftHandLeftBoneFinalAngle
+		public float WristLeftHandLeftBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristLeftHandLeftBoneMeanAngle
+		public float WristLeftHandLeftBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristLeftHandLeftBoneMaximumAngle
+		public float WristLeftHandLeftBoneMaximumAngle
 		{
 			get;
 			set;
@@ -620,25 +622,25 @@
 		#endregion
 
 		#region WristRightHandRight bone features
-		public double? WristRightHandRightBoneInitialAngle
+		public float WristRightHandRightBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristRightHandRightBoneFinalAngle
+		public float WristRightHandRightBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristRightHandRightBoneMeanAngle
+		public float WristRightHandRightBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristRightHandRightBoneMaximumAngle
+		public float WristRightHandRightBoneMaximumAngle
 		{
 			get;
 			set;
@@ -646,25 +648,25 @@
 		#endregion
 
 		#region HandLeftHandTipLeft bone features
-		public double? HandLeftHandTipLeftBoneInitialAngle
+		public float HandLeftHandTipLeftBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandLeftHandTipLeftBoneFinalAngle
+		public float HandLeftHandTipLeftBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandLeftHandTipLeftBoneMeanAngle
+		public float HandLeftHandTipLeftBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandLeftHandTipLeftBoneMaximumAngle
+		public float HandLeftHandTipLeftBoneMaximumAngle
 		{
 			get;
 			set;
@@ -672,25 +674,25 @@
 		#endregion
 
 		#region HandRightHandTipRight bone features
-		public double? HandRightHandTipRightBoneInitialAngle
+		public float HandRightHandTipRightBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandRightHandTipRightBoneFinalAngle
+		public float HandRightHandTipRightBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandRightHandTipRightBoneMeanAngle
+		public float HandRightHandTipRightBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? HandRightHandTipRightBoneMaximumAngle
+		public float HandRightHandTipRightBoneMaximumAngle
 		{
 			get;
 			set;
@@ -698,25 +700,25 @@
 		#endregion
 
 		#region WristLeftThumbLeft bone features
-		public double? WristLeftThumbLeftBoneInitialAngle
+		public float WristLeftThumbLeftBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristLeftThumbLeftBoneFinalAngle
+		public float WristLeftThumbLeftBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristLeftThumbLeftBoneMeanAngle
+		public float WristLeftThumbLeftBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristLeftThumbLeftBoneMaximumAngle
+		public float WristLeftThumbLeftBoneMaximumAngle
 		{
 			get;
 			set;
@@ -724,25 +726,25 @@
 		#endregion
 
 		#region WristRightThumbRight bone features
-		public double? WristRightThumbRightBoneInitialAngle
+		public float WristRightThumbRightBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristRightThumbRightBoneFinalAngle
+		public float WristRightThumbRightBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristRightThumbRightBoneMeanAngle
+		public float WristRightThumbRightBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public double? WristRightThumbRightBoneMaximumAngle
+		public float WristRightThumbRightBoneMaximumAngle
 		{
 			get;
 			set;
@@ -750,13 +752,13 @@
 		#endregion
 
 		#region Hands distances features
-		public double? BetweenHandJointsDistanceMax
+		public float BetweenHandJointsDistanceMax
 		{
 			get;
 			set;
 		}
 
-		public double? BetweenHandJointsDistanceMean
+		public float BetweenHandJointsDistanceMean
 		{
 			get;
 			set;

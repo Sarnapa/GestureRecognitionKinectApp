@@ -4,7 +4,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecogniti
 {
 	public class GesturePrediction
 	{
-		[ColumnName("PredictedLabel")]
+		[ColumnName(GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_COL)]
 		public string Label
 		{
 			get;

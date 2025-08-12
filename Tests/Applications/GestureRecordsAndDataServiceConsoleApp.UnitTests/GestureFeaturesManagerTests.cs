@@ -9,13 +9,13 @@ namespace GestureRecognition.Tests.Applications.GestureRecordsAndDataServiceCons
 	public sealed class GestureFeaturesManagerTests
 	{
 		#region Private fields
-		private const string KINECT_INPUT_DIR_PATH = @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_10\Kinect\";
+		private const string KINECT_INPUT_DIR_PATH = @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_11\Kinect\";
 		private const string KINECT_INPUT_FILE_PATH = $"{KINECT_INPUT_DIR_PATH}20250202_Goodbye1.record";
-		private const string KINECT_OUTPUT_DIR_PATH = @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_10\Kinect\Test\";
+		private const string KINECT_OUTPUT_DIR_PATH = @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_11\Kinect\Test\";
 		private const string KINECT_OUTPUT_FILE_PATH = $"{KINECT_OUTPUT_DIR_PATH}20250202_Goodbye1.record";
-		private const string MEDIAPIPE_HAND_LANDMARKS_INPUT_DIR_PATH = @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_10\MediaPipeHandLandmarks\";
+		private const string MEDIAPIPE_HAND_LANDMARKS_INPUT_DIR_PATH = @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_11\MediaPipeHandLandmarks\";
 		private const string MEDIAPIPE_HAND_LANDMARKS_INPUT_FILE_PATH = $"{MEDIAPIPE_HAND_LANDMARKS_INPUT_DIR_PATH}20250202_Goodbye1.record";
-		private const string MEDIAPIPE_HAND_LANDMARKS_OUTPUT_DIR_PATH = @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_10\MediaPipeHandLandmarks\Test\";
+		private const string MEDIAPIPE_HAND_LANDMARKS_OUTPUT_DIR_PATH = @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_11\MediaPipeHandLandmarks\Test\";
 		private const string MEDIAPIPE_HAND_LANDMARKS_OUTPUT_FILE_PATH = $"{MEDIAPIPE_HAND_LANDMARKS_OUTPUT_DIR_PATH}20250202_Goodbye1.record";
 		#endregion
 

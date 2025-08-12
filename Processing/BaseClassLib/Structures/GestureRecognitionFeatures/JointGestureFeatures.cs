@@ -3,49 +3,49 @@
 	public class JointGestureFeatures
 	{
 		#region Public properties
-		public double? F1F2SpatialAngle
+		public float F1F2SpatialAngle
 		{
 			get;
 			private set;
 		}
 
-		public double? FN_1FNSpatialAngle
+		public float FN_1FNSpatialAngle
 		{
 			get;
 			private set;
 		}
 
-		public double? F1FNSpatialAngle
+		public float F1FNSpatialAngle
 		{
 			get;
 			private set;
 		}
 
-		public double? TotalVectorAngle
+		public float TotalVectorAngle
 		{
 			get;
 			private set;
 		}
 
-		public double? SquaredTotalVectorAngle
+		public float SquaredTotalVectorAngle
 		{
 			get;
 			private set;
 		}
 
-		public double? TotalVectorDisplacement
+		public float TotalVectorDisplacement
 		{
 			get;
 			private set;
 		}
 
-		public double? TotalDisplacement
+		public float TotalDisplacement
 		{
 			get;
 			private set;
 		}
 
-		public double? MaximumDisplacement
+		public float MaximumDisplacement
 		{
 			get;
 			private set;
@@ -53,9 +53,9 @@
 		#endregion
 
 		#region Constructors
-		public JointGestureFeatures(double? f1F2SpatialAngle, double? fN_1FNSpatialAngle, double? f1FNSpatialAngle,
-			double? totalVectorAngle, double? squaredTotalVectorAngle, double? totalVectorDisplacement, double? totalDisplacement,
-			double? maximumDisplacement)
+		public JointGestureFeatures(float f1F2SpatialAngle, float fN_1FNSpatialAngle, float f1FNSpatialAngle,
+			float totalVectorAngle, float squaredTotalVectorAngle, float totalVectorDisplacement, float totalDisplacement,
+			float maximumDisplacement)
 		{
 			this.F1F2SpatialAngle = f1F2SpatialAngle;
 			this.FN_1FNSpatialAngle = fN_1FNSpatialAngle;
@@ -72,13 +72,13 @@
 	public class HandJointGestureFeatures : JointGestureFeatures
 	{
 		#region Public properties
-		public double? BoundingBoxDiagonalLength
+		public float BoundingBoxDiagonalLength
 		{
 			get;
 			private set;
 		}
 
-		public double? BoundingBoxAngle
+		public float BoundingBoxAngle
 		{
 			get;
 			private set;
@@ -93,9 +93,9 @@
 		#endregion
 
 		#region Constructors
-		public HandJointGestureFeatures(double? f1F2SpatialAngle, double? fN_1FNSpatialAngle, double? f1FNSpatialAngle,
-			double? totalVectorAngle, double? squaredTotalVectorAngle, double? totalVectorDisplacement, double? totalDisplacement,
-			double? maximumDisplacement, double? boundingBoxDiagonalLength, double? boundingBoxAngle/*, HandState[] handStates*/)
+		public HandJointGestureFeatures(float f1F2SpatialAngle, float fN_1FNSpatialAngle, float f1FNSpatialAngle,
+			float totalVectorAngle, float squaredTotalVectorAngle, float totalVectorDisplacement, float totalDisplacement,
+			float maximumDisplacement, float boundingBoxDiagonalLength, float boundingBoxAngle/*, HandState[] handStates*/)
 			: base(f1F2SpatialAngle, fN_1FNSpatialAngle, f1FNSpatialAngle, totalVectorAngle, squaredTotalVectorAngle,
 				totalVectorDisplacement, totalDisplacement, maximumDisplacement)
 		{

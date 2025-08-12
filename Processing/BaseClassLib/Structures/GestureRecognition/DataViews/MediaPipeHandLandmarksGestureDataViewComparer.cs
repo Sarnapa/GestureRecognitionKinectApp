@@ -23,808 +23,808 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecogniti
 
 			return
 			#region WristDominant joint features
-			NullableEquals(x.WristDominantF1F2SpatialAngle, y.WristDominantF1F2SpatialAngle) &&
-			NullableEquals(x.WristDominantFN_1FNSpatialAngle, y.WristDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.WristDominantF1FNSpatialAngle, y.WristDominantF1FNSpatialAngle) &&
-			NullableEquals(x.WristDominantTotalVectorAngle, y.WristDominantTotalVectorAngle) &&
-			NullableEquals(x.WristDominantSquaredTotalVectorAngle, y.WristDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.WristDominantTotalVectorDisplacement, y.WristDominantTotalVectorDisplacement) &&
-			NullableEquals(x.WristDominantTotalDisplacement, y.WristDominantTotalDisplacement) &&
-			NullableEquals(x.WristDominantMaximumDisplacement, y.WristDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.WristDominantF1F2SpatialAngle, y.WristDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.WristDominantFN_1FNSpatialAngle, y.WristDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.WristDominantF1FNSpatialAngle, y.WristDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.WristDominantTotalVectorAngle, y.WristDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.WristDominantSquaredTotalVectorAngle, y.WristDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.WristDominantTotalVectorDisplacement, y.WristDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.WristDominantTotalDisplacement, y.WristDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.WristDominantMaximumDisplacement, y.WristDominantMaximumDisplacement) &&
 			#endregion
 
 			#region ThumbCMCDominant joint features
-			NullableEquals(x.ThumbCMCDominantF1F2SpatialAngle, y.ThumbCMCDominantF1F2SpatialAngle) &&
-			NullableEquals(x.ThumbCMCDominantFN_1FNSpatialAngle, y.ThumbCMCDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.ThumbCMCDominantF1FNSpatialAngle, y.ThumbCMCDominantF1FNSpatialAngle) &&
-			NullableEquals(x.ThumbCMCDominantTotalVectorAngle, y.ThumbCMCDominantTotalVectorAngle) &&
-			NullableEquals(x.ThumbCMCDominantSquaredTotalVectorAngle, y.ThumbCMCDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.ThumbCMCDominantTotalVectorDisplacement, y.ThumbCMCDominantTotalVectorDisplacement) &&
-			NullableEquals(x.ThumbCMCDominantTotalDisplacement, y.ThumbCMCDominantTotalDisplacement) &&
-			NullableEquals(x.ThumbCMCDominantMaximumDisplacement, y.ThumbCMCDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.ThumbCMCDominantF1F2SpatialAngle, y.ThumbCMCDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.ThumbCMCDominantFN_1FNSpatialAngle, y.ThumbCMCDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbCMCDominantF1FNSpatialAngle, y.ThumbCMCDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbCMCDominantTotalVectorAngle, y.ThumbCMCDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbCMCDominantSquaredTotalVectorAngle, y.ThumbCMCDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbCMCDominantTotalVectorDisplacement, y.ThumbCMCDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.ThumbCMCDominantTotalDisplacement, y.ThumbCMCDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.ThumbCMCDominantMaximumDisplacement, y.ThumbCMCDominantMaximumDisplacement) &&
 			#endregion
 
 			#region ThumbMCPDominant joint features
-			NullableEquals(x.ThumbMCPDominantF1F2SpatialAngle, y.ThumbMCPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.ThumbMCPDominantFN_1FNSpatialAngle, y.ThumbMCPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.ThumbMCPDominantF1FNSpatialAngle, y.ThumbMCPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.ThumbMCPDominantTotalVectorAngle, y.ThumbMCPDominantTotalVectorAngle) &&
-			NullableEquals(x.ThumbMCPDominantSquaredTotalVectorAngle, y.ThumbMCPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.ThumbMCPDominantTotalVectorDisplacement, y.ThumbMCPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.ThumbMCPDominantTotalDisplacement, y.ThumbMCPDominantTotalDisplacement) &&
-			NullableEquals(x.ThumbMCPDominantMaximumDisplacement, y.ThumbMCPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.ThumbMCPDominantF1F2SpatialAngle, y.ThumbMCPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.ThumbMCPDominantFN_1FNSpatialAngle, y.ThumbMCPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbMCPDominantF1FNSpatialAngle, y.ThumbMCPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbMCPDominantTotalVectorAngle, y.ThumbMCPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbMCPDominantSquaredTotalVectorAngle, y.ThumbMCPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbMCPDominantTotalVectorDisplacement, y.ThumbMCPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.ThumbMCPDominantTotalDisplacement, y.ThumbMCPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.ThumbMCPDominantMaximumDisplacement, y.ThumbMCPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region ThumbIPDominant joint features
-			NullableEquals(x.ThumbIPDominantF1F2SpatialAngle, y.ThumbIPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.ThumbIPDominantFN_1FNSpatialAngle, y.ThumbIPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.ThumbIPDominantF1FNSpatialAngle, y.ThumbIPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.ThumbIPDominantTotalVectorAngle, y.ThumbIPDominantTotalVectorAngle) &&
-			NullableEquals(x.ThumbIPDominantSquaredTotalVectorAngle, y.ThumbIPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.ThumbIPDominantTotalVectorDisplacement, y.ThumbIPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.ThumbIPDominantTotalDisplacement, y.ThumbIPDominantTotalDisplacement) &&
-			NullableEquals(x.ThumbIPDominantMaximumDisplacement, y.ThumbIPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.ThumbIPDominantF1F2SpatialAngle, y.ThumbIPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.ThumbIPDominantFN_1FNSpatialAngle, y.ThumbIPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbIPDominantF1FNSpatialAngle, y.ThumbIPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbIPDominantTotalVectorAngle, y.ThumbIPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbIPDominantSquaredTotalVectorAngle, y.ThumbIPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbIPDominantTotalVectorDisplacement, y.ThumbIPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.ThumbIPDominantTotalDisplacement, y.ThumbIPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.ThumbIPDominantMaximumDisplacement, y.ThumbIPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region ThumbTIPDominant joint features
-			NullableEquals(x.ThumbTIPDominantF1F2SpatialAngle, y.ThumbTIPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.ThumbTIPDominantFN_1FNSpatialAngle, y.ThumbTIPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.ThumbTIPDominantF1FNSpatialAngle, y.ThumbTIPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.ThumbTIPDominantTotalVectorAngle, y.ThumbTIPDominantTotalVectorAngle) &&
-			NullableEquals(x.ThumbTIPDominantSquaredTotalVectorAngle, y.ThumbTIPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.ThumbTIPDominantTotalVectorDisplacement, y.ThumbTIPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.ThumbTIPDominantTotalDisplacement, y.ThumbTIPDominantTotalDisplacement) &&
-			NullableEquals(x.ThumbTIPDominantMaximumDisplacement, y.ThumbTIPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.ThumbTIPDominantF1F2SpatialAngle, y.ThumbTIPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.ThumbTIPDominantFN_1FNSpatialAngle, y.ThumbTIPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbTIPDominantF1FNSpatialAngle, y.ThumbTIPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbTIPDominantTotalVectorAngle, y.ThumbTIPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbTIPDominantSquaredTotalVectorAngle, y.ThumbTIPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbTIPDominantTotalVectorDisplacement, y.ThumbTIPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.ThumbTIPDominantTotalDisplacement, y.ThumbTIPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.ThumbTIPDominantMaximumDisplacement, y.ThumbTIPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region IndexFingerMCPDominant joint features
-			NullableEquals(x.IndexFingerMCPDominantF1F2SpatialAngle, y.IndexFingerMCPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.IndexFingerMCPDominantFN_1FNSpatialAngle, y.IndexFingerMCPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.IndexFingerMCPDominantF1FNSpatialAngle, y.IndexFingerMCPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.IndexFingerMCPDominantTotalVectorAngle, y.IndexFingerMCPDominantTotalVectorAngle) &&
-			NullableEquals(x.IndexFingerMCPDominantSquaredTotalVectorAngle, y.IndexFingerMCPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.IndexFingerMCPDominantTotalVectorDisplacement, y.IndexFingerMCPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.IndexFingerMCPDominantTotalDisplacement, y.IndexFingerMCPDominantTotalDisplacement) &&
-			NullableEquals(x.IndexFingerMCPDominantMaximumDisplacement, y.IndexFingerMCPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerMCPDominantF1F2SpatialAngle, y.IndexFingerMCPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPDominantFN_1FNSpatialAngle, y.IndexFingerMCPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPDominantF1FNSpatialAngle, y.IndexFingerMCPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPDominantTotalVectorAngle, y.IndexFingerMCPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPDominantSquaredTotalVectorAngle, y.IndexFingerMCPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPDominantTotalVectorDisplacement, y.IndexFingerMCPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerMCPDominantTotalDisplacement, y.IndexFingerMCPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerMCPDominantMaximumDisplacement, y.IndexFingerMCPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region IndexFingerPIPDominant joint features
-			NullableEquals(x.IndexFingerPIPDominantF1F2SpatialAngle, y.IndexFingerPIPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.IndexFingerPIPDominantFN_1FNSpatialAngle, y.IndexFingerPIPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.IndexFingerPIPDominantF1FNSpatialAngle, y.IndexFingerPIPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.IndexFingerPIPDominantTotalVectorAngle, y.IndexFingerPIPDominantTotalVectorAngle) &&
-			NullableEquals(x.IndexFingerPIPDominantSquaredTotalVectorAngle, y.IndexFingerPIPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.IndexFingerPIPDominantTotalVectorDisplacement, y.IndexFingerPIPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.IndexFingerPIPDominantTotalDisplacement, y.IndexFingerPIPDominantTotalDisplacement) &&
-			NullableEquals(x.IndexFingerPIPDominantMaximumDisplacement, y.IndexFingerPIPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerPIPDominantF1F2SpatialAngle, y.IndexFingerPIPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPDominantFN_1FNSpatialAngle, y.IndexFingerPIPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPDominantF1FNSpatialAngle, y.IndexFingerPIPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPDominantTotalVectorAngle, y.IndexFingerPIPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPDominantSquaredTotalVectorAngle, y.IndexFingerPIPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPDominantTotalVectorDisplacement, y.IndexFingerPIPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerPIPDominantTotalDisplacement, y.IndexFingerPIPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerPIPDominantMaximumDisplacement, y.IndexFingerPIPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region IndexFingerDIPDominant joint features
-			NullableEquals(x.IndexFingerDIPDominantF1F2SpatialAngle, y.IndexFingerDIPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.IndexFingerDIPDominantFN_1FNSpatialAngle, y.IndexFingerDIPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.IndexFingerDIPDominantF1FNSpatialAngle, y.IndexFingerDIPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.IndexFingerDIPDominantTotalVectorAngle, y.IndexFingerDIPDominantTotalVectorAngle) &&
-			NullableEquals(x.IndexFingerDIPDominantSquaredTotalVectorAngle, y.IndexFingerDIPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.IndexFingerDIPDominantTotalVectorDisplacement, y.IndexFingerDIPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.IndexFingerDIPDominantTotalDisplacement, y.IndexFingerDIPDominantTotalDisplacement) &&
-			NullableEquals(x.IndexFingerDIPDominantMaximumDisplacement, y.IndexFingerDIPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerDIPDominantF1F2SpatialAngle, y.IndexFingerDIPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPDominantFN_1FNSpatialAngle, y.IndexFingerDIPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPDominantF1FNSpatialAngle, y.IndexFingerDIPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPDominantTotalVectorAngle, y.IndexFingerDIPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPDominantSquaredTotalVectorAngle, y.IndexFingerDIPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPDominantTotalVectorDisplacement, y.IndexFingerDIPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerDIPDominantTotalDisplacement, y.IndexFingerDIPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerDIPDominantMaximumDisplacement, y.IndexFingerDIPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region IndexFingerTIPDominant joint features
-			NullableEquals(x.IndexFingerTIPDominantF1F2SpatialAngle, y.IndexFingerTIPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.IndexFingerTIPDominantFN_1FNSpatialAngle, y.IndexFingerTIPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.IndexFingerTIPDominantF1FNSpatialAngle, y.IndexFingerTIPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.IndexFingerTIPDominantTotalVectorAngle, y.IndexFingerTIPDominantTotalVectorAngle) &&
-			NullableEquals(x.IndexFingerTIPDominantSquaredTotalVectorAngle, y.IndexFingerTIPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.IndexFingerTIPDominantTotalVectorDisplacement, y.IndexFingerTIPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.IndexFingerTIPDominantTotalDisplacement, y.IndexFingerTIPDominantTotalDisplacement) &&
-			NullableEquals(x.IndexFingerTIPDominantMaximumDisplacement, y.IndexFingerTIPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerTIPDominantF1F2SpatialAngle, y.IndexFingerTIPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerTIPDominantFN_1FNSpatialAngle, y.IndexFingerTIPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerTIPDominantF1FNSpatialAngle, y.IndexFingerTIPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerTIPDominantTotalVectorAngle, y.IndexFingerTIPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.IndexFingerTIPDominantSquaredTotalVectorAngle, y.IndexFingerTIPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.IndexFingerTIPDominantTotalVectorDisplacement, y.IndexFingerTIPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerTIPDominantTotalDisplacement, y.IndexFingerTIPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerTIPDominantMaximumDisplacement, y.IndexFingerTIPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region MiddleFingerMCPDominant joint features
-			NullableEquals(x.MiddleFingerMCPDominantF1F2SpatialAngle, y.MiddleFingerMCPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.MiddleFingerMCPDominantFN_1FNSpatialAngle, y.MiddleFingerMCPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.MiddleFingerMCPDominantF1FNSpatialAngle, y.MiddleFingerMCPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.MiddleFingerMCPDominantTotalVectorAngle, y.MiddleFingerMCPDominantTotalVectorAngle) &&
-			NullableEquals(x.MiddleFingerMCPDominantSquaredTotalVectorAngle, y.MiddleFingerMCPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.MiddleFingerMCPDominantTotalVectorDisplacement, y.MiddleFingerMCPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.MiddleFingerMCPDominantTotalDisplacement, y.MiddleFingerMCPDominantTotalDisplacement) &&
-			NullableEquals(x.MiddleFingerMCPDominantMaximumDisplacement, y.MiddleFingerMCPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerMCPDominantF1F2SpatialAngle, y.MiddleFingerMCPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPDominantFN_1FNSpatialAngle, y.MiddleFingerMCPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPDominantF1FNSpatialAngle, y.MiddleFingerMCPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPDominantTotalVectorAngle, y.MiddleFingerMCPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPDominantSquaredTotalVectorAngle, y.MiddleFingerMCPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPDominantTotalVectorDisplacement, y.MiddleFingerMCPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerMCPDominantTotalDisplacement, y.MiddleFingerMCPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerMCPDominantMaximumDisplacement, y.MiddleFingerMCPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region MiddleFingerPIPDominant joint features
-			NullableEquals(x.MiddleFingerPIPDominantF1F2SpatialAngle, y.MiddleFingerPIPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.MiddleFingerPIPDominantFN_1FNSpatialAngle, y.MiddleFingerPIPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.MiddleFingerPIPDominantF1FNSpatialAngle, y.MiddleFingerPIPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.MiddleFingerPIPDominantTotalVectorAngle, y.MiddleFingerPIPDominantTotalVectorAngle) &&
-			NullableEquals(x.MiddleFingerPIPDominantSquaredTotalVectorAngle, y.MiddleFingerPIPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.MiddleFingerPIPDominantTotalVectorDisplacement, y.MiddleFingerPIPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.MiddleFingerPIPDominantTotalDisplacement, y.MiddleFingerPIPDominantTotalDisplacement) &&
-			NullableEquals(x.MiddleFingerPIPDominantMaximumDisplacement, y.MiddleFingerPIPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerPIPDominantF1F2SpatialAngle, y.MiddleFingerPIPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPDominantFN_1FNSpatialAngle, y.MiddleFingerPIPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPDominantF1FNSpatialAngle, y.MiddleFingerPIPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPDominantTotalVectorAngle, y.MiddleFingerPIPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPDominantSquaredTotalVectorAngle, y.MiddleFingerPIPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPDominantTotalVectorDisplacement, y.MiddleFingerPIPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerPIPDominantTotalDisplacement, y.MiddleFingerPIPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerPIPDominantMaximumDisplacement, y.MiddleFingerPIPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region MiddleFingerDIPDominant joint features
-			NullableEquals(x.MiddleFingerDIPDominantF1F2SpatialAngle, y.MiddleFingerDIPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.MiddleFingerDIPDominantFN_1FNSpatialAngle, y.MiddleFingerDIPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.MiddleFingerDIPDominantF1FNSpatialAngle, y.MiddleFingerDIPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.MiddleFingerDIPDominantTotalVectorAngle, y.MiddleFingerDIPDominantTotalVectorAngle) &&
-			NullableEquals(x.MiddleFingerDIPDominantSquaredTotalVectorAngle, y.MiddleFingerDIPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.MiddleFingerDIPDominantTotalVectorDisplacement, y.MiddleFingerDIPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.MiddleFingerDIPDominantTotalDisplacement, y.MiddleFingerDIPDominantTotalDisplacement) &&
-			NullableEquals(x.MiddleFingerDIPDominantMaximumDisplacement, y.MiddleFingerDIPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerDIPDominantF1F2SpatialAngle, y.MiddleFingerDIPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPDominantFN_1FNSpatialAngle, y.MiddleFingerDIPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPDominantF1FNSpatialAngle, y.MiddleFingerDIPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPDominantTotalVectorAngle, y.MiddleFingerDIPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPDominantSquaredTotalVectorAngle, y.MiddleFingerDIPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPDominantTotalVectorDisplacement, y.MiddleFingerDIPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerDIPDominantTotalDisplacement, y.MiddleFingerDIPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerDIPDominantMaximumDisplacement, y.MiddleFingerDIPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region MiddleFingerTIPDominant joint features
-			NullableEquals(x.MiddleFingerTIPDominantF1F2SpatialAngle, y.MiddleFingerTIPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.MiddleFingerTIPDominantFN_1FNSpatialAngle, y.MiddleFingerTIPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.MiddleFingerTIPDominantF1FNSpatialAngle, y.MiddleFingerTIPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.MiddleFingerTIPDominantTotalVectorAngle, y.MiddleFingerTIPDominantTotalVectorAngle) &&
-			NullableEquals(x.MiddleFingerTIPDominantSquaredTotalVectorAngle, y.MiddleFingerTIPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.MiddleFingerTIPDominantTotalVectorDisplacement, y.MiddleFingerTIPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.MiddleFingerTIPDominantTotalDisplacement, y.MiddleFingerTIPDominantTotalDisplacement) &&
-			NullableEquals(x.MiddleFingerTIPDominantMaximumDisplacement, y.MiddleFingerTIPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerTIPDominantF1F2SpatialAngle, y.MiddleFingerTIPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerTIPDominantFN_1FNSpatialAngle, y.MiddleFingerTIPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerTIPDominantF1FNSpatialAngle, y.MiddleFingerTIPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerTIPDominantTotalVectorAngle, y.MiddleFingerTIPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.MiddleFingerTIPDominantSquaredTotalVectorAngle, y.MiddleFingerTIPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.MiddleFingerTIPDominantTotalVectorDisplacement, y.MiddleFingerTIPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerTIPDominantTotalDisplacement, y.MiddleFingerTIPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerTIPDominantMaximumDisplacement, y.MiddleFingerTIPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region RingFingerMCPDominant joint features
-			NullableEquals(x.RingFingerMCPDominantF1F2SpatialAngle, y.RingFingerMCPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.RingFingerMCPDominantFN_1FNSpatialAngle, y.RingFingerMCPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.RingFingerMCPDominantF1FNSpatialAngle, y.RingFingerMCPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.RingFingerMCPDominantTotalVectorAngle, y.RingFingerMCPDominantTotalVectorAngle) &&
-			NullableEquals(x.RingFingerMCPDominantSquaredTotalVectorAngle, y.RingFingerMCPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.RingFingerMCPDominantTotalVectorDisplacement, y.RingFingerMCPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.RingFingerMCPDominantTotalDisplacement, y.RingFingerMCPDominantTotalDisplacement) &&
-			NullableEquals(x.RingFingerMCPDominantMaximumDisplacement, y.RingFingerMCPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.RingFingerMCPDominantF1F2SpatialAngle, y.RingFingerMCPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPDominantFN_1FNSpatialAngle, y.RingFingerMCPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPDominantF1FNSpatialAngle, y.RingFingerMCPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPDominantTotalVectorAngle, y.RingFingerMCPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPDominantSquaredTotalVectorAngle, y.RingFingerMCPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPDominantTotalVectorDisplacement, y.RingFingerMCPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.RingFingerMCPDominantTotalDisplacement, y.RingFingerMCPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.RingFingerMCPDominantMaximumDisplacement, y.RingFingerMCPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region RingFingerPIPDominant joint features
-			NullableEquals(x.RingFingerPIPDominantF1F2SpatialAngle, y.RingFingerPIPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.RingFingerPIPDominantFN_1FNSpatialAngle, y.RingFingerPIPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.RingFingerPIPDominantF1FNSpatialAngle, y.RingFingerPIPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.RingFingerPIPDominantTotalVectorAngle, y.RingFingerPIPDominantTotalVectorAngle) &&
-			NullableEquals(x.RingFingerPIPDominantSquaredTotalVectorAngle, y.RingFingerPIPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.RingFingerPIPDominantTotalVectorDisplacement, y.RingFingerPIPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.RingFingerPIPDominantTotalDisplacement, y.RingFingerPIPDominantTotalDisplacement) &&
-			NullableEquals(x.RingFingerPIPDominantMaximumDisplacement, y.RingFingerPIPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.RingFingerPIPDominantF1F2SpatialAngle, y.RingFingerPIPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPDominantFN_1FNSpatialAngle, y.RingFingerPIPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPDominantF1FNSpatialAngle, y.RingFingerPIPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPDominantTotalVectorAngle, y.RingFingerPIPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPDominantSquaredTotalVectorAngle, y.RingFingerPIPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPDominantTotalVectorDisplacement, y.RingFingerPIPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.RingFingerPIPDominantTotalDisplacement, y.RingFingerPIPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.RingFingerPIPDominantMaximumDisplacement, y.RingFingerPIPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region RingFingerDIPDominant joint features
-			NullableEquals(x.RingFingerDIPDominantF1F2SpatialAngle, y.RingFingerDIPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.RingFingerDIPDominantFN_1FNSpatialAngle, y.RingFingerDIPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.RingFingerDIPDominantF1FNSpatialAngle, y.RingFingerDIPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.RingFingerDIPDominantTotalVectorAngle, y.RingFingerDIPDominantTotalVectorAngle) &&
-			NullableEquals(x.RingFingerDIPDominantSquaredTotalVectorAngle, y.RingFingerDIPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.RingFingerDIPDominantTotalVectorDisplacement, y.RingFingerDIPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.RingFingerDIPDominantTotalDisplacement, y.RingFingerDIPDominantTotalDisplacement) &&
-			NullableEquals(x.RingFingerDIPDominantMaximumDisplacement, y.RingFingerDIPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.RingFingerDIPDominantF1F2SpatialAngle, y.RingFingerDIPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPDominantFN_1FNSpatialAngle, y.RingFingerDIPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPDominantF1FNSpatialAngle, y.RingFingerDIPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPDominantTotalVectorAngle, y.RingFingerDIPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPDominantSquaredTotalVectorAngle, y.RingFingerDIPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPDominantTotalVectorDisplacement, y.RingFingerDIPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.RingFingerDIPDominantTotalDisplacement, y.RingFingerDIPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.RingFingerDIPDominantMaximumDisplacement, y.RingFingerDIPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region RingFingerTIPDominant joint features
-			NullableEquals(x.RingFingerTIPDominantF1F2SpatialAngle, y.RingFingerTIPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.RingFingerTIPDominantFN_1FNSpatialAngle, y.RingFingerTIPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.RingFingerTIPDominantF1FNSpatialAngle, y.RingFingerTIPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.RingFingerTIPDominantTotalVectorAngle, y.RingFingerTIPDominantTotalVectorAngle) &&
-			NullableEquals(x.RingFingerTIPDominantSquaredTotalVectorAngle, y.RingFingerTIPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.RingFingerTIPDominantTotalVectorDisplacement, y.RingFingerTIPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.RingFingerTIPDominantTotalDisplacement, y.RingFingerTIPDominantTotalDisplacement) &&
-			NullableEquals(x.RingFingerTIPDominantMaximumDisplacement, y.RingFingerTIPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.RingFingerTIPDominantF1F2SpatialAngle, y.RingFingerTIPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerTIPDominantFN_1FNSpatialAngle, y.RingFingerTIPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerTIPDominantF1FNSpatialAngle, y.RingFingerTIPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerTIPDominantTotalVectorAngle, y.RingFingerTIPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.RingFingerTIPDominantSquaredTotalVectorAngle, y.RingFingerTIPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.RingFingerTIPDominantTotalVectorDisplacement, y.RingFingerTIPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.RingFingerTIPDominantTotalDisplacement, y.RingFingerTIPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.RingFingerTIPDominantMaximumDisplacement, y.RingFingerTIPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region PinkyMCPDominant joint features
-			NullableEquals(x.PinkyMCPDominantF1F2SpatialAngle, y.PinkyMCPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.PinkyMCPDominantFN_1FNSpatialAngle, y.PinkyMCPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.PinkyMCPDominantF1FNSpatialAngle, y.PinkyMCPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.PinkyMCPDominantTotalVectorAngle, y.PinkyMCPDominantTotalVectorAngle) &&
-			NullableEquals(x.PinkyMCPDominantSquaredTotalVectorAngle, y.PinkyMCPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.PinkyMCPDominantTotalVectorDisplacement, y.PinkyMCPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.PinkyMCPDominantTotalDisplacement, y.PinkyMCPDominantTotalDisplacement) &&
-			NullableEquals(x.PinkyMCPDominantMaximumDisplacement, y.PinkyMCPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.PinkyMCPDominantF1F2SpatialAngle, y.PinkyMCPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.PinkyMCPDominantFN_1FNSpatialAngle, y.PinkyMCPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.PinkyMCPDominantF1FNSpatialAngle, y.PinkyMCPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.PinkyMCPDominantTotalVectorAngle, y.PinkyMCPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.PinkyMCPDominantSquaredTotalVectorAngle, y.PinkyMCPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.PinkyMCPDominantTotalVectorDisplacement, y.PinkyMCPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.PinkyMCPDominantTotalDisplacement, y.PinkyMCPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.PinkyMCPDominantMaximumDisplacement, y.PinkyMCPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region PinkyPIPDominant joint features
-			NullableEquals(x.PinkyPIPDominantF1F2SpatialAngle, y.PinkyPIPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.PinkyPIPDominantFN_1FNSpatialAngle, y.PinkyPIPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.PinkyPIPDominantF1FNSpatialAngle, y.PinkyPIPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.PinkyPIPDominantTotalVectorAngle, y.PinkyPIPDominantTotalVectorAngle) &&
-			NullableEquals(x.PinkyPIPDominantSquaredTotalVectorAngle, y.PinkyPIPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.PinkyPIPDominantTotalVectorDisplacement, y.PinkyPIPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.PinkyPIPDominantTotalDisplacement, y.PinkyPIPDominantTotalDisplacement) &&
-			NullableEquals(x.PinkyPIPDominantMaximumDisplacement, y.PinkyPIPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.PinkyPIPDominantF1F2SpatialAngle, y.PinkyPIPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.PinkyPIPDominantFN_1FNSpatialAngle, y.PinkyPIPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.PinkyPIPDominantF1FNSpatialAngle, y.PinkyPIPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.PinkyPIPDominantTotalVectorAngle, y.PinkyPIPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.PinkyPIPDominantSquaredTotalVectorAngle, y.PinkyPIPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.PinkyPIPDominantTotalVectorDisplacement, y.PinkyPIPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.PinkyPIPDominantTotalDisplacement, y.PinkyPIPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.PinkyPIPDominantMaximumDisplacement, y.PinkyPIPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region PinkyDIPDominant joint features
-			NullableEquals(x.PinkyDIPDominantF1F2SpatialAngle, y.PinkyDIPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.PinkyDIPDominantFN_1FNSpatialAngle, y.PinkyDIPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.PinkyDIPDominantF1FNSpatialAngle, y.PinkyDIPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.PinkyDIPDominantTotalVectorAngle, y.PinkyDIPDominantTotalVectorAngle) &&
-			NullableEquals(x.PinkyDIPDominantSquaredTotalVectorAngle, y.PinkyDIPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.PinkyDIPDominantTotalVectorDisplacement, y.PinkyDIPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.PinkyDIPDominantTotalDisplacement, y.PinkyDIPDominantTotalDisplacement) &&
-			NullableEquals(x.PinkyDIPDominantMaximumDisplacement, y.PinkyDIPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.PinkyDIPDominantF1F2SpatialAngle, y.PinkyDIPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.PinkyDIPDominantFN_1FNSpatialAngle, y.PinkyDIPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.PinkyDIPDominantF1FNSpatialAngle, y.PinkyDIPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.PinkyDIPDominantTotalVectorAngle, y.PinkyDIPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.PinkyDIPDominantSquaredTotalVectorAngle, y.PinkyDIPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.PinkyDIPDominantTotalVectorDisplacement, y.PinkyDIPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.PinkyDIPDominantTotalDisplacement, y.PinkyDIPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.PinkyDIPDominantMaximumDisplacement, y.PinkyDIPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region PinkyTIPDominant joint features
-			NullableEquals(x.PinkyTIPDominantF1F2SpatialAngle, y.PinkyTIPDominantF1F2SpatialAngle) &&
-			NullableEquals(x.PinkyTIPDominantFN_1FNSpatialAngle, y.PinkyTIPDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.PinkyTIPDominantF1FNSpatialAngle, y.PinkyTIPDominantF1FNSpatialAngle) &&
-			NullableEquals(x.PinkyTIPDominantTotalVectorAngle, y.PinkyTIPDominantTotalVectorAngle) &&
-			NullableEquals(x.PinkyTIPDominantSquaredTotalVectorAngle, y.PinkyTIPDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.PinkyTIPDominantTotalVectorDisplacement, y.PinkyTIPDominantTotalVectorDisplacement) &&
-			NullableEquals(x.PinkyTIPDominantTotalDisplacement, y.PinkyTIPDominantTotalDisplacement) &&
-			NullableEquals(x.PinkyTIPDominantMaximumDisplacement, y.PinkyTIPDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.PinkyTIPDominantF1F2SpatialAngle, y.PinkyTIPDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.PinkyTIPDominantFN_1FNSpatialAngle, y.PinkyTIPDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.PinkyTIPDominantF1FNSpatialAngle, y.PinkyTIPDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.PinkyTIPDominantTotalVectorAngle, y.PinkyTIPDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.PinkyTIPDominantSquaredTotalVectorAngle, y.PinkyTIPDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.PinkyTIPDominantTotalVectorDisplacement, y.PinkyTIPDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.PinkyTIPDominantTotalDisplacement, y.PinkyTIPDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.PinkyTIPDominantMaximumDisplacement, y.PinkyTIPDominantMaximumDisplacement) &&
 			#endregion
 
 			#region HandDominant joint features
-			NullableEquals(x.HandDominantF1F2SpatialAngle, y.HandDominantF1F2SpatialAngle) &&
-			NullableEquals(x.HandDominantFN_1FNSpatialAngle, y.HandDominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.HandDominantF1FNSpatialAngle, y.HandDominantF1FNSpatialAngle) &&
-			NullableEquals(x.HandDominantTotalVectorAngle, y.HandDominantTotalVectorAngle) &&
-			NullableEquals(x.HandDominantSquaredTotalVectorAngle, y.HandDominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.HandDominantTotalVectorDisplacement, y.HandDominantTotalVectorDisplacement) &&
-			NullableEquals(x.HandDominantTotalDisplacement, y.HandDominantTotalDisplacement) &&
-			NullableEquals(x.HandDominantMaximumDisplacement, y.HandDominantMaximumDisplacement) &&
-			NullableEquals(x.HandDominantBoundingBoxDiagonalLength, y.HandDominantBoundingBoxDiagonalLength) &&
-			NullableEquals(x.HandDominantBoundingBoxAngle, y.HandDominantBoundingBoxAngle) &&
+			GestureFeatureEquals(x.HandDominantF1F2SpatialAngle, y.HandDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.HandDominantFN_1FNSpatialAngle, y.HandDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.HandDominantF1FNSpatialAngle, y.HandDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.HandDominantTotalVectorAngle, y.HandDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.HandDominantSquaredTotalVectorAngle, y.HandDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.HandDominantTotalVectorDisplacement, y.HandDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.HandDominantTotalDisplacement, y.HandDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.HandDominantMaximumDisplacement, y.HandDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.HandDominantBoundingBoxDiagonalLength, y.HandDominantBoundingBoxDiagonalLength) &&
+			GestureFeatureEquals(x.HandDominantBoundingBoxAngle, y.HandDominantBoundingBoxAngle) &&
 			// Turned off for now, if the results are not satisfactory then turn it on
 			// HandDominantHandStates
 			#endregion
 
 			#region WristNondominant joint features
-			NullableEquals(x.WristNondominantF1F2SpatialAngle, y.WristNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.WristNondominantFN_1FNSpatialAngle, y.WristNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.WristNondominantF1FNSpatialAngle, y.WristNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.WristNondominantTotalVectorAngle, y.WristNondominantTotalVectorAngle) &&
-			NullableEquals(x.WristNondominantSquaredTotalVectorAngle, y.WristNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.WristNondominantTotalVectorDisplacement, y.WristNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.WristNondominantTotalDisplacement, y.WristNondominantTotalDisplacement) &&
-			NullableEquals(x.WristNondominantMaximumDisplacement, y.WristNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.WristNondominantF1F2SpatialAngle, y.WristNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.WristNondominantFN_1FNSpatialAngle, y.WristNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.WristNondominantF1FNSpatialAngle, y.WristNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.WristNondominantTotalVectorAngle, y.WristNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.WristNondominantSquaredTotalVectorAngle, y.WristNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.WristNondominantTotalVectorDisplacement, y.WristNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.WristNondominantTotalDisplacement, y.WristNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.WristNondominantMaximumDisplacement, y.WristNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region ThumbCMCNondominant joint features
-			NullableEquals(x.ThumbCMCNondominantF1F2SpatialAngle, y.ThumbCMCNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.ThumbCMCNondominantFN_1FNSpatialAngle, y.ThumbCMCNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.ThumbCMCNondominantF1FNSpatialAngle, y.ThumbCMCNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.ThumbCMCNondominantTotalVectorAngle, y.ThumbCMCNondominantTotalVectorAngle) &&
-			NullableEquals(x.ThumbCMCNondominantSquaredTotalVectorAngle, y.ThumbCMCNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.ThumbCMCNondominantTotalVectorDisplacement, y.ThumbCMCNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.ThumbCMCNondominantTotalDisplacement, y.ThumbCMCNondominantTotalDisplacement) &&
-			NullableEquals(x.ThumbCMCNondominantMaximumDisplacement, y.ThumbCMCNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.ThumbCMCNondominantF1F2SpatialAngle, y.ThumbCMCNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.ThumbCMCNondominantFN_1FNSpatialAngle, y.ThumbCMCNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbCMCNondominantF1FNSpatialAngle, y.ThumbCMCNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbCMCNondominantTotalVectorAngle, y.ThumbCMCNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbCMCNondominantSquaredTotalVectorAngle, y.ThumbCMCNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbCMCNondominantTotalVectorDisplacement, y.ThumbCMCNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.ThumbCMCNondominantTotalDisplacement, y.ThumbCMCNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.ThumbCMCNondominantMaximumDisplacement, y.ThumbCMCNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region ThumbMCPNondominant joint features
-			NullableEquals(x.ThumbMCPNondominantF1F2SpatialAngle, y.ThumbMCPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.ThumbMCPNondominantFN_1FNSpatialAngle, y.ThumbMCPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.ThumbMCPNondominantF1FNSpatialAngle, y.ThumbMCPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.ThumbMCPNondominantTotalVectorAngle, y.ThumbMCPNondominantTotalVectorAngle) &&
-			NullableEquals(x.ThumbMCPNondominantSquaredTotalVectorAngle, y.ThumbMCPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.ThumbMCPNondominantTotalVectorDisplacement, y.ThumbMCPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.ThumbMCPNondominantTotalDisplacement, y.ThumbMCPNondominantTotalDisplacement) &&
-			NullableEquals(x.ThumbMCPNondominantMaximumDisplacement, y.ThumbMCPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.ThumbMCPNondominantF1F2SpatialAngle, y.ThumbMCPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.ThumbMCPNondominantFN_1FNSpatialAngle, y.ThumbMCPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbMCPNondominantF1FNSpatialAngle, y.ThumbMCPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbMCPNondominantTotalVectorAngle, y.ThumbMCPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbMCPNondominantSquaredTotalVectorAngle, y.ThumbMCPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbMCPNondominantTotalVectorDisplacement, y.ThumbMCPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.ThumbMCPNondominantTotalDisplacement, y.ThumbMCPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.ThumbMCPNondominantMaximumDisplacement, y.ThumbMCPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region ThumbIPNondominant joint features
-			NullableEquals(x.ThumbIPNondominantF1F2SpatialAngle, y.ThumbIPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.ThumbIPNondominantFN_1FNSpatialAngle, y.ThumbIPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.ThumbIPNondominantF1FNSpatialAngle, y.ThumbIPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.ThumbIPNondominantTotalVectorAngle, y.ThumbIPNondominantTotalVectorAngle) &&
-			NullableEquals(x.ThumbIPNondominantSquaredTotalVectorAngle, y.ThumbIPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.ThumbIPNondominantTotalVectorDisplacement, y.ThumbIPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.ThumbIPNondominantTotalDisplacement, y.ThumbIPNondominantTotalDisplacement) &&
-			NullableEquals(x.ThumbIPNondominantMaximumDisplacement, y.ThumbIPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.ThumbIPNondominantF1F2SpatialAngle, y.ThumbIPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.ThumbIPNondominantFN_1FNSpatialAngle, y.ThumbIPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbIPNondominantF1FNSpatialAngle, y.ThumbIPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbIPNondominantTotalVectorAngle, y.ThumbIPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbIPNondominantSquaredTotalVectorAngle, y.ThumbIPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbIPNondominantTotalVectorDisplacement, y.ThumbIPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.ThumbIPNondominantTotalDisplacement, y.ThumbIPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.ThumbIPNondominantMaximumDisplacement, y.ThumbIPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region ThumbTIPNondominant joint features
-			NullableEquals(x.ThumbTIPNondominantF1F2SpatialAngle, y.ThumbTIPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.ThumbTIPNondominantFN_1FNSpatialAngle, y.ThumbTIPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.ThumbTIPNondominantF1FNSpatialAngle, y.ThumbTIPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.ThumbTIPNondominantTotalVectorAngle, y.ThumbTIPNondominantTotalVectorAngle) &&
-			NullableEquals(x.ThumbTIPNondominantSquaredTotalVectorAngle, y.ThumbTIPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.ThumbTIPNondominantTotalVectorDisplacement, y.ThumbTIPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.ThumbTIPNondominantTotalDisplacement, y.ThumbTIPNondominantTotalDisplacement) &&
-			NullableEquals(x.ThumbTIPNondominantMaximumDisplacement, y.ThumbTIPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.ThumbTIPNondominantF1F2SpatialAngle, y.ThumbTIPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.ThumbTIPNondominantFN_1FNSpatialAngle, y.ThumbTIPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbTIPNondominantF1FNSpatialAngle, y.ThumbTIPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbTIPNondominantTotalVectorAngle, y.ThumbTIPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbTIPNondominantSquaredTotalVectorAngle, y.ThumbTIPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbTIPNondominantTotalVectorDisplacement, y.ThumbTIPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.ThumbTIPNondominantTotalDisplacement, y.ThumbTIPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.ThumbTIPNondominantMaximumDisplacement, y.ThumbTIPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region IndexFingerMCPNondominant joint features
-			NullableEquals(x.IndexFingerMCPNondominantF1F2SpatialAngle, y.IndexFingerMCPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.IndexFingerMCPNondominantFN_1FNSpatialAngle, y.IndexFingerMCPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.IndexFingerMCPNondominantF1FNSpatialAngle, y.IndexFingerMCPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.IndexFingerMCPNondominantTotalVectorAngle, y.IndexFingerMCPNondominantTotalVectorAngle) &&
-			NullableEquals(x.IndexFingerMCPNondominantSquaredTotalVectorAngle, y.IndexFingerMCPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.IndexFingerMCPNondominantTotalVectorDisplacement, y.IndexFingerMCPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.IndexFingerMCPNondominantTotalDisplacement, y.IndexFingerMCPNondominantTotalDisplacement) &&
-			NullableEquals(x.IndexFingerMCPNondominantMaximumDisplacement, y.IndexFingerMCPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerMCPNondominantF1F2SpatialAngle, y.IndexFingerMCPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPNondominantFN_1FNSpatialAngle, y.IndexFingerMCPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPNondominantF1FNSpatialAngle, y.IndexFingerMCPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPNondominantTotalVectorAngle, y.IndexFingerMCPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPNondominantSquaredTotalVectorAngle, y.IndexFingerMCPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPNondominantTotalVectorDisplacement, y.IndexFingerMCPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerMCPNondominantTotalDisplacement, y.IndexFingerMCPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerMCPNondominantMaximumDisplacement, y.IndexFingerMCPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region IndexFingerPIPNondominant joint features
-			NullableEquals(x.IndexFingerPIPNondominantF1F2SpatialAngle, y.IndexFingerPIPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.IndexFingerPIPNondominantFN_1FNSpatialAngle, y.IndexFingerPIPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.IndexFingerPIPNondominantF1FNSpatialAngle, y.IndexFingerPIPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.IndexFingerPIPNondominantTotalVectorAngle, y.IndexFingerPIPNondominantTotalVectorAngle) &&
-			NullableEquals(x.IndexFingerPIPNondominantSquaredTotalVectorAngle, y.IndexFingerPIPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.IndexFingerPIPNondominantTotalVectorDisplacement, y.IndexFingerPIPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.IndexFingerPIPNondominantTotalDisplacement, y.IndexFingerPIPNondominantTotalDisplacement) &&
-			NullableEquals(x.IndexFingerPIPNondominantMaximumDisplacement, y.IndexFingerPIPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerPIPNondominantF1F2SpatialAngle, y.IndexFingerPIPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPNondominantFN_1FNSpatialAngle, y.IndexFingerPIPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPNondominantF1FNSpatialAngle, y.IndexFingerPIPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPNondominantTotalVectorAngle, y.IndexFingerPIPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPNondominantSquaredTotalVectorAngle, y.IndexFingerPIPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPNondominantTotalVectorDisplacement, y.IndexFingerPIPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerPIPNondominantTotalDisplacement, y.IndexFingerPIPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerPIPNondominantMaximumDisplacement, y.IndexFingerPIPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region IndexFingerDIPNondominant joint features
-			NullableEquals(x.IndexFingerDIPNondominantF1F2SpatialAngle, y.IndexFingerDIPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.IndexFingerDIPNondominantFN_1FNSpatialAngle, y.IndexFingerDIPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.IndexFingerDIPNondominantF1FNSpatialAngle, y.IndexFingerDIPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.IndexFingerDIPNondominantTotalVectorAngle, y.IndexFingerDIPNondominantTotalVectorAngle) &&
-			NullableEquals(x.IndexFingerDIPNondominantSquaredTotalVectorAngle, y.IndexFingerDIPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.IndexFingerDIPNondominantTotalVectorDisplacement, y.IndexFingerDIPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.IndexFingerDIPNondominantTotalDisplacement, y.IndexFingerDIPNondominantTotalDisplacement) &&
-			NullableEquals(x.IndexFingerDIPNondominantMaximumDisplacement, y.IndexFingerDIPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerDIPNondominantF1F2SpatialAngle, y.IndexFingerDIPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPNondominantFN_1FNSpatialAngle, y.IndexFingerDIPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPNondominantF1FNSpatialAngle, y.IndexFingerDIPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPNondominantTotalVectorAngle, y.IndexFingerDIPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPNondominantSquaredTotalVectorAngle, y.IndexFingerDIPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPNondominantTotalVectorDisplacement, y.IndexFingerDIPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerDIPNondominantTotalDisplacement, y.IndexFingerDIPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerDIPNondominantMaximumDisplacement, y.IndexFingerDIPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region IndexFingerTIPNondominant joint features
-			NullableEquals(x.IndexFingerTIPNondominantF1F2SpatialAngle, y.IndexFingerTIPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.IndexFingerTIPNondominantFN_1FNSpatialAngle, y.IndexFingerTIPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.IndexFingerTIPNondominantF1FNSpatialAngle, y.IndexFingerTIPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.IndexFingerTIPNondominantTotalVectorAngle, y.IndexFingerTIPNondominantTotalVectorAngle) &&
-			NullableEquals(x.IndexFingerTIPNondominantSquaredTotalVectorAngle, y.IndexFingerTIPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.IndexFingerTIPNondominantTotalVectorDisplacement, y.IndexFingerTIPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.IndexFingerTIPNondominantTotalDisplacement, y.IndexFingerTIPNondominantTotalDisplacement) &&
-			NullableEquals(x.IndexFingerTIPNondominantMaximumDisplacement, y.IndexFingerTIPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerTIPNondominantF1F2SpatialAngle, y.IndexFingerTIPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerTIPNondominantFN_1FNSpatialAngle, y.IndexFingerTIPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerTIPNondominantF1FNSpatialAngle, y.IndexFingerTIPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.IndexFingerTIPNondominantTotalVectorAngle, y.IndexFingerTIPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.IndexFingerTIPNondominantSquaredTotalVectorAngle, y.IndexFingerTIPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.IndexFingerTIPNondominantTotalVectorDisplacement, y.IndexFingerTIPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerTIPNondominantTotalDisplacement, y.IndexFingerTIPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.IndexFingerTIPNondominantMaximumDisplacement, y.IndexFingerTIPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region MiddleFingerMCPNondominant joint features
-			NullableEquals(x.MiddleFingerMCPNondominantF1F2SpatialAngle, y.MiddleFingerMCPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.MiddleFingerMCPNondominantFN_1FNSpatialAngle, y.MiddleFingerMCPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.MiddleFingerMCPNondominantF1FNSpatialAngle, y.MiddleFingerMCPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.MiddleFingerMCPNondominantTotalVectorAngle, y.MiddleFingerMCPNondominantTotalVectorAngle) &&
-			NullableEquals(x.MiddleFingerMCPNondominantSquaredTotalVectorAngle, y.MiddleFingerMCPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.MiddleFingerMCPNondominantTotalVectorDisplacement, y.MiddleFingerMCPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.MiddleFingerMCPNondominantTotalDisplacement, y.MiddleFingerMCPNondominantTotalDisplacement) &&
-			NullableEquals(x.MiddleFingerMCPNondominantMaximumDisplacement, y.MiddleFingerMCPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerMCPNondominantF1F2SpatialAngle, y.MiddleFingerMCPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPNondominantFN_1FNSpatialAngle, y.MiddleFingerMCPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPNondominantF1FNSpatialAngle, y.MiddleFingerMCPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPNondominantTotalVectorAngle, y.MiddleFingerMCPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPNondominantSquaredTotalVectorAngle, y.MiddleFingerMCPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPNondominantTotalVectorDisplacement, y.MiddleFingerMCPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerMCPNondominantTotalDisplacement, y.MiddleFingerMCPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerMCPNondominantMaximumDisplacement, y.MiddleFingerMCPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region MiddleFingerPIPNondominant joint features
-			NullableEquals(x.MiddleFingerPIPNondominantF1F2SpatialAngle, y.MiddleFingerPIPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.MiddleFingerPIPNondominantFN_1FNSpatialAngle, y.MiddleFingerPIPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.MiddleFingerPIPNondominantF1FNSpatialAngle, y.MiddleFingerPIPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.MiddleFingerPIPNondominantTotalVectorAngle, y.MiddleFingerPIPNondominantTotalVectorAngle) &&
-			NullableEquals(x.MiddleFingerPIPNondominantSquaredTotalVectorAngle, y.MiddleFingerPIPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.MiddleFingerPIPNondominantTotalVectorDisplacement, y.MiddleFingerPIPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.MiddleFingerPIPNondominantTotalDisplacement, y.MiddleFingerPIPNondominantTotalDisplacement) &&
-			NullableEquals(x.MiddleFingerPIPNondominantMaximumDisplacement, y.MiddleFingerPIPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerPIPNondominantF1F2SpatialAngle, y.MiddleFingerPIPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPNondominantFN_1FNSpatialAngle, y.MiddleFingerPIPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPNondominantF1FNSpatialAngle, y.MiddleFingerPIPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPNondominantTotalVectorAngle, y.MiddleFingerPIPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPNondominantSquaredTotalVectorAngle, y.MiddleFingerPIPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPNondominantTotalVectorDisplacement, y.MiddleFingerPIPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerPIPNondominantTotalDisplacement, y.MiddleFingerPIPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerPIPNondominantMaximumDisplacement, y.MiddleFingerPIPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region MiddleFingerDIPNondominant joint features
-			NullableEquals(x.MiddleFingerDIPNondominantF1F2SpatialAngle, y.MiddleFingerDIPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.MiddleFingerDIPNondominantFN_1FNSpatialAngle, y.MiddleFingerDIPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.MiddleFingerDIPNondominantF1FNSpatialAngle, y.MiddleFingerDIPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.MiddleFingerDIPNondominantTotalVectorAngle, y.MiddleFingerDIPNondominantTotalVectorAngle) &&
-			NullableEquals(x.MiddleFingerDIPNondominantSquaredTotalVectorAngle, y.MiddleFingerDIPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.MiddleFingerDIPNondominantTotalVectorDisplacement, y.MiddleFingerDIPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.MiddleFingerDIPNondominantTotalDisplacement, y.MiddleFingerDIPNondominantTotalDisplacement) &&
-			NullableEquals(x.MiddleFingerDIPNondominantMaximumDisplacement, y.MiddleFingerDIPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerDIPNondominantF1F2SpatialAngle, y.MiddleFingerDIPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPNondominantFN_1FNSpatialAngle, y.MiddleFingerDIPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPNondominantF1FNSpatialAngle, y.MiddleFingerDIPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPNondominantTotalVectorAngle, y.MiddleFingerDIPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPNondominantSquaredTotalVectorAngle, y.MiddleFingerDIPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPNondominantTotalVectorDisplacement, y.MiddleFingerDIPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerDIPNondominantTotalDisplacement, y.MiddleFingerDIPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerDIPNondominantMaximumDisplacement, y.MiddleFingerDIPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region MiddleFingerTIPNondominant joint features
-			NullableEquals(x.MiddleFingerTIPNondominantF1F2SpatialAngle, y.MiddleFingerTIPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.MiddleFingerTIPNondominantFN_1FNSpatialAngle, y.MiddleFingerTIPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.MiddleFingerTIPNondominantF1FNSpatialAngle, y.MiddleFingerTIPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.MiddleFingerTIPNondominantTotalVectorAngle, y.MiddleFingerTIPNondominantTotalVectorAngle) &&
-			NullableEquals(x.MiddleFingerTIPNondominantSquaredTotalVectorAngle, y.MiddleFingerTIPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.MiddleFingerTIPNondominantTotalVectorDisplacement, y.MiddleFingerTIPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.MiddleFingerTIPNondominantTotalDisplacement, y.MiddleFingerTIPNondominantTotalDisplacement) &&
-			NullableEquals(x.MiddleFingerTIPNondominantMaximumDisplacement, y.MiddleFingerTIPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerTIPNondominantF1F2SpatialAngle, y.MiddleFingerTIPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerTIPNondominantFN_1FNSpatialAngle, y.MiddleFingerTIPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerTIPNondominantF1FNSpatialAngle, y.MiddleFingerTIPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerTIPNondominantTotalVectorAngle, y.MiddleFingerTIPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.MiddleFingerTIPNondominantSquaredTotalVectorAngle, y.MiddleFingerTIPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.MiddleFingerTIPNondominantTotalVectorDisplacement, y.MiddleFingerTIPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerTIPNondominantTotalDisplacement, y.MiddleFingerTIPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.MiddleFingerTIPNondominantMaximumDisplacement, y.MiddleFingerTIPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region RingFingerMCPNondominant joint features
-			NullableEquals(x.RingFingerMCPNondominantF1F2SpatialAngle, y.RingFingerMCPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.RingFingerMCPNondominantFN_1FNSpatialAngle, y.RingFingerMCPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.RingFingerMCPNondominantF1FNSpatialAngle, y.RingFingerMCPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.RingFingerMCPNondominantTotalVectorAngle, y.RingFingerMCPNondominantTotalVectorAngle) &&
-			NullableEquals(x.RingFingerMCPNondominantSquaredTotalVectorAngle, y.RingFingerMCPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.RingFingerMCPNondominantTotalVectorDisplacement, y.RingFingerMCPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.RingFingerMCPNondominantTotalDisplacement, y.RingFingerMCPNondominantTotalDisplacement) &&
-			NullableEquals(x.RingFingerMCPNondominantMaximumDisplacement, y.RingFingerMCPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.RingFingerMCPNondominantF1F2SpatialAngle, y.RingFingerMCPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPNondominantFN_1FNSpatialAngle, y.RingFingerMCPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPNondominantF1FNSpatialAngle, y.RingFingerMCPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPNondominantTotalVectorAngle, y.RingFingerMCPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPNondominantSquaredTotalVectorAngle, y.RingFingerMCPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPNondominantTotalVectorDisplacement, y.RingFingerMCPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.RingFingerMCPNondominantTotalDisplacement, y.RingFingerMCPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.RingFingerMCPNondominantMaximumDisplacement, y.RingFingerMCPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region RingFingerPIPNondominant joint features
-			NullableEquals(x.RingFingerPIPNondominantF1F2SpatialAngle, y.RingFingerPIPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.RingFingerPIPNondominantFN_1FNSpatialAngle, y.RingFingerPIPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.RingFingerPIPNondominantF1FNSpatialAngle, y.RingFingerPIPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.RingFingerPIPNondominantTotalVectorAngle, y.RingFingerPIPNondominantTotalVectorAngle) &&
-			NullableEquals(x.RingFingerPIPNondominantSquaredTotalVectorAngle, y.RingFingerPIPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.RingFingerPIPNondominantTotalVectorDisplacement, y.RingFingerPIPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.RingFingerPIPNondominantTotalDisplacement, y.RingFingerPIPNondominantTotalDisplacement) &&
-			NullableEquals(x.RingFingerPIPNondominantMaximumDisplacement, y.RingFingerPIPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.RingFingerPIPNondominantF1F2SpatialAngle, y.RingFingerPIPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPNondominantFN_1FNSpatialAngle, y.RingFingerPIPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPNondominantF1FNSpatialAngle, y.RingFingerPIPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPNondominantTotalVectorAngle, y.RingFingerPIPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPNondominantSquaredTotalVectorAngle, y.RingFingerPIPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPNondominantTotalVectorDisplacement, y.RingFingerPIPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.RingFingerPIPNondominantTotalDisplacement, y.RingFingerPIPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.RingFingerPIPNondominantMaximumDisplacement, y.RingFingerPIPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region RingFingerDIPNondominant joint features
-			NullableEquals(x.RingFingerDIPNondominantF1F2SpatialAngle, y.RingFingerDIPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.RingFingerDIPNondominantFN_1FNSpatialAngle, y.RingFingerDIPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.RingFingerDIPNondominantF1FNSpatialAngle, y.RingFingerDIPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.RingFingerDIPNondominantTotalVectorAngle, y.RingFingerDIPNondominantTotalVectorAngle) &&
-			NullableEquals(x.RingFingerDIPNondominantSquaredTotalVectorAngle, y.RingFingerDIPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.RingFingerDIPNondominantTotalVectorDisplacement, y.RingFingerDIPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.RingFingerDIPNondominantTotalDisplacement, y.RingFingerDIPNondominantTotalDisplacement) &&
-			NullableEquals(x.RingFingerDIPNondominantMaximumDisplacement, y.RingFingerDIPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.RingFingerDIPNondominantF1F2SpatialAngle, y.RingFingerDIPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPNondominantFN_1FNSpatialAngle, y.RingFingerDIPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPNondominantF1FNSpatialAngle, y.RingFingerDIPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPNondominantTotalVectorAngle, y.RingFingerDIPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPNondominantSquaredTotalVectorAngle, y.RingFingerDIPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPNondominantTotalVectorDisplacement, y.RingFingerDIPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.RingFingerDIPNondominantTotalDisplacement, y.RingFingerDIPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.RingFingerDIPNondominantMaximumDisplacement, y.RingFingerDIPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region RingFingerTIPNondominant joint features
-			NullableEquals(x.RingFingerTIPNondominantF1F2SpatialAngle, y.RingFingerTIPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.RingFingerTIPNondominantFN_1FNSpatialAngle, y.RingFingerTIPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.RingFingerTIPNondominantF1FNSpatialAngle, y.RingFingerTIPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.RingFingerTIPNondominantTotalVectorAngle, y.RingFingerTIPNondominantTotalVectorAngle) &&
-			NullableEquals(x.RingFingerTIPNondominantSquaredTotalVectorAngle, y.RingFingerTIPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.RingFingerTIPNondominantTotalVectorDisplacement, y.RingFingerTIPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.RingFingerTIPNondominantTotalDisplacement, y.RingFingerTIPNondominantTotalDisplacement) &&
-			NullableEquals(x.RingFingerTIPNondominantMaximumDisplacement, y.RingFingerTIPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.RingFingerTIPNondominantF1F2SpatialAngle, y.RingFingerTIPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerTIPNondominantFN_1FNSpatialAngle, y.RingFingerTIPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerTIPNondominantF1FNSpatialAngle, y.RingFingerTIPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.RingFingerTIPNondominantTotalVectorAngle, y.RingFingerTIPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.RingFingerTIPNondominantSquaredTotalVectorAngle, y.RingFingerTIPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.RingFingerTIPNondominantTotalVectorDisplacement, y.RingFingerTIPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.RingFingerTIPNondominantTotalDisplacement, y.RingFingerTIPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.RingFingerTIPNondominantMaximumDisplacement, y.RingFingerTIPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region PinkyMCPNondominant joint features
-			NullableEquals(x.PinkyMCPNondominantF1F2SpatialAngle, y.PinkyMCPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.PinkyMCPNondominantFN_1FNSpatialAngle, y.PinkyMCPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.PinkyMCPNondominantF1FNSpatialAngle, y.PinkyMCPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.PinkyMCPNondominantTotalVectorAngle, y.PinkyMCPNondominantTotalVectorAngle) &&
-			NullableEquals(x.PinkyMCPNondominantSquaredTotalVectorAngle, y.PinkyMCPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.PinkyMCPNondominantTotalVectorDisplacement, y.PinkyMCPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.PinkyMCPNondominantTotalDisplacement, y.PinkyMCPNondominantTotalDisplacement) &&
-			NullableEquals(x.PinkyMCPNondominantMaximumDisplacement, y.PinkyMCPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.PinkyMCPNondominantF1F2SpatialAngle, y.PinkyMCPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.PinkyMCPNondominantFN_1FNSpatialAngle, y.PinkyMCPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.PinkyMCPNondominantF1FNSpatialAngle, y.PinkyMCPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.PinkyMCPNondominantTotalVectorAngle, y.PinkyMCPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.PinkyMCPNondominantSquaredTotalVectorAngle, y.PinkyMCPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.PinkyMCPNondominantTotalVectorDisplacement, y.PinkyMCPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.PinkyMCPNondominantTotalDisplacement, y.PinkyMCPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.PinkyMCPNondominantMaximumDisplacement, y.PinkyMCPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region PinkyPIPNondominant joint features
-			NullableEquals(x.PinkyPIPNondominantF1F2SpatialAngle, y.PinkyPIPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.PinkyPIPNondominantFN_1FNSpatialAngle, y.PinkyPIPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.PinkyPIPNondominantF1FNSpatialAngle, y.PinkyPIPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.PinkyPIPNondominantTotalVectorAngle, y.PinkyPIPNondominantTotalVectorAngle) &&
-			NullableEquals(x.PinkyPIPNondominantSquaredTotalVectorAngle, y.PinkyPIPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.PinkyPIPNondominantTotalVectorDisplacement, y.PinkyPIPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.PinkyPIPNondominantTotalDisplacement, y.PinkyPIPNondominantTotalDisplacement) &&
-			NullableEquals(x.PinkyPIPNondominantMaximumDisplacement, y.PinkyPIPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.PinkyPIPNondominantF1F2SpatialAngle, y.PinkyPIPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.PinkyPIPNondominantFN_1FNSpatialAngle, y.PinkyPIPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.PinkyPIPNondominantF1FNSpatialAngle, y.PinkyPIPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.PinkyPIPNondominantTotalVectorAngle, y.PinkyPIPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.PinkyPIPNondominantSquaredTotalVectorAngle, y.PinkyPIPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.PinkyPIPNondominantTotalVectorDisplacement, y.PinkyPIPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.PinkyPIPNondominantTotalDisplacement, y.PinkyPIPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.PinkyPIPNondominantMaximumDisplacement, y.PinkyPIPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region PinkyDIPNondominant joint features
-			NullableEquals(x.PinkyDIPNondominantF1F2SpatialAngle, y.PinkyDIPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.PinkyDIPNondominantFN_1FNSpatialAngle, y.PinkyDIPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.PinkyDIPNondominantF1FNSpatialAngle, y.PinkyDIPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.PinkyDIPNondominantTotalVectorAngle, y.PinkyDIPNondominantTotalVectorAngle) &&
-			NullableEquals(x.PinkyDIPNondominantSquaredTotalVectorAngle, y.PinkyDIPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.PinkyDIPNondominantTotalVectorDisplacement, y.PinkyDIPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.PinkyDIPNondominantTotalDisplacement, y.PinkyDIPNondominantTotalDisplacement) &&
-			NullableEquals(x.PinkyDIPNondominantMaximumDisplacement, y.PinkyDIPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.PinkyDIPNondominantF1F2SpatialAngle, y.PinkyDIPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.PinkyDIPNondominantFN_1FNSpatialAngle, y.PinkyDIPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.PinkyDIPNondominantF1FNSpatialAngle, y.PinkyDIPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.PinkyDIPNondominantTotalVectorAngle, y.PinkyDIPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.PinkyDIPNondominantSquaredTotalVectorAngle, y.PinkyDIPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.PinkyDIPNondominantTotalVectorDisplacement, y.PinkyDIPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.PinkyDIPNondominantTotalDisplacement, y.PinkyDIPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.PinkyDIPNondominantMaximumDisplacement, y.PinkyDIPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region PinkyTIPNondominant joint features
-			NullableEquals(x.PinkyTIPNondominantF1F2SpatialAngle, y.PinkyTIPNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.PinkyTIPNondominantFN_1FNSpatialAngle, y.PinkyTIPNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.PinkyTIPNondominantF1FNSpatialAngle, y.PinkyTIPNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.PinkyTIPNondominantTotalVectorAngle, y.PinkyTIPNondominantTotalVectorAngle) &&
-			NullableEquals(x.PinkyTIPNondominantSquaredTotalVectorAngle, y.PinkyTIPNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.PinkyTIPNondominantTotalVectorDisplacement, y.PinkyTIPNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.PinkyTIPNondominantTotalDisplacement, y.PinkyTIPNondominantTotalDisplacement) &&
-			NullableEquals(x.PinkyTIPNondominantMaximumDisplacement, y.PinkyTIPNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.PinkyTIPNondominantF1F2SpatialAngle, y.PinkyTIPNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.PinkyTIPNondominantFN_1FNSpatialAngle, y.PinkyTIPNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.PinkyTIPNondominantF1FNSpatialAngle, y.PinkyTIPNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.PinkyTIPNondominantTotalVectorAngle, y.PinkyTIPNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.PinkyTIPNondominantSquaredTotalVectorAngle, y.PinkyTIPNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.PinkyTIPNondominantTotalVectorDisplacement, y.PinkyTIPNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.PinkyTIPNondominantTotalDisplacement, y.PinkyTIPNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.PinkyTIPNondominantMaximumDisplacement, y.PinkyTIPNondominantMaximumDisplacement) &&
 			#endregion
 
 			#region HandNondominant joint features
-			NullableEquals(x.HandNondominantF1F2SpatialAngle, y.HandNondominantF1F2SpatialAngle) &&
-			NullableEquals(x.HandNondominantFN_1FNSpatialAngle, y.HandNondominantFN_1FNSpatialAngle) &&
-			NullableEquals(x.HandNondominantF1FNSpatialAngle, y.HandNondominantF1FNSpatialAngle) &&
-			NullableEquals(x.HandNondominantTotalVectorAngle, y.HandNondominantTotalVectorAngle) &&
-			NullableEquals(x.HandNondominantSquaredTotalVectorAngle, y.HandNondominantSquaredTotalVectorAngle) &&
-			NullableEquals(x.HandNondominantTotalVectorDisplacement, y.HandNondominantTotalVectorDisplacement) &&
-			NullableEquals(x.HandNondominantTotalDisplacement, y.HandNondominantTotalDisplacement) &&
-			NullableEquals(x.HandNondominantMaximumDisplacement, y.HandNondominantMaximumDisplacement) &&
-			NullableEquals(x.HandNondominantBoundingBoxDiagonalLength, y.HandNondominantBoundingBoxDiagonalLength) &&
-			NullableEquals(x.HandNondominantBoundingBoxAngle, y.HandNondominantBoundingBoxAngle) &&
+			GestureFeatureEquals(x.HandNondominantF1F2SpatialAngle, y.HandNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.HandNondominantFN_1FNSpatialAngle, y.HandNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.HandNondominantF1FNSpatialAngle, y.HandNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.HandNondominantTotalVectorAngle, y.HandNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.HandNondominantSquaredTotalVectorAngle, y.HandNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.HandNondominantTotalVectorDisplacement, y.HandNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.HandNondominantTotalDisplacement, y.HandNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.HandNondominantMaximumDisplacement, y.HandNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.HandNondominantBoundingBoxDiagonalLength, y.HandNondominantBoundingBoxDiagonalLength) &&
+			GestureFeatureEquals(x.HandNondominantBoundingBoxAngle, y.HandNondominantBoundingBoxAngle) &&
 			// Turned off for now, if the results are not satisfactory then turn it on
 			// HandNondominantHandStates
 			#endregion
 
 			#region WristThumbCMCDominantBone bone features
-			NullableEquals(x.WristThumbCMCDominantBoneInitialAngle, y.WristThumbCMCDominantBoneInitialAngle) &&
-			NullableEquals(x.WristThumbCMCDominantBoneFinalAngle, y.WristThumbCMCDominantBoneFinalAngle) &&
-			NullableEquals(x.WristThumbCMCDominantBoneMeanAngle, y.WristThumbCMCDominantBoneMeanAngle) &&
-			NullableEquals(x.WristThumbCMCDominantBoneMaximumAngle, y.WristThumbCMCDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.WristThumbCMCDominantBoneInitialAngle, y.WristThumbCMCDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.WristThumbCMCDominantBoneFinalAngle, y.WristThumbCMCDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.WristThumbCMCDominantBoneMeanAngle, y.WristThumbCMCDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.WristThumbCMCDominantBoneMaximumAngle, y.WristThumbCMCDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region ThumbCMCThumbMCPDominantBone bone features
-			NullableEquals(x.ThumbCMCThumbMCPDominantBoneInitialAngle, y.ThumbCMCThumbMCPDominantBoneInitialAngle) &&
-			NullableEquals(x.ThumbCMCThumbMCPDominantBoneFinalAngle, y.ThumbCMCThumbMCPDominantBoneFinalAngle) &&
-			NullableEquals(x.ThumbCMCThumbMCPDominantBoneMeanAngle, y.ThumbCMCThumbMCPDominantBoneMeanAngle) &&
-			NullableEquals(x.ThumbCMCThumbMCPDominantBoneMaximumAngle, y.ThumbCMCThumbMCPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.ThumbCMCThumbMCPDominantBoneInitialAngle, y.ThumbCMCThumbMCPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.ThumbCMCThumbMCPDominantBoneFinalAngle, y.ThumbCMCThumbMCPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.ThumbCMCThumbMCPDominantBoneMeanAngle, y.ThumbCMCThumbMCPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.ThumbCMCThumbMCPDominantBoneMaximumAngle, y.ThumbCMCThumbMCPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region ThumbMCPThumbIPDominantBone bone features
-			NullableEquals(x.ThumbMCPThumbIPDominantBoneInitialAngle, y.ThumbMCPThumbIPDominantBoneInitialAngle) &&
-			NullableEquals(x.ThumbMCPThumbIPDominantBoneFinalAngle, y.ThumbMCPThumbIPDominantBoneFinalAngle) &&
-			NullableEquals(x.ThumbMCPThumbIPDominantBoneMeanAngle, y.ThumbMCPThumbIPDominantBoneMeanAngle) &&
-			NullableEquals(x.ThumbMCPThumbIPDominantBoneMaximumAngle, y.ThumbMCPThumbIPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.ThumbMCPThumbIPDominantBoneInitialAngle, y.ThumbMCPThumbIPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.ThumbMCPThumbIPDominantBoneFinalAngle, y.ThumbMCPThumbIPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.ThumbMCPThumbIPDominantBoneMeanAngle, y.ThumbMCPThumbIPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.ThumbMCPThumbIPDominantBoneMaximumAngle, y.ThumbMCPThumbIPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region ThumbIPThumbTIPDominantBone bone features
-			NullableEquals(x.ThumbIPThumbTIPDominantBoneInitialAngle, y.ThumbIPThumbTIPDominantBoneInitialAngle) &&
-			NullableEquals(x.ThumbIPThumbTIPDominantBoneFinalAngle, y.ThumbIPThumbTIPDominantBoneFinalAngle) &&
-			NullableEquals(x.ThumbIPThumbTIPDominantBoneMeanAngle, y.ThumbIPThumbTIPDominantBoneMeanAngle) &&
-			NullableEquals(x.ThumbIPThumbTIPDominantBoneMaximumAngle, y.ThumbIPThumbTIPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.ThumbIPThumbTIPDominantBoneInitialAngle, y.ThumbIPThumbTIPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.ThumbIPThumbTIPDominantBoneFinalAngle, y.ThumbIPThumbTIPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.ThumbIPThumbTIPDominantBoneMeanAngle, y.ThumbIPThumbTIPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.ThumbIPThumbTIPDominantBoneMaximumAngle, y.ThumbIPThumbTIPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region WristIndexFingerMCPDominantBone bone features
-			NullableEquals(x.WristIndexFingerMCPDominantBoneInitialAngle, y.WristIndexFingerMCPDominantBoneInitialAngle) &&
-			NullableEquals(x.WristIndexFingerMCPDominantBoneFinalAngle, y.WristIndexFingerMCPDominantBoneFinalAngle) &&
-			NullableEquals(x.WristIndexFingerMCPDominantBoneMeanAngle, y.WristIndexFingerMCPDominantBoneMeanAngle) &&
-			NullableEquals(x.WristIndexFingerMCPDominantBoneMaximumAngle, y.WristIndexFingerMCPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.WristIndexFingerMCPDominantBoneInitialAngle, y.WristIndexFingerMCPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.WristIndexFingerMCPDominantBoneFinalAngle, y.WristIndexFingerMCPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.WristIndexFingerMCPDominantBoneMeanAngle, y.WristIndexFingerMCPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.WristIndexFingerMCPDominantBoneMaximumAngle, y.WristIndexFingerMCPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region IndexFingerMCPIndexFingerPIPDominantBone bone features
-			NullableEquals(x.IndexFingerMCPIndexFingerPIPDominantBoneInitialAngle, y.IndexFingerMCPIndexFingerPIPDominantBoneInitialAngle) &&
-			NullableEquals(x.IndexFingerMCPIndexFingerPIPDominantBoneFinalAngle, y.IndexFingerMCPIndexFingerPIPDominantBoneFinalAngle) &&
-			NullableEquals(x.IndexFingerMCPIndexFingerPIPDominantBoneMeanAngle, y.IndexFingerMCPIndexFingerPIPDominantBoneMeanAngle) &&
-			NullableEquals(x.IndexFingerMCPIndexFingerPIPDominantBoneMaximumAngle, y.IndexFingerMCPIndexFingerPIPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPIndexFingerPIPDominantBoneInitialAngle, y.IndexFingerMCPIndexFingerPIPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPIndexFingerPIPDominantBoneFinalAngle, y.IndexFingerMCPIndexFingerPIPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPIndexFingerPIPDominantBoneMeanAngle, y.IndexFingerMCPIndexFingerPIPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPIndexFingerPIPDominantBoneMaximumAngle, y.IndexFingerMCPIndexFingerPIPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region IndexFingerPIPIndexFingerDIPDominantBone bone features
-			NullableEquals(x.IndexFingerPIPIndexFingerDIPDominantBoneInitialAngle, y.IndexFingerPIPIndexFingerDIPDominantBoneInitialAngle) &&
-			NullableEquals(x.IndexFingerPIPIndexFingerDIPDominantBoneFinalAngle, y.IndexFingerPIPIndexFingerDIPDominantBoneFinalAngle) &&
-			NullableEquals(x.IndexFingerPIPIndexFingerDIPDominantBoneMeanAngle, y.IndexFingerPIPIndexFingerDIPDominantBoneMeanAngle) &&
-			NullableEquals(x.IndexFingerPIPIndexFingerDIPDominantBoneMaximumAngle, y.IndexFingerPIPIndexFingerDIPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPIndexFingerDIPDominantBoneInitialAngle, y.IndexFingerPIPIndexFingerDIPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPIndexFingerDIPDominantBoneFinalAngle, y.IndexFingerPIPIndexFingerDIPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPIndexFingerDIPDominantBoneMeanAngle, y.IndexFingerPIPIndexFingerDIPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPIndexFingerDIPDominantBoneMaximumAngle, y.IndexFingerPIPIndexFingerDIPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region IndexFingerDIPIndexFingerTIPDominantBone bone features
-			NullableEquals(x.IndexFingerDIPIndexFingerTIPDominantBoneInitialAngle, y.IndexFingerDIPIndexFingerTIPDominantBoneInitialAngle) &&
-			NullableEquals(x.IndexFingerDIPIndexFingerTIPDominantBoneFinalAngle, y.IndexFingerDIPIndexFingerTIPDominantBoneFinalAngle) &&
-			NullableEquals(x.IndexFingerDIPIndexFingerTIPDominantBoneMeanAngle, y.IndexFingerDIPIndexFingerTIPDominantBoneMeanAngle) &&
-			NullableEquals(x.IndexFingerDIPIndexFingerTIPDominantBoneMaximumAngle, y.IndexFingerDIPIndexFingerTIPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPIndexFingerTIPDominantBoneInitialAngle, y.IndexFingerDIPIndexFingerTIPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPIndexFingerTIPDominantBoneFinalAngle, y.IndexFingerDIPIndexFingerTIPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPIndexFingerTIPDominantBoneMeanAngle, y.IndexFingerDIPIndexFingerTIPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPIndexFingerTIPDominantBoneMaximumAngle, y.IndexFingerDIPIndexFingerTIPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region MiddleFingerMCPMiddleFingerPIPDominantBone bone features
-			NullableEquals(x.MiddleFingerMCPMiddleFingerPIPDominantBoneInitialAngle, y.MiddleFingerMCPMiddleFingerPIPDominantBoneInitialAngle) &&
-			NullableEquals(x.MiddleFingerMCPMiddleFingerPIPDominantBoneFinalAngle, y.MiddleFingerMCPMiddleFingerPIPDominantBoneFinalAngle) &&
-			NullableEquals(x.MiddleFingerMCPMiddleFingerPIPDominantBoneMeanAngle, y.MiddleFingerMCPMiddleFingerPIPDominantBoneMeanAngle) &&
-			NullableEquals(x.MiddleFingerMCPMiddleFingerPIPDominantBoneMaximumAngle, y.MiddleFingerMCPMiddleFingerPIPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPMiddleFingerPIPDominantBoneInitialAngle, y.MiddleFingerMCPMiddleFingerPIPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPMiddleFingerPIPDominantBoneFinalAngle, y.MiddleFingerMCPMiddleFingerPIPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPMiddleFingerPIPDominantBoneMeanAngle, y.MiddleFingerMCPMiddleFingerPIPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPMiddleFingerPIPDominantBoneMaximumAngle, y.MiddleFingerMCPMiddleFingerPIPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region MiddleFingerPIPMiddleFingerDIPDominantBone bone features
-			NullableEquals(x.MiddleFingerPIPMiddleFingerDIPDominantBoneInitialAngle, y.MiddleFingerPIPMiddleFingerDIPDominantBoneInitialAngle) &&
-			NullableEquals(x.MiddleFingerPIPMiddleFingerDIPDominantBoneFinalAngle, y.MiddleFingerPIPMiddleFingerDIPDominantBoneFinalAngle) &&
-			NullableEquals(x.MiddleFingerPIPMiddleFingerDIPDominantBoneMeanAngle, y.MiddleFingerPIPMiddleFingerDIPDominantBoneMeanAngle) &&
-			NullableEquals(x.MiddleFingerPIPMiddleFingerDIPDominantBoneMaximumAngle, y.MiddleFingerPIPMiddleFingerDIPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPMiddleFingerDIPDominantBoneInitialAngle, y.MiddleFingerPIPMiddleFingerDIPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPMiddleFingerDIPDominantBoneFinalAngle, y.MiddleFingerPIPMiddleFingerDIPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPMiddleFingerDIPDominantBoneMeanAngle, y.MiddleFingerPIPMiddleFingerDIPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPMiddleFingerDIPDominantBoneMaximumAngle, y.MiddleFingerPIPMiddleFingerDIPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region MiddleFingerDIPMiddleFingerTIPDominantBone bone features
-			NullableEquals(x.MiddleFingerDIPMiddleFingerTIPDominantBoneInitialAngle, y.MiddleFingerDIPMiddleFingerTIPDominantBoneInitialAngle) &&
-			NullableEquals(x.MiddleFingerDIPMiddleFingerTIPDominantBoneFinalAngle, y.MiddleFingerDIPMiddleFingerTIPDominantBoneFinalAngle) &&
-			NullableEquals(x.MiddleFingerDIPMiddleFingerTIPDominantBoneMeanAngle, y.MiddleFingerDIPMiddleFingerTIPDominantBoneMeanAngle) &&
-			NullableEquals(x.MiddleFingerDIPMiddleFingerTIPDominantBoneMaximumAngle, y.MiddleFingerDIPMiddleFingerTIPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPMiddleFingerTIPDominantBoneInitialAngle, y.MiddleFingerDIPMiddleFingerTIPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPMiddleFingerTIPDominantBoneFinalAngle, y.MiddleFingerDIPMiddleFingerTIPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPMiddleFingerTIPDominantBoneMeanAngle, y.MiddleFingerDIPMiddleFingerTIPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPMiddleFingerTIPDominantBoneMaximumAngle, y.MiddleFingerDIPMiddleFingerTIPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region RingFingerMCPRingFingerPIPDominantBone bone features
-			NullableEquals(x.RingFingerMCPRingFingerPIPDominantBoneInitialAngle, y.RingFingerMCPRingFingerPIPDominantBoneInitialAngle) &&
-			NullableEquals(x.RingFingerMCPRingFingerPIPDominantBoneFinalAngle, y.RingFingerMCPRingFingerPIPDominantBoneFinalAngle) &&
-			NullableEquals(x.RingFingerMCPRingFingerPIPDominantBoneMeanAngle, y.RingFingerMCPRingFingerPIPDominantBoneMeanAngle) &&
-			NullableEquals(x.RingFingerMCPRingFingerPIPDominantBoneMaximumAngle, y.RingFingerMCPRingFingerPIPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPRingFingerPIPDominantBoneInitialAngle, y.RingFingerMCPRingFingerPIPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPRingFingerPIPDominantBoneFinalAngle, y.RingFingerMCPRingFingerPIPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPRingFingerPIPDominantBoneMeanAngle, y.RingFingerMCPRingFingerPIPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPRingFingerPIPDominantBoneMaximumAngle, y.RingFingerMCPRingFingerPIPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region RingFingerPIPRingFingerDIPDominantBone bone features
-			NullableEquals(x.RingFingerPIPRingFingerDIPDominantBoneInitialAngle, y.RingFingerPIPRingFingerDIPDominantBoneInitialAngle) &&
-			NullableEquals(x.RingFingerPIPRingFingerDIPDominantBoneFinalAngle, y.RingFingerPIPRingFingerDIPDominantBoneFinalAngle) &&
-			NullableEquals(x.RingFingerPIPRingFingerDIPDominantBoneMeanAngle, y.RingFingerPIPRingFingerDIPDominantBoneMeanAngle) &&
-			NullableEquals(x.RingFingerPIPRingFingerDIPDominantBoneMaximumAngle, y.RingFingerPIPRingFingerDIPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPRingFingerDIPDominantBoneInitialAngle, y.RingFingerPIPRingFingerDIPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPRingFingerDIPDominantBoneFinalAngle, y.RingFingerPIPRingFingerDIPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPRingFingerDIPDominantBoneMeanAngle, y.RingFingerPIPRingFingerDIPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPRingFingerDIPDominantBoneMaximumAngle, y.RingFingerPIPRingFingerDIPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region RingFingerDIPRingFingerTIPDominantBone bone features
-			NullableEquals(x.RingFingerDIPRingFingerTIPDominantBoneInitialAngle, y.RingFingerDIPRingFingerTIPDominantBoneInitialAngle) &&
-			NullableEquals(x.RingFingerDIPRingFingerTIPDominantBoneFinalAngle, y.RingFingerDIPRingFingerTIPDominantBoneFinalAngle) &&
-			NullableEquals(x.RingFingerDIPRingFingerTIPDominantBoneMeanAngle, y.RingFingerDIPRingFingerTIPDominantBoneMeanAngle) &&
-			NullableEquals(x.RingFingerDIPRingFingerTIPDominantBoneMaximumAngle, y.RingFingerDIPRingFingerTIPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPRingFingerTIPDominantBoneInitialAngle, y.RingFingerDIPRingFingerTIPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPRingFingerTIPDominantBoneFinalAngle, y.RingFingerDIPRingFingerTIPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPRingFingerTIPDominantBoneMeanAngle, y.RingFingerDIPRingFingerTIPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPRingFingerTIPDominantBoneMaximumAngle, y.RingFingerDIPRingFingerTIPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region WristPinkyMCPDominantBone bone features
-			NullableEquals(x.WristPinkyMCPDominantBoneInitialAngle, y.WristPinkyMCPDominantBoneInitialAngle) &&
-			NullableEquals(x.WristPinkyMCPDominantBoneFinalAngle, y.WristPinkyMCPDominantBoneFinalAngle) &&
-			NullableEquals(x.WristPinkyMCPDominantBoneMeanAngle, y.WristPinkyMCPDominantBoneMeanAngle) &&
-			NullableEquals(x.WristPinkyMCPDominantBoneMaximumAngle, y.WristPinkyMCPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.WristPinkyMCPDominantBoneInitialAngle, y.WristPinkyMCPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.WristPinkyMCPDominantBoneFinalAngle, y.WristPinkyMCPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.WristPinkyMCPDominantBoneMeanAngle, y.WristPinkyMCPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.WristPinkyMCPDominantBoneMaximumAngle, y.WristPinkyMCPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region PinkyMCPPinkyPIPDominantBone bone features
-			NullableEquals(x.PinkyMCPPinkyPIPDominantBoneInitialAngle, y.PinkyMCPPinkyPIPDominantBoneInitialAngle) &&
-			NullableEquals(x.PinkyMCPPinkyPIPDominantBoneFinalAngle, y.PinkyMCPPinkyPIPDominantBoneFinalAngle) &&
-			NullableEquals(x.PinkyMCPPinkyPIPDominantBoneMeanAngle, y.PinkyMCPPinkyPIPDominantBoneMeanAngle) &&
-			NullableEquals(x.PinkyMCPPinkyPIPDominantBoneMaximumAngle, y.PinkyMCPPinkyPIPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.PinkyMCPPinkyPIPDominantBoneInitialAngle, y.PinkyMCPPinkyPIPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.PinkyMCPPinkyPIPDominantBoneFinalAngle, y.PinkyMCPPinkyPIPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.PinkyMCPPinkyPIPDominantBoneMeanAngle, y.PinkyMCPPinkyPIPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.PinkyMCPPinkyPIPDominantBoneMaximumAngle, y.PinkyMCPPinkyPIPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region PinkyPIPPinkyDIPDominantBone bone features
-			NullableEquals(x.PinkyPIPPinkyDIPDominantBoneInitialAngle, y.PinkyPIPPinkyDIPDominantBoneInitialAngle) &&
-			NullableEquals(x.PinkyPIPPinkyDIPDominantBoneFinalAngle, y.PinkyPIPPinkyDIPDominantBoneFinalAngle) &&
-			NullableEquals(x.PinkyPIPPinkyDIPDominantBoneMeanAngle, y.PinkyPIPPinkyDIPDominantBoneMeanAngle) &&
-			NullableEquals(x.PinkyPIPPinkyDIPDominantBoneMaximumAngle, y.PinkyPIPPinkyDIPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.PinkyPIPPinkyDIPDominantBoneInitialAngle, y.PinkyPIPPinkyDIPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.PinkyPIPPinkyDIPDominantBoneFinalAngle, y.PinkyPIPPinkyDIPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.PinkyPIPPinkyDIPDominantBoneMeanAngle, y.PinkyPIPPinkyDIPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.PinkyPIPPinkyDIPDominantBoneMaximumAngle, y.PinkyPIPPinkyDIPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region PinkyDIPPinkyTIPDominantBone bone features
-			NullableEquals(x.PinkyDIPPinkyTIPDominantBoneInitialAngle, y.PinkyDIPPinkyTIPDominantBoneInitialAngle) &&
-			NullableEquals(x.PinkyDIPPinkyTIPDominantBoneFinalAngle, y.PinkyDIPPinkyTIPDominantBoneFinalAngle) &&
-			NullableEquals(x.PinkyDIPPinkyTIPDominantBoneMeanAngle, y.PinkyDIPPinkyTIPDominantBoneMeanAngle) &&
-			NullableEquals(x.PinkyDIPPinkyTIPDominantBoneMaximumAngle, y.PinkyDIPPinkyTIPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.PinkyDIPPinkyTIPDominantBoneInitialAngle, y.PinkyDIPPinkyTIPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.PinkyDIPPinkyTIPDominantBoneFinalAngle, y.PinkyDIPPinkyTIPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.PinkyDIPPinkyTIPDominantBoneMeanAngle, y.PinkyDIPPinkyTIPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.PinkyDIPPinkyTIPDominantBoneMaximumAngle, y.PinkyDIPPinkyTIPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region ThumbMCPIndexFingerMCPDominantBone bone features
-			NullableEquals(x.ThumbMCPIndexFingerMCPDominantBoneInitialAngle, y.ThumbMCPIndexFingerMCPDominantBoneInitialAngle) &&
-			NullableEquals(x.ThumbMCPIndexFingerMCPDominantBoneFinalAngle, y.ThumbMCPIndexFingerMCPDominantBoneFinalAngle) &&
-			NullableEquals(x.ThumbMCPIndexFingerMCPDominantBoneMeanAngle, y.ThumbMCPIndexFingerMCPDominantBoneMeanAngle) &&
-			NullableEquals(x.ThumbMCPIndexFingerMCPDominantBoneMaximumAngle, y.ThumbMCPIndexFingerMCPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.ThumbMCPIndexFingerMCPDominantBoneInitialAngle, y.ThumbMCPIndexFingerMCPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.ThumbMCPIndexFingerMCPDominantBoneFinalAngle, y.ThumbMCPIndexFingerMCPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.ThumbMCPIndexFingerMCPDominantBoneMeanAngle, y.ThumbMCPIndexFingerMCPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.ThumbMCPIndexFingerMCPDominantBoneMaximumAngle, y.ThumbMCPIndexFingerMCPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region IndexFingerMCPMiddleFingerMCPDominantBone bone features
-			NullableEquals(x.IndexFingerMCPMiddleFingerMCPDominantBoneInitialAngle, y.IndexFingerMCPMiddleFingerMCPDominantBoneInitialAngle) &&
-			NullableEquals(x.IndexFingerMCPMiddleFingerMCPDominantBoneFinalAngle, y.IndexFingerMCPMiddleFingerMCPDominantBoneFinalAngle) &&
-			NullableEquals(x.IndexFingerMCPMiddleFingerMCPDominantBoneMeanAngle, y.IndexFingerMCPMiddleFingerMCPDominantBoneMeanAngle) &&
-			NullableEquals(x.IndexFingerMCPMiddleFingerMCPDominantBoneMaximumAngle, y.IndexFingerMCPMiddleFingerMCPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPMiddleFingerMCPDominantBoneInitialAngle, y.IndexFingerMCPMiddleFingerMCPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPMiddleFingerMCPDominantBoneFinalAngle, y.IndexFingerMCPMiddleFingerMCPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPMiddleFingerMCPDominantBoneMeanAngle, y.IndexFingerMCPMiddleFingerMCPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPMiddleFingerMCPDominantBoneMaximumAngle, y.IndexFingerMCPMiddleFingerMCPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region MiddleFingerMCPRingFingerMCPDominantBone bone features
-			NullableEquals(x.MiddleFingerMCPRingFingerMCPDominantBoneInitialAngle, y.MiddleFingerMCPRingFingerMCPDominantBoneInitialAngle) &&
-			NullableEquals(x.MiddleFingerMCPRingFingerMCPDominantBoneFinalAngle, y.MiddleFingerMCPRingFingerMCPDominantBoneFinalAngle) &&
-			NullableEquals(x.MiddleFingerMCPRingFingerMCPDominantBoneMeanAngle, y.MiddleFingerMCPRingFingerMCPDominantBoneMeanAngle) &&
-			NullableEquals(x.MiddleFingerMCPRingFingerMCPDominantBoneMaximumAngle, y.MiddleFingerMCPRingFingerMCPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPRingFingerMCPDominantBoneInitialAngle, y.MiddleFingerMCPRingFingerMCPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPRingFingerMCPDominantBoneFinalAngle, y.MiddleFingerMCPRingFingerMCPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPRingFingerMCPDominantBoneMeanAngle, y.MiddleFingerMCPRingFingerMCPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPRingFingerMCPDominantBoneMaximumAngle, y.MiddleFingerMCPRingFingerMCPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region RingFingerMCPPinkyMCPDominantBone bone features
-			NullableEquals(x.RingFingerMCPPinkyMCPDominantBoneInitialAngle, y.RingFingerMCPPinkyMCPDominantBoneInitialAngle) &&
-			NullableEquals(x.RingFingerMCPPinkyMCPDominantBoneFinalAngle, y.RingFingerMCPPinkyMCPDominantBoneFinalAngle) &&
-			NullableEquals(x.RingFingerMCPPinkyMCPDominantBoneMeanAngle, y.RingFingerMCPPinkyMCPDominantBoneMeanAngle) &&
-			NullableEquals(x.RingFingerMCPPinkyMCPDominantBoneMaximumAngle, y.RingFingerMCPPinkyMCPDominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPPinkyMCPDominantBoneInitialAngle, y.RingFingerMCPPinkyMCPDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPPinkyMCPDominantBoneFinalAngle, y.RingFingerMCPPinkyMCPDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPPinkyMCPDominantBoneMeanAngle, y.RingFingerMCPPinkyMCPDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPPinkyMCPDominantBoneMaximumAngle, y.RingFingerMCPPinkyMCPDominantBoneMaximumAngle) &&
 			#endregion
 
 			#region WristThumbCMCNondominantBone bone features
-			NullableEquals(x.WristThumbCMCNondominantBoneInitialAngle, y.WristThumbCMCNondominantBoneInitialAngle) &&
-			NullableEquals(x.WristThumbCMCNondominantBoneFinalAngle, y.WristThumbCMCNondominantBoneFinalAngle) &&
-			NullableEquals(x.WristThumbCMCNondominantBoneMeanAngle, y.WristThumbCMCNondominantBoneMeanAngle) &&
-			NullableEquals(x.WristThumbCMCNondominantBoneMaximumAngle, y.WristThumbCMCNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.WristThumbCMCNondominantBoneInitialAngle, y.WristThumbCMCNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.WristThumbCMCNondominantBoneFinalAngle, y.WristThumbCMCNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.WristThumbCMCNondominantBoneMeanAngle, y.WristThumbCMCNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.WristThumbCMCNondominantBoneMaximumAngle, y.WristThumbCMCNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region ThumbCMCThumbMCPNondominantBone bone features
-			NullableEquals(x.ThumbCMCThumbMCPNondominantBoneInitialAngle, y.ThumbCMCThumbMCPNondominantBoneInitialAngle) &&
-			NullableEquals(x.ThumbCMCThumbMCPNondominantBoneFinalAngle, y.ThumbCMCThumbMCPNondominantBoneFinalAngle) &&
-			NullableEquals(x.ThumbCMCThumbMCPNondominantBoneMeanAngle, y.ThumbCMCThumbMCPNondominantBoneMeanAngle) &&
-			NullableEquals(x.ThumbCMCThumbMCPNondominantBoneMaximumAngle, y.ThumbCMCThumbMCPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.ThumbCMCThumbMCPNondominantBoneInitialAngle, y.ThumbCMCThumbMCPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.ThumbCMCThumbMCPNondominantBoneFinalAngle, y.ThumbCMCThumbMCPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.ThumbCMCThumbMCPNondominantBoneMeanAngle, y.ThumbCMCThumbMCPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.ThumbCMCThumbMCPNondominantBoneMaximumAngle, y.ThumbCMCThumbMCPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region ThumbMCPThumbIPNondominantBone bone features
-			NullableEquals(x.ThumbMCPThumbIPNondominantBoneInitialAngle, y.ThumbMCPThumbIPNondominantBoneInitialAngle) &&
-			NullableEquals(x.ThumbMCPThumbIPNondominantBoneFinalAngle, y.ThumbMCPThumbIPNondominantBoneFinalAngle) &&
-			NullableEquals(x.ThumbMCPThumbIPNondominantBoneMeanAngle, y.ThumbMCPThumbIPNondominantBoneMeanAngle) &&
-			NullableEquals(x.ThumbMCPThumbIPNondominantBoneMaximumAngle, y.ThumbMCPThumbIPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.ThumbMCPThumbIPNondominantBoneInitialAngle, y.ThumbMCPThumbIPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.ThumbMCPThumbIPNondominantBoneFinalAngle, y.ThumbMCPThumbIPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.ThumbMCPThumbIPNondominantBoneMeanAngle, y.ThumbMCPThumbIPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.ThumbMCPThumbIPNondominantBoneMaximumAngle, y.ThumbMCPThumbIPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region ThumbIPThumbTIPNondominantBone bone features
-			NullableEquals(x.ThumbIPThumbTIPNondominantBoneInitialAngle, y.ThumbIPThumbTIPNondominantBoneInitialAngle) &&
-			NullableEquals(x.ThumbIPThumbTIPNondominantBoneFinalAngle, y.ThumbIPThumbTIPNondominantBoneFinalAngle) &&
-			NullableEquals(x.ThumbIPThumbTIPNondominantBoneMeanAngle, y.ThumbIPThumbTIPNondominantBoneMeanAngle) &&
-			NullableEquals(x.ThumbIPThumbTIPNondominantBoneMaximumAngle, y.ThumbIPThumbTIPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.ThumbIPThumbTIPNondominantBoneInitialAngle, y.ThumbIPThumbTIPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.ThumbIPThumbTIPNondominantBoneFinalAngle, y.ThumbIPThumbTIPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.ThumbIPThumbTIPNondominantBoneMeanAngle, y.ThumbIPThumbTIPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.ThumbIPThumbTIPNondominantBoneMaximumAngle, y.ThumbIPThumbTIPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region WristIndexFingerMCPNondominantBone bone features
-			NullableEquals(x.WristIndexFingerMCPNondominantBoneInitialAngle, y.WristIndexFingerMCPNondominantBoneInitialAngle) &&
-			NullableEquals(x.WristIndexFingerMCPNondominantBoneFinalAngle, y.WristIndexFingerMCPNondominantBoneFinalAngle) &&
-			NullableEquals(x.WristIndexFingerMCPNondominantBoneMeanAngle, y.WristIndexFingerMCPNondominantBoneMeanAngle) &&
-			NullableEquals(x.WristIndexFingerMCPNondominantBoneMaximumAngle, y.WristIndexFingerMCPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.WristIndexFingerMCPNondominantBoneInitialAngle, y.WristIndexFingerMCPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.WristIndexFingerMCPNondominantBoneFinalAngle, y.WristIndexFingerMCPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.WristIndexFingerMCPNondominantBoneMeanAngle, y.WristIndexFingerMCPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.WristIndexFingerMCPNondominantBoneMaximumAngle, y.WristIndexFingerMCPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region IndexFingerMCPIndexFingerPIPNondominantBone bone features
-			NullableEquals(x.IndexFingerMCPIndexFingerPIPNondominantBoneInitialAngle, y.IndexFingerMCPIndexFingerPIPNondominantBoneInitialAngle) &&
-			NullableEquals(x.IndexFingerMCPIndexFingerPIPNondominantBoneFinalAngle, y.IndexFingerMCPIndexFingerPIPNondominantBoneFinalAngle) &&
-			NullableEquals(x.IndexFingerMCPIndexFingerPIPNondominantBoneMeanAngle, y.IndexFingerMCPIndexFingerPIPNondominantBoneMeanAngle) &&
-			NullableEquals(x.IndexFingerMCPIndexFingerPIPNondominantBoneMaximumAngle, y.IndexFingerMCPIndexFingerPIPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPIndexFingerPIPNondominantBoneInitialAngle, y.IndexFingerMCPIndexFingerPIPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPIndexFingerPIPNondominantBoneFinalAngle, y.IndexFingerMCPIndexFingerPIPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPIndexFingerPIPNondominantBoneMeanAngle, y.IndexFingerMCPIndexFingerPIPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPIndexFingerPIPNondominantBoneMaximumAngle, y.IndexFingerMCPIndexFingerPIPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region IndexFingerPIPIndexFingerDIPNondominantBone bone features
-			NullableEquals(x.IndexFingerPIPIndexFingerDIPNondominantBoneInitialAngle, y.IndexFingerPIPIndexFingerDIPNondominantBoneInitialAngle) &&
-			NullableEquals(x.IndexFingerPIPIndexFingerDIPNondominantBoneFinalAngle, y.IndexFingerPIPIndexFingerDIPNondominantBoneFinalAngle) &&
-			NullableEquals(x.IndexFingerPIPIndexFingerDIPNondominantBoneMeanAngle, y.IndexFingerPIPIndexFingerDIPNondominantBoneMeanAngle) &&
-			NullableEquals(x.IndexFingerPIPIndexFingerDIPNondominantBoneMaximumAngle, y.IndexFingerPIPIndexFingerDIPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPIndexFingerDIPNondominantBoneInitialAngle, y.IndexFingerPIPIndexFingerDIPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPIndexFingerDIPNondominantBoneFinalAngle, y.IndexFingerPIPIndexFingerDIPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPIndexFingerDIPNondominantBoneMeanAngle, y.IndexFingerPIPIndexFingerDIPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.IndexFingerPIPIndexFingerDIPNondominantBoneMaximumAngle, y.IndexFingerPIPIndexFingerDIPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region IndexFingerDIPIndexFingerTIPNondominantBone bone features
-			NullableEquals(x.IndexFingerDIPIndexFingerTIPNondominantBoneInitialAngle, y.IndexFingerDIPIndexFingerTIPNondominantBoneInitialAngle) &&
-			NullableEquals(x.IndexFingerDIPIndexFingerTIPNondominantBoneFinalAngle, y.IndexFingerDIPIndexFingerTIPNondominantBoneFinalAngle) &&
-			NullableEquals(x.IndexFingerDIPIndexFingerTIPNondominantBoneMeanAngle, y.IndexFingerDIPIndexFingerTIPNondominantBoneMeanAngle) &&
-			NullableEquals(x.IndexFingerDIPIndexFingerTIPNondominantBoneMaximumAngle, y.IndexFingerDIPIndexFingerTIPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPIndexFingerTIPNondominantBoneInitialAngle, y.IndexFingerDIPIndexFingerTIPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPIndexFingerTIPNondominantBoneFinalAngle, y.IndexFingerDIPIndexFingerTIPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPIndexFingerTIPNondominantBoneMeanAngle, y.IndexFingerDIPIndexFingerTIPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.IndexFingerDIPIndexFingerTIPNondominantBoneMaximumAngle, y.IndexFingerDIPIndexFingerTIPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region MiddleFingerMCPMiddleFingerPIPNondominantBone bone features
-			NullableEquals(x.MiddleFingerMCPMiddleFingerPIPNondominantBoneInitialAngle, y.MiddleFingerMCPMiddleFingerPIPNondominantBoneInitialAngle) &&
-			NullableEquals(x.MiddleFingerMCPMiddleFingerPIPNondominantBoneFinalAngle, y.MiddleFingerMCPMiddleFingerPIPNondominantBoneFinalAngle) &&
-			NullableEquals(x.MiddleFingerMCPMiddleFingerPIPNondominantBoneMeanAngle, y.MiddleFingerMCPMiddleFingerPIPNondominantBoneMeanAngle) &&
-			NullableEquals(x.MiddleFingerMCPMiddleFingerPIPNondominantBoneMaximumAngle, y.MiddleFingerMCPMiddleFingerPIPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPMiddleFingerPIPNondominantBoneInitialAngle, y.MiddleFingerMCPMiddleFingerPIPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPMiddleFingerPIPNondominantBoneFinalAngle, y.MiddleFingerMCPMiddleFingerPIPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPMiddleFingerPIPNondominantBoneMeanAngle, y.MiddleFingerMCPMiddleFingerPIPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPMiddleFingerPIPNondominantBoneMaximumAngle, y.MiddleFingerMCPMiddleFingerPIPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region MiddleFingerPIPMiddleFingerDIPNondominantBone bone features
-			NullableEquals(x.MiddleFingerPIPMiddleFingerDIPNondominantBoneInitialAngle, y.MiddleFingerPIPMiddleFingerDIPNondominantBoneInitialAngle) &&
-			NullableEquals(x.MiddleFingerPIPMiddleFingerDIPNondominantBoneFinalAngle, y.MiddleFingerPIPMiddleFingerDIPNondominantBoneFinalAngle) &&
-			NullableEquals(x.MiddleFingerPIPMiddleFingerDIPNondominantBoneMeanAngle, y.MiddleFingerPIPMiddleFingerDIPNondominantBoneMeanAngle) &&
-			NullableEquals(x.MiddleFingerPIPMiddleFingerDIPNondominantBoneMaximumAngle, y.MiddleFingerPIPMiddleFingerDIPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPMiddleFingerDIPNondominantBoneInitialAngle, y.MiddleFingerPIPMiddleFingerDIPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPMiddleFingerDIPNondominantBoneFinalAngle, y.MiddleFingerPIPMiddleFingerDIPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPMiddleFingerDIPNondominantBoneMeanAngle, y.MiddleFingerPIPMiddleFingerDIPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.MiddleFingerPIPMiddleFingerDIPNondominantBoneMaximumAngle, y.MiddleFingerPIPMiddleFingerDIPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region MiddleFingerDIPMiddleFingerTIPNondominantBone bone features
-			NullableEquals(x.MiddleFingerDIPMiddleFingerTIPNondominantBoneInitialAngle, y.MiddleFingerDIPMiddleFingerTIPNondominantBoneInitialAngle) &&
-			NullableEquals(x.MiddleFingerDIPMiddleFingerTIPNondominantBoneFinalAngle, y.MiddleFingerDIPMiddleFingerTIPNondominantBoneFinalAngle) &&
-			NullableEquals(x.MiddleFingerDIPMiddleFingerTIPNondominantBoneMeanAngle, y.MiddleFingerDIPMiddleFingerTIPNondominantBoneMeanAngle) &&
-			NullableEquals(x.MiddleFingerDIPMiddleFingerTIPNondominantBoneMaximumAngle, y.MiddleFingerDIPMiddleFingerTIPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPMiddleFingerTIPNondominantBoneInitialAngle, y.MiddleFingerDIPMiddleFingerTIPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPMiddleFingerTIPNondominantBoneFinalAngle, y.MiddleFingerDIPMiddleFingerTIPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPMiddleFingerTIPNondominantBoneMeanAngle, y.MiddleFingerDIPMiddleFingerTIPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.MiddleFingerDIPMiddleFingerTIPNondominantBoneMaximumAngle, y.MiddleFingerDIPMiddleFingerTIPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region RingFingerMCPRingFingerPIPNondominantBone bone features
-			NullableEquals(x.RingFingerMCPRingFingerPIPNondominantBoneInitialAngle, y.RingFingerMCPRingFingerPIPNondominantBoneInitialAngle) &&
-			NullableEquals(x.RingFingerMCPRingFingerPIPNondominantBoneFinalAngle, y.RingFingerMCPRingFingerPIPNondominantBoneFinalAngle) &&
-			NullableEquals(x.RingFingerMCPRingFingerPIPNondominantBoneMeanAngle, y.RingFingerMCPRingFingerPIPNondominantBoneMeanAngle) &&
-			NullableEquals(x.RingFingerMCPRingFingerPIPNondominantBoneMaximumAngle, y.RingFingerMCPRingFingerPIPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPRingFingerPIPNondominantBoneInitialAngle, y.RingFingerMCPRingFingerPIPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPRingFingerPIPNondominantBoneFinalAngle, y.RingFingerMCPRingFingerPIPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPRingFingerPIPNondominantBoneMeanAngle, y.RingFingerMCPRingFingerPIPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPRingFingerPIPNondominantBoneMaximumAngle, y.RingFingerMCPRingFingerPIPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region RingFingerPIPRingFingerDIPNondominantBone bone features
-			NullableEquals(x.RingFingerPIPRingFingerDIPNondominantBoneInitialAngle, y.RingFingerPIPRingFingerDIPNondominantBoneInitialAngle) &&
-			NullableEquals(x.RingFingerPIPRingFingerDIPNondominantBoneFinalAngle, y.RingFingerPIPRingFingerDIPNondominantBoneFinalAngle) &&
-			NullableEquals(x.RingFingerPIPRingFingerDIPNondominantBoneMeanAngle, y.RingFingerPIPRingFingerDIPNondominantBoneMeanAngle) &&
-			NullableEquals(x.RingFingerPIPRingFingerDIPNondominantBoneMaximumAngle, y.RingFingerPIPRingFingerDIPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPRingFingerDIPNondominantBoneInitialAngle, y.RingFingerPIPRingFingerDIPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPRingFingerDIPNondominantBoneFinalAngle, y.RingFingerPIPRingFingerDIPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPRingFingerDIPNondominantBoneMeanAngle, y.RingFingerPIPRingFingerDIPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.RingFingerPIPRingFingerDIPNondominantBoneMaximumAngle, y.RingFingerPIPRingFingerDIPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region RingFingerDIPRingFingerTIPNondominantBone bone features
-			NullableEquals(x.RingFingerDIPRingFingerTIPNondominantBoneInitialAngle, y.RingFingerDIPRingFingerTIPNondominantBoneInitialAngle) &&
-			NullableEquals(x.RingFingerDIPRingFingerTIPNondominantBoneFinalAngle, y.RingFingerDIPRingFingerTIPNondominantBoneFinalAngle) &&
-			NullableEquals(x.RingFingerDIPRingFingerTIPNondominantBoneMeanAngle, y.RingFingerDIPRingFingerTIPNondominantBoneMeanAngle) &&
-			NullableEquals(x.RingFingerDIPRingFingerTIPNondominantBoneMaximumAngle, y.RingFingerDIPRingFingerTIPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPRingFingerTIPNondominantBoneInitialAngle, y.RingFingerDIPRingFingerTIPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPRingFingerTIPNondominantBoneFinalAngle, y.RingFingerDIPRingFingerTIPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPRingFingerTIPNondominantBoneMeanAngle, y.RingFingerDIPRingFingerTIPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.RingFingerDIPRingFingerTIPNondominantBoneMaximumAngle, y.RingFingerDIPRingFingerTIPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region WristPinkyMCPNondominantBone bone features
-			NullableEquals(x.WristPinkyMCPNondominantBoneInitialAngle, y.WristPinkyMCPNondominantBoneInitialAngle) &&
-			NullableEquals(x.WristPinkyMCPNondominantBoneFinalAngle, y.WristPinkyMCPNondominantBoneFinalAngle) &&
-			NullableEquals(x.WristPinkyMCPNondominantBoneMeanAngle, y.WristPinkyMCPNondominantBoneMeanAngle) &&
-			NullableEquals(x.WristPinkyMCPNondominantBoneMaximumAngle, y.WristPinkyMCPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.WristPinkyMCPNondominantBoneInitialAngle, y.WristPinkyMCPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.WristPinkyMCPNondominantBoneFinalAngle, y.WristPinkyMCPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.WristPinkyMCPNondominantBoneMeanAngle, y.WristPinkyMCPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.WristPinkyMCPNondominantBoneMaximumAngle, y.WristPinkyMCPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region PinkyMCPPinkyPIPNondominantBone bone features
-			NullableEquals(x.PinkyMCPPinkyPIPNondominantBoneInitialAngle, y.PinkyMCPPinkyPIPNondominantBoneInitialAngle) &&
-			NullableEquals(x.PinkyMCPPinkyPIPNondominantBoneFinalAngle, y.PinkyMCPPinkyPIPNondominantBoneFinalAngle) &&
-			NullableEquals(x.PinkyMCPPinkyPIPNondominantBoneMeanAngle, y.PinkyMCPPinkyPIPNondominantBoneMeanAngle) &&
-			NullableEquals(x.PinkyMCPPinkyPIPNondominantBoneMaximumAngle, y.PinkyMCPPinkyPIPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.PinkyMCPPinkyPIPNondominantBoneInitialAngle, y.PinkyMCPPinkyPIPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.PinkyMCPPinkyPIPNondominantBoneFinalAngle, y.PinkyMCPPinkyPIPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.PinkyMCPPinkyPIPNondominantBoneMeanAngle, y.PinkyMCPPinkyPIPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.PinkyMCPPinkyPIPNondominantBoneMaximumAngle, y.PinkyMCPPinkyPIPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region PinkyPIPPinkyDIPNondominantBone bone features
-			NullableEquals(x.PinkyPIPPinkyDIPNondominantBoneInitialAngle, y.PinkyPIPPinkyDIPNondominantBoneInitialAngle) &&
-			NullableEquals(x.PinkyPIPPinkyDIPNondominantBoneFinalAngle, y.PinkyPIPPinkyDIPNondominantBoneFinalAngle) &&
-			NullableEquals(x.PinkyPIPPinkyDIPNondominantBoneMeanAngle, y.PinkyPIPPinkyDIPNondominantBoneMeanAngle) &&
-			NullableEquals(x.PinkyPIPPinkyDIPNondominantBoneMaximumAngle, y.PinkyPIPPinkyDIPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.PinkyPIPPinkyDIPNondominantBoneInitialAngle, y.PinkyPIPPinkyDIPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.PinkyPIPPinkyDIPNondominantBoneFinalAngle, y.PinkyPIPPinkyDIPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.PinkyPIPPinkyDIPNondominantBoneMeanAngle, y.PinkyPIPPinkyDIPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.PinkyPIPPinkyDIPNondominantBoneMaximumAngle, y.PinkyPIPPinkyDIPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region PinkyDIPPinkyTIPNondominantBone bone features
-			NullableEquals(x.PinkyDIPPinkyTIPNondominantBoneInitialAngle, y.PinkyDIPPinkyTIPNondominantBoneInitialAngle) &&
-			NullableEquals(x.PinkyDIPPinkyTIPNondominantBoneFinalAngle, y.PinkyDIPPinkyTIPNondominantBoneFinalAngle) &&
-			NullableEquals(x.PinkyDIPPinkyTIPNondominantBoneMeanAngle, y.PinkyDIPPinkyTIPNondominantBoneMeanAngle) &&
-			NullableEquals(x.PinkyDIPPinkyTIPNondominantBoneMaximumAngle, y.PinkyDIPPinkyTIPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.PinkyDIPPinkyTIPNondominantBoneInitialAngle, y.PinkyDIPPinkyTIPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.PinkyDIPPinkyTIPNondominantBoneFinalAngle, y.PinkyDIPPinkyTIPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.PinkyDIPPinkyTIPNondominantBoneMeanAngle, y.PinkyDIPPinkyTIPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.PinkyDIPPinkyTIPNondominantBoneMaximumAngle, y.PinkyDIPPinkyTIPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region ThumbMCPIndexFingerMCPNondominantBone bone features
-			NullableEquals(x.ThumbMCPIndexFingerMCPNondominantBoneInitialAngle, y.ThumbMCPIndexFingerMCPNondominantBoneInitialAngle) &&
-			NullableEquals(x.ThumbMCPIndexFingerMCPNondominantBoneFinalAngle, y.ThumbMCPIndexFingerMCPNondominantBoneFinalAngle) &&
-			NullableEquals(x.ThumbMCPIndexFingerMCPNondominantBoneMeanAngle, y.ThumbMCPIndexFingerMCPNondominantBoneMeanAngle) &&
-			NullableEquals(x.ThumbMCPIndexFingerMCPNondominantBoneMaximumAngle, y.ThumbMCPIndexFingerMCPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.ThumbMCPIndexFingerMCPNondominantBoneInitialAngle, y.ThumbMCPIndexFingerMCPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.ThumbMCPIndexFingerMCPNondominantBoneFinalAngle, y.ThumbMCPIndexFingerMCPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.ThumbMCPIndexFingerMCPNondominantBoneMeanAngle, y.ThumbMCPIndexFingerMCPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.ThumbMCPIndexFingerMCPNondominantBoneMaximumAngle, y.ThumbMCPIndexFingerMCPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region IndexFingerMCPMiddleFingerMCPNondominantBone bone features
-			NullableEquals(x.IndexFingerMCPMiddleFingerMCPNondominantBoneInitialAngle, y.IndexFingerMCPMiddleFingerMCPNondominantBoneInitialAngle) &&
-			NullableEquals(x.IndexFingerMCPMiddleFingerMCPNondominantBoneFinalAngle, y.IndexFingerMCPMiddleFingerMCPNondominantBoneFinalAngle) &&
-			NullableEquals(x.IndexFingerMCPMiddleFingerMCPNondominantBoneMeanAngle, y.IndexFingerMCPMiddleFingerMCPNondominantBoneMeanAngle) &&
-			NullableEquals(x.IndexFingerMCPMiddleFingerMCPNondominantBoneMaximumAngle, y.IndexFingerMCPMiddleFingerMCPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPMiddleFingerMCPNondominantBoneInitialAngle, y.IndexFingerMCPMiddleFingerMCPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPMiddleFingerMCPNondominantBoneFinalAngle, y.IndexFingerMCPMiddleFingerMCPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPMiddleFingerMCPNondominantBoneMeanAngle, y.IndexFingerMCPMiddleFingerMCPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.IndexFingerMCPMiddleFingerMCPNondominantBoneMaximumAngle, y.IndexFingerMCPMiddleFingerMCPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region MiddleFingerMCPRingFingerMCPNondominantBone bone features
-			NullableEquals(x.MiddleFingerMCPRingFingerMCPNondominantBoneInitialAngle, y.MiddleFingerMCPRingFingerMCPNondominantBoneInitialAngle) &&
-			NullableEquals(x.MiddleFingerMCPRingFingerMCPNondominantBoneFinalAngle, y.MiddleFingerMCPRingFingerMCPNondominantBoneFinalAngle) &&
-			NullableEquals(x.MiddleFingerMCPRingFingerMCPNondominantBoneMeanAngle, y.MiddleFingerMCPRingFingerMCPNondominantBoneMeanAngle) &&
-			NullableEquals(x.MiddleFingerMCPRingFingerMCPNondominantBoneMaximumAngle, y.MiddleFingerMCPRingFingerMCPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPRingFingerMCPNondominantBoneInitialAngle, y.MiddleFingerMCPRingFingerMCPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPRingFingerMCPNondominantBoneFinalAngle, y.MiddleFingerMCPRingFingerMCPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPRingFingerMCPNondominantBoneMeanAngle, y.MiddleFingerMCPRingFingerMCPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.MiddleFingerMCPRingFingerMCPNondominantBoneMaximumAngle, y.MiddleFingerMCPRingFingerMCPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region RingFingerMCPPinkyMCPNondominantBone bone features
-			NullableEquals(x.RingFingerMCPPinkyMCPNondominantBoneInitialAngle, y.RingFingerMCPPinkyMCPNondominantBoneInitialAngle) &&
-			NullableEquals(x.RingFingerMCPPinkyMCPNondominantBoneFinalAngle, y.RingFingerMCPPinkyMCPNondominantBoneFinalAngle) &&
-			NullableEquals(x.RingFingerMCPPinkyMCPNondominantBoneMeanAngle, y.RingFingerMCPPinkyMCPNondominantBoneMeanAngle) &&
-			NullableEquals(x.RingFingerMCPPinkyMCPNondominantBoneMaximumAngle, y.RingFingerMCPPinkyMCPNondominantBoneMaximumAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPPinkyMCPNondominantBoneInitialAngle, y.RingFingerMCPPinkyMCPNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPPinkyMCPNondominantBoneFinalAngle, y.RingFingerMCPPinkyMCPNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPPinkyMCPNondominantBoneMeanAngle, y.RingFingerMCPPinkyMCPNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.RingFingerMCPPinkyMCPNondominantBoneMaximumAngle, y.RingFingerMCPPinkyMCPNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region Hands distances features
-			NullableEquals(x.BetweenHandJointsDistanceMax, y.BetweenHandJointsDistanceMax) &&
-			NullableEquals(x.BetweenHandJointsDistanceMean, y.BetweenHandJointsDistanceMean) &&
+			GestureFeatureEquals(x.BetweenHandJointsDistanceMax, y.BetweenHandJointsDistanceMax) &&
+			GestureFeatureEquals(x.BetweenHandJointsDistanceMean, y.BetweenHandJointsDistanceMean) &&
 			#endregion
 
 			#region HandDominance

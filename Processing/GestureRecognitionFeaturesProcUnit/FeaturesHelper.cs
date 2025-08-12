@@ -14,131 +14,131 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region Joints gesture features methods
 
 		#region Angle vector methods
-		public static double?[] CalculateAngleVector(BodyData[] bodyFrames, JointType jointType)
+		public static float[] CalculateAngleVector(BodyData[] bodyFrames, JointType jointType)
 		{
 			return GetVector(bodyFrames, jointType, (v1, v2) => MathHelper.CalculateSpatialAngle(v1, v2));
 		}
 
-		public static double[] CalculateAngleVector(IEnumerable<Vector3> jointsPositions)
+		public static float[] CalculateAngleVector(IEnumerable<Vector3> jointsPositions)
 		{
 			return GetVector(jointsPositions, (v1, v2) => MathHelper.CalculateSpatialAngle(v1, v2));
 		}
 		#endregion
 
 		#region F1F2SpatialAngle feature methods
-		public static double? GetF1F2SpatialAngle(double?[] angleVector)
+		public static float GetF1F2SpatialAngle(float[] angleVector)
 		{
-			return angleVector?.FirstOrDefault();
+			return angleVector?.FirstOrDefault() ?? float.NaN;
 		}
 
-		public static double CalculateF1F2SpatialAngle(Vector3 f1JointPosition, Vector3 f2JointPosition)
+		public static float CalculateF1F2SpatialAngle(Vector3 f1JointPosition, Vector3 f2JointPosition)
 		{
 			return MathHelper.CalculateSpatialAngle(f1JointPosition, f2JointPosition);
 		}
 		#endregion
 
 		#region FN_1FNSpatialAngle feature methods
-		public static double? GetFN_1FNSpatialAngle(double?[] angleVector)
+		public static float GetFN_1FNSpatialAngle(float[] angleVector)
 		{
-			return angleVector?.LastOrDefault();
+			return angleVector?.LastOrDefault() ?? float.NaN;
 		}
 
-		public static double CalculateFN_1FNSpatialAngle(Vector3 fN_1JointPosition, Vector3 fNJointPosition)
+		public static float CalculateFN_1FNSpatialAngle(Vector3 fN_1JointPosition, Vector3 fNJointPosition)
 		{
 			return MathHelper.CalculateSpatialAngle(fN_1JointPosition, fNJointPosition);
 		}
 		#endregion
 
 		#region F1FNSpatialAngle feature methods
-		public static double? CalculateF1FNSpatialAngle(BodyData bodyFrame1, BodyData bodyFrameN, JointType jointType)
+		public static float CalculateF1FNSpatialAngle(BodyData bodyFrame1, BodyData bodyFrameN, JointType jointType)
 		{
 			if (bodyFrame1 == null)
 				throw new ArgumentNullException(nameof(bodyFrame1));
 			if (bodyFrameN == null)
 				throw new ArgumentNullException(nameof(bodyFrameN));
 
-			return GetVector(new[] { bodyFrame1, bodyFrameN }, jointType, (v1, v2) => MathHelper.CalculateSpatialAngle(v1, v2))?.FirstOrDefault();
+			return GetVector(new[] { bodyFrame1, bodyFrameN }, jointType, (v1, v2) => MathHelper.CalculateSpatialAngle(v1, v2))?.FirstOrDefault() ?? float.NaN;
 		}
 
-		public static double CalculateF1FNSpatialAngle(Vector3 f1JointPosition, Vector3 fNJointPosition)
+		public static float CalculateF1FNSpatialAngle(Vector3 f1JointPosition, Vector3 fNJointPosition)
 		{
 			return MathHelper.CalculateSpatialAngle(f1JointPosition, fNJointPosition);
 		}
 		#endregion
 
 		#region TotalVectorAngle feature methods
-		public static double? CalculateTotalVectorAngle(double?[] angleVector)
+		public static float CalculateTotalVectorAngle(float[] angleVector)
 		{
-			var filteredAngleVector = angleVector?.Where(a => a.HasValue).Select(a => a.Value);
-			return filteredAngleVector != null && filteredAngleVector.Any() ? (double?)filteredAngleVector.Sum() : null;
+			var filteredAngleVector = angleVector?.Where(a => !float.IsNaN(a)).ToArray();
+			return filteredAngleVector != null && filteredAngleVector.Any() ? filteredAngleVector.Sum() : float.NaN;
 		}
 
-		public static double CalculateTotalVectorAngle(IEnumerable<Vector3> jointsPositions)
+		public static float CalculateTotalVectorAngle(IEnumerable<Vector3> jointsPositions)
 		{
 			return Sum(jointsPositions, (v1, v2) => MathHelper.CalculateSpatialAngle(v1, v2));
 		}
 		#endregion
 
 		#region SquaredTotalVectorAngle feature methods
-		public static double? CalculateSquaredTotalVectorAngle(double?[] angleVector)
+		public static float CalculateSquaredTotalVectorAngle(float[] angleVector)
 		{
-			var filteredAngleVector = angleVector?.Where(a => a.HasValue).Select(a => a.Value);
-			return filteredAngleVector != null && filteredAngleVector.Any() ? (double?)filteredAngleVector.Sum(a => Math.Pow(a, 2)) : null;
+			var filteredAngleVector = angleVector?.Where(a => !float.IsNaN(a)).ToArray();
+			return filteredAngleVector != null && filteredAngleVector.Any() ? Convert.ToSingle(filteredAngleVector.Sum(a => Math.Pow(a, 2))) : float.NaN;
 		}
 
-		public static double CalculateSquaredTotalVectorAngle(IEnumerable<Vector3> jointsPositions)
+		public static float CalculateSquaredTotalVectorAngle(IEnumerable<Vector3> jointsPositions)
 		{
-			return Sum(jointsPositions, (v1, v2) => Math.Pow(MathHelper.CalculateSpatialAngle(v1, v2), 2));
+			return Sum(jointsPositions, (v1, v2) => Convert.ToSingle(Math.Pow(MathHelper.CalculateSpatialAngle(v1, v2), 2)));
 		}
 		#endregion
 
 		#region Displacement vector methods
-		public static double?[] CalculateDisplacementVector(BodyData[] bodyFrames, JointType jointType)
+		public static float[] CalculateDisplacementVector(BodyData[] bodyFrames, JointType jointType)
 		{
 			return GetVector(bodyFrames, jointType, (v1, v2) => MathHelper.Distance(v1, v2));
 		}
 
-		public static double[] CalculateDisplacementVector(IEnumerable<Vector3> jointsPositions)
+		public static float[] CalculateDisplacementVector(IEnumerable<Vector3> jointsPositions)
 		{
 			return GetVector(jointsPositions, (v1, v2) => MathHelper.Distance(v1, v2));
 		}
 		#endregion
 
 		#region TotalVectorDisplacement feature methods
-		public static double? CalculateTotalVectorDisplacement(BodyData bodyFrame1, BodyData bodyFrameN, JointType jointType)
+		public static float CalculateTotalVectorDisplacement(BodyData bodyFrame1, BodyData bodyFrameN, JointType jointType)
 		{
 			if (bodyFrame1 == null)
 				throw new ArgumentNullException(nameof(bodyFrame1));
 			if (bodyFrameN == null)
 				throw new ArgumentNullException(nameof(bodyFrameN));
 
-			return GetVector(new[] { bodyFrame1, bodyFrameN }, jointType, (v1, v2) => MathHelper.Distance(v1, v2))?.FirstOrDefault();
+			return GetVector(new[] { bodyFrame1, bodyFrameN }, jointType, (v1, v2) => MathHelper.Distance(v1, v2))?.FirstOrDefault() ?? float.NaN;
 		}
 
-		public static double CalculateTotalVectorDisplacement(Vector3 f1JointPosition, Vector3 fNJointPosition)
+		public static float CalculateTotalVectorDisplacement(Vector3 f1JointPosition, Vector3 fNJointPosition)
 		{
 			return MathHelper.Distance(f1JointPosition, fNJointPosition);
 		}
 		#endregion
 
 		#region TotalDisplacement feature methods
-		public static double? CalculateTotalDisplacement(double?[] displacementVector)
+		public static float CalculateTotalDisplacement(float[] displacementVector)
 		{
-			var filteredDisplacementVector = displacementVector?.Where(d => d.HasValue).Select(d => d.Value);
-			return filteredDisplacementVector != null && filteredDisplacementVector.Any() ? (double?)filteredDisplacementVector.Sum() : null;
+			var filteredDisplacementVector = displacementVector?.Where(d => !float.IsNaN(d)).ToArray();
+			return filteredDisplacementVector != null && filteredDisplacementVector.Any() ? filteredDisplacementVector.Sum() : float.NaN;
 		}
 
-		public static double CalculateTotalDisplacement(IEnumerable<Vector3> jointsPositions)
+		public static float CalculateTotalDisplacement(IEnumerable<Vector3> jointsPositions)
 		{
 			return Sum(jointsPositions, (v1, v2) => MathHelper.Distance(v1, v2));
 		}
 		#endregion
 
 		#region MaximumDisplacement feature methods
-		public static double? CalculateMaximumDisplacement(double?[] displacementVector)
+		public static float CalculateMaximumDisplacement(float[] displacementVector)
 		{
-			var filteredDisplacementVector = displacementVector?.Where(d => d.HasValue).Select(d => d.Value);
-			return filteredDisplacementVector != null && filteredDisplacementVector.Any() ? (double?)filteredDisplacementVector.Max() : null;
+			var filteredDisplacementVector = displacementVector?.Where(d => !float.IsNaN(d)).ToArray();
+			return filteredDisplacementVector != null && filteredDisplacementVector.Any() ? filteredDisplacementVector.Max() : float.NaN;
 		}
 		#endregion
 
@@ -182,7 +182,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#endregion
 
 		#region BoundingBoxDiagonalLength feature methods
-		public static double CalculateBoundingBoxDiagonalLength(JointBoundingBox boundingBox)
+		public static float CalculateBoundingBoxDiagonalLength(JointBoundingBox boundingBox)
 		{
 			if (boundingBox == null)
 				throw new ArgumentNullException(nameof(boundingBox));
@@ -192,7 +192,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#endregion
 
 		#region BoundingBoxAngle feature methods
-		public static double CalculateBoundingBoxAngle(JointBoundingBox boundingBox)
+		public static float CalculateBoundingBoxAngle(JointBoundingBox boundingBox)
 		{
 			if (boundingBox == null)
 				throw new ArgumentNullException(nameof(boundingBox));
@@ -233,14 +233,14 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region Bone joints angle data methods
 
 		#region Angle vector methods
-		public static double?[] CalculateAngleVector(BodyData[] bodyFrames, Bone bone)
+		public static float[] CalculateAngleVector(BodyData[] bodyFrames, Bone bone)
 		{
 			if (bodyFrames == null)
 				throw new ArgumentNullException(nameof(bodyFrames));
 			if (bone == null)
 				throw new ArgumentNullException(nameof(bone));
 
-			var res = new List<double?>();
+			var res = new List<float>();
 
 			foreach (var bodyFrame in bodyFrames)
 			{
@@ -253,15 +253,15 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 					// TODO: MP: To ogranicza nas do siedzenia w określonej odległości od sensora.
 					var referencePoint = new Vector3(parentJointPos.X, 1f, 0f);
 
-					double a = MathHelper.Distance(referencePoint, childJointPos);
-					double b = MathHelper.Distance(referencePoint, parentJointPos);
-					double c = MathHelper.Distance(childJointPos, parentJointPos);
+					float a = MathHelper.Distance(referencePoint, childJointPos);
+					float b = MathHelper.Distance(referencePoint, parentJointPos);
+					float c = MathHelper.Distance(childJointPos, parentJointPos);
 
 					double angle = Math.Acos((Math.Pow(a, 2) + Math.Pow(b, 2) - Math.Pow(c, 2)) / (2 * a * b));
 					res.Add(MathHelper.ConvertRadiansToDegrees(angle));
 				}
 				else
-					res.Add(null);
+					res.Add(float.NaN);
 			}
 
 			return res.ToArray();
@@ -269,32 +269,32 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#endregion
 
 		#region InitialAngle feature methods
-		public static double? GetInitialAngle(double?[] angleVector)
+		public static float GetInitialAngle(float[] angleVector)
 		{
-			return angleVector?.FirstOrDefault();
+			return angleVector?.FirstOrDefault() ?? float.NaN;
 		}
 		#endregion
 
 		#region FinalAngle feature methods
-		public static double? GetFinalAngle(double?[] angleVector)
+		public static float GetFinalAngle(float[] angleVector)
 		{
-			return angleVector?.LastOrDefault();
+			return angleVector?.LastOrDefault() ?? float.NaN;
 		}
 		#endregion
 
 		#region MeanAngle feature methods
-		public static double? CalculateMeanAngle(double?[] angleVector)
+		public static float CalculateMeanAngle(float[] angleVector)
 		{
-			var filteredAngleVector = angleVector?.Where(a => a.HasValue).Select(a => a.Value);
-			return filteredAngleVector != null && filteredAngleVector.Any() ? (double?)filteredAngleVector.Average() : null;
+			var filteredAngleVector = angleVector?.Where(a => !float.IsNaN(a)).ToArray();
+			return filteredAngleVector != null && filteredAngleVector.Any() ? filteredAngleVector.Average() : float.NaN;
 		}
 		#endregion
 
 		#region MaximumAngle feature methods
-		public static double? CalculateMaximumAngle(double?[] angleVector)
+		public static float CalculateMaximumAngle(float[] angleVector)
 		{
-			var filteredAngleVector = angleVector?.Where(a => a.HasValue).Select(a => a.Value);
-			return filteredAngleVector != null && filteredAngleVector.Any() ? (double?)filteredAngleVector.Max() : null;
+			var filteredAngleVector = angleVector?.Where(a => !float.IsNaN(a)).ToArray();
+			return filteredAngleVector != null && filteredAngleVector.Any() ? filteredAngleVector.Max() : float.NaN;
 		}
 		#endregion
 
@@ -303,12 +303,12 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#region Between hand joints distance methods
 
 		#region Distance vector methods
-		public static double?[] CalculateDistanceVector(BodyData[] bodyFrames, JointType jointType1, JointType jointType2)
+		public static float[] CalculateDistanceVector(BodyData[] bodyFrames, JointType jointType1, JointType jointType2)
 		{
 			if (bodyFrames == null)
 				throw new ArgumentNullException(nameof(bodyFrames));
 
-			var res = new List<double?>();
+			var res = new List<float>();
 
 			foreach (var bodyFrame in bodyFrames)
 			{
@@ -322,7 +322,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 					res.Add(MathHelper.Distance(joint1Pos, joint2Pos));
 				}
 				else
-					res.Add(null);
+					res.Add(float.NaN);
 			}
 
 			return res.ToArray();
@@ -330,18 +330,18 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#endregion
 
 		#region BetweenHandJointsDistanceMax feature methods
-		public static double? CalculateBetweenHandJointsDistanceMax(double?[] distanceVector)
+		public static float CalculateBetweenHandJointsDistanceMax(float[] distanceVector)
 		{
-			var filteredDistanceVector = distanceVector?.Where(d => d.HasValue).Select(d => d.Value);
-			return filteredDistanceVector != null && filteredDistanceVector.Any() ? (double?)filteredDistanceVector.Max() : null;
+			var filteredDistanceVector = distanceVector?.Where(d => !float.IsNaN(d)).ToArray();
+			return filteredDistanceVector != null && filteredDistanceVector.Any() ? filteredDistanceVector.Max() : float.NaN;
 		}
 		#endregion
 
 		#region BetweenHandJointsDistanceMean feature methods
-		public static double? CalculateBetweenHandJointsDistanceMean(double?[] distanceVector)
+		public static float CalculateBetweenHandJointsDistanceMean(float[] distanceVector)
 		{
-			var filteredDistanceVector = distanceVector?.Where(a => a.HasValue).Select(d => d.Value);
-			return filteredDistanceVector != null && filteredDistanceVector.Any() ? (double?)filteredDistanceVector.Average() : null;
+			var filteredDistanceVector = distanceVector?.Where(a => !float.IsNaN(a)).ToArray();
+			return filteredDistanceVector != null && filteredDistanceVector.Any() ? filteredDistanceVector.Average() : float.NaN;
 		}
 		#endregion
 
@@ -350,12 +350,12 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 		#endregion
 
 		#region Private methods
-		private static double Sum(IEnumerable<Vector3> jointsPositions, Func<Vector3, Vector3, double> calculationFunc)
+		private static float Sum(IEnumerable<Vector3> jointsPositions, Func<Vector3, Vector3, float> calculationFunc)
 		{
 			if (calculationFunc == null)
 				throw new ArgumentNullException(nameof(calculationFunc));
 
-			double res = 0d;
+			float res = 0f;
 
 			if (jointsPositions != null && jointsPositions.Any())
 			{
@@ -367,12 +367,12 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 			return res;
 		}
 
-		private static double[] GetVector(IEnumerable<Vector3> jointsPositions, Func<Vector3, Vector3, double> calculationFunc)
+		private static float[] GetVector(IEnumerable<Vector3> jointsPositions, Func<Vector3, Vector3, float> calculationFunc)
 		{
 			if (calculationFunc == null)
 				throw new ArgumentNullException(nameof(calculationFunc));
 
-			var res = new List<double>();
+			var res = new List<float>();
 
 			if (jointsPositions != null && jointsPositions.Any())
 			{
@@ -384,12 +384,12 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 			return res.ToArray();
 		}
 
-		private static double?[] GetVector(BodyData[] bodyFrames, JointType jointType, Func<Vector3, Vector3, double> calculationFunc)
+		private static float[] GetVector(BodyData[] bodyFrames, JointType jointType, Func<Vector3, Vector3, float> calculationFunc)
 		{
 			if (bodyFrames == null)
 				throw new ArgumentNullException(nameof(bodyFrames));
 
-			var res = new List<double?>();
+			var res = new List<float>();
 
 			for (int i = 1; i < bodyFrames.Length; i++)
 			{
@@ -401,7 +401,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 					res.Add(calculationFunc(firstBodyFrameJoint.Value.Position,
 						secondBodyFrameJoint.Value.Position));
 				else
-					res.Add(null);
+					res.Add(float.NaN);
 			}
 
 			return res.ToArray();

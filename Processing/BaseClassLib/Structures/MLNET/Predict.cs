@@ -1,4 +1,7 @@
-﻿namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
+﻿using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
+using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.Predictions;
+
+namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
 {
 	#region PredictParameters
 	public abstract class BasePredictParameters: BaseParameters
@@ -45,7 +48,15 @@
 	//}
 
 	public class GestureRecognitionModelPredictParameters: BasePredictParameters
-	{}
+	{
+		#region Public properties
+		public GestureDataView GestureData
+		{
+			get;
+			set;
+		}
+		#endregion
+	}
 	#endregion
 
 	#region PredictResult
@@ -104,6 +115,13 @@
 
 	public class GestureRecognitionModelPredictResult: BasePredictResult
 	{
+		#region Public properties
+		public GesturePrediction Prediction
+		{
+			get;
+			set;
+		}
+		#endregion
 	}
 	#endregion
 
@@ -111,6 +129,7 @@
 	public enum PredictErrorKind
 	{
 		None,
+		ModelNotLoaded,
 		InvalidParameters,
 		InvalidOutput,
 		UnexpectedError,

@@ -7,7 +7,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 	public static class MathHelper
 	{
 		#region Public methods
-		public static double CalculateSpatialAngle(Vector3 v1, Vector3 v2)
+		public static float CalculateSpatialAngle(Vector3 v1, Vector3 v2)
 		{
 			if (v1 == null)
 				throw new ArgumentNullException(nameof(v1));
@@ -25,12 +25,12 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 			return ConvertRadiansToDegrees(Math.Acos(val));
 		}
 
-		public static double ConvertRadiansToDegrees(double radians)
+		public static float ConvertRadiansToDegrees(double radians)
 		{
-			return radians == 0d ? 0d : 180d / Math.PI * radians;
+			return Convert.ToSingle(radians == 0d ? 0d : 180d / Math.PI * radians);
 		}
 
-		public static double Distance(Vector3 v1, Vector3 v2)
+		public static float Distance(Vector3 v1, Vector3 v2)
 		{
 			if (v1 == null)
 				throw new ArgumentNullException(nameof(v1));
@@ -44,7 +44,7 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 			return Vector3.Distance(v2, v1);
 		}
 
-		public static double GetDiagonalLength(this JointBoundingBox boundingBox)
+		public static float GetDiagonalLength(this JointBoundingBox boundingBox)
 		{
 			if (boundingBox == null)
 				throw new ArgumentNullException(nameof(boundingBox));
@@ -52,10 +52,10 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 			float a = Math.Abs(boundingBox.MaxX - boundingBox.MinX);
 			float b = Math.Abs(boundingBox.MaxY - boundingBox.MinY);
 
-			return Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2)); 
+			return Convert.ToSingle(Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2))); 
 		}
 
-		public static double GetAngle(this JointBoundingBox boundingBox)
+		public static float GetAngle(this JointBoundingBox boundingBox)
 		{
 			if (boundingBox == null)
 				throw new ArgumentNullException(nameof(boundingBox));

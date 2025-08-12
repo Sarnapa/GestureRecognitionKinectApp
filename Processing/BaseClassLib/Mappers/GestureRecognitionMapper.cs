@@ -20,14 +20,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 				return new KinectGestureDataView();
 
 			#region ElbowLeft joint features
-			double? elbowLeftF1F2SpatialAngle = null;
-			double? elbowLeftFN_1FNSpatialAngle = null;
-			double? elbowLeftF1FNSpatialAngle = null;
-			double? elbowLeftTotalVectorAngle = null;
-			double? elbowLeftSquaredTotalVectorAngle = null;
-			double? elbowLeftTotalVectorDisplacement = null;
-			double? elbowLeftTotalDisplacement = null;
-			double? elbowLeftMaximumDisplacement = null;
+			float elbowLeftF1F2SpatialAngle = float.NaN;
+			float elbowLeftFN_1FNSpatialAngle = float.NaN;
+			float elbowLeftF1FNSpatialAngle = float.NaN;
+			float elbowLeftTotalVectorAngle = float.NaN;
+			float elbowLeftSquaredTotalVectorAngle = float.NaN;
+			float elbowLeftTotalVectorDisplacement = float.NaN;
+			float elbowLeftTotalDisplacement = float.NaN;
+			float elbowLeftMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(JointType.ElbowLeft, out var elbowLeftFeatures))
 			{
 				elbowLeftF1F2SpatialAngle = elbowLeftFeatures.F1F2SpatialAngle;
@@ -42,14 +42,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ElbowRight joint features
-			double? elbowRightF1F2SpatialAngle = null;
-			double? elbowRightFN_1FNSpatialAngle = null;
-			double? elbowRightF1FNSpatialAngle = null;
-			double? elbowRightTotalVectorAngle = null;
-			double? elbowRightSquaredTotalVectorAngle = null;
-			double? elbowRightTotalVectorDisplacement = null;
-			double? elbowRightTotalDisplacement = null;
-			double? elbowRightMaximumDisplacement = null;
+			float elbowRightF1F2SpatialAngle = float.NaN;
+			float elbowRightFN_1FNSpatialAngle = float.NaN;
+			float elbowRightF1FNSpatialAngle = float.NaN;
+			float elbowRightTotalVectorAngle = float.NaN;
+			float elbowRightSquaredTotalVectorAngle = float.NaN;
+			float elbowRightTotalVectorDisplacement = float.NaN;
+			float elbowRightTotalDisplacement = float.NaN;
+			float elbowRightMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(JointType.ElbowRight, out var elbowRightFeatures))
 			{
 				elbowRightF1F2SpatialAngle = elbowRightFeatures.F1F2SpatialAngle;
@@ -64,14 +64,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region WristLeft joint features
-			double? wristLeftF1F2SpatialAngle = null;
-			double? wristLeftFN_1FNSpatialAngle = null;
-			double? wristLeftF1FNSpatialAngle = null;
-			double? wristLeftTotalVectorAngle = null;
-			double? wristLeftSquaredTotalVectorAngle = null;
-			double? wristLeftTotalVectorDisplacement = null;
-			double? wristLeftTotalDisplacement = null;
-			double? wristLeftMaximumDisplacement = null;
+			float wristLeftF1F2SpatialAngle = float.NaN;
+			float wristLeftFN_1FNSpatialAngle = float.NaN;
+			float wristLeftF1FNSpatialAngle = float.NaN;
+			float wristLeftTotalVectorAngle = float.NaN;
+			float wristLeftSquaredTotalVectorAngle = float.NaN;
+			float wristLeftTotalVectorDisplacement = float.NaN;
+			float wristLeftTotalDisplacement = float.NaN;
+			float wristLeftMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(JointType.WristLeft, out var wristLeftFeatures))
 			{
 				wristLeftF1F2SpatialAngle = wristLeftFeatures.F1F2SpatialAngle;
@@ -86,14 +86,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region WristRight joint features
-			double? wristRightF1F2SpatialAngle = null;
-			double? wristRightFN_1FNSpatialAngle = null;
-			double? wristRightF1FNSpatialAngle = null;
-			double? wristRightTotalVectorAngle = null;
-			double? wristRightSquaredTotalVectorAngle = null;
-			double? wristRightTotalVectorDisplacement = null;
-			double? wristRightTotalDisplacement = null;
-			double? wristRightMaximumDisplacement = null;
+			float wristRightF1F2SpatialAngle = float.NaN;
+			float wristRightFN_1FNSpatialAngle = float.NaN;
+			float wristRightF1FNSpatialAngle = float.NaN;
+			float wristRightTotalVectorAngle = float.NaN;
+			float wristRightSquaredTotalVectorAngle = float.NaN;
+			float wristRightTotalVectorDisplacement = float.NaN;
+			float wristRightTotalDisplacement = float.NaN;
+			float wristRightMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(JointType.WristRight, out var wristRightFeatures))
 			{
 				wristRightF1F2SpatialAngle = wristRightFeatures.F1F2SpatialAngle;
@@ -108,17 +108,17 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region HandLeft joint features
-			double? handLeftF1F2SpatialAngle = null;
-			double? handLeftFN_1FNSpatialAngle = null;
-			double? handLeftF1FNSpatialAngle = null;
-			double? handLeftTotalVectorAngle = null;
-			double? handLeftSquaredTotalVectorAngle = null;
-			double? handLeftTotalVectorDisplacement = null;
-			double? handLeftTotalDisplacement = null;
-			double? handLeftMaximumDisplacement = null;
-			double? handLeftBoundingBoxDiagonalLength = null;
-			double? handLeftBoundingBoxAngle = null;
-			//HandState[] handLeftHandStates = null;
+			float handLeftF1F2SpatialAngle = float.NaN;
+			float handLeftFN_1FNSpatialAngle = float.NaN;
+			float handLeftF1FNSpatialAngle = float.NaN;
+			float handLeftTotalVectorAngle = float.NaN;
+			float handLeftSquaredTotalVectorAngle = float.NaN;
+			float handLeftTotalVectorDisplacement = float.NaN;
+			float handLeftTotalDisplacement = float.NaN;
+			float handLeftMaximumDisplacement = float.NaN;
+			float handLeftBoundingBoxDiagonalLength = float.NaN;
+			float handLeftBoundingBoxAngle = float.NaN;
+			//HandState[] handLeftHandStates = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(JointType.HandLeft, out var handLeftFeatures)
 				&& handLeftFeatures is HandJointGestureFeatures handLeftHandFeatures)
 			{
@@ -137,17 +137,17 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region HandRight joint features
-			double? handRightF1F2SpatialAngle = null;
-			double? handRightFN_1FNSpatialAngle = null;
-			double? handRightF1FNSpatialAngle = null;
-			double? handRightTotalVectorAngle = null;
-			double? handRightSquaredTotalVectorAngle = null;
-			double? handRightTotalVectorDisplacement = null;
-			double? handRightTotalDisplacement = null;
-			double? handRightMaximumDisplacement = null;
-			double? handRightBoundingBoxDiagonalLength = null;
-			double? handRightBoundingBoxAngle = null;
-			//HandState[] handRightHandStates = null;
+			float handRightF1F2SpatialAngle = float.NaN;
+			float handRightFN_1FNSpatialAngle = float.NaN;
+			float handRightF1FNSpatialAngle = float.NaN;
+			float handRightTotalVectorAngle = float.NaN;
+			float handRightSquaredTotalVectorAngle = float.NaN;
+			float handRightTotalVectorDisplacement = float.NaN;
+			float handRightTotalDisplacement = float.NaN;
+			float handRightMaximumDisplacement = float.NaN;
+			float handRightBoundingBoxDiagonalLength = float.NaN;
+			float handRightBoundingBoxAngle = float.NaN;
+			//HandState[] handRightHandStates = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(JointType.HandRight, out var handRightFeatures)
 				&& handRightFeatures is HandJointGestureFeatures handRightHandFeatures)
 			{
@@ -166,14 +166,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbLeft joint features
-			double? thumbLeftF1F2SpatialAngle = null;
-			double? thumbLeftFN_1FNSpatialAngle = null;
-			double? thumbLeftF1FNSpatialAngle = null;
-			double? thumbLeftTotalVectorAngle = null;
-			double? thumbLeftSquaredTotalVectorAngle = null;
-			double? thumbLeftTotalVectorDisplacement = null;
-			double? thumbLeftTotalDisplacement = null;
-			double? thumbLeftMaximumDisplacement = null;
+			float thumbLeftF1F2SpatialAngle = float.NaN;
+			float thumbLeftFN_1FNSpatialAngle = float.NaN;
+			float thumbLeftF1FNSpatialAngle = float.NaN;
+			float thumbLeftTotalVectorAngle = float.NaN;
+			float thumbLeftSquaredTotalVectorAngle = float.NaN;
+			float thumbLeftTotalVectorDisplacement = float.NaN;
+			float thumbLeftTotalDisplacement = float.NaN;
+			float thumbLeftMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(JointType.ThumbLeft, out var thumbLeftFeatures))
 			{
 				thumbLeftF1F2SpatialAngle = thumbLeftFeatures.F1F2SpatialAngle;
@@ -188,14 +188,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbRight joint features
-			double? thumbRightF1F2SpatialAngle = null;
-			double? thumbRightFN_1FNSpatialAngle = null;
-			double? thumbRightF1FNSpatialAngle = null;
-			double? thumbRightTotalVectorAngle = null;
-			double? thumbRightSquaredTotalVectorAngle = null;
-			double? thumbRightTotalVectorDisplacement = null;
-			double? thumbRightTotalDisplacement = null;
-			double? thumbRightMaximumDisplacement = null;
+			float thumbRightF1F2SpatialAngle = float.NaN;
+			float thumbRightFN_1FNSpatialAngle = float.NaN;
+			float thumbRightF1FNSpatialAngle = float.NaN;
+			float thumbRightTotalVectorAngle = float.NaN;
+			float thumbRightSquaredTotalVectorAngle = float.NaN;
+			float thumbRightTotalVectorDisplacement = float.NaN;
+			float thumbRightTotalDisplacement = float.NaN;
+			float thumbRightMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(JointType.ThumbRight, out var thumbRightFeatures))
 			{
 				thumbRightF1F2SpatialAngle = thumbRightFeatures.F1F2SpatialAngle;
@@ -210,14 +210,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region HandTipLeft joint features
-			double? handTipLeftF1F2SpatialAngle = null;
-			double? handTipLeftFN_1FNSpatialAngle = null;
-			double? handTipLeftF1FNSpatialAngle = null;
-			double? handTipLeftTotalVectorAngle = null;
-			double? handTipLeftSquaredTotalVectorAngle = null;
-			double? handTipLeftTotalVectorDisplacement = null;
-			double? handTipLeftTotalDisplacement = null;
-			double? handTipLeftMaximumDisplacement = null;
+			float handTipLeftF1F2SpatialAngle = float.NaN;
+			float handTipLeftFN_1FNSpatialAngle = float.NaN;
+			float handTipLeftF1FNSpatialAngle = float.NaN;
+			float handTipLeftTotalVectorAngle = float.NaN;
+			float handTipLeftSquaredTotalVectorAngle = float.NaN;
+			float handTipLeftTotalVectorDisplacement = float.NaN;
+			float handTipLeftTotalDisplacement = float.NaN;
+			float handTipLeftMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(JointType.HandTipLeft, out var handTipLeftFeatures))
 			{
 				handTipLeftF1F2SpatialAngle = handTipLeftFeatures.F1F2SpatialAngle;
@@ -232,14 +232,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region HandTipRight joint features
-			double? handTipRightF1F2SpatialAngle = null;
-			double? handTipRightFN_1FNSpatialAngle = null;
-			double? handTipRightF1FNSpatialAngle = null;
-			double? handTipRightTotalVectorAngle = null;
-			double? handTipRightSquaredTotalVectorAngle = null;
-			double? handTipRightTotalVectorDisplacement = null;
-			double? handTipRightTotalDisplacement = null;
-			double? handTipRightMaximumDisplacement = null;
+			float handTipRightF1F2SpatialAngle = float.NaN;
+			float handTipRightFN_1FNSpatialAngle = float.NaN;
+			float handTipRightF1FNSpatialAngle = float.NaN;
+			float handTipRightTotalVectorAngle = float.NaN;
+			float handTipRightSquaredTotalVectorAngle = float.NaN;
+			float handTipRightTotalVectorDisplacement = float.NaN;
+			float handTipRightTotalDisplacement = float.NaN;
+			float handTipRightMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(JointType.HandTipRight, out var handTipRightFeatures))
 			{
 				handTipRightF1F2SpatialAngle = handTipRightFeatures.F1F2SpatialAngle;
@@ -254,10 +254,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ElbowLeftWristLeft bone features
-			double? elbowLeftWristLeftBoneInitialAngle = null;
-			double? elbowLeftWristLeftBoneFinalAngle = null;
-			double? elbowLeftWristLeftBoneMeanAngle = null;
-			double? elbowLeftWristLeftBoneMaximumAngle = null;
+			float elbowLeftWristLeftBoneInitialAngle = float.NaN;
+			float elbowLeftWristLeftBoneFinalAngle = float.NaN;
+			float elbowLeftWristLeftBoneMeanAngle = float.NaN;
+			float elbowLeftWristLeftBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(KinectBonesDefs.ElbowLeftWristLeftBone, out var elbowLeftWristLeftBoneAngleData))
 			{
 				elbowLeftWristLeftBoneInitialAngle = elbowLeftWristLeftBoneAngleData.InitialAngle;
@@ -268,10 +268,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ElbowRightWristRight bone features
-			double? elbowRightWristRightBoneInitialAngle = null;
-			double? elbowRightWristRightBoneFinalAngle = null;
-			double? elbowRightWristRightBoneMeanAngle = null;
-			double? elbowRightWristRightBoneMaximumAngle = null;
+			float elbowRightWristRightBoneInitialAngle = float.NaN;
+			float elbowRightWristRightBoneFinalAngle = float.NaN;
+			float elbowRightWristRightBoneMeanAngle = float.NaN;
+			float elbowRightWristRightBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(KinectBonesDefs.ElbowRightWristRightBone, out var elbowRightWristRightBoneAngleData))
 			{
 				elbowRightWristRightBoneInitialAngle = elbowRightWristRightBoneAngleData.InitialAngle;
@@ -282,10 +282,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region WristLeftHandLeft bone features
-			double? wristLeftHandLeftBoneInitialAngle = null;
-			double? wristLeftHandLeftBoneFinalAngle = null;
-			double? wristLeftHandLeftBoneMeanAngle = null;
-			double? wristLeftHandLeftBoneMaximumAngle = null;
+			float wristLeftHandLeftBoneInitialAngle = float.NaN;
+			float wristLeftHandLeftBoneFinalAngle = float.NaN;
+			float wristLeftHandLeftBoneMeanAngle = float.NaN;
+			float wristLeftHandLeftBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(KinectBonesDefs.WristLeftHandLeftBone, out var wristLeftHandLeftBoneAngleData))
 			{
 				wristLeftHandLeftBoneInitialAngle = wristLeftHandLeftBoneAngleData.InitialAngle;
@@ -296,10 +296,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region WristRightHandRight bone features
-			double? wristRightHandRightBoneInitialAngle = null;
-			double? wristRightHandRightBoneFinalAngle = null;
-			double? wristRightHandRightBoneMeanAngle = null;
-			double? wristRightHandRightBoneMaximumAngle = null;
+			float wristRightHandRightBoneInitialAngle = float.NaN;
+			float wristRightHandRightBoneFinalAngle = float.NaN;
+			float wristRightHandRightBoneMeanAngle = float.NaN;
+			float wristRightHandRightBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(KinectBonesDefs.WristRightHandRightBone, out var wristRightHandRightBoneAngleData))
 			{
 				wristRightHandRightBoneInitialAngle = wristRightHandRightBoneAngleData.InitialAngle;
@@ -310,10 +310,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region HandLeftHandTipLeft bone features
-			double? handLeftHandTipLeftBoneInitialAngle = null;
-			double? handLeftHandTipLeftBoneFinalAngle = null;
-			double? handLeftHandTipLeftBoneMeanAngle = null;
-			double? handLeftHandTipLeftBoneMaximumAngle = null;
+			float handLeftHandTipLeftBoneInitialAngle = float.NaN;
+			float handLeftHandTipLeftBoneFinalAngle = float.NaN;
+			float handLeftHandTipLeftBoneMeanAngle = float.NaN;
+			float handLeftHandTipLeftBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(KinectBonesDefs.HandLeftHandTipLeftBone, out var handLeftHandTipLeftBoneAngleData))
 			{
 				handLeftHandTipLeftBoneInitialAngle = handLeftHandTipLeftBoneAngleData.InitialAngle;
@@ -324,10 +324,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region HandRightHandTipRight bone features
-			double? handRightHandTipRightBoneInitialAngle = null;
-			double? handRightHandTipRightBoneFinalAngle = null;
-			double? handRightHandTipRightBoneMeanAngle = null;
-			double? handRightHandTipRightBoneMaximumAngle = null;
+			float handRightHandTipRightBoneInitialAngle = float.NaN;
+			float handRightHandTipRightBoneFinalAngle = float.NaN;
+			float handRightHandTipRightBoneMeanAngle = float.NaN;
+			float handRightHandTipRightBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(KinectBonesDefs.HandRightHandTipRightBone, out var handRightHandTipRightBoneAngleData))
 			{
 				handRightHandTipRightBoneInitialAngle = handRightHandTipRightBoneAngleData.InitialAngle;
@@ -338,10 +338,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region WristLeftThumbLeft bone features
-			double? wristLeftThumbLeftBoneInitialAngle = null;
-			double? wristLeftThumbLeftBoneFinalAngle = null;
-			double? wristLeftThumbLeftBoneMeanAngle = null;
-			double? wristLeftThumbLeftBoneMaximumAngle = null;
+			float wristLeftThumbLeftBoneInitialAngle = float.NaN;
+			float wristLeftThumbLeftBoneFinalAngle = float.NaN;
+			float wristLeftThumbLeftBoneMeanAngle = float.NaN;
+			float wristLeftThumbLeftBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(KinectBonesDefs.WristLeftThumbLeftBone, out var wristLeftThumbLeftBoneAngleData))
 			{
 				wristLeftThumbLeftBoneInitialAngle = wristLeftThumbLeftBoneAngleData.InitialAngle;
@@ -352,10 +352,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region WristRightThumbRight bone features
-			double? wristRightThumbRightBoneInitialAngle = null;
-			double? wristRightThumbRightBoneFinalAngle = null;
-			double? wristRightThumbRightBoneMeanAngle = null;
-			double? wristRightThumbRightBoneMaximumAngle = null;
+			float wristRightThumbRightBoneInitialAngle = float.NaN;
+			float wristRightThumbRightBoneFinalAngle = float.NaN;
+			float wristRightThumbRightBoneMeanAngle = float.NaN;
+			float wristRightThumbRightBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(KinectBonesDefs.WristRightThumbRightBone, out var wristRightThumbRightBoneAngleData))
 			{
 				wristRightThumbRightBoneInitialAngle = wristRightThumbRightBoneAngleData.InitialAngle;
@@ -366,8 +366,8 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region Hands distances features
-			double? betweenHandJointsDistanceMax = features.BetweenHandJointsDistanceMax;
-			double? betweenHandJointsDistanceMean = features.BetweenHandJointsDistanceMean;
+			float betweenHandJointsDistanceMax = features.BetweenHandJointsDistanceMax;
+			float betweenHandJointsDistanceMean = features.BetweenHandJointsDistanceMean;
 			#endregion
 
 			return new KinectGestureDataView()
@@ -563,72 +563,72 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			var features = new GestureFeatures(KinectGestureRecognitionDefs.GestureRecognitionJoints, KinectGestureRecognitionDefs.GestureRecognitionBones);
 
 			#region ElbowLeft joint features
-			double? elbowLeftF1F2SpatialAngle = gesture.ElbowLeftF1F2SpatialAngle;
-			double? elbowLeftFN_1FNSpatialAngle = gesture.ElbowLeftFN_1FNSpatialAngle;
-			double? elbowLeftF1FNSpatialAngle = gesture.ElbowLeftF1FNSpatialAngle;
-			double? elbowLeftTotalVectorAngle = gesture.ElbowLeftTotalVectorAngle;
-			double? elbowLeftSquaredTotalVectorAngle = gesture.ElbowLeftSquaredTotalVectorAngle;
-			double? elbowLeftTotalVectorDisplacement = gesture.ElbowLeftTotalVectorDisplacement;
-			double? elbowLeftTotalDisplacement = gesture.ElbowLeftTotalDisplacement;
-			double? elbowLeftMaximumDisplacement = gesture.ElbowLeftMaximumDisplacement;
+			float elbowLeftF1F2SpatialAngle = gesture.ElbowLeftF1F2SpatialAngle;
+			float elbowLeftFN_1FNSpatialAngle = gesture.ElbowLeftFN_1FNSpatialAngle;
+			float elbowLeftF1FNSpatialAngle = gesture.ElbowLeftF1FNSpatialAngle;
+			float elbowLeftTotalVectorAngle = gesture.ElbowLeftTotalVectorAngle;
+			float elbowLeftSquaredTotalVectorAngle = gesture.ElbowLeftSquaredTotalVectorAngle;
+			float elbowLeftTotalVectorDisplacement = gesture.ElbowLeftTotalVectorDisplacement;
+			float elbowLeftTotalDisplacement = gesture.ElbowLeftTotalDisplacement;
+			float elbowLeftMaximumDisplacement = gesture.ElbowLeftMaximumDisplacement;
 			features.AddJointGestureFeature(JointType.ElbowLeft, new JointGestureFeatures(elbowLeftF1F2SpatialAngle,
 				elbowLeftFN_1FNSpatialAngle, elbowLeftF1FNSpatialAngle, elbowLeftTotalVectorAngle, elbowLeftSquaredTotalVectorAngle,
 				elbowLeftTotalVectorDisplacement, elbowLeftTotalDisplacement, elbowLeftMaximumDisplacement));
 			#endregion
 
 			#region ElbowRight joint features
-			double? elbowRightF1F2SpatialAngle = gesture.ElbowRightF1F2SpatialAngle;
-			double? elbowRightFN_1FNSpatialAngle = gesture.ElbowRightFN_1FNSpatialAngle;
-			double? elbowRightF1FNSpatialAngle = gesture.ElbowRightF1FNSpatialAngle;
-			double? elbowRightTotalVectorAngle = gesture.ElbowRightTotalVectorAngle;
-			double? elbowRightSquaredTotalVectorAngle = gesture.ElbowRightSquaredTotalVectorAngle;
-			double? elbowRightTotalVectorDisplacement = gesture.ElbowRightTotalVectorDisplacement;
-			double? elbowRightTotalDisplacement = gesture.ElbowRightTotalDisplacement;
-			double? elbowRightMaximumDisplacement = gesture.ElbowRightMaximumDisplacement;
+			float elbowRightF1F2SpatialAngle = gesture.ElbowRightF1F2SpatialAngle;
+			float elbowRightFN_1FNSpatialAngle = gesture.ElbowRightFN_1FNSpatialAngle;
+			float elbowRightF1FNSpatialAngle = gesture.ElbowRightF1FNSpatialAngle;
+			float elbowRightTotalVectorAngle = gesture.ElbowRightTotalVectorAngle;
+			float elbowRightSquaredTotalVectorAngle = gesture.ElbowRightSquaredTotalVectorAngle;
+			float elbowRightTotalVectorDisplacement = gesture.ElbowRightTotalVectorDisplacement;
+			float elbowRightTotalDisplacement = gesture.ElbowRightTotalDisplacement;
+			float elbowRightMaximumDisplacement = gesture.ElbowRightMaximumDisplacement;
 			features.AddJointGestureFeature(JointType.ElbowRight, new JointGestureFeatures(elbowRightF1F2SpatialAngle,
 				elbowRightFN_1FNSpatialAngle, elbowRightF1FNSpatialAngle, elbowRightTotalVectorAngle, elbowRightSquaredTotalVectorAngle,
 				elbowRightTotalVectorDisplacement, elbowRightTotalDisplacement, elbowRightMaximumDisplacement));
 			#endregion
 
 			#region WristLeft joint features
-			double? wristLeftF1F2SpatialAngle = gesture.WristLeftF1F2SpatialAngle;
-			double? wristLeftFN_1FNSpatialAngle = gesture.WristLeftFN_1FNSpatialAngle;
-			double? wristLeftF1FNSpatialAngle = gesture.WristLeftF1FNSpatialAngle;
-			double? wristLeftTotalVectorAngle = gesture.WristLeftTotalVectorAngle;
-			double? wristLeftSquaredTotalVectorAngle = gesture.WristLeftSquaredTotalVectorAngle;
-			double? wristLeftTotalVectorDisplacement = gesture.WristLeftTotalVectorDisplacement;
-			double? wristLeftTotalDisplacement = gesture.WristLeftTotalDisplacement;
-			double? wristLeftMaximumDisplacement = gesture.WristLeftMaximumDisplacement;
+			float wristLeftF1F2SpatialAngle = gesture.WristLeftF1F2SpatialAngle;
+			float wristLeftFN_1FNSpatialAngle = gesture.WristLeftFN_1FNSpatialAngle;
+			float wristLeftF1FNSpatialAngle = gesture.WristLeftF1FNSpatialAngle;
+			float wristLeftTotalVectorAngle = gesture.WristLeftTotalVectorAngle;
+			float wristLeftSquaredTotalVectorAngle = gesture.WristLeftSquaredTotalVectorAngle;
+			float wristLeftTotalVectorDisplacement = gesture.WristLeftTotalVectorDisplacement;
+			float wristLeftTotalDisplacement = gesture.WristLeftTotalDisplacement;
+			float wristLeftMaximumDisplacement = gesture.WristLeftMaximumDisplacement;
 			features.AddJointGestureFeature(JointType.WristLeft, new JointGestureFeatures(wristLeftF1F2SpatialAngle,
 				wristLeftFN_1FNSpatialAngle, wristLeftF1FNSpatialAngle, wristLeftTotalVectorAngle, wristLeftSquaredTotalVectorAngle,
 				wristLeftTotalVectorDisplacement, wristLeftTotalDisplacement, wristLeftMaximumDisplacement));
 			#endregion
 
 			#region WristRight joint features
-			double? wristRightF1F2SpatialAngle = gesture.WristRightF1F2SpatialAngle;
-			double? wristRightFN_1FNSpatialAngle = gesture.WristRightFN_1FNSpatialAngle;
-			double? wristRightF1FNSpatialAngle = gesture.WristRightF1FNSpatialAngle;
-			double? wristRightTotalVectorAngle = gesture.WristRightTotalVectorAngle;
-			double? wristRightSquaredTotalVectorAngle = gesture.WristRightSquaredTotalVectorAngle;
-			double? wristRightTotalVectorDisplacement = gesture.WristRightTotalVectorDisplacement;
-			double? wristRightTotalDisplacement = gesture.WristRightTotalDisplacement;
-			double? wristRightMaximumDisplacement = gesture.WristRightMaximumDisplacement;
+			float wristRightF1F2SpatialAngle = gesture.WristRightF1F2SpatialAngle;
+			float wristRightFN_1FNSpatialAngle = gesture.WristRightFN_1FNSpatialAngle;
+			float wristRightF1FNSpatialAngle = gesture.WristRightF1FNSpatialAngle;
+			float wristRightTotalVectorAngle = gesture.WristRightTotalVectorAngle;
+			float wristRightSquaredTotalVectorAngle = gesture.WristRightSquaredTotalVectorAngle;
+			float wristRightTotalVectorDisplacement = gesture.WristRightTotalVectorDisplacement;
+			float wristRightTotalDisplacement = gesture.WristRightTotalDisplacement;
+			float wristRightMaximumDisplacement = gesture.WristRightMaximumDisplacement;
 			features.AddJointGestureFeature(JointType.WristRight, new JointGestureFeatures(wristRightF1F2SpatialAngle,
 				wristRightFN_1FNSpatialAngle, wristRightF1FNSpatialAngle, wristRightTotalVectorAngle, wristRightSquaredTotalVectorAngle,
 				wristRightTotalVectorDisplacement, wristRightTotalDisplacement, wristRightMaximumDisplacement));
 			#endregion
 
 			#region HandLeft joint features
-			double? handLeftF1F2SpatialAngle = gesture.HandLeftF1F2SpatialAngle;
-			double? handLeftFN_1FNSpatialAngle = gesture.HandLeftFN_1FNSpatialAngle;
-			double? handLeftF1FNSpatialAngle = gesture.HandLeftF1FNSpatialAngle;
-			double? handLeftTotalVectorAngle = gesture.HandLeftTotalVectorAngle;
-			double? handLeftSquaredTotalVectorAngle = gesture.HandLeftSquaredTotalVectorAngle;
-			double? handLeftTotalVectorDisplacement = gesture.HandLeftTotalVectorDisplacement;
-			double? handLeftTotalDisplacement = gesture.HandLeftTotalDisplacement;
-			double? handLeftMaximumDisplacement = gesture.HandLeftMaximumDisplacement;
-			double? handLeftBoundingBoxDiagonalLength = gesture.HandLeftBoundingBoxDiagonalLength;
-			double? handLeftBoundingBoxAngle = gesture.HandLeftBoundingBoxAngle;
+			float handLeftF1F2SpatialAngle = gesture.HandLeftF1F2SpatialAngle;
+			float handLeftFN_1FNSpatialAngle = gesture.HandLeftFN_1FNSpatialAngle;
+			float handLeftF1FNSpatialAngle = gesture.HandLeftF1FNSpatialAngle;
+			float handLeftTotalVectorAngle = gesture.HandLeftTotalVectorAngle;
+			float handLeftSquaredTotalVectorAngle = gesture.HandLeftSquaredTotalVectorAngle;
+			float handLeftTotalVectorDisplacement = gesture.HandLeftTotalVectorDisplacement;
+			float handLeftTotalDisplacement = gesture.HandLeftTotalDisplacement;
+			float handLeftMaximumDisplacement = gesture.HandLeftMaximumDisplacement;
+			float handLeftBoundingBoxDiagonalLength = gesture.HandLeftBoundingBoxDiagonalLength;
+			float handLeftBoundingBoxAngle = gesture.HandLeftBoundingBoxAngle;
 			//HandState[] handLeftHandStates = gesture.HandLeftHandStates;
 			features.AddJointGestureFeature(JointType.HandLeft, new HandJointGestureFeatures(handLeftF1F2SpatialAngle,
 				handLeftFN_1FNSpatialAngle, handLeftF1FNSpatialAngle, handLeftTotalVectorAngle, handLeftSquaredTotalVectorAngle,
@@ -637,16 +637,16 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region HandRight joint features
-			double? handRightF1F2SpatialAngle = gesture.HandRightF1F2SpatialAngle;
-			double? handRightFN_1FNSpatialAngle = gesture.HandRightFN_1FNSpatialAngle;
-			double? handRightF1FNSpatialAngle = gesture.HandRightF1FNSpatialAngle;
-			double? handRightTotalVectorAngle = gesture.HandRightTotalVectorAngle;
-			double? handRightSquaredTotalVectorAngle = gesture.HandRightSquaredTotalVectorAngle;
-			double? handRightTotalVectorDisplacement = gesture.HandRightTotalVectorDisplacement;
-			double? handRightTotalDisplacement = gesture.HandRightTotalDisplacement;
-			double? handRightMaximumDisplacement = gesture.HandRightMaximumDisplacement;
-			double? handRightBoundingBoxDiagonalLength = gesture.HandRightBoundingBoxDiagonalLength;
-			double? handRightBoundingBoxAngle = gesture.HandRightBoundingBoxAngle;
+			float handRightF1F2SpatialAngle = gesture.HandRightF1F2SpatialAngle;
+			float handRightFN_1FNSpatialAngle = gesture.HandRightFN_1FNSpatialAngle;
+			float handRightF1FNSpatialAngle = gesture.HandRightF1FNSpatialAngle;
+			float handRightTotalVectorAngle = gesture.HandRightTotalVectorAngle;
+			float handRightSquaredTotalVectorAngle = gesture.HandRightSquaredTotalVectorAngle;
+			float handRightTotalVectorDisplacement = gesture.HandRightTotalVectorDisplacement;
+			float handRightTotalDisplacement = gesture.HandRightTotalDisplacement;
+			float handRightMaximumDisplacement = gesture.HandRightMaximumDisplacement;
+			float handRightBoundingBoxDiagonalLength = gesture.HandRightBoundingBoxDiagonalLength;
+			float handRightBoundingBoxAngle = gesture.HandRightBoundingBoxAngle;
 			//HandState[] handRightHandStates = gesture.HandRightHandStates;
 			features.AddJointGestureFeature(JointType.HandRight, new HandJointGestureFeatures(handRightF1F2SpatialAngle,
 				handRightFN_1FNSpatialAngle, handRightF1FNSpatialAngle, handRightTotalVectorAngle, handRightSquaredTotalVectorAngle,
@@ -655,131 +655,131 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbLeft joint features
-			double? thumbLeftF1F2SpatialAngle = gesture.ThumbLeftF1F2SpatialAngle;
-			double? thumbLeftFN_1FNSpatialAngle = gesture.ThumbLeftFN_1FNSpatialAngle;
-			double? thumbLeftF1FNSpatialAngle = gesture.ThumbLeftF1FNSpatialAngle;
-			double? thumbLeftTotalVectorAngle = gesture.ThumbLeftTotalVectorAngle;
-			double? thumbLeftSquaredTotalVectorAngle = gesture.ThumbLeftSquaredTotalVectorAngle;
-			double? thumbLeftTotalVectorDisplacement = gesture.ThumbLeftTotalVectorDisplacement;
-			double? thumbLeftTotalDisplacement = gesture.ThumbLeftTotalDisplacement;
-			double? thumbLeftMaximumDisplacement = gesture.ThumbLeftMaximumDisplacement;
+			float thumbLeftF1F2SpatialAngle = gesture.ThumbLeftF1F2SpatialAngle;
+			float thumbLeftFN_1FNSpatialAngle = gesture.ThumbLeftFN_1FNSpatialAngle;
+			float thumbLeftF1FNSpatialAngle = gesture.ThumbLeftF1FNSpatialAngle;
+			float thumbLeftTotalVectorAngle = gesture.ThumbLeftTotalVectorAngle;
+			float thumbLeftSquaredTotalVectorAngle = gesture.ThumbLeftSquaredTotalVectorAngle;
+			float thumbLeftTotalVectorDisplacement = gesture.ThumbLeftTotalVectorDisplacement;
+			float thumbLeftTotalDisplacement = gesture.ThumbLeftTotalDisplacement;
+			float thumbLeftMaximumDisplacement = gesture.ThumbLeftMaximumDisplacement;
 			features.AddJointGestureFeature(JointType.ThumbLeft, new JointGestureFeatures(thumbLeftF1F2SpatialAngle,
 				thumbLeftFN_1FNSpatialAngle, thumbLeftF1FNSpatialAngle, thumbLeftTotalVectorAngle, thumbLeftSquaredTotalVectorAngle,
 				thumbLeftTotalVectorDisplacement, thumbLeftTotalDisplacement, thumbLeftMaximumDisplacement));
 			#endregion
 
 			#region ThumbRight joint features
-			double? thumbRightF1F2SpatialAngle = gesture.ThumbRightF1F2SpatialAngle;
-			double? thumbRightFN_1FNSpatialAngle = gesture.ThumbRightFN_1FNSpatialAngle;
-			double? thumbRightF1FNSpatialAngle = gesture.ThumbRightF1FNSpatialAngle;
-			double? thumbRightTotalVectorAngle = gesture.ThumbRightTotalVectorAngle;
-			double? thumbRightSquaredTotalVectorAngle = gesture.ThumbRightSquaredTotalVectorAngle;
-			double? thumbRightTotalVectorDisplacement = gesture.ThumbRightTotalVectorDisplacement;
-			double? thumbRightTotalDisplacement = gesture.ThumbRightTotalDisplacement;
-			double? thumbRightMaximumDisplacement = gesture.ThumbRightMaximumDisplacement;
+			float thumbRightF1F2SpatialAngle = gesture.ThumbRightF1F2SpatialAngle;
+			float thumbRightFN_1FNSpatialAngle = gesture.ThumbRightFN_1FNSpatialAngle;
+			float thumbRightF1FNSpatialAngle = gesture.ThumbRightF1FNSpatialAngle;
+			float thumbRightTotalVectorAngle = gesture.ThumbRightTotalVectorAngle;
+			float thumbRightSquaredTotalVectorAngle = gesture.ThumbRightSquaredTotalVectorAngle;
+			float thumbRightTotalVectorDisplacement = gesture.ThumbRightTotalVectorDisplacement;
+			float thumbRightTotalDisplacement = gesture.ThumbRightTotalDisplacement;
+			float thumbRightMaximumDisplacement = gesture.ThumbRightMaximumDisplacement;
 			features.AddJointGestureFeature(JointType.ThumbRight, new JointGestureFeatures(thumbRightF1F2SpatialAngle,
 				thumbRightFN_1FNSpatialAngle, thumbRightF1FNSpatialAngle, thumbRightTotalVectorAngle, thumbRightSquaredTotalVectorAngle,
 				thumbRightTotalVectorDisplacement, thumbRightTotalDisplacement, thumbRightMaximumDisplacement));
 			#endregion
 
 			#region HandTipLeft joint features
-			double? handTipLeftF1F2SpatialAngle = gesture.HandTipLeftF1F2SpatialAngle;
-			double? handTipLeftFN_1FNSpatialAngle = gesture.HandTipLeftFN_1FNSpatialAngle;
-			double? handTipLeftF1FNSpatialAngle = gesture.HandTipLeftF1FNSpatialAngle;
-			double? handTipLeftTotalVectorAngle = gesture.HandTipLeftTotalVectorAngle;
-			double? handTipLeftSquaredTotalVectorAngle = gesture.HandTipLeftSquaredTotalVectorAngle;
-			double? handTipLeftTotalVectorDisplacement = gesture.HandTipLeftTotalVectorDisplacement;
-			double? handTipLeftTotalDisplacement = gesture.HandTipLeftTotalDisplacement;
-			double? handTipLeftMaximumDisplacement = gesture.HandTipLeftMaximumDisplacement;
+			float handTipLeftF1F2SpatialAngle = gesture.HandTipLeftF1F2SpatialAngle;
+			float handTipLeftFN_1FNSpatialAngle = gesture.HandTipLeftFN_1FNSpatialAngle;
+			float handTipLeftF1FNSpatialAngle = gesture.HandTipLeftF1FNSpatialAngle;
+			float handTipLeftTotalVectorAngle = gesture.HandTipLeftTotalVectorAngle;
+			float handTipLeftSquaredTotalVectorAngle = gesture.HandTipLeftSquaredTotalVectorAngle;
+			float handTipLeftTotalVectorDisplacement = gesture.HandTipLeftTotalVectorDisplacement;
+			float handTipLeftTotalDisplacement = gesture.HandTipLeftTotalDisplacement;
+			float handTipLeftMaximumDisplacement = gesture.HandTipLeftMaximumDisplacement;
 			features.AddJointGestureFeature(JointType.HandTipLeft, new JointGestureFeatures(handTipLeftF1F2SpatialAngle,
 				handTipLeftFN_1FNSpatialAngle, handTipLeftF1FNSpatialAngle, handTipLeftTotalVectorAngle, handTipLeftSquaredTotalVectorAngle,
 				handTipLeftTotalVectorDisplacement, handTipLeftTotalDisplacement, handTipLeftMaximumDisplacement));
 			#endregion
 
 			#region HandTipRight joint features
-			double? handTipRightF1F2SpatialAngle = gesture.HandTipRightF1F2SpatialAngle;
-			double? handTipRightFN_1FNSpatialAngle = gesture.HandTipRightFN_1FNSpatialAngle;
-			double? handTipRightF1FNSpatialAngle = gesture.HandTipRightF1FNSpatialAngle;
-			double? handTipRightTotalVectorAngle = gesture.HandTipRightTotalVectorAngle;
-			double? handTipRightSquaredTotalVectorAngle = gesture.HandTipRightSquaredTotalVectorAngle;
-			double? handTipRightTotalVectorDisplacement = gesture.HandTipRightTotalVectorDisplacement;
-			double? handTipRightTotalDisplacement = gesture.HandTipRightTotalDisplacement;
-			double? handTipRightMaximumDisplacement = gesture.HandTipRightMaximumDisplacement;
+			float handTipRightF1F2SpatialAngle = gesture.HandTipRightF1F2SpatialAngle;
+			float handTipRightFN_1FNSpatialAngle = gesture.HandTipRightFN_1FNSpatialAngle;
+			float handTipRightF1FNSpatialAngle = gesture.HandTipRightF1FNSpatialAngle;
+			float handTipRightTotalVectorAngle = gesture.HandTipRightTotalVectorAngle;
+			float handTipRightSquaredTotalVectorAngle = gesture.HandTipRightSquaredTotalVectorAngle;
+			float handTipRightTotalVectorDisplacement = gesture.HandTipRightTotalVectorDisplacement;
+			float handTipRightTotalDisplacement = gesture.HandTipRightTotalDisplacement;
+			float handTipRightMaximumDisplacement = gesture.HandTipRightMaximumDisplacement;
 			features.AddJointGestureFeature(JointType.HandTipRight, new JointGestureFeatures(handTipRightF1F2SpatialAngle,
 				handTipRightFN_1FNSpatialAngle, handTipRightF1FNSpatialAngle, handTipRightTotalVectorAngle, handTipRightSquaredTotalVectorAngle,
 				handTipRightTotalVectorDisplacement, handTipRightTotalDisplacement, handTipRightMaximumDisplacement));
 			#endregion
 
 			#region ElbowLeftWristLeft bone features
-			double? elbowLeftWristLeftBoneInitialAngle = gesture.ElbowLeftWristLeftBoneInitialAngle;
-			double? elbowLeftWristLeftBoneFinalAngle = gesture.ElbowLeftWristLeftBoneFinalAngle;
-			double? elbowLeftWristLeftBoneMeanAngle = gesture.ElbowLeftWristLeftBoneMeanAngle;
-			double? elbowLeftWristLeftBoneMaximumAngle = gesture.ElbowLeftWristLeftBoneMaximumAngle;
+			float elbowLeftWristLeftBoneInitialAngle = gesture.ElbowLeftWristLeftBoneInitialAngle;
+			float elbowLeftWristLeftBoneFinalAngle = gesture.ElbowLeftWristLeftBoneFinalAngle;
+			float elbowLeftWristLeftBoneMeanAngle = gesture.ElbowLeftWristLeftBoneMeanAngle;
+			float elbowLeftWristLeftBoneMaximumAngle = gesture.ElbowLeftWristLeftBoneMaximumAngle;
 			features.AddBoneJointsAngleData(KinectBonesDefs.ElbowLeftWristLeftBone, new BoneJointsAngleData(elbowLeftWristLeftBoneInitialAngle,
 				elbowLeftWristLeftBoneFinalAngle, elbowLeftWristLeftBoneMeanAngle, elbowLeftWristLeftBoneMaximumAngle));
 			#endregion
 
 			#region ElbowRightWristRight bone features
-			double? elbowRightWristRightBoneInitialAngle = gesture.ElbowRightWristRightBoneInitialAngle;
-			double? elbowRightWristRightBoneFinalAngle = gesture.ElbowRightWristRightBoneFinalAngle;
-			double? elbowRightWristRightBoneMeanAngle = gesture.ElbowRightWristRightBoneMeanAngle;
-			double? elbowRightWristRightBoneMaximumAngle = gesture.ElbowRightWristRightBoneMaximumAngle;
+			float elbowRightWristRightBoneInitialAngle = gesture.ElbowRightWristRightBoneInitialAngle;
+			float elbowRightWristRightBoneFinalAngle = gesture.ElbowRightWristRightBoneFinalAngle;
+			float elbowRightWristRightBoneMeanAngle = gesture.ElbowRightWristRightBoneMeanAngle;
+			float elbowRightWristRightBoneMaximumAngle = gesture.ElbowRightWristRightBoneMaximumAngle;
 			features.AddBoneJointsAngleData(KinectBonesDefs.ElbowRightWristRightBone, new BoneJointsAngleData(elbowRightWristRightBoneInitialAngle,
 				elbowRightWristRightBoneFinalAngle, elbowRightWristRightBoneMeanAngle, elbowRightWristRightBoneMaximumAngle));
 			#endregion
 
 			#region WristLeftHandLeft bone features
-			double? wristLeftHandLeftBoneInitialAngle = gesture.WristLeftHandLeftBoneInitialAngle;
-			double? wristLeftHandLeftBoneFinalAngle = gesture.WristLeftHandLeftBoneFinalAngle;
-			double? wristLeftHandLeftBoneMeanAngle = gesture.WristLeftHandLeftBoneMeanAngle;
-			double? wristLeftHandLeftBoneMaximumAngle = gesture.WristLeftHandLeftBoneMaximumAngle;
+			float wristLeftHandLeftBoneInitialAngle = gesture.WristLeftHandLeftBoneInitialAngle;
+			float wristLeftHandLeftBoneFinalAngle = gesture.WristLeftHandLeftBoneFinalAngle;
+			float wristLeftHandLeftBoneMeanAngle = gesture.WristLeftHandLeftBoneMeanAngle;
+			float wristLeftHandLeftBoneMaximumAngle = gesture.WristLeftHandLeftBoneMaximumAngle;
 			features.AddBoneJointsAngleData(KinectBonesDefs.WristLeftHandLeftBone, new BoneJointsAngleData(wristLeftHandLeftBoneInitialAngle,
 				wristLeftHandLeftBoneFinalAngle, wristLeftHandLeftBoneMeanAngle, wristLeftHandLeftBoneMaximumAngle));
 			#endregion
 
 			#region WristRightHandRight bone features
-			double? wristRightHandRightBoneInitialAngle = gesture.WristRightHandRightBoneInitialAngle;
-			double? wristRightHandRightBoneFinalAngle = gesture.WristRightHandRightBoneFinalAngle;
-			double? wristRightHandRightBoneMeanAngle = gesture.WristRightHandRightBoneMeanAngle;
-			double? wristRightHandRightBoneMaximumAngle = gesture.WristRightHandRightBoneMaximumAngle;
+			float wristRightHandRightBoneInitialAngle = gesture.WristRightHandRightBoneInitialAngle;
+			float wristRightHandRightBoneFinalAngle = gesture.WristRightHandRightBoneFinalAngle;
+			float wristRightHandRightBoneMeanAngle = gesture.WristRightHandRightBoneMeanAngle;
+			float wristRightHandRightBoneMaximumAngle = gesture.WristRightHandRightBoneMaximumAngle;
 			features.AddBoneJointsAngleData(KinectBonesDefs.WristRightHandRightBone, new BoneJointsAngleData(wristRightHandRightBoneInitialAngle,
 				wristRightHandRightBoneFinalAngle, wristRightHandRightBoneMeanAngle, wristRightHandRightBoneMaximumAngle));
 			#endregion
 
 			#region HandLeftHandTipLeft bone features
-			double? handLeftHandTipLeftBoneInitialAngle = gesture.HandLeftHandTipLeftBoneInitialAngle;
-			double? handLeftHandTipLeftBoneFinalAngle = gesture.HandLeftHandTipLeftBoneFinalAngle;
-			double? handLeftHandTipLeftBoneMeanAngle = gesture.HandLeftHandTipLeftBoneMeanAngle;
-			double? handLeftHandTipLeftBoneMaximumAngle = gesture.HandLeftHandTipLeftBoneMaximumAngle;
+			float handLeftHandTipLeftBoneInitialAngle = gesture.HandLeftHandTipLeftBoneInitialAngle;
+			float handLeftHandTipLeftBoneFinalAngle = gesture.HandLeftHandTipLeftBoneFinalAngle;
+			float handLeftHandTipLeftBoneMeanAngle = gesture.HandLeftHandTipLeftBoneMeanAngle;
+			float handLeftHandTipLeftBoneMaximumAngle = gesture.HandLeftHandTipLeftBoneMaximumAngle;
 			features.AddBoneJointsAngleData(KinectBonesDefs.HandLeftHandTipLeftBone, new BoneJointsAngleData(handLeftHandTipLeftBoneInitialAngle,
 				handLeftHandTipLeftBoneFinalAngle, handLeftHandTipLeftBoneMeanAngle, handLeftHandTipLeftBoneMaximumAngle));
 			#endregion
 
 			#region HandRightHandTipRight bone features
-			double? handRightHandTipRightBoneInitialAngle = gesture.HandRightHandTipRightBoneInitialAngle;
-			double? handRightHandTipRightBoneFinalAngle = gesture.HandRightHandTipRightBoneFinalAngle;
-			double? handRightHandTipRightBoneMeanAngle = gesture.HandRightHandTipRightBoneMeanAngle;
-			double? handRightHandTipRightBoneMaximumAngle = gesture.HandRightHandTipRightBoneMaximumAngle;
+			float handRightHandTipRightBoneInitialAngle = gesture.HandRightHandTipRightBoneInitialAngle;
+			float handRightHandTipRightBoneFinalAngle = gesture.HandRightHandTipRightBoneFinalAngle;
+			float handRightHandTipRightBoneMeanAngle = gesture.HandRightHandTipRightBoneMeanAngle;
+			float handRightHandTipRightBoneMaximumAngle = gesture.HandRightHandTipRightBoneMaximumAngle;
 			features.AddBoneJointsAngleData(KinectBonesDefs.HandRightHandTipRightBone, new BoneJointsAngleData(handRightHandTipRightBoneInitialAngle,
 				handRightHandTipRightBoneFinalAngle, handRightHandTipRightBoneMeanAngle, handRightHandTipRightBoneMaximumAngle));
 			#endregion
 
 
 			#region WristLeftThumbLeft bone features
-			double? wristLeftThumbLeftBoneInitialAngle = gesture.WristLeftThumbLeftBoneInitialAngle;
-			double? wristLeftThumbLeftBoneFinalAngle = gesture.WristLeftThumbLeftBoneFinalAngle;
-			double? wristLeftThumbLeftBoneMeanAngle = gesture.WristLeftThumbLeftBoneMeanAngle;
-			double? wristLeftThumbLeftBoneMaximumAngle = gesture.WristLeftThumbLeftBoneMaximumAngle;
+			float wristLeftThumbLeftBoneInitialAngle = gesture.WristLeftThumbLeftBoneInitialAngle;
+			float wristLeftThumbLeftBoneFinalAngle = gesture.WristLeftThumbLeftBoneFinalAngle;
+			float wristLeftThumbLeftBoneMeanAngle = gesture.WristLeftThumbLeftBoneMeanAngle;
+			float wristLeftThumbLeftBoneMaximumAngle = gesture.WristLeftThumbLeftBoneMaximumAngle;
 			features.AddBoneJointsAngleData(KinectBonesDefs.WristLeftThumbLeftBone, new BoneJointsAngleData(wristLeftThumbLeftBoneInitialAngle,
 				wristLeftThumbLeftBoneFinalAngle, wristLeftThumbLeftBoneMeanAngle, wristLeftThumbLeftBoneMaximumAngle));
 			#endregion
 
 
 			#region WristRightThumbRight bone features
-			double? wristRightThumbRightBoneInitialAngle = gesture.WristRightThumbRightBoneInitialAngle;
-			double? wristRightThumbRightBoneFinalAngle = gesture.WristRightThumbRightBoneFinalAngle;
-			double? wristRightThumbRightBoneMeanAngle = gesture.WristRightThumbRightBoneMeanAngle;
-			double? wristRightThumbRightBoneMaximumAngle = gesture.WristRightThumbRightBoneMaximumAngle;
+			float wristRightThumbRightBoneInitialAngle = gesture.WristRightThumbRightBoneInitialAngle;
+			float wristRightThumbRightBoneFinalAngle = gesture.WristRightThumbRightBoneFinalAngle;
+			float wristRightThumbRightBoneMeanAngle = gesture.WristRightThumbRightBoneMeanAngle;
+			float wristRightThumbRightBoneMaximumAngle = gesture.WristRightThumbRightBoneMaximumAngle;
 			features.AddBoneJointsAngleData(KinectBonesDefs.WristRightThumbRightBone, new BoneJointsAngleData(wristRightThumbRightBoneInitialAngle,
 				wristRightThumbRightBoneFinalAngle, wristRightThumbRightBoneMeanAngle, wristRightThumbRightBoneMaximumAngle));
 			#endregion
@@ -803,14 +803,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 				return new MediaPipeHandLandmarksGestureDataView();
 
 			#region WristDominant joint features
-			double? wristDominantF1F2SpatialAngle = null;
-			double? wristDominantFN_1FNSpatialAngle = null;
-			double? wristDominantF1FNSpatialAngle = null;
-			double? wristDominantTotalVectorAngle = null;
-			double? wristDominantSquaredTotalVectorAngle = null;
-			double? wristDominantTotalVectorDisplacement = null;
-			double? wristDominantTotalDisplacement = null;
-			double? wristDominantMaximumDisplacement = null;
+			float wristDominantF1F2SpatialAngle = float.NaN;
+			float wristDominantFN_1FNSpatialAngle = float.NaN;
+			float wristDominantF1FNSpatialAngle = float.NaN;
+			float wristDominantTotalVectorAngle = float.NaN;
+			float wristDominantSquaredTotalVectorAngle = float.NaN;
+			float wristDominantTotalVectorDisplacement = float.NaN;
+			float wristDominantTotalDisplacement = float.NaN;
+			float wristDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.WristLeft, JointType.WristRight, features.HandDominance, true),
 				out var wristDominantFeatures))
 			{
@@ -826,14 +826,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbCMCDominant joint features
-			double? thumbCMCDominantF1F2SpatialAngle = null;
-			double? thumbCMCDominantFN_1FNSpatialAngle = null;
-			double? thumbCMCDominantF1FNSpatialAngle = null;
-			double? thumbCMCDominantTotalVectorAngle = null;
-			double? thumbCMCDominantSquaredTotalVectorAngle = null;
-			double? thumbCMCDominantTotalVectorDisplacement = null;
-			double? thumbCMCDominantTotalDisplacement = null;
-			double? thumbCMCDominantMaximumDisplacement = null;
+			float thumbCMCDominantF1F2SpatialAngle = float.NaN;
+			float thumbCMCDominantFN_1FNSpatialAngle = float.NaN;
+			float thumbCMCDominantF1FNSpatialAngle = float.NaN;
+			float thumbCMCDominantTotalVectorAngle = float.NaN;
+			float thumbCMCDominantSquaredTotalVectorAngle = float.NaN;
+			float thumbCMCDominantTotalVectorDisplacement = float.NaN;
+			float thumbCMCDominantTotalDisplacement = float.NaN;
+			float thumbCMCDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.ThumbCMCLeft, JointType.ThumbCMCRight, features.HandDominance, true),
 				out var thumbCMCDominantFeatures))
 			{
@@ -849,14 +849,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbMCPDominant joint features
-			double? thumbMCPDominantF1F2SpatialAngle = null;
-			double? thumbMCPDominantFN_1FNSpatialAngle = null;
-			double? thumbMCPDominantF1FNSpatialAngle = null;
-			double? thumbMCPDominantTotalVectorAngle = null;
-			double? thumbMCPDominantSquaredTotalVectorAngle = null;
-			double? thumbMCPDominantTotalVectorDisplacement = null;
-			double? thumbMCPDominantTotalDisplacement = null;
-			double? thumbMCPDominantMaximumDisplacement = null;
+			float thumbMCPDominantF1F2SpatialAngle = float.NaN;
+			float thumbMCPDominantFN_1FNSpatialAngle = float.NaN;
+			float thumbMCPDominantF1FNSpatialAngle = float.NaN;
+			float thumbMCPDominantTotalVectorAngle = float.NaN;
+			float thumbMCPDominantSquaredTotalVectorAngle = float.NaN;
+			float thumbMCPDominantTotalVectorDisplacement = float.NaN;
+			float thumbMCPDominantTotalDisplacement = float.NaN;
+			float thumbMCPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.ThumbMCPLeft, JointType.ThumbMCPRight, features.HandDominance, true),
 				out var thumbMCPDominantFeatures))
 			{
@@ -872,14 +872,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbIPDominant joint features
-			double? thumbIPDominantF1F2SpatialAngle = null;
-			double? thumbIPDominantFN_1FNSpatialAngle = null;
-			double? thumbIPDominantF1FNSpatialAngle = null;
-			double? thumbIPDominantTotalVectorAngle = null;
-			double? thumbIPDominantSquaredTotalVectorAngle = null;
-			double? thumbIPDominantTotalVectorDisplacement = null;
-			double? thumbIPDominantTotalDisplacement = null;
-			double? thumbIPDominantMaximumDisplacement = null;
+			float thumbIPDominantF1F2SpatialAngle = float.NaN;
+			float thumbIPDominantFN_1FNSpatialAngle = float.NaN;
+			float thumbIPDominantF1FNSpatialAngle = float.NaN;
+			float thumbIPDominantTotalVectorAngle = float.NaN;
+			float thumbIPDominantSquaredTotalVectorAngle = float.NaN;
+			float thumbIPDominantTotalVectorDisplacement = float.NaN;
+			float thumbIPDominantTotalDisplacement = float.NaN;
+			float thumbIPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.ThumbIPLeft, JointType.ThumbIPRight, features.HandDominance, true),
 				out var thumbIPDominantFeatures))
 			{
@@ -895,14 +895,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbTIPDominant joint features
-			double? thumbTIPDominantF1F2SpatialAngle = null;
-			double? thumbTIPDominantFN_1FNSpatialAngle = null;
-			double? thumbTIPDominantF1FNSpatialAngle = null;
-			double? thumbTIPDominantTotalVectorAngle = null;
-			double? thumbTIPDominantSquaredTotalVectorAngle = null;
-			double? thumbTIPDominantTotalVectorDisplacement = null;
-			double? thumbTIPDominantTotalDisplacement = null;
-			double? thumbTIPDominantMaximumDisplacement = null;
+			float thumbTIPDominantF1F2SpatialAngle = float.NaN;
+			float thumbTIPDominantFN_1FNSpatialAngle = float.NaN;
+			float thumbTIPDominantF1FNSpatialAngle = float.NaN;
+			float thumbTIPDominantTotalVectorAngle = float.NaN;
+			float thumbTIPDominantSquaredTotalVectorAngle = float.NaN;
+			float thumbTIPDominantTotalVectorDisplacement = float.NaN;
+			float thumbTIPDominantTotalDisplacement = float.NaN;
+			float thumbTIPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.ThumbTIPLeft, JointType.ThumbTIPRight, features.HandDominance, true),
 				out var thumbTIPDominantFeatures))
 			{
@@ -918,14 +918,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerMCPDominant joint features
-			double? indexFingerMCPDominantF1F2SpatialAngle = null;
-			double? indexFingerMCPDominantFN_1FNSpatialAngle = null;
-			double? indexFingerMCPDominantF1FNSpatialAngle = null;
-			double? indexFingerMCPDominantTotalVectorAngle = null;
-			double? indexFingerMCPDominantSquaredTotalVectorAngle = null;
-			double? indexFingerMCPDominantTotalVectorDisplacement = null;
-			double? indexFingerMCPDominantTotalDisplacement = null;
-			double? indexFingerMCPDominantMaximumDisplacement = null;
+			float indexFingerMCPDominantF1F2SpatialAngle = float.NaN;
+			float indexFingerMCPDominantFN_1FNSpatialAngle = float.NaN;
+			float indexFingerMCPDominantF1FNSpatialAngle = float.NaN;
+			float indexFingerMCPDominantTotalVectorAngle = float.NaN;
+			float indexFingerMCPDominantSquaredTotalVectorAngle = float.NaN;
+			float indexFingerMCPDominantTotalVectorDisplacement = float.NaN;
+			float indexFingerMCPDominantTotalDisplacement = float.NaN;
+			float indexFingerMCPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.IndexFingerMCPLeft, JointType.IndexFingerMCPRight, features.HandDominance, true),
 				out var indexFingerMCPDominantFeatures))
 			{
@@ -941,14 +941,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerPIPDominant joint features
-			double? indexFingerPIPDominantF1F2SpatialAngle = null;
-			double? indexFingerPIPDominantFN_1FNSpatialAngle = null;
-			double? indexFingerPIPDominantF1FNSpatialAngle = null;
-			double? indexFingerPIPDominantTotalVectorAngle = null;
-			double? indexFingerPIPDominantSquaredTotalVectorAngle = null;
-			double? indexFingerPIPDominantTotalVectorDisplacement = null;
-			double? indexFingerPIPDominantTotalDisplacement = null;
-			double? indexFingerPIPDominantMaximumDisplacement = null;
+			float indexFingerPIPDominantF1F2SpatialAngle = float.NaN;
+			float indexFingerPIPDominantFN_1FNSpatialAngle = float.NaN;
+			float indexFingerPIPDominantF1FNSpatialAngle = float.NaN;
+			float indexFingerPIPDominantTotalVectorAngle = float.NaN;
+			float indexFingerPIPDominantSquaredTotalVectorAngle = float.NaN;
+			float indexFingerPIPDominantTotalVectorDisplacement = float.NaN;
+			float indexFingerPIPDominantTotalDisplacement = float.NaN;
+			float indexFingerPIPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.IndexFingerPIPLeft, JointType.IndexFingerPIPRight, features.HandDominance, true),
 				out var indexFingerPIPDominantFeatures))
 			{
@@ -964,14 +964,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerDIPDominant joint features
-			double? indexFingerDIPDominantF1F2SpatialAngle = null;
-			double? indexFingerDIPDominantFN_1FNSpatialAngle = null;
-			double? indexFingerDIPDominantF1FNSpatialAngle = null;
-			double? indexFingerDIPDominantTotalVectorAngle = null;
-			double? indexFingerDIPDominantSquaredTotalVectorAngle = null;
-			double? indexFingerDIPDominantTotalVectorDisplacement = null;
-			double? indexFingerDIPDominantTotalDisplacement = null;
-			double? indexFingerDIPDominantMaximumDisplacement = null;
+			float indexFingerDIPDominantF1F2SpatialAngle = float.NaN;
+			float indexFingerDIPDominantFN_1FNSpatialAngle = float.NaN;
+			float indexFingerDIPDominantF1FNSpatialAngle = float.NaN;
+			float indexFingerDIPDominantTotalVectorAngle = float.NaN;
+			float indexFingerDIPDominantSquaredTotalVectorAngle = float.NaN;
+			float indexFingerDIPDominantTotalVectorDisplacement = float.NaN;
+			float indexFingerDIPDominantTotalDisplacement = float.NaN;
+			float indexFingerDIPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.IndexFingerDIPLeft, JointType.IndexFingerDIPRight, features.HandDominance, true),
 				out var indexFingerDIPDominantFeatures))
 			{
@@ -987,14 +987,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerTIPDominant joint features
-			double? indexFingerTIPDominantF1F2SpatialAngle = null;
-			double? indexFingerTIPDominantFN_1FNSpatialAngle = null;
-			double? indexFingerTIPDominantF1FNSpatialAngle = null;
-			double? indexFingerTIPDominantTotalVectorAngle = null;
-			double? indexFingerTIPDominantSquaredTotalVectorAngle = null;
-			double? indexFingerTIPDominantTotalVectorDisplacement = null;
-			double? indexFingerTIPDominantTotalDisplacement = null;
-			double? indexFingerTIPDominantMaximumDisplacement = null;
+			float indexFingerTIPDominantF1F2SpatialAngle = float.NaN;
+			float indexFingerTIPDominantFN_1FNSpatialAngle = float.NaN;
+			float indexFingerTIPDominantF1FNSpatialAngle = float.NaN;
+			float indexFingerTIPDominantTotalVectorAngle = float.NaN;
+			float indexFingerTIPDominantSquaredTotalVectorAngle = float.NaN;
+			float indexFingerTIPDominantTotalVectorDisplacement = float.NaN;
+			float indexFingerTIPDominantTotalDisplacement = float.NaN;
+			float indexFingerTIPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.IndexFingerTIPLeft, JointType.IndexFingerTIPRight, features.HandDominance, true),
 				out var indexFingerTIPDominantFeatures))
 			{
@@ -1010,14 +1010,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerMCPDominant joint features
-			double? middleFingerMCPDominantF1F2SpatialAngle = null;
-			double? middleFingerMCPDominantFN_1FNSpatialAngle = null;
-			double? middleFingerMCPDominantF1FNSpatialAngle = null;
-			double? middleFingerMCPDominantTotalVectorAngle = null;
-			double? middleFingerMCPDominantSquaredTotalVectorAngle = null;
-			double? middleFingerMCPDominantTotalVectorDisplacement = null;
-			double? middleFingerMCPDominantTotalDisplacement = null;
-			double? middleFingerMCPDominantMaximumDisplacement = null;
+			float middleFingerMCPDominantF1F2SpatialAngle = float.NaN;
+			float middleFingerMCPDominantFN_1FNSpatialAngle = float.NaN;
+			float middleFingerMCPDominantF1FNSpatialAngle = float.NaN;
+			float middleFingerMCPDominantTotalVectorAngle = float.NaN;
+			float middleFingerMCPDominantSquaredTotalVectorAngle = float.NaN;
+			float middleFingerMCPDominantTotalVectorDisplacement = float.NaN;
+			float middleFingerMCPDominantTotalDisplacement = float.NaN;
+			float middleFingerMCPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.MiddleFingerMCPLeft, JointType.MiddleFingerMCPRight, features.HandDominance, true),
 				out var middleFingerMCPDominantFeatures))
 			{
@@ -1033,14 +1033,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerPIPDominant joint features
-			double? middleFingerPIPDominantF1F2SpatialAngle = null;
-			double? middleFingerPIPDominantFN_1FNSpatialAngle = null;
-			double? middleFingerPIPDominantF1FNSpatialAngle = null;
-			double? middleFingerPIPDominantTotalVectorAngle = null;
-			double? middleFingerPIPDominantSquaredTotalVectorAngle = null;
-			double? middleFingerPIPDominantTotalVectorDisplacement = null;
-			double? middleFingerPIPDominantTotalDisplacement = null;
-			double? middleFingerPIPDominantMaximumDisplacement = null;
+			float middleFingerPIPDominantF1F2SpatialAngle = float.NaN;
+			float middleFingerPIPDominantFN_1FNSpatialAngle = float.NaN;
+			float middleFingerPIPDominantF1FNSpatialAngle = float.NaN;
+			float middleFingerPIPDominantTotalVectorAngle = float.NaN;
+			float middleFingerPIPDominantSquaredTotalVectorAngle = float.NaN;
+			float middleFingerPIPDominantTotalVectorDisplacement = float.NaN;
+			float middleFingerPIPDominantTotalDisplacement = float.NaN;
+			float middleFingerPIPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.MiddleFingerPIPLeft, JointType.MiddleFingerPIPRight, features.HandDominance, true),
 				out var middleFingerPIPDominantFeatures))
 			{
@@ -1056,14 +1056,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerDIPDominant joint features
-			double? middleFingerDIPDominantF1F2SpatialAngle = null;
-			double? middleFingerDIPDominantFN_1FNSpatialAngle = null;
-			double? middleFingerDIPDominantF1FNSpatialAngle = null;
-			double? middleFingerDIPDominantTotalVectorAngle = null;
-			double? middleFingerDIPDominantSquaredTotalVectorAngle = null;
-			double? middleFingerDIPDominantTotalVectorDisplacement = null;
-			double? middleFingerDIPDominantTotalDisplacement = null;
-			double? middleFingerDIPDominantMaximumDisplacement = null;
+			float middleFingerDIPDominantF1F2SpatialAngle = float.NaN;
+			float middleFingerDIPDominantFN_1FNSpatialAngle = float.NaN;
+			float middleFingerDIPDominantF1FNSpatialAngle = float.NaN;
+			float middleFingerDIPDominantTotalVectorAngle = float.NaN;
+			float middleFingerDIPDominantSquaredTotalVectorAngle = float.NaN;
+			float middleFingerDIPDominantTotalVectorDisplacement = float.NaN;
+			float middleFingerDIPDominantTotalDisplacement = float.NaN;
+			float middleFingerDIPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.MiddleFingerDIPLeft, JointType.MiddleFingerDIPRight, features.HandDominance, true),
 				out var middleFingerDIPDominantFeatures))
 			{
@@ -1079,14 +1079,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerTIPDominant joint features
-			double? middleFingerTIPDominantF1F2SpatialAngle = null;
-			double? middleFingerTIPDominantFN_1FNSpatialAngle = null;
-			double? middleFingerTIPDominantF1FNSpatialAngle = null;
-			double? middleFingerTIPDominantTotalVectorAngle = null;
-			double? middleFingerTIPDominantSquaredTotalVectorAngle = null;
-			double? middleFingerTIPDominantTotalVectorDisplacement = null;
-			double? middleFingerTIPDominantTotalDisplacement = null;
-			double? middleFingerTIPDominantMaximumDisplacement = null;
+			float middleFingerTIPDominantF1F2SpatialAngle = float.NaN;
+			float middleFingerTIPDominantFN_1FNSpatialAngle = float.NaN;
+			float middleFingerTIPDominantF1FNSpatialAngle = float.NaN;
+			float middleFingerTIPDominantTotalVectorAngle = float.NaN;
+			float middleFingerTIPDominantSquaredTotalVectorAngle = float.NaN;
+			float middleFingerTIPDominantTotalVectorDisplacement = float.NaN;
+			float middleFingerTIPDominantTotalDisplacement = float.NaN;
+			float middleFingerTIPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.MiddleFingerTIPLeft, JointType.MiddleFingerTIPRight, features.HandDominance, true),
 				out var middleFingerTIPDominantFeatures))
 			{
@@ -1102,14 +1102,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerMCPDominant joint features
-			double? ringFingerMCPDominantF1F2SpatialAngle = null;
-			double? ringFingerMCPDominantFN_1FNSpatialAngle = null;
-			double? ringFingerMCPDominantF1FNSpatialAngle = null;
-			double? ringFingerMCPDominantTotalVectorAngle = null;
-			double? ringFingerMCPDominantSquaredTotalVectorAngle = null;
-			double? ringFingerMCPDominantTotalVectorDisplacement = null;
-			double? ringFingerMCPDominantTotalDisplacement = null;
-			double? ringFingerMCPDominantMaximumDisplacement = null;
+			float ringFingerMCPDominantF1F2SpatialAngle = float.NaN;
+			float ringFingerMCPDominantFN_1FNSpatialAngle = float.NaN;
+			float ringFingerMCPDominantF1FNSpatialAngle = float.NaN;
+			float ringFingerMCPDominantTotalVectorAngle = float.NaN;
+			float ringFingerMCPDominantSquaredTotalVectorAngle = float.NaN;
+			float ringFingerMCPDominantTotalVectorDisplacement = float.NaN;
+			float ringFingerMCPDominantTotalDisplacement = float.NaN;
+			float ringFingerMCPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.RingFingerMCPLeft, JointType.RingFingerMCPRight, features.HandDominance, true),
 				out var ringFingerMCPDominantFeatures))
 			{
@@ -1125,14 +1125,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerPIPDominant joint features
-			double? ringFingerPIPDominantF1F2SpatialAngle = null;
-			double? ringFingerPIPDominantFN_1FNSpatialAngle = null;
-			double? ringFingerPIPDominantF1FNSpatialAngle = null;
-			double? ringFingerPIPDominantTotalVectorAngle = null;
-			double? ringFingerPIPDominantSquaredTotalVectorAngle = null;
-			double? ringFingerPIPDominantTotalVectorDisplacement = null;
-			double? ringFingerPIPDominantTotalDisplacement = null;
-			double? ringFingerPIPDominantMaximumDisplacement = null;
+			float ringFingerPIPDominantF1F2SpatialAngle = float.NaN;
+			float ringFingerPIPDominantFN_1FNSpatialAngle = float.NaN;
+			float ringFingerPIPDominantF1FNSpatialAngle = float.NaN;
+			float ringFingerPIPDominantTotalVectorAngle = float.NaN;
+			float ringFingerPIPDominantSquaredTotalVectorAngle = float.NaN;
+			float ringFingerPIPDominantTotalVectorDisplacement = float.NaN;
+			float ringFingerPIPDominantTotalDisplacement = float.NaN;
+			float ringFingerPIPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.RingFingerPIPLeft, JointType.RingFingerPIPRight, features.HandDominance, true),
 				out var ringFingerPIPDominantFeatures))
 			{
@@ -1148,14 +1148,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerDIPDominant joint features
-			double? ringFingerDIPDominantF1F2SpatialAngle = null;
-			double? ringFingerDIPDominantFN_1FNSpatialAngle = null;
-			double? ringFingerDIPDominantF1FNSpatialAngle = null;
-			double? ringFingerDIPDominantTotalVectorAngle = null;
-			double? ringFingerDIPDominantSquaredTotalVectorAngle = null;
-			double? ringFingerDIPDominantTotalVectorDisplacement = null;
-			double? ringFingerDIPDominantTotalDisplacement = null;
-			double? ringFingerDIPDominantMaximumDisplacement = null;
+			float ringFingerDIPDominantF1F2SpatialAngle = float.NaN;
+			float ringFingerDIPDominantFN_1FNSpatialAngle = float.NaN;
+			float ringFingerDIPDominantF1FNSpatialAngle = float.NaN;
+			float ringFingerDIPDominantTotalVectorAngle = float.NaN;
+			float ringFingerDIPDominantSquaredTotalVectorAngle = float.NaN;
+			float ringFingerDIPDominantTotalVectorDisplacement = float.NaN;
+			float ringFingerDIPDominantTotalDisplacement = float.NaN;
+			float ringFingerDIPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.RingFingerDIPLeft, JointType.RingFingerDIPRight, features.HandDominance, true),
 				out var ringFingerDIPDominantFeatures))
 			{
@@ -1171,14 +1171,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerTIPDominant joint features
-			double? ringFingerTIPDominantF1F2SpatialAngle = null;
-			double? ringFingerTIPDominantFN_1FNSpatialAngle = null;
-			double? ringFingerTIPDominantF1FNSpatialAngle = null;
-			double? ringFingerTIPDominantTotalVectorAngle = null;
-			double? ringFingerTIPDominantSquaredTotalVectorAngle = null;
-			double? ringFingerTIPDominantTotalVectorDisplacement = null;
-			double? ringFingerTIPDominantTotalDisplacement = null;
-			double? ringFingerTIPDominantMaximumDisplacement = null;
+			float ringFingerTIPDominantF1F2SpatialAngle = float.NaN;
+			float ringFingerTIPDominantFN_1FNSpatialAngle = float.NaN;
+			float ringFingerTIPDominantF1FNSpatialAngle = float.NaN;
+			float ringFingerTIPDominantTotalVectorAngle = float.NaN;
+			float ringFingerTIPDominantSquaredTotalVectorAngle = float.NaN;
+			float ringFingerTIPDominantTotalVectorDisplacement = float.NaN;
+			float ringFingerTIPDominantTotalDisplacement = float.NaN;
+			float ringFingerTIPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.RingFingerTIPLeft, JointType.RingFingerTIPRight, features.HandDominance, true),
 				out var ringFingerTIPDominantFeatures))
 			{
@@ -1194,14 +1194,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyMCPDominant joint features
-			double? pinkyMCPDominantF1F2SpatialAngle = null;
-			double? pinkyMCPDominantFN_1FNSpatialAngle = null;
-			double? pinkyMCPDominantF1FNSpatialAngle = null;
-			double? pinkyMCPDominantTotalVectorAngle = null;
-			double? pinkyMCPDominantSquaredTotalVectorAngle = null;
-			double? pinkyMCPDominantTotalVectorDisplacement = null;
-			double? pinkyMCPDominantTotalDisplacement = null;
-			double? pinkyMCPDominantMaximumDisplacement = null;
+			float pinkyMCPDominantF1F2SpatialAngle = float.NaN;
+			float pinkyMCPDominantFN_1FNSpatialAngle = float.NaN;
+			float pinkyMCPDominantF1FNSpatialAngle = float.NaN;
+			float pinkyMCPDominantTotalVectorAngle = float.NaN;
+			float pinkyMCPDominantSquaredTotalVectorAngle = float.NaN;
+			float pinkyMCPDominantTotalVectorDisplacement = float.NaN;
+			float pinkyMCPDominantTotalDisplacement = float.NaN;
+			float pinkyMCPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.PinkyMCPLeft, JointType.PinkyMCPRight, features.HandDominance, true),
 				out var pinkyMCPDominantFeatures))
 			{
@@ -1217,14 +1217,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyPIPDominant joint features
-			double? pinkyPIPDominantF1F2SpatialAngle = null;
-			double? pinkyPIPDominantFN_1FNSpatialAngle = null;
-			double? pinkyPIPDominantF1FNSpatialAngle = null;
-			double? pinkyPIPDominantTotalVectorAngle = null;
-			double? pinkyPIPDominantSquaredTotalVectorAngle = null;
-			double? pinkyPIPDominantTotalVectorDisplacement = null;
-			double? pinkyPIPDominantTotalDisplacement = null;
-			double? pinkyPIPDominantMaximumDisplacement = null;
+			float pinkyPIPDominantF1F2SpatialAngle = float.NaN;
+			float pinkyPIPDominantFN_1FNSpatialAngle = float.NaN;
+			float pinkyPIPDominantF1FNSpatialAngle = float.NaN;
+			float pinkyPIPDominantTotalVectorAngle = float.NaN;
+			float pinkyPIPDominantSquaredTotalVectorAngle = float.NaN;
+			float pinkyPIPDominantTotalVectorDisplacement = float.NaN;
+			float pinkyPIPDominantTotalDisplacement = float.NaN;
+			float pinkyPIPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.PinkyPIPLeft, JointType.PinkyPIPRight, features.HandDominance, true),
 				out var pinkyPIPDominantFeatures))
 			{
@@ -1240,14 +1240,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyDIPDominant joint features
-			double? pinkyDIPDominantF1F2SpatialAngle = null;
-			double? pinkyDIPDominantFN_1FNSpatialAngle = null;
-			double? pinkyDIPDominantF1FNSpatialAngle = null;
-			double? pinkyDIPDominantTotalVectorAngle = null;
-			double? pinkyDIPDominantSquaredTotalVectorAngle = null;
-			double? pinkyDIPDominantTotalVectorDisplacement = null;
-			double? pinkyDIPDominantTotalDisplacement = null;
-			double? pinkyDIPDominantMaximumDisplacement = null;
+			float pinkyDIPDominantF1F2SpatialAngle = float.NaN;
+			float pinkyDIPDominantFN_1FNSpatialAngle = float.NaN;
+			float pinkyDIPDominantF1FNSpatialAngle = float.NaN;
+			float pinkyDIPDominantTotalVectorAngle = float.NaN;
+			float pinkyDIPDominantSquaredTotalVectorAngle = float.NaN;
+			float pinkyDIPDominantTotalVectorDisplacement = float.NaN;
+			float pinkyDIPDominantTotalDisplacement = float.NaN;
+			float pinkyDIPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.PinkyDIPLeft, JointType.PinkyDIPRight, features.HandDominance, true),
 				out var pinkyDIPDominantFeatures))
 			{
@@ -1263,14 +1263,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyTIPDominant joint features
-			double? pinkyTIPDominantF1F2SpatialAngle = null;
-			double? pinkyTIPDominantFN_1FNSpatialAngle = null;
-			double? pinkyTIPDominantF1FNSpatialAngle = null;
-			double? pinkyTIPDominantTotalVectorAngle = null;
-			double? pinkyTIPDominantSquaredTotalVectorAngle = null;
-			double? pinkyTIPDominantTotalVectorDisplacement = null;
-			double? pinkyTIPDominantTotalDisplacement = null;
-			double? pinkyTIPDominantMaximumDisplacement = null;
+			float pinkyTIPDominantF1F2SpatialAngle = float.NaN;
+			float pinkyTIPDominantFN_1FNSpatialAngle = float.NaN;
+			float pinkyTIPDominantF1FNSpatialAngle = float.NaN;
+			float pinkyTIPDominantTotalVectorAngle = float.NaN;
+			float pinkyTIPDominantSquaredTotalVectorAngle = float.NaN;
+			float pinkyTIPDominantTotalVectorDisplacement = float.NaN;
+			float pinkyTIPDominantTotalDisplacement = float.NaN;
+			float pinkyTIPDominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.PinkyTIPLeft, JointType.PinkyTIPRight, features.HandDominance, true),
 				out var pinkyTIPDominantFeatures))
 			{
@@ -1286,17 +1286,17 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region HandDominant joint features
-			double? handDominantF1F2SpatialAngle = null;
-			double? handDominantFN_1FNSpatialAngle = null;
-			double? handDominantF1FNSpatialAngle = null;
-			double? handDominantTotalVectorAngle = null;
-			double? handDominantSquaredTotalVectorAngle = null;
-			double? handDominantTotalVectorDisplacement = null;
-			double? handDominantTotalDisplacement = null;
-			double? handDominantMaximumDisplacement = null;
-			double? handDominantBoundingBoxDiagonalLength = null;
-			double? handDominantBoundingBoxAngle = null;
-			//HandState[] handDominantHandStates = null;
+			float handDominantF1F2SpatialAngle = float.NaN;
+			float handDominantFN_1FNSpatialAngle = float.NaN;
+			float handDominantF1FNSpatialAngle = float.NaN;
+			float handDominantTotalVectorAngle = float.NaN;
+			float handDominantSquaredTotalVectorAngle = float.NaN;
+			float handDominantTotalVectorDisplacement = float.NaN;
+			float handDominantTotalDisplacement = float.NaN;
+			float handDominantMaximumDisplacement = float.NaN;
+			float handDominantBoundingBoxDiagonalLength = float.NaN;
+			float handDominantBoundingBoxAngle = float.NaN;
+			//HandState[] handDominantHandStates = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.HandLeft, JointType.HandRight, features.HandDominance, true),
 				out var handDominantFeatures) && handDominantFeatures is HandJointGestureFeatures handDominantHandFeatures)
 			{
@@ -1315,14 +1315,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region WristNondominant joint features
-			double? wristNondominantF1F2SpatialAngle = null;
-			double? wristNondominantFN_1FNSpatialAngle = null;
-			double? wristNondominantF1FNSpatialAngle = null;
-			double? wristNondominantTotalVectorAngle = null;
-			double? wristNondominantSquaredTotalVectorAngle = null;
-			double? wristNondominantTotalVectorDisplacement = null;
-			double? wristNondominantTotalDisplacement = null;
-			double? wristNondominantMaximumDisplacement = null;
+			float wristNondominantF1F2SpatialAngle = float.NaN;
+			float wristNondominantFN_1FNSpatialAngle = float.NaN;
+			float wristNondominantF1FNSpatialAngle = float.NaN;
+			float wristNondominantTotalVectorAngle = float.NaN;
+			float wristNondominantSquaredTotalVectorAngle = float.NaN;
+			float wristNondominantTotalVectorDisplacement = float.NaN;
+			float wristNondominantTotalDisplacement = float.NaN;
+			float wristNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.WristLeft, JointType.WristRight, features.HandDominance, false),
 				out var wristNondominantFeatures))
 			{
@@ -1338,14 +1338,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbCMCNondominant joint features
-			double? thumbCMCNondominantF1F2SpatialAngle = null;
-			double? thumbCMCNondominantFN_1FNSpatialAngle = null;
-			double? thumbCMCNondominantF1FNSpatialAngle = null;
-			double? thumbCMCNondominantTotalVectorAngle = null;
-			double? thumbCMCNondominantSquaredTotalVectorAngle = null;
-			double? thumbCMCNondominantTotalVectorDisplacement = null;
-			double? thumbCMCNondominantTotalDisplacement = null;
-			double? thumbCMCNondominantMaximumDisplacement = null;
+			float thumbCMCNondominantF1F2SpatialAngle = float.NaN;
+			float thumbCMCNondominantFN_1FNSpatialAngle = float.NaN;
+			float thumbCMCNondominantF1FNSpatialAngle = float.NaN;
+			float thumbCMCNondominantTotalVectorAngle = float.NaN;
+			float thumbCMCNondominantSquaredTotalVectorAngle = float.NaN;
+			float thumbCMCNondominantTotalVectorDisplacement = float.NaN;
+			float thumbCMCNondominantTotalDisplacement = float.NaN;
+			float thumbCMCNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.ThumbCMCLeft, JointType.ThumbCMCRight, features.HandDominance, false),
 				out var thumbCMCNondominantFeatures))
 			{
@@ -1361,14 +1361,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbMCPNondominant joint features
-			double? thumbMCPNondominantF1F2SpatialAngle = null;
-			double? thumbMCPNondominantFN_1FNSpatialAngle = null;
-			double? thumbMCPNondominantF1FNSpatialAngle = null;
-			double? thumbMCPNondominantTotalVectorAngle = null;
-			double? thumbMCPNondominantSquaredTotalVectorAngle = null;
-			double? thumbMCPNondominantTotalVectorDisplacement = null;
-			double? thumbMCPNondominantTotalDisplacement = null;
-			double? thumbMCPNondominantMaximumDisplacement = null;
+			float thumbMCPNondominantF1F2SpatialAngle = float.NaN;
+			float thumbMCPNondominantFN_1FNSpatialAngle = float.NaN;
+			float thumbMCPNondominantF1FNSpatialAngle = float.NaN;
+			float thumbMCPNondominantTotalVectorAngle = float.NaN;
+			float thumbMCPNondominantSquaredTotalVectorAngle = float.NaN;
+			float thumbMCPNondominantTotalVectorDisplacement = float.NaN;
+			float thumbMCPNondominantTotalDisplacement = float.NaN;
+			float thumbMCPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.ThumbMCPLeft, JointType.ThumbMCPRight, features.HandDominance, false),
 				out var thumbMCPNondominantFeatures))
 			{
@@ -1384,14 +1384,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbIPNondominant joint features
-			double? thumbIPNondominantF1F2SpatialAngle = null;
-			double? thumbIPNondominantFN_1FNSpatialAngle = null;
-			double? thumbIPNondominantF1FNSpatialAngle = null;
-			double? thumbIPNondominantTotalVectorAngle = null;
-			double? thumbIPNondominantSquaredTotalVectorAngle = null;
-			double? thumbIPNondominantTotalVectorDisplacement = null;
-			double? thumbIPNondominantTotalDisplacement = null;
-			double? thumbIPNondominantMaximumDisplacement = null;
+			float thumbIPNondominantF1F2SpatialAngle = float.NaN;
+			float thumbIPNondominantFN_1FNSpatialAngle = float.NaN;
+			float thumbIPNondominantF1FNSpatialAngle = float.NaN;
+			float thumbIPNondominantTotalVectorAngle = float.NaN;
+			float thumbIPNondominantSquaredTotalVectorAngle = float.NaN;
+			float thumbIPNondominantTotalVectorDisplacement = float.NaN;
+			float thumbIPNondominantTotalDisplacement = float.NaN;
+			float thumbIPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.ThumbIPLeft, JointType.ThumbIPRight, features.HandDominance, false),
 				out var thumbIPNondominantFeatures))
 			{
@@ -1407,14 +1407,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbTIPNondominant joint features
-			double? thumbTIPNondominantF1F2SpatialAngle = null;
-			double? thumbTIPNondominantFN_1FNSpatialAngle = null;
-			double? thumbTIPNondominantF1FNSpatialAngle = null;
-			double? thumbTIPNondominantTotalVectorAngle = null;
-			double? thumbTIPNondominantSquaredTotalVectorAngle = null;
-			double? thumbTIPNondominantTotalVectorDisplacement = null;
-			double? thumbTIPNondominantTotalDisplacement = null;
-			double? thumbTIPNondominantMaximumDisplacement = null;
+			float thumbTIPNondominantF1F2SpatialAngle = float.NaN;
+			float thumbTIPNondominantFN_1FNSpatialAngle = float.NaN;
+			float thumbTIPNondominantF1FNSpatialAngle = float.NaN;
+			float thumbTIPNondominantTotalVectorAngle = float.NaN;
+			float thumbTIPNondominantSquaredTotalVectorAngle = float.NaN;
+			float thumbTIPNondominantTotalVectorDisplacement = float.NaN;
+			float thumbTIPNondominantTotalDisplacement = float.NaN;
+			float thumbTIPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.ThumbTIPLeft, JointType.ThumbTIPRight, features.HandDominance, false),
 				out var thumbTIPNondominantFeatures))
 			{
@@ -1430,14 +1430,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerMCPNondominant joint features
-			double? indexFingerMCPNondominantF1F2SpatialAngle = null;
-			double? indexFingerMCPNondominantFN_1FNSpatialAngle = null;
-			double? indexFingerMCPNondominantF1FNSpatialAngle = null;
-			double? indexFingerMCPNondominantTotalVectorAngle = null;
-			double? indexFingerMCPNondominantSquaredTotalVectorAngle = null;
-			double? indexFingerMCPNondominantTotalVectorDisplacement = null;
-			double? indexFingerMCPNondominantTotalDisplacement = null;
-			double? indexFingerMCPNondominantMaximumDisplacement = null;
+			float indexFingerMCPNondominantF1F2SpatialAngle = float.NaN;
+			float indexFingerMCPNondominantFN_1FNSpatialAngle = float.NaN;
+			float indexFingerMCPNondominantF1FNSpatialAngle = float.NaN;
+			float indexFingerMCPNondominantTotalVectorAngle = float.NaN;
+			float indexFingerMCPNondominantSquaredTotalVectorAngle = float.NaN;
+			float indexFingerMCPNondominantTotalVectorDisplacement = float.NaN;
+			float indexFingerMCPNondominantTotalDisplacement = float.NaN;
+			float indexFingerMCPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.IndexFingerMCPLeft, JointType.IndexFingerMCPRight, features.HandDominance, false),
 				out var indexFingerMCPNondominantFeatures))
 			{
@@ -1453,14 +1453,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerPIPNondominant joint features
-			double? indexFingerPIPNondominantF1F2SpatialAngle = null;
-			double? indexFingerPIPNondominantFN_1FNSpatialAngle = null;
-			double? indexFingerPIPNondominantF1FNSpatialAngle = null;
-			double? indexFingerPIPNondominantTotalVectorAngle = null;
-			double? indexFingerPIPNondominantSquaredTotalVectorAngle = null;
-			double? indexFingerPIPNondominantTotalVectorDisplacement = null;
-			double? indexFingerPIPNondominantTotalDisplacement = null;
-			double? indexFingerPIPNondominantMaximumDisplacement = null;
+			float indexFingerPIPNondominantF1F2SpatialAngle = float.NaN;
+			float indexFingerPIPNondominantFN_1FNSpatialAngle = float.NaN;
+			float indexFingerPIPNondominantF1FNSpatialAngle = float.NaN;
+			float indexFingerPIPNondominantTotalVectorAngle = float.NaN;
+			float indexFingerPIPNondominantSquaredTotalVectorAngle = float.NaN;
+			float indexFingerPIPNondominantTotalVectorDisplacement = float.NaN;
+			float indexFingerPIPNondominantTotalDisplacement = float.NaN;
+			float indexFingerPIPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.IndexFingerPIPLeft, JointType.IndexFingerPIPRight, features.HandDominance, false),
 				out var indexFingerPIPNondominantFeatures))
 			{
@@ -1476,14 +1476,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerDIPNondominant joint features
-			double? indexFingerDIPNondominantF1F2SpatialAngle = null;
-			double? indexFingerDIPNondominantFN_1FNSpatialAngle = null;
-			double? indexFingerDIPNondominantF1FNSpatialAngle = null;
-			double? indexFingerDIPNondominantTotalVectorAngle = null;
-			double? indexFingerDIPNondominantSquaredTotalVectorAngle = null;
-			double? indexFingerDIPNondominantTotalVectorDisplacement = null;
-			double? indexFingerDIPNondominantTotalDisplacement = null;
-			double? indexFingerDIPNondominantMaximumDisplacement = null;
+			float indexFingerDIPNondominantF1F2SpatialAngle = float.NaN;
+			float indexFingerDIPNondominantFN_1FNSpatialAngle = float.NaN;
+			float indexFingerDIPNondominantF1FNSpatialAngle = float.NaN;
+			float indexFingerDIPNondominantTotalVectorAngle = float.NaN;
+			float indexFingerDIPNondominantSquaredTotalVectorAngle = float.NaN;
+			float indexFingerDIPNondominantTotalVectorDisplacement = float.NaN;
+			float indexFingerDIPNondominantTotalDisplacement = float.NaN;
+			float indexFingerDIPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.IndexFingerDIPLeft, JointType.IndexFingerDIPRight, features.HandDominance, false),
 				out var indexFingerDIPNondominantFeatures))
 			{
@@ -1499,14 +1499,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerTIPNondominant joint features
-			double? indexFingerTIPNondominantF1F2SpatialAngle = null;
-			double? indexFingerTIPNondominantFN_1FNSpatialAngle = null;
-			double? indexFingerTIPNondominantF1FNSpatialAngle = null;
-			double? indexFingerTIPNondominantTotalVectorAngle = null;
-			double? indexFingerTIPNondominantSquaredTotalVectorAngle = null;
-			double? indexFingerTIPNondominantTotalVectorDisplacement = null;
-			double? indexFingerTIPNondominantTotalDisplacement = null;
-			double? indexFingerTIPNondominantMaximumDisplacement = null;
+			float indexFingerTIPNondominantF1F2SpatialAngle = float.NaN;
+			float indexFingerTIPNondominantFN_1FNSpatialAngle = float.NaN;
+			float indexFingerTIPNondominantF1FNSpatialAngle = float.NaN;
+			float indexFingerTIPNondominantTotalVectorAngle = float.NaN;
+			float indexFingerTIPNondominantSquaredTotalVectorAngle = float.NaN;
+			float indexFingerTIPNondominantTotalVectorDisplacement = float.NaN;
+			float indexFingerTIPNondominantTotalDisplacement = float.NaN;
+			float indexFingerTIPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.IndexFingerTIPLeft, JointType.IndexFingerTIPRight, features.HandDominance, false),
 				out var indexFingerTIPNondominantFeatures))
 			{
@@ -1522,14 +1522,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerMCPNondominant joint features
-			double? middleFingerMCPNondominantF1F2SpatialAngle = null;
-			double? middleFingerMCPNondominantFN_1FNSpatialAngle = null;
-			double? middleFingerMCPNondominantF1FNSpatialAngle = null;
-			double? middleFingerMCPNondominantTotalVectorAngle = null;
-			double? middleFingerMCPNondominantSquaredTotalVectorAngle = null;
-			double? middleFingerMCPNondominantTotalVectorDisplacement = null;
-			double? middleFingerMCPNondominantTotalDisplacement = null;
-			double? middleFingerMCPNondominantMaximumDisplacement = null;
+			float middleFingerMCPNondominantF1F2SpatialAngle = float.NaN;
+			float middleFingerMCPNondominantFN_1FNSpatialAngle = float.NaN;
+			float middleFingerMCPNondominantF1FNSpatialAngle = float.NaN;
+			float middleFingerMCPNondominantTotalVectorAngle = float.NaN;
+			float middleFingerMCPNondominantSquaredTotalVectorAngle = float.NaN;
+			float middleFingerMCPNondominantTotalVectorDisplacement = float.NaN;
+			float middleFingerMCPNondominantTotalDisplacement = float.NaN;
+			float middleFingerMCPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.MiddleFingerMCPLeft, JointType.MiddleFingerMCPRight, features.HandDominance, false),
 				out var middleFingerMCPNondominantFeatures))
 			{
@@ -1545,14 +1545,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerPIPNondominant joint features
-			double? middleFingerPIPNondominantF1F2SpatialAngle = null;
-			double? middleFingerPIPNondominantFN_1FNSpatialAngle = null;
-			double? middleFingerPIPNondominantF1FNSpatialAngle = null;
-			double? middleFingerPIPNondominantTotalVectorAngle = null;
-			double? middleFingerPIPNondominantSquaredTotalVectorAngle = null;
-			double? middleFingerPIPNondominantTotalVectorDisplacement = null;
-			double? middleFingerPIPNondominantTotalDisplacement = null;
-			double? middleFingerPIPNondominantMaximumDisplacement = null;
+			float middleFingerPIPNondominantF1F2SpatialAngle = float.NaN;
+			float middleFingerPIPNondominantFN_1FNSpatialAngle = float.NaN;
+			float middleFingerPIPNondominantF1FNSpatialAngle = float.NaN;
+			float middleFingerPIPNondominantTotalVectorAngle = float.NaN;
+			float middleFingerPIPNondominantSquaredTotalVectorAngle = float.NaN;
+			float middleFingerPIPNondominantTotalVectorDisplacement = float.NaN;
+			float middleFingerPIPNondominantTotalDisplacement = float.NaN;
+			float middleFingerPIPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.MiddleFingerPIPLeft, JointType.MiddleFingerPIPRight, features.HandDominance, false),
 				out var middleFingerPIPNondominantFeatures))
 			{
@@ -1568,14 +1568,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerDIPNondominant joint features
-			double? middleFingerDIPNondominantF1F2SpatialAngle = null;
-			double? middleFingerDIPNondominantFN_1FNSpatialAngle = null;
-			double? middleFingerDIPNondominantF1FNSpatialAngle = null;
-			double? middleFingerDIPNondominantTotalVectorAngle = null;
-			double? middleFingerDIPNondominantSquaredTotalVectorAngle = null;
-			double? middleFingerDIPNondominantTotalVectorDisplacement = null;
-			double? middleFingerDIPNondominantTotalDisplacement = null;
-			double? middleFingerDIPNondominantMaximumDisplacement = null;
+			float middleFingerDIPNondominantF1F2SpatialAngle = float.NaN;
+			float middleFingerDIPNondominantFN_1FNSpatialAngle = float.NaN;
+			float middleFingerDIPNondominantF1FNSpatialAngle = float.NaN;
+			float middleFingerDIPNondominantTotalVectorAngle = float.NaN;
+			float middleFingerDIPNondominantSquaredTotalVectorAngle = float.NaN;
+			float middleFingerDIPNondominantTotalVectorDisplacement = float.NaN;
+			float middleFingerDIPNondominantTotalDisplacement = float.NaN;
+			float middleFingerDIPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.MiddleFingerDIPLeft, JointType.MiddleFingerDIPRight, features.HandDominance, false),
 				out var middleFingerDIPNondominantFeatures))
 			{
@@ -1591,14 +1591,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerTIPNondominant joint features
-			double? middleFingerTIPNondominantF1F2SpatialAngle = null;
-			double? middleFingerTIPNondominantFN_1FNSpatialAngle = null;
-			double? middleFingerTIPNondominantF1FNSpatialAngle = null;
-			double? middleFingerTIPNondominantTotalVectorAngle = null;
-			double? middleFingerTIPNondominantSquaredTotalVectorAngle = null;
-			double? middleFingerTIPNondominantTotalVectorDisplacement = null;
-			double? middleFingerTIPNondominantTotalDisplacement = null;
-			double? middleFingerTIPNondominantMaximumDisplacement = null;
+			float middleFingerTIPNondominantF1F2SpatialAngle = float.NaN;
+			float middleFingerTIPNondominantFN_1FNSpatialAngle = float.NaN;
+			float middleFingerTIPNondominantF1FNSpatialAngle = float.NaN;
+			float middleFingerTIPNondominantTotalVectorAngle = float.NaN;
+			float middleFingerTIPNondominantSquaredTotalVectorAngle = float.NaN;
+			float middleFingerTIPNondominantTotalVectorDisplacement = float.NaN;
+			float middleFingerTIPNondominantTotalDisplacement = float.NaN;
+			float middleFingerTIPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.MiddleFingerTIPLeft, JointType.MiddleFingerTIPRight, features.HandDominance, false),
 				out var middleFingerTIPNondominantFeatures))
 			{
@@ -1614,14 +1614,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerMCPNondominant joint features
-			double? ringFingerMCPNondominantF1F2SpatialAngle = null;
-			double? ringFingerMCPNondominantFN_1FNSpatialAngle = null;
-			double? ringFingerMCPNondominantF1FNSpatialAngle = null;
-			double? ringFingerMCPNondominantTotalVectorAngle = null;
-			double? ringFingerMCPNondominantSquaredTotalVectorAngle = null;
-			double? ringFingerMCPNondominantTotalVectorDisplacement = null;
-			double? ringFingerMCPNondominantTotalDisplacement = null;
-			double? ringFingerMCPNondominantMaximumDisplacement = null;
+			float ringFingerMCPNondominantF1F2SpatialAngle = float.NaN;
+			float ringFingerMCPNondominantFN_1FNSpatialAngle = float.NaN;
+			float ringFingerMCPNondominantF1FNSpatialAngle = float.NaN;
+			float ringFingerMCPNondominantTotalVectorAngle = float.NaN;
+			float ringFingerMCPNondominantSquaredTotalVectorAngle = float.NaN;
+			float ringFingerMCPNondominantTotalVectorDisplacement = float.NaN;
+			float ringFingerMCPNondominantTotalDisplacement = float.NaN;
+			float ringFingerMCPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.RingFingerMCPLeft, JointType.RingFingerMCPRight, features.HandDominance, false),
 				out var ringFingerMCPNondominantFeatures))
 			{
@@ -1637,14 +1637,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerPIPNondominant joint features
-			double? ringFingerPIPNondominantF1F2SpatialAngle = null;
-			double? ringFingerPIPNondominantFN_1FNSpatialAngle = null;
-			double? ringFingerPIPNondominantF1FNSpatialAngle = null;
-			double? ringFingerPIPNondominantTotalVectorAngle = null;
-			double? ringFingerPIPNondominantSquaredTotalVectorAngle = null;
-			double? ringFingerPIPNondominantTotalVectorDisplacement = null;
-			double? ringFingerPIPNondominantTotalDisplacement = null;
-			double? ringFingerPIPNondominantMaximumDisplacement = null;
+			float ringFingerPIPNondominantF1F2SpatialAngle = float.NaN;
+			float ringFingerPIPNondominantFN_1FNSpatialAngle = float.NaN;
+			float ringFingerPIPNondominantF1FNSpatialAngle = float.NaN;
+			float ringFingerPIPNondominantTotalVectorAngle = float.NaN;
+			float ringFingerPIPNondominantSquaredTotalVectorAngle = float.NaN;
+			float ringFingerPIPNondominantTotalVectorDisplacement = float.NaN;
+			float ringFingerPIPNondominantTotalDisplacement = float.NaN;
+			float ringFingerPIPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.RingFingerPIPLeft, JointType.RingFingerPIPRight, features.HandDominance, false),
 				out var ringFingerPIPNondominantFeatures))
 			{
@@ -1660,14 +1660,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerDIPNondominant joint features
-			double? ringFingerDIPNondominantF1F2SpatialAngle = null;
-			double? ringFingerDIPNondominantFN_1FNSpatialAngle = null;
-			double? ringFingerDIPNondominantF1FNSpatialAngle = null;
-			double? ringFingerDIPNondominantTotalVectorAngle = null;
-			double? ringFingerDIPNondominantSquaredTotalVectorAngle = null;
-			double? ringFingerDIPNondominantTotalVectorDisplacement = null;
-			double? ringFingerDIPNondominantTotalDisplacement = null;
-			double? ringFingerDIPNondominantMaximumDisplacement = null;
+			float ringFingerDIPNondominantF1F2SpatialAngle = float.NaN;
+			float ringFingerDIPNondominantFN_1FNSpatialAngle = float.NaN;
+			float ringFingerDIPNondominantF1FNSpatialAngle = float.NaN;
+			float ringFingerDIPNondominantTotalVectorAngle = float.NaN;
+			float ringFingerDIPNondominantSquaredTotalVectorAngle = float.NaN;
+			float ringFingerDIPNondominantTotalVectorDisplacement = float.NaN;
+			float ringFingerDIPNondominantTotalDisplacement = float.NaN;
+			float ringFingerDIPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.RingFingerDIPLeft, JointType.RingFingerDIPRight, features.HandDominance, false),
 				out var ringFingerDIPNondominantFeatures))
 			{
@@ -1683,14 +1683,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerTIPNondominant joint features
-			double? ringFingerTIPNondominantF1F2SpatialAngle = null;
-			double? ringFingerTIPNondominantFN_1FNSpatialAngle = null;
-			double? ringFingerTIPNondominantF1FNSpatialAngle = null;
-			double? ringFingerTIPNondominantTotalVectorAngle = null;
-			double? ringFingerTIPNondominantSquaredTotalVectorAngle = null;
-			double? ringFingerTIPNondominantTotalVectorDisplacement = null;
-			double? ringFingerTIPNondominantTotalDisplacement = null;
-			double? ringFingerTIPNondominantMaximumDisplacement = null;
+			float ringFingerTIPNondominantF1F2SpatialAngle = float.NaN;
+			float ringFingerTIPNondominantFN_1FNSpatialAngle = float.NaN;
+			float ringFingerTIPNondominantF1FNSpatialAngle = float.NaN;
+			float ringFingerTIPNondominantTotalVectorAngle = float.NaN;
+			float ringFingerTIPNondominantSquaredTotalVectorAngle = float.NaN;
+			float ringFingerTIPNondominantTotalVectorDisplacement = float.NaN;
+			float ringFingerTIPNondominantTotalDisplacement = float.NaN;
+			float ringFingerTIPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.RingFingerTIPLeft, JointType.RingFingerTIPRight, features.HandDominance, false),
 				out var ringFingerTIPNondominantFeatures))
 			{
@@ -1706,14 +1706,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyMCPNondominant joint features
-			double? pinkyMCPNondominantF1F2SpatialAngle = null;
-			double? pinkyMCPNondominantFN_1FNSpatialAngle = null;
-			double? pinkyMCPNondominantF1FNSpatialAngle = null;
-			double? pinkyMCPNondominantTotalVectorAngle = null;
-			double? pinkyMCPNondominantSquaredTotalVectorAngle = null;
-			double? pinkyMCPNondominantTotalVectorDisplacement = null;
-			double? pinkyMCPNondominantTotalDisplacement = null;
-			double? pinkyMCPNondominantMaximumDisplacement = null;
+			float pinkyMCPNondominantF1F2SpatialAngle = float.NaN;
+			float pinkyMCPNondominantFN_1FNSpatialAngle = float.NaN;
+			float pinkyMCPNondominantF1FNSpatialAngle = float.NaN;
+			float pinkyMCPNondominantTotalVectorAngle = float.NaN;
+			float pinkyMCPNondominantSquaredTotalVectorAngle = float.NaN;
+			float pinkyMCPNondominantTotalVectorDisplacement = float.NaN;
+			float pinkyMCPNondominantTotalDisplacement = float.NaN;
+			float pinkyMCPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.PinkyMCPLeft, JointType.PinkyMCPRight, features.HandDominance, false),
 				out var pinkyMCPNondominantFeatures))
 			{
@@ -1729,14 +1729,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyPIPNondominant joint features
-			double? pinkyPIPNondominantF1F2SpatialAngle = null;
-			double? pinkyPIPNondominantFN_1FNSpatialAngle = null;
-			double? pinkyPIPNondominantF1FNSpatialAngle = null;
-			double? pinkyPIPNondominantTotalVectorAngle = null;
-			double? pinkyPIPNondominantSquaredTotalVectorAngle = null;
-			double? pinkyPIPNondominantTotalVectorDisplacement = null;
-			double? pinkyPIPNondominantTotalDisplacement = null;
-			double? pinkyPIPNondominantMaximumDisplacement = null;
+			float pinkyPIPNondominantF1F2SpatialAngle = float.NaN;
+			float pinkyPIPNondominantFN_1FNSpatialAngle = float.NaN;
+			float pinkyPIPNondominantF1FNSpatialAngle = float.NaN;
+			float pinkyPIPNondominantTotalVectorAngle = float.NaN;
+			float pinkyPIPNondominantSquaredTotalVectorAngle = float.NaN;
+			float pinkyPIPNondominantTotalVectorDisplacement = float.NaN;
+			float pinkyPIPNondominantTotalDisplacement = float.NaN;
+			float pinkyPIPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.PinkyPIPLeft, JointType.PinkyPIPRight, features.HandDominance, false),
 				out var pinkyPIPNondominantFeatures))
 			{
@@ -1752,14 +1752,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyDIPNondominant joint features
-			double? pinkyDIPNondominantF1F2SpatialAngle = null;
-			double? pinkyDIPNondominantFN_1FNSpatialAngle = null;
-			double? pinkyDIPNondominantF1FNSpatialAngle = null;
-			double? pinkyDIPNondominantTotalVectorAngle = null;
-			double? pinkyDIPNondominantSquaredTotalVectorAngle = null;
-			double? pinkyDIPNondominantTotalVectorDisplacement = null;
-			double? pinkyDIPNondominantTotalDisplacement = null;
-			double? pinkyDIPNondominantMaximumDisplacement = null;
+			float pinkyDIPNondominantF1F2SpatialAngle = float.NaN;
+			float pinkyDIPNondominantFN_1FNSpatialAngle = float.NaN;
+			float pinkyDIPNondominantF1FNSpatialAngle = float.NaN;
+			float pinkyDIPNondominantTotalVectorAngle = float.NaN;
+			float pinkyDIPNondominantSquaredTotalVectorAngle = float.NaN;
+			float pinkyDIPNondominantTotalVectorDisplacement = float.NaN;
+			float pinkyDIPNondominantTotalDisplacement = float.NaN;
+			float pinkyDIPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.PinkyDIPLeft, JointType.PinkyDIPRight, features.HandDominance, false),
 				out var pinkyDIPNondominantFeatures))
 			{
@@ -1775,14 +1775,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyTIPNondominant joint features
-			double? pinkyTIPNondominantF1F2SpatialAngle = null;
-			double? pinkyTIPNondominantFN_1FNSpatialAngle = null;
-			double? pinkyTIPNondominantF1FNSpatialAngle = null;
-			double? pinkyTIPNondominantTotalVectorAngle = null;
-			double? pinkyTIPNondominantSquaredTotalVectorAngle = null;
-			double? pinkyTIPNondominantTotalVectorDisplacement = null;
-			double? pinkyTIPNondominantTotalDisplacement = null;
-			double? pinkyTIPNondominantMaximumDisplacement = null;
+			float pinkyTIPNondominantF1F2SpatialAngle = float.NaN;
+			float pinkyTIPNondominantFN_1FNSpatialAngle = float.NaN;
+			float pinkyTIPNondominantF1FNSpatialAngle = float.NaN;
+			float pinkyTIPNondominantTotalVectorAngle = float.NaN;
+			float pinkyTIPNondominantSquaredTotalVectorAngle = float.NaN;
+			float pinkyTIPNondominantTotalVectorDisplacement = float.NaN;
+			float pinkyTIPNondominantTotalDisplacement = float.NaN;
+			float pinkyTIPNondominantMaximumDisplacement = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.PinkyTIPLeft, JointType.PinkyTIPRight, features.HandDominance, false),
 				out var pinkyTIPNondominantFeatures))
 			{
@@ -1798,17 +1798,17 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region HandNondominant joint features
-			double? handNondominantF1F2SpatialAngle = null;
-			double? handNondominantFN_1FNSpatialAngle = null;
-			double? handNondominantF1FNSpatialAngle = null;
-			double? handNondominantTotalVectorAngle = null;
-			double? handNondominantSquaredTotalVectorAngle = null;
-			double? handNondominantTotalVectorDisplacement = null;
-			double? handNondominantTotalDisplacement = null;
-			double? handNondominantMaximumDisplacement = null;
-			double? handNondominantBoundingBoxDiagonalLength = null;
-			double? handNondominantBoundingBoxAngle = null;
-			//HandState[] handNondominantHandStates = null;
+			float handNondominantF1F2SpatialAngle = float.NaN;
+			float handNondominantFN_1FNSpatialAngle = float.NaN;
+			float handNondominantF1FNSpatialAngle = float.NaN;
+			float handNondominantTotalVectorAngle = float.NaN;
+			float handNondominantSquaredTotalVectorAngle = float.NaN;
+			float handNondominantTotalVectorDisplacement = float.NaN;
+			float handNondominantTotalDisplacement = float.NaN;
+			float handNondominantMaximumDisplacement = float.NaN;
+			float handNondominantBoundingBoxDiagonalLength = float.NaN;
+			float handNondominantBoundingBoxAngle = float.NaN;
+			//HandState[] handNondominantHandStates = float.NaN;
 			if (features.JointsGestureFeaturesDict.TryGetValue(GetJointTypeByHandDominance(JointType.HandLeft, JointType.HandRight, features.HandDominance, false),
 				out var handNondominantFeatures) && handNondominantFeatures is HandJointGestureFeatures handNondominantHandFeatures)
 			{
@@ -1827,10 +1827,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region WristThumbCMCDominant bone features
-			double? wristThumbCMCDominantBoneInitialAngle = null;
-			double? wristThumbCMCDominantBoneFinalAngle = null;
-			double? wristThumbCMCDominantBoneMeanAngle = null;
-			double? wristThumbCMCDominantBoneMaximumAngle = null;
+			float wristThumbCMCDominantBoneInitialAngle = float.NaN;
+			float wristThumbCMCDominantBoneFinalAngle = float.NaN;
+			float wristThumbCMCDominantBoneMeanAngle = float.NaN;
+			float wristThumbCMCDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.WristThumbCMCLeftBone, MediaPipeHandLandmarksBonesDefs.WristThumbCMCRightBone,
 				features.HandDominance, true), out var wristThumbCMCDominantBoneAngleData))
 			{
@@ -1842,10 +1842,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbCMCThumbMCPDominant bone features
-			double? thumbCMCThumbMCPDominantBoneInitialAngle = null;
-			double? thumbCMCThumbMCPDominantBoneFinalAngle = null;
-			double? thumbCMCThumbMCPDominantBoneMeanAngle = null;
-			double? thumbCMCThumbMCPDominantBoneMaximumAngle = null;
+			float thumbCMCThumbMCPDominantBoneInitialAngle = float.NaN;
+			float thumbCMCThumbMCPDominantBoneFinalAngle = float.NaN;
+			float thumbCMCThumbMCPDominantBoneMeanAngle = float.NaN;
+			float thumbCMCThumbMCPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbCMCThumbMCPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbCMCThumbMCPRightBone,
 				features.HandDominance, true), out var thumbCMCThumbMCPDominantBoneAngleData))
 			{
@@ -1857,10 +1857,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbMCPThumbIPDominant bone features
-			double? thumbMCPThumbIPDominantBoneInitialAngle = null;
-			double? thumbMCPThumbIPDominantBoneFinalAngle = null;
-			double? thumbMCPThumbIPDominantBoneMeanAngle = null;
-			double? thumbMCPThumbIPDominantBoneMaximumAngle = null;
+			float thumbMCPThumbIPDominantBoneInitialAngle = float.NaN;
+			float thumbMCPThumbIPDominantBoneFinalAngle = float.NaN;
+			float thumbMCPThumbIPDominantBoneMeanAngle = float.NaN;
+			float thumbMCPThumbIPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbMCPThumbIPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbMCPThumbIPRightBone,
 				features.HandDominance, true), out var thumbMCPThumbIPDominantBoneAngleData))
 			{
@@ -1872,10 +1872,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbIPThumbTIPDominant bone features
-			double? thumbIPThumbTIPDominantBoneInitialAngle = null;
-			double? thumbIPThumbTIPDominantBoneFinalAngle = null;
-			double? thumbIPThumbTIPDominantBoneMeanAngle = null;
-			double? thumbIPThumbTIPDominantBoneMaximumAngle = null;
+			float thumbIPThumbTIPDominantBoneInitialAngle = float.NaN;
+			float thumbIPThumbTIPDominantBoneFinalAngle = float.NaN;
+			float thumbIPThumbTIPDominantBoneMeanAngle = float.NaN;
+			float thumbIPThumbTIPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbIPThumbTIPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbIPThumbTIPRightBone,
 				features.HandDominance, true), out var thumbIPThumbTIPDominantBoneAngleData))
 			{
@@ -1887,10 +1887,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region WristIndexFingerMCPDominant bone features
-			double? wristIndexFingerMCPDominantBoneInitialAngle = null;
-			double? wristIndexFingerMCPDominantBoneFinalAngle = null;
-			double? wristIndexFingerMCPDominantBoneMeanAngle = null;
-			double? wristIndexFingerMCPDominantBoneMaximumAngle = null;
+			float wristIndexFingerMCPDominantBoneInitialAngle = float.NaN;
+			float wristIndexFingerMCPDominantBoneFinalAngle = float.NaN;
+			float wristIndexFingerMCPDominantBoneMeanAngle = float.NaN;
+			float wristIndexFingerMCPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.WristIndexFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.WristIndexFingerMCPRightBone,
 				features.HandDominance, true), out var wristIndexFingerMCPDominantBoneAngleData))
 			{
@@ -1902,10 +1902,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerMCPIndexFingerPIPDominant bone features
-			double? indexFingerMCPIndexFingerPIPDominantBoneInitialAngle = null;
-			double? indexFingerMCPIndexFingerPIPDominantBoneFinalAngle = null;
-			double? indexFingerMCPIndexFingerPIPDominantBoneMeanAngle = null;
-			double? indexFingerMCPIndexFingerPIPDominantBoneMaximumAngle = null;
+			float indexFingerMCPIndexFingerPIPDominantBoneInitialAngle = float.NaN;
+			float indexFingerMCPIndexFingerPIPDominantBoneFinalAngle = float.NaN;
+			float indexFingerMCPIndexFingerPIPDominantBoneMeanAngle = float.NaN;
+			float indexFingerMCPIndexFingerPIPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.IndexFingerMCPIndexFingerPIPLeftBone, MediaPipeHandLandmarksBonesDefs.IndexFingerMCPIndexFingerPIPRightBone,
 				features.HandDominance, true), out var indexFingerMCPIndexFingerPIPDominantBoneAngleData))
 			{
@@ -1917,10 +1917,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerPIPIndexFingerDIPDominant bone features
-			double? indexFingerPIPIndexFingerDIPDominantBoneInitialAngle = null;
-			double? indexFingerPIPIndexFingerDIPDominantBoneFinalAngle = null;
-			double? indexFingerPIPIndexFingerDIPDominantBoneMeanAngle = null;
-			double? indexFingerPIPIndexFingerDIPDominantBoneMaximumAngle = null;
+			float indexFingerPIPIndexFingerDIPDominantBoneInitialAngle = float.NaN;
+			float indexFingerPIPIndexFingerDIPDominantBoneFinalAngle = float.NaN;
+			float indexFingerPIPIndexFingerDIPDominantBoneMeanAngle = float.NaN;
+			float indexFingerPIPIndexFingerDIPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.IndexFingerPIPIndexFingerDIPLeftBone, MediaPipeHandLandmarksBonesDefs.IndexFingerPIPIndexFingerDIPRightBone,
 				features.HandDominance, true), out var indexFingerPIPIndexFingerDIPDominantBoneAngleData))
 			{
@@ -1932,10 +1932,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerDIPIndexFingerTIPDominant bone features
-			double? indexFingerDIPIndexFingerTIPDominantBoneInitialAngle = null;
-			double? indexFingerDIPIndexFingerTIPDominantBoneFinalAngle = null;
-			double? indexFingerDIPIndexFingerTIPDominantBoneMeanAngle = null;
-			double? indexFingerDIPIndexFingerTIPDominantBoneMaximumAngle = null;
+			float indexFingerDIPIndexFingerTIPDominantBoneInitialAngle = float.NaN;
+			float indexFingerDIPIndexFingerTIPDominantBoneFinalAngle = float.NaN;
+			float indexFingerDIPIndexFingerTIPDominantBoneMeanAngle = float.NaN;
+			float indexFingerDIPIndexFingerTIPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.IndexFingerDIPIndexFingerTIPLeftBone, MediaPipeHandLandmarksBonesDefs.IndexFingerDIPIndexFingerTIPRightBone,
 				features.HandDominance, true), out var indexFingerDIPIndexFingerTIPDominantBoneAngleData))
 			{
@@ -1947,10 +1947,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerMCPMiddleFingerPIPDominant bone features
-			double? middleFingerMCPMiddleFingerPIPDominantBoneInitialAngle = null;
-			double? middleFingerMCPMiddleFingerPIPDominantBoneFinalAngle = null;
-			double? middleFingerMCPMiddleFingerPIPDominantBoneMeanAngle = null;
-			double? middleFingerMCPMiddleFingerPIPDominantBoneMaximumAngle = null;
+			float middleFingerMCPMiddleFingerPIPDominantBoneInitialAngle = float.NaN;
+			float middleFingerMCPMiddleFingerPIPDominantBoneFinalAngle = float.NaN;
+			float middleFingerMCPMiddleFingerPIPDominantBoneMeanAngle = float.NaN;
+			float middleFingerMCPMiddleFingerPIPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.MiddleFingerMCPMiddleFingerPIPLeftBone, MediaPipeHandLandmarksBonesDefs.MiddleFingerMCPMiddleFingerPIPRightBone,
 				features.HandDominance, true), out var middleFingerMCPMiddleFingerPIPDominantBoneAngleData))
 			{
@@ -1962,10 +1962,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerPIPMiddleFingerDIPDominant bone features
-			double? middleFingerPIPMiddleFingerDIPDominantBoneInitialAngle = null;
-			double? middleFingerPIPMiddleFingerDIPDominantBoneFinalAngle = null;
-			double? middleFingerPIPMiddleFingerDIPDominantBoneMeanAngle = null;
-			double? middleFingerPIPMiddleFingerDIPDominantBoneMaximumAngle = null;
+			float middleFingerPIPMiddleFingerDIPDominantBoneInitialAngle = float.NaN;
+			float middleFingerPIPMiddleFingerDIPDominantBoneFinalAngle = float.NaN;
+			float middleFingerPIPMiddleFingerDIPDominantBoneMeanAngle = float.NaN;
+			float middleFingerPIPMiddleFingerDIPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.MiddleFingerPIPMiddleFingerDIPLeftBone, MediaPipeHandLandmarksBonesDefs.MiddleFingerPIPMiddleFingerDIPRightBone,
 				features.HandDominance, true), out var middleFingerPIPMiddleFingerDIPDominantBoneAngleData))
 			{
@@ -1977,10 +1977,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerDIPMiddleFingerTIPDominant bone features
-			double? middleFingerDIPMiddleFingerTIPDominantBoneInitialAngle = null;
-			double? middleFingerDIPMiddleFingerTIPDominantBoneFinalAngle = null;
-			double? middleFingerDIPMiddleFingerTIPDominantBoneMeanAngle = null;
-			double? middleFingerDIPMiddleFingerTIPDominantBoneMaximumAngle = null;
+			float middleFingerDIPMiddleFingerTIPDominantBoneInitialAngle = float.NaN;
+			float middleFingerDIPMiddleFingerTIPDominantBoneFinalAngle = float.NaN;
+			float middleFingerDIPMiddleFingerTIPDominantBoneMeanAngle = float.NaN;
+			float middleFingerDIPMiddleFingerTIPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.MiddleFingerDIPMiddleFingerTIPLeftBone, MediaPipeHandLandmarksBonesDefs.MiddleFingerDIPMiddleFingerTIPRightBone,
 				features.HandDominance, true), out var middleFingerDIPMiddleFingerTIPDominantBoneAngleData))
 			{
@@ -1992,10 +1992,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerMCPRingFingerPIPDominant bone features
-			double? ringFingerMCPRingFingerPIPDominantBoneInitialAngle = null;
-			double? ringFingerMCPRingFingerPIPDominantBoneFinalAngle = null;
-			double? ringFingerMCPRingFingerPIPDominantBoneMeanAngle = null;
-			double? ringFingerMCPRingFingerPIPDominantBoneMaximumAngle = null;
+			float ringFingerMCPRingFingerPIPDominantBoneInitialAngle = float.NaN;
+			float ringFingerMCPRingFingerPIPDominantBoneFinalAngle = float.NaN;
+			float ringFingerMCPRingFingerPIPDominantBoneMeanAngle = float.NaN;
+			float ringFingerMCPRingFingerPIPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.RingFingerMCPRingFingerPIPLeftBone, MediaPipeHandLandmarksBonesDefs.RingFingerMCPRingFingerPIPRightBone,
 				features.HandDominance, true), out var ringFingerMCPRingFingerPIPDominantBoneAngleData))
 			{
@@ -2007,10 +2007,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerPIPRingFingerDIPDominant bone features
-			double? ringFingerPIPRingFingerDIPDominantBoneInitialAngle = null;
-			double? ringFingerPIPRingFingerDIPDominantBoneFinalAngle = null;
-			double? ringFingerPIPRingFingerDIPDominantBoneMeanAngle = null;
-			double? ringFingerPIPRingFingerDIPDominantBoneMaximumAngle = null;
+			float ringFingerPIPRingFingerDIPDominantBoneInitialAngle = float.NaN;
+			float ringFingerPIPRingFingerDIPDominantBoneFinalAngle = float.NaN;
+			float ringFingerPIPRingFingerDIPDominantBoneMeanAngle = float.NaN;
+			float ringFingerPIPRingFingerDIPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.RingFingerPIPRingFingerDIPLeftBone, MediaPipeHandLandmarksBonesDefs.RingFingerPIPRingFingerDIPRightBone,
 				features.HandDominance, true), out var ringFingerPIPRingFingerDIPDominantBoneAngleData))
 			{
@@ -2022,10 +2022,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerDIPRingFingerTIPDominant bone features
-			double? ringFingerDIPRingFingerTIPDominantBoneInitialAngle = null;
-			double? ringFingerDIPRingFingerTIPDominantBoneFinalAngle = null;
-			double? ringFingerDIPRingFingerTIPDominantBoneMeanAngle = null;
-			double? ringFingerDIPRingFingerTIPDominantBoneMaximumAngle = null;
+			float ringFingerDIPRingFingerTIPDominantBoneInitialAngle = float.NaN;
+			float ringFingerDIPRingFingerTIPDominantBoneFinalAngle = float.NaN;
+			float ringFingerDIPRingFingerTIPDominantBoneMeanAngle = float.NaN;
+			float ringFingerDIPRingFingerTIPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.RingFingerDIPRingFingerTIPLeftBone, MediaPipeHandLandmarksBonesDefs.RingFingerDIPRingFingerTIPRightBone,
 				features.HandDominance, true), out var ringFingerDIPRingFingerTIPDominantBoneAngleData))
 			{
@@ -2037,10 +2037,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region WristPinkyMCPDominant bone features
-			double? wristPinkyMCPDominantBoneInitialAngle = null;
-			double? wristPinkyMCPDominantBoneFinalAngle = null;
-			double? wristPinkyMCPDominantBoneMeanAngle = null;
-			double? wristPinkyMCPDominantBoneMaximumAngle = null;
+			float wristPinkyMCPDominantBoneInitialAngle = float.NaN;
+			float wristPinkyMCPDominantBoneFinalAngle = float.NaN;
+			float wristPinkyMCPDominantBoneMeanAngle = float.NaN;
+			float wristPinkyMCPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.WristPinkyMCPLeftBone, MediaPipeHandLandmarksBonesDefs.WristPinkyMCPRightBone,
 				features.HandDominance, true), out var wristPinkyMCPDominantBoneAngleData))
 			{
@@ -2052,10 +2052,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyMCPPinkyPIPDominant bone features
-			double? pinkyMCPPinkyPIPDominantBoneInitialAngle = null;
-			double? pinkyMCPPinkyPIPDominantBoneFinalAngle = null;
-			double? pinkyMCPPinkyPIPDominantBoneMeanAngle = null;
-			double? pinkyMCPPinkyPIPDominantBoneMaximumAngle = null;
+			float pinkyMCPPinkyPIPDominantBoneInitialAngle = float.NaN;
+			float pinkyMCPPinkyPIPDominantBoneFinalAngle = float.NaN;
+			float pinkyMCPPinkyPIPDominantBoneMeanAngle = float.NaN;
+			float pinkyMCPPinkyPIPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.PinkyMCPPinkyPIPLeftBone, MediaPipeHandLandmarksBonesDefs.PinkyMCPPinkyPIPRightBone,
 				features.HandDominance, true), out var pinkyMCPPinkyPIPDominantBoneAngleData))
 			{
@@ -2067,10 +2067,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyPIPPinkyDIPDominant bone features
-			double? pinkyPIPPinkyDIPDominantBoneInitialAngle = null;
-			double? pinkyPIPPinkyDIPDominantBoneFinalAngle = null;
-			double? pinkyPIPPinkyDIPDominantBoneMeanAngle = null;
-			double? pinkyPIPPinkyDIPDominantBoneMaximumAngle = null;
+			float pinkyPIPPinkyDIPDominantBoneInitialAngle = float.NaN;
+			float pinkyPIPPinkyDIPDominantBoneFinalAngle = float.NaN;
+			float pinkyPIPPinkyDIPDominantBoneMeanAngle = float.NaN;
+			float pinkyPIPPinkyDIPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.PinkyPIPPinkyDIPLeftBone, MediaPipeHandLandmarksBonesDefs.PinkyPIPPinkyDIPRightBone,
 				features.HandDominance, true), out var pinkyPIPPinkyDIPDominantBoneAngleData))
 			{
@@ -2082,10 +2082,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyDIPPinkyTIPDominant bone features
-			double? pinkyDIPPinkyTIPDominantBoneInitialAngle = null;
-			double? pinkyDIPPinkyTIPDominantBoneFinalAngle = null;
-			double? pinkyDIPPinkyTIPDominantBoneMeanAngle = null;
-			double? pinkyDIPPinkyTIPDominantBoneMaximumAngle = null;
+			float pinkyDIPPinkyTIPDominantBoneInitialAngle = float.NaN;
+			float pinkyDIPPinkyTIPDominantBoneFinalAngle = float.NaN;
+			float pinkyDIPPinkyTIPDominantBoneMeanAngle = float.NaN;
+			float pinkyDIPPinkyTIPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.PinkyDIPPinkyTIPLeftBone, MediaPipeHandLandmarksBonesDefs.PinkyDIPPinkyTIPRightBone,
 				features.HandDominance, true), out var pinkyDIPPinkyTIPDominantBoneAngleData))
 			{
@@ -2097,10 +2097,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbMCPIndexFingerMCPDominant bone features
-			double? thumbMCPIndexFingerMCPDominantBoneInitialAngle = null;
-			double? thumbMCPIndexFingerMCPDominantBoneFinalAngle = null;
-			double? thumbMCPIndexFingerMCPDominantBoneMeanAngle = null;
-			double? thumbMCPIndexFingerMCPDominantBoneMaximumAngle = null;
+			float thumbMCPIndexFingerMCPDominantBoneInitialAngle = float.NaN;
+			float thumbMCPIndexFingerMCPDominantBoneFinalAngle = float.NaN;
+			float thumbMCPIndexFingerMCPDominantBoneMeanAngle = float.NaN;
+			float thumbMCPIndexFingerMCPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbMCPIndexFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbMCPIndexFingerMCPRightBone,
 				features.HandDominance, true), out var thumbMCPIndexFingerMCPDominantBoneAngleData))
 			{
@@ -2112,10 +2112,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerMCPMiddleFingerMCPDominant bone features
-			double? indexFingerMCPMiddleFingerMCPDominantBoneInitialAngle = null;
-			double? indexFingerMCPMiddleFingerMCPDominantBoneFinalAngle = null;
-			double? indexFingerMCPMiddleFingerMCPDominantBoneMeanAngle = null;
-			double? indexFingerMCPMiddleFingerMCPDominantBoneMaximumAngle = null;
+			float indexFingerMCPMiddleFingerMCPDominantBoneInitialAngle = float.NaN;
+			float indexFingerMCPMiddleFingerMCPDominantBoneFinalAngle = float.NaN;
+			float indexFingerMCPMiddleFingerMCPDominantBoneMeanAngle = float.NaN;
+			float indexFingerMCPMiddleFingerMCPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.IndexFingerMCPMiddleFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.IndexFingerMCPMiddleFingerMCPRightBone,
 				features.HandDominance, true), out var indexFingerMCPMiddleFingerMCPDominantBoneAngleData))
 			{
@@ -2127,10 +2127,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerMCPRingFingerMCPDominant bone features
-			double? middleFingerMCPRingFingerMCPDominantBoneInitialAngle = null;
-			double? middleFingerMCPRingFingerMCPDominantBoneFinalAngle = null;
-			double? middleFingerMCPRingFingerMCPDominantBoneMeanAngle = null;
-			double? middleFingerMCPRingFingerMCPDominantBoneMaximumAngle = null;
+			float middleFingerMCPRingFingerMCPDominantBoneInitialAngle = float.NaN;
+			float middleFingerMCPRingFingerMCPDominantBoneFinalAngle = float.NaN;
+			float middleFingerMCPRingFingerMCPDominantBoneMeanAngle = float.NaN;
+			float middleFingerMCPRingFingerMCPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.MiddleFingerMCPRingFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.MiddleFingerMCPRingFingerMCPRightBone,
 				features.HandDominance, true), out var middleFingerMCPRingFingerMCPDominantBoneAngleData))
 			{
@@ -2142,10 +2142,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerMCPPinkyMCPDominant bone features
-			double? ringFingerMCPPinkyMCPDominantBoneInitialAngle = null;
-			double? ringFingerMCPPinkyMCPDominantBoneFinalAngle = null;
-			double? ringFingerMCPPinkyMCPDominantBoneMeanAngle = null;
-			double? ringFingerMCPPinkyMCPDominantBoneMaximumAngle = null;
+			float ringFingerMCPPinkyMCPDominantBoneInitialAngle = float.NaN;
+			float ringFingerMCPPinkyMCPDominantBoneFinalAngle = float.NaN;
+			float ringFingerMCPPinkyMCPDominantBoneMeanAngle = float.NaN;
+			float ringFingerMCPPinkyMCPDominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.RingFingerMCPPinkyMCPLeftBone, MediaPipeHandLandmarksBonesDefs.RingFingerMCPPinkyMCPRightBone,
 				features.HandDominance, true), out var ringFingerMCPPinkyMCPDominantBoneAngleData))
 			{
@@ -2157,10 +2157,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region WristThumbCMCNondominant bone features
-			double? wristThumbCMCNondominantBoneInitialAngle = null;
-			double? wristThumbCMCNondominantBoneFinalAngle = null;
-			double? wristThumbCMCNondominantBoneMeanAngle = null;
-			double? wristThumbCMCNondominantBoneMaximumAngle = null;
+			float wristThumbCMCNondominantBoneInitialAngle = float.NaN;
+			float wristThumbCMCNondominantBoneFinalAngle = float.NaN;
+			float wristThumbCMCNondominantBoneMeanAngle = float.NaN;
+			float wristThumbCMCNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.WristThumbCMCLeftBone, MediaPipeHandLandmarksBonesDefs.WristThumbCMCRightBone,
 				features.HandDominance, true), out var wristThumbCMCNondominantBoneAngleData))
 			{
@@ -2172,10 +2172,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbCMCThumbMCPNondominant bone features
-			double? thumbCMCThumbMCPNondominantBoneInitialAngle = null;
-			double? thumbCMCThumbMCPNondominantBoneFinalAngle = null;
-			double? thumbCMCThumbMCPNondominantBoneMeanAngle = null;
-			double? thumbCMCThumbMCPNondominantBoneMaximumAngle = null;
+			float thumbCMCThumbMCPNondominantBoneInitialAngle = float.NaN;
+			float thumbCMCThumbMCPNondominantBoneFinalAngle = float.NaN;
+			float thumbCMCThumbMCPNondominantBoneMeanAngle = float.NaN;
+			float thumbCMCThumbMCPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbCMCThumbMCPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbCMCThumbMCPRightBone,
 				features.HandDominance, true), out var thumbCMCThumbMCPNondominantBoneAngleData))
 			{
@@ -2187,10 +2187,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbMCPThumbIPNondominant bone features
-			double? thumbMCPThumbIPNondominantBoneInitialAngle = null;
-			double? thumbMCPThumbIPNondominantBoneFinalAngle = null;
-			double? thumbMCPThumbIPNondominantBoneMeanAngle = null;
-			double? thumbMCPThumbIPNondominantBoneMaximumAngle = null;
+			float thumbMCPThumbIPNondominantBoneInitialAngle = float.NaN;
+			float thumbMCPThumbIPNondominantBoneFinalAngle = float.NaN;
+			float thumbMCPThumbIPNondominantBoneMeanAngle = float.NaN;
+			float thumbMCPThumbIPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbMCPThumbIPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbMCPThumbIPRightBone,
 				features.HandDominance, true), out var thumbMCPThumbIPNondominantBoneAngleData))
 			{
@@ -2202,10 +2202,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbIPThumbTIPNondominant bone features
-			double? thumbIPThumbTIPNondominantBoneInitialAngle = null;
-			double? thumbIPThumbTIPNondominantBoneFinalAngle = null;
-			double? thumbIPThumbTIPNondominantBoneMeanAngle = null;
-			double? thumbIPThumbTIPNondominantBoneMaximumAngle = null;
+			float thumbIPThumbTIPNondominantBoneInitialAngle = float.NaN;
+			float thumbIPThumbTIPNondominantBoneFinalAngle = float.NaN;
+			float thumbIPThumbTIPNondominantBoneMeanAngle = float.NaN;
+			float thumbIPThumbTIPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbIPThumbTIPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbIPThumbTIPRightBone,
 				features.HandDominance, true), out var thumbIPThumbTIPNondominantBoneAngleData))
 			{
@@ -2217,10 +2217,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region WristIndexFingerMCPNondominant bone features
-			double? wristIndexFingerMCPNondominantBoneInitialAngle = null;
-			double? wristIndexFingerMCPNondominantBoneFinalAngle = null;
-			double? wristIndexFingerMCPNondominantBoneMeanAngle = null;
-			double? wristIndexFingerMCPNondominantBoneMaximumAngle = null;
+			float wristIndexFingerMCPNondominantBoneInitialAngle = float.NaN;
+			float wristIndexFingerMCPNondominantBoneFinalAngle = float.NaN;
+			float wristIndexFingerMCPNondominantBoneMeanAngle = float.NaN;
+			float wristIndexFingerMCPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.WristIndexFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.WristIndexFingerMCPRightBone,
 				features.HandDominance, true), out var wristIndexFingerMCPNondominantBoneAngleData))
 			{
@@ -2232,10 +2232,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerMCPIndexFingerPIPNondominant bone features
-			double? indexFingerMCPIndexFingerPIPNondominantBoneInitialAngle = null;
-			double? indexFingerMCPIndexFingerPIPNondominantBoneFinalAngle = null;
-			double? indexFingerMCPIndexFingerPIPNondominantBoneMeanAngle = null;
-			double? indexFingerMCPIndexFingerPIPNondominantBoneMaximumAngle = null;
+			float indexFingerMCPIndexFingerPIPNondominantBoneInitialAngle = float.NaN;
+			float indexFingerMCPIndexFingerPIPNondominantBoneFinalAngle = float.NaN;
+			float indexFingerMCPIndexFingerPIPNondominantBoneMeanAngle = float.NaN;
+			float indexFingerMCPIndexFingerPIPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.IndexFingerMCPIndexFingerPIPLeftBone, MediaPipeHandLandmarksBonesDefs.IndexFingerMCPIndexFingerPIPRightBone,
 				features.HandDominance, true), out var indexFingerMCPIndexFingerPIPNondominantBoneAngleData))
 			{
@@ -2247,10 +2247,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerPIPIndexFingerDIPNondominant bone features
-			double? indexFingerPIPIndexFingerDIPNondominantBoneInitialAngle = null;
-			double? indexFingerPIPIndexFingerDIPNondominantBoneFinalAngle = null;
-			double? indexFingerPIPIndexFingerDIPNondominantBoneMeanAngle = null;
-			double? indexFingerPIPIndexFingerDIPNondominantBoneMaximumAngle = null;
+			float indexFingerPIPIndexFingerDIPNondominantBoneInitialAngle = float.NaN;
+			float indexFingerPIPIndexFingerDIPNondominantBoneFinalAngle = float.NaN;
+			float indexFingerPIPIndexFingerDIPNondominantBoneMeanAngle = float.NaN;
+			float indexFingerPIPIndexFingerDIPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.IndexFingerPIPIndexFingerDIPLeftBone, MediaPipeHandLandmarksBonesDefs.IndexFingerPIPIndexFingerDIPRightBone,
 				features.HandDominance, true), out var indexFingerPIPIndexFingerDIPNondominantBoneAngleData))
 			{
@@ -2262,10 +2262,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerDIPIndexFingerTIPNondominant bone features
-			double? indexFingerDIPIndexFingerTIPNondominantBoneInitialAngle = null;
-			double? indexFingerDIPIndexFingerTIPNondominantBoneFinalAngle = null;
-			double? indexFingerDIPIndexFingerTIPNondominantBoneMeanAngle = null;
-			double? indexFingerDIPIndexFingerTIPNondominantBoneMaximumAngle = null;
+			float indexFingerDIPIndexFingerTIPNondominantBoneInitialAngle = float.NaN;
+			float indexFingerDIPIndexFingerTIPNondominantBoneFinalAngle = float.NaN;
+			float indexFingerDIPIndexFingerTIPNondominantBoneMeanAngle = float.NaN;
+			float indexFingerDIPIndexFingerTIPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.IndexFingerDIPIndexFingerTIPLeftBone, MediaPipeHandLandmarksBonesDefs.IndexFingerDIPIndexFingerTIPRightBone,
 				features.HandDominance, true), out var indexFingerDIPIndexFingerTIPNondominantBoneAngleData))
 			{
@@ -2277,10 +2277,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerMCPMiddleFingerPIPNondominant bone features
-			double? middleFingerMCPMiddleFingerPIPNondominantBoneInitialAngle = null;
-			double? middleFingerMCPMiddleFingerPIPNondominantBoneFinalAngle = null;
-			double? middleFingerMCPMiddleFingerPIPNondominantBoneMeanAngle = null;
-			double? middleFingerMCPMiddleFingerPIPNondominantBoneMaximumAngle = null;
+			float middleFingerMCPMiddleFingerPIPNondominantBoneInitialAngle = float.NaN;
+			float middleFingerMCPMiddleFingerPIPNondominantBoneFinalAngle = float.NaN;
+			float middleFingerMCPMiddleFingerPIPNondominantBoneMeanAngle = float.NaN;
+			float middleFingerMCPMiddleFingerPIPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.MiddleFingerMCPMiddleFingerPIPLeftBone, MediaPipeHandLandmarksBonesDefs.MiddleFingerMCPMiddleFingerPIPRightBone,
 				features.HandDominance, true), out var middleFingerMCPMiddleFingerPIPNondominantBoneAngleData))
 			{
@@ -2292,10 +2292,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerPIPMiddleFingerDIPNondominant bone features
-			double? middleFingerPIPMiddleFingerDIPNondominantBoneInitialAngle = null;
-			double? middleFingerPIPMiddleFingerDIPNondominantBoneFinalAngle = null;
-			double? middleFingerPIPMiddleFingerDIPNondominantBoneMeanAngle = null;
-			double? middleFingerPIPMiddleFingerDIPNondominantBoneMaximumAngle = null;
+			float middleFingerPIPMiddleFingerDIPNondominantBoneInitialAngle = float.NaN;
+			float middleFingerPIPMiddleFingerDIPNondominantBoneFinalAngle = float.NaN;
+			float middleFingerPIPMiddleFingerDIPNondominantBoneMeanAngle = float.NaN;
+			float middleFingerPIPMiddleFingerDIPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.MiddleFingerPIPMiddleFingerDIPLeftBone, MediaPipeHandLandmarksBonesDefs.MiddleFingerPIPMiddleFingerDIPRightBone,
 				features.HandDominance, true), out var middleFingerPIPMiddleFingerDIPNondominantBoneAngleData))
 			{
@@ -2307,10 +2307,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerDIPMiddleFingerTIPNondominant bone features
-			double? middleFingerDIPMiddleFingerTIPNondominantBoneInitialAngle = null;
-			double? middleFingerDIPMiddleFingerTIPNondominantBoneFinalAngle = null;
-			double? middleFingerDIPMiddleFingerTIPNondominantBoneMeanAngle = null;
-			double? middleFingerDIPMiddleFingerTIPNondominantBoneMaximumAngle = null;
+			float middleFingerDIPMiddleFingerTIPNondominantBoneInitialAngle = float.NaN;
+			float middleFingerDIPMiddleFingerTIPNondominantBoneFinalAngle = float.NaN;
+			float middleFingerDIPMiddleFingerTIPNondominantBoneMeanAngle = float.NaN;
+			float middleFingerDIPMiddleFingerTIPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.MiddleFingerDIPMiddleFingerTIPLeftBone, MediaPipeHandLandmarksBonesDefs.MiddleFingerDIPMiddleFingerTIPRightBone,
 				features.HandDominance, true), out var middleFingerDIPMiddleFingerTIPNondominantBoneAngleData))
 			{
@@ -2322,10 +2322,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerMCPRingFingerPIPNondominant bone features
-			double? ringFingerMCPRingFingerPIPNondominantBoneInitialAngle = null;
-			double? ringFingerMCPRingFingerPIPNondominantBoneFinalAngle = null;
-			double? ringFingerMCPRingFingerPIPNondominantBoneMeanAngle = null;
-			double? ringFingerMCPRingFingerPIPNondominantBoneMaximumAngle = null;
+			float ringFingerMCPRingFingerPIPNondominantBoneInitialAngle = float.NaN;
+			float ringFingerMCPRingFingerPIPNondominantBoneFinalAngle = float.NaN;
+			float ringFingerMCPRingFingerPIPNondominantBoneMeanAngle = float.NaN;
+			float ringFingerMCPRingFingerPIPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.RingFingerMCPRingFingerPIPLeftBone, MediaPipeHandLandmarksBonesDefs.RingFingerMCPRingFingerPIPRightBone,
 				features.HandDominance, true), out var ringFingerMCPRingFingerPIPNondominantBoneAngleData))
 			{
@@ -2337,10 +2337,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerPIPRingFingerDIPNondominant bone features
-			double? ringFingerPIPRingFingerDIPNondominantBoneInitialAngle = null;
-			double? ringFingerPIPRingFingerDIPNondominantBoneFinalAngle = null;
-			double? ringFingerPIPRingFingerDIPNondominantBoneMeanAngle = null;
-			double? ringFingerPIPRingFingerDIPNondominantBoneMaximumAngle = null;
+			float ringFingerPIPRingFingerDIPNondominantBoneInitialAngle = float.NaN;
+			float ringFingerPIPRingFingerDIPNondominantBoneFinalAngle = float.NaN;
+			float ringFingerPIPRingFingerDIPNondominantBoneMeanAngle = float.NaN;
+			float ringFingerPIPRingFingerDIPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.RingFingerPIPRingFingerDIPLeftBone, MediaPipeHandLandmarksBonesDefs.RingFingerPIPRingFingerDIPRightBone,
 				features.HandDominance, true), out var ringFingerPIPRingFingerDIPNondominantBoneAngleData))
 			{
@@ -2352,10 +2352,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerDIPRingFingerTIPNondominant bone features
-			double? ringFingerDIPRingFingerTIPNondominantBoneInitialAngle = null;
-			double? ringFingerDIPRingFingerTIPNondominantBoneFinalAngle = null;
-			double? ringFingerDIPRingFingerTIPNondominantBoneMeanAngle = null;
-			double? ringFingerDIPRingFingerTIPNondominantBoneMaximumAngle = null;
+			float ringFingerDIPRingFingerTIPNondominantBoneInitialAngle = float.NaN;
+			float ringFingerDIPRingFingerTIPNondominantBoneFinalAngle = float.NaN;
+			float ringFingerDIPRingFingerTIPNondominantBoneMeanAngle = float.NaN;
+			float ringFingerDIPRingFingerTIPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.RingFingerDIPRingFingerTIPLeftBone, MediaPipeHandLandmarksBonesDefs.RingFingerDIPRingFingerTIPRightBone,
 				features.HandDominance, true), out var ringFingerDIPRingFingerTIPNondominantBoneAngleData))
 			{
@@ -2367,10 +2367,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region WristPinkyMCPNondominant bone features
-			double? wristPinkyMCPNondominantBoneInitialAngle = null;
-			double? wristPinkyMCPNondominantBoneFinalAngle = null;
-			double? wristPinkyMCPNondominantBoneMeanAngle = null;
-			double? wristPinkyMCPNondominantBoneMaximumAngle = null;
+			float wristPinkyMCPNondominantBoneInitialAngle = float.NaN;
+			float wristPinkyMCPNondominantBoneFinalAngle = float.NaN;
+			float wristPinkyMCPNondominantBoneMeanAngle = float.NaN;
+			float wristPinkyMCPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.WristPinkyMCPLeftBone, MediaPipeHandLandmarksBonesDefs.WristPinkyMCPRightBone,
 				features.HandDominance, true), out var wristPinkyMCPNondominantBoneAngleData))
 			{
@@ -2382,10 +2382,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyMCPPinkyPIPNondominant bone features
-			double? pinkyMCPPinkyPIPNondominantBoneInitialAngle = null;
-			double? pinkyMCPPinkyPIPNondominantBoneFinalAngle = null;
-			double? pinkyMCPPinkyPIPNondominantBoneMeanAngle = null;
-			double? pinkyMCPPinkyPIPNondominantBoneMaximumAngle = null;
+			float pinkyMCPPinkyPIPNondominantBoneInitialAngle = float.NaN;
+			float pinkyMCPPinkyPIPNondominantBoneFinalAngle = float.NaN;
+			float pinkyMCPPinkyPIPNondominantBoneMeanAngle = float.NaN;
+			float pinkyMCPPinkyPIPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.PinkyMCPPinkyPIPLeftBone, MediaPipeHandLandmarksBonesDefs.PinkyMCPPinkyPIPRightBone,
 				features.HandDominance, true), out var pinkyMCPPinkyPIPNondominantBoneAngleData))
 			{
@@ -2397,10 +2397,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyPIPPinkyDIPNondominant bone features
-			double? pinkyPIPPinkyDIPNondominantBoneInitialAngle = null;
-			double? pinkyPIPPinkyDIPNondominantBoneFinalAngle = null;
-			double? pinkyPIPPinkyDIPNondominantBoneMeanAngle = null;
-			double? pinkyPIPPinkyDIPNondominantBoneMaximumAngle = null;
+			float pinkyPIPPinkyDIPNondominantBoneInitialAngle = float.NaN;
+			float pinkyPIPPinkyDIPNondominantBoneFinalAngle = float.NaN;
+			float pinkyPIPPinkyDIPNondominantBoneMeanAngle = float.NaN;
+			float pinkyPIPPinkyDIPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.PinkyPIPPinkyDIPLeftBone, MediaPipeHandLandmarksBonesDefs.PinkyPIPPinkyDIPRightBone,
 				features.HandDominance, true), out var pinkyPIPPinkyDIPNondominantBoneAngleData))
 			{
@@ -2412,10 +2412,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyDIPPinkyTIPNondominant bone features
-			double? pinkyDIPPinkyTIPNondominantBoneInitialAngle = null;
-			double? pinkyDIPPinkyTIPNondominantBoneFinalAngle = null;
-			double? pinkyDIPPinkyTIPNondominantBoneMeanAngle = null;
-			double? pinkyDIPPinkyTIPNondominantBoneMaximumAngle = null;
+			float pinkyDIPPinkyTIPNondominantBoneInitialAngle = float.NaN;
+			float pinkyDIPPinkyTIPNondominantBoneFinalAngle = float.NaN;
+			float pinkyDIPPinkyTIPNondominantBoneMeanAngle = float.NaN;
+			float pinkyDIPPinkyTIPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.PinkyDIPPinkyTIPLeftBone, MediaPipeHandLandmarksBonesDefs.PinkyDIPPinkyTIPRightBone,
 				features.HandDominance, true), out var pinkyDIPPinkyTIPNondominantBoneAngleData))
 			{
@@ -2427,10 +2427,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbMCPIndexFingerMCPNondominant bone features
-			double? thumbMCPIndexFingerMCPNondominantBoneInitialAngle = null;
-			double? thumbMCPIndexFingerMCPNondominantBoneFinalAngle = null;
-			double? thumbMCPIndexFingerMCPNondominantBoneMeanAngle = null;
-			double? thumbMCPIndexFingerMCPNondominantBoneMaximumAngle = null;
+			float thumbMCPIndexFingerMCPNondominantBoneInitialAngle = float.NaN;
+			float thumbMCPIndexFingerMCPNondominantBoneFinalAngle = float.NaN;
+			float thumbMCPIndexFingerMCPNondominantBoneMeanAngle = float.NaN;
+			float thumbMCPIndexFingerMCPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbMCPIndexFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbMCPIndexFingerMCPRightBone,
 				features.HandDominance, true), out var thumbMCPIndexFingerMCPNondominantBoneAngleData))
 			{
@@ -2442,10 +2442,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerMCPMiddleFingerMCPNondominant bone features
-			double? indexFingerMCPMiddleFingerMCPNondominantBoneInitialAngle = null;
-			double? indexFingerMCPMiddleFingerMCPNondominantBoneFinalAngle = null;
-			double? indexFingerMCPMiddleFingerMCPNondominantBoneMeanAngle = null;
-			double? indexFingerMCPMiddleFingerMCPNondominantBoneMaximumAngle = null;
+			float indexFingerMCPMiddleFingerMCPNondominantBoneInitialAngle = float.NaN;
+			float indexFingerMCPMiddleFingerMCPNondominantBoneFinalAngle = float.NaN;
+			float indexFingerMCPMiddleFingerMCPNondominantBoneMeanAngle = float.NaN;
+			float indexFingerMCPMiddleFingerMCPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.IndexFingerMCPMiddleFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.IndexFingerMCPMiddleFingerMCPRightBone,
 				features.HandDominance, true), out var indexFingerMCPMiddleFingerMCPNondominantBoneAngleData))
 			{
@@ -2457,10 +2457,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerMCPRingFingerMCPNondominant bone features
-			double? middleFingerMCPRingFingerMCPNondominantBoneInitialAngle = null;
-			double? middleFingerMCPRingFingerMCPNondominantBoneFinalAngle = null;
-			double? middleFingerMCPRingFingerMCPNondominantBoneMeanAngle = null;
-			double? middleFingerMCPRingFingerMCPNondominantBoneMaximumAngle = null;
+			float middleFingerMCPRingFingerMCPNondominantBoneInitialAngle = float.NaN;
+			float middleFingerMCPRingFingerMCPNondominantBoneFinalAngle = float.NaN;
+			float middleFingerMCPRingFingerMCPNondominantBoneMeanAngle = float.NaN;
+			float middleFingerMCPRingFingerMCPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.MiddleFingerMCPRingFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.MiddleFingerMCPRingFingerMCPRightBone,
 				features.HandDominance, true), out var middleFingerMCPRingFingerMCPNondominantBoneAngleData))
 			{
@@ -2472,10 +2472,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerMCPPinkyMCPNondominant bone features
-			double? ringFingerMCPPinkyMCPNondominantBoneInitialAngle = null;
-			double? ringFingerMCPPinkyMCPNondominantBoneFinalAngle = null;
-			double? ringFingerMCPPinkyMCPNondominantBoneMeanAngle = null;
-			double? ringFingerMCPPinkyMCPNondominantBoneMaximumAngle = null;
+			float ringFingerMCPPinkyMCPNondominantBoneInitialAngle = float.NaN;
+			float ringFingerMCPPinkyMCPNondominantBoneFinalAngle = float.NaN;
+			float ringFingerMCPPinkyMCPNondominantBoneMeanAngle = float.NaN;
+			float ringFingerMCPPinkyMCPNondominantBoneMaximumAngle = float.NaN;
 			if (features.BoneJointsAngleDataDict.TryGetValue(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.RingFingerMCPPinkyMCPLeftBone, MediaPipeHandLandmarksBonesDefs.RingFingerMCPPinkyMCPRightBone,
 				features.HandDominance, true), out var ringFingerMCPPinkyMCPNondominantBoneAngleData))
 			{
@@ -2487,8 +2487,8 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region Hands distances features
-			double? betweenHandJointsDistanceMax = features.BetweenHandJointsDistanceMax;
-			double? betweenHandJointsDistanceMean = features.BetweenHandJointsDistanceMean;
+			float betweenHandJointsDistanceMax = features.BetweenHandJointsDistanceMax;
+			float betweenHandJointsDistanceMean = features.BetweenHandJointsDistanceMean;
 			#endregion
 
 			return new MediaPipeHandLandmarksGestureDataView()
@@ -3312,14 +3312,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			features.HandDominance = (HandDominance)gesture.HandDominance;
 
 			#region WristDominant joint features
-			double? wristDominantF1F2SpatialAngle = gesture.WristDominantF1F2SpatialAngle;
-			double? wristDominantFN_1FNSpatialAngle = gesture.WristDominantFN_1FNSpatialAngle;
-			double? wristDominantF1FNSpatialAngle = gesture.WristDominantF1FNSpatialAngle;
-			double? wristDominantTotalVectorAngle = gesture.WristDominantTotalVectorAngle;
-			double? wristDominantSquaredTotalVectorAngle = gesture.WristDominantSquaredTotalVectorAngle;
-			double? wristDominantTotalVectorDisplacement = gesture.WristDominantTotalVectorDisplacement;
-			double? wristDominantTotalDisplacement = gesture.WristDominantTotalDisplacement;
-			double? wristDominantMaximumDisplacement = gesture.WristDominantMaximumDisplacement;
+			float wristDominantF1F2SpatialAngle = gesture.WristDominantF1F2SpatialAngle;
+			float wristDominantFN_1FNSpatialAngle = gesture.WristDominantFN_1FNSpatialAngle;
+			float wristDominantF1FNSpatialAngle = gesture.WristDominantF1FNSpatialAngle;
+			float wristDominantTotalVectorAngle = gesture.WristDominantTotalVectorAngle;
+			float wristDominantSquaredTotalVectorAngle = gesture.WristDominantSquaredTotalVectorAngle;
+			float wristDominantTotalVectorDisplacement = gesture.WristDominantTotalVectorDisplacement;
+			float wristDominantTotalDisplacement = gesture.WristDominantTotalDisplacement;
+			float wristDominantMaximumDisplacement = gesture.WristDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.WristLeft, JointType.WristRight, features.HandDominance, true), 
 				new JointGestureFeatures(wristDominantF1F2SpatialAngle, wristDominantFN_1FNSpatialAngle, wristDominantF1FNSpatialAngle,
 				wristDominantTotalVectorAngle, wristDominantSquaredTotalVectorAngle,
@@ -3327,14 +3327,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbCMCDominant joint features
-			double? thumbCMCDominantF1F2SpatialAngle = gesture.ThumbCMCDominantF1F2SpatialAngle;
-			double? thumbCMCDominantFN_1FNSpatialAngle = gesture.ThumbCMCDominantFN_1FNSpatialAngle;
-			double? thumbCMCDominantF1FNSpatialAngle = gesture.ThumbCMCDominantF1FNSpatialAngle;
-			double? thumbCMCDominantTotalVectorAngle = gesture.ThumbCMCDominantTotalVectorAngle;
-			double? thumbCMCDominantSquaredTotalVectorAngle = gesture.ThumbCMCDominantSquaredTotalVectorAngle;
-			double? thumbCMCDominantTotalVectorDisplacement = gesture.ThumbCMCDominantTotalVectorDisplacement;
-			double? thumbCMCDominantTotalDisplacement = gesture.ThumbCMCDominantTotalDisplacement;
-			double? thumbCMCDominantMaximumDisplacement = gesture.ThumbCMCDominantMaximumDisplacement;
+			float thumbCMCDominantF1F2SpatialAngle = gesture.ThumbCMCDominantF1F2SpatialAngle;
+			float thumbCMCDominantFN_1FNSpatialAngle = gesture.ThumbCMCDominantFN_1FNSpatialAngle;
+			float thumbCMCDominantF1FNSpatialAngle = gesture.ThumbCMCDominantF1FNSpatialAngle;
+			float thumbCMCDominantTotalVectorAngle = gesture.ThumbCMCDominantTotalVectorAngle;
+			float thumbCMCDominantSquaredTotalVectorAngle = gesture.ThumbCMCDominantSquaredTotalVectorAngle;
+			float thumbCMCDominantTotalVectorDisplacement = gesture.ThumbCMCDominantTotalVectorDisplacement;
+			float thumbCMCDominantTotalDisplacement = gesture.ThumbCMCDominantTotalDisplacement;
+			float thumbCMCDominantMaximumDisplacement = gesture.ThumbCMCDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.ThumbCMCLeft, JointType.ThumbCMCRight, features.HandDominance, true),
 				new JointGestureFeatures(thumbCMCDominantF1F2SpatialAngle, thumbCMCDominantFN_1FNSpatialAngle, thumbCMCDominantF1FNSpatialAngle,
 				thumbCMCDominantTotalVectorAngle, thumbCMCDominantSquaredTotalVectorAngle,
@@ -3342,14 +3342,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbMCPDominant joint features
-			double? thumbMCPDominantF1F2SpatialAngle = gesture.ThumbMCPDominantF1F2SpatialAngle;
-			double? thumbMCPDominantFN_1FNSpatialAngle = gesture.ThumbMCPDominantFN_1FNSpatialAngle;
-			double? thumbMCPDominantF1FNSpatialAngle = gesture.ThumbMCPDominantF1FNSpatialAngle;
-			double? thumbMCPDominantTotalVectorAngle = gesture.ThumbMCPDominantTotalVectorAngle;
-			double? thumbMCPDominantSquaredTotalVectorAngle = gesture.ThumbMCPDominantSquaredTotalVectorAngle;
-			double? thumbMCPDominantTotalVectorDisplacement = gesture.ThumbMCPDominantTotalVectorDisplacement;
-			double? thumbMCPDominantTotalDisplacement = gesture.ThumbMCPDominantTotalDisplacement;
-			double? thumbMCPDominantMaximumDisplacement = gesture.ThumbMCPDominantMaximumDisplacement;
+			float thumbMCPDominantF1F2SpatialAngle = gesture.ThumbMCPDominantF1F2SpatialAngle;
+			float thumbMCPDominantFN_1FNSpatialAngle = gesture.ThumbMCPDominantFN_1FNSpatialAngle;
+			float thumbMCPDominantF1FNSpatialAngle = gesture.ThumbMCPDominantF1FNSpatialAngle;
+			float thumbMCPDominantTotalVectorAngle = gesture.ThumbMCPDominantTotalVectorAngle;
+			float thumbMCPDominantSquaredTotalVectorAngle = gesture.ThumbMCPDominantSquaredTotalVectorAngle;
+			float thumbMCPDominantTotalVectorDisplacement = gesture.ThumbMCPDominantTotalVectorDisplacement;
+			float thumbMCPDominantTotalDisplacement = gesture.ThumbMCPDominantTotalDisplacement;
+			float thumbMCPDominantMaximumDisplacement = gesture.ThumbMCPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.ThumbMCPLeft, JointType.ThumbMCPRight, features.HandDominance, true),
 				new JointGestureFeatures(thumbMCPDominantF1F2SpatialAngle, thumbMCPDominantFN_1FNSpatialAngle, thumbMCPDominantF1FNSpatialAngle,
 				thumbMCPDominantTotalVectorAngle, thumbMCPDominantSquaredTotalVectorAngle,
@@ -3357,14 +3357,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbIPDominant joint features
-			double? thumbIPDominantF1F2SpatialAngle = gesture.ThumbIPDominantF1F2SpatialAngle;
-			double? thumbIPDominantFN_1FNSpatialAngle = gesture.ThumbIPDominantFN_1FNSpatialAngle;
-			double? thumbIPDominantF1FNSpatialAngle = gesture.ThumbIPDominantF1FNSpatialAngle;
-			double? thumbIPDominantTotalVectorAngle = gesture.ThumbIPDominantTotalVectorAngle;
-			double? thumbIPDominantSquaredTotalVectorAngle = gesture.ThumbIPDominantSquaredTotalVectorAngle;
-			double? thumbIPDominantTotalVectorDisplacement = gesture.ThumbIPDominantTotalVectorDisplacement;
-			double? thumbIPDominantTotalDisplacement = gesture.ThumbIPDominantTotalDisplacement;
-			double? thumbIPDominantMaximumDisplacement = gesture.ThumbIPDominantMaximumDisplacement;
+			float thumbIPDominantF1F2SpatialAngle = gesture.ThumbIPDominantF1F2SpatialAngle;
+			float thumbIPDominantFN_1FNSpatialAngle = gesture.ThumbIPDominantFN_1FNSpatialAngle;
+			float thumbIPDominantF1FNSpatialAngle = gesture.ThumbIPDominantF1FNSpatialAngle;
+			float thumbIPDominantTotalVectorAngle = gesture.ThumbIPDominantTotalVectorAngle;
+			float thumbIPDominantSquaredTotalVectorAngle = gesture.ThumbIPDominantSquaredTotalVectorAngle;
+			float thumbIPDominantTotalVectorDisplacement = gesture.ThumbIPDominantTotalVectorDisplacement;
+			float thumbIPDominantTotalDisplacement = gesture.ThumbIPDominantTotalDisplacement;
+			float thumbIPDominantMaximumDisplacement = gesture.ThumbIPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.ThumbIPLeft, JointType.ThumbIPRight, features.HandDominance, true),
 				new JointGestureFeatures(thumbIPDominantF1F2SpatialAngle, thumbIPDominantFN_1FNSpatialAngle, thumbIPDominantF1FNSpatialAngle,
 				thumbIPDominantTotalVectorAngle, thumbIPDominantSquaredTotalVectorAngle,
@@ -3372,14 +3372,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbTIPDominant joint features
-			double? thumbTIPDominantF1F2SpatialAngle = gesture.ThumbTIPDominantF1F2SpatialAngle;
-			double? thumbTIPDominantFN_1FNSpatialAngle = gesture.ThumbTIPDominantFN_1FNSpatialAngle;
-			double? thumbTIPDominantF1FNSpatialAngle = gesture.ThumbTIPDominantF1FNSpatialAngle;
-			double? thumbTIPDominantTotalVectorAngle = gesture.ThumbTIPDominantTotalVectorAngle;
-			double? thumbTIPDominantSquaredTotalVectorAngle = gesture.ThumbTIPDominantSquaredTotalVectorAngle;
-			double? thumbTIPDominantTotalVectorDisplacement = gesture.ThumbTIPDominantTotalVectorDisplacement;
-			double? thumbTIPDominantTotalDisplacement = gesture.ThumbTIPDominantTotalDisplacement;
-			double? thumbTIPDominantMaximumDisplacement = gesture.ThumbTIPDominantMaximumDisplacement;
+			float thumbTIPDominantF1F2SpatialAngle = gesture.ThumbTIPDominantF1F2SpatialAngle;
+			float thumbTIPDominantFN_1FNSpatialAngle = gesture.ThumbTIPDominantFN_1FNSpatialAngle;
+			float thumbTIPDominantF1FNSpatialAngle = gesture.ThumbTIPDominantF1FNSpatialAngle;
+			float thumbTIPDominantTotalVectorAngle = gesture.ThumbTIPDominantTotalVectorAngle;
+			float thumbTIPDominantSquaredTotalVectorAngle = gesture.ThumbTIPDominantSquaredTotalVectorAngle;
+			float thumbTIPDominantTotalVectorDisplacement = gesture.ThumbTIPDominantTotalVectorDisplacement;
+			float thumbTIPDominantTotalDisplacement = gesture.ThumbTIPDominantTotalDisplacement;
+			float thumbTIPDominantMaximumDisplacement = gesture.ThumbTIPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.ThumbTIPLeft, JointType.ThumbTIPRight, features.HandDominance, true),
 				new JointGestureFeatures(thumbTIPDominantF1F2SpatialAngle, thumbTIPDominantFN_1FNSpatialAngle, thumbTIPDominantF1FNSpatialAngle,
 				thumbTIPDominantTotalVectorAngle, thumbTIPDominantSquaredTotalVectorAngle,
@@ -3387,14 +3387,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerMCPDominant joint features
-			double? indexFingerMCPDominantF1F2SpatialAngle = gesture.IndexFingerMCPDominantF1F2SpatialAngle;
-			double? indexFingerMCPDominantFN_1FNSpatialAngle = gesture.IndexFingerMCPDominantFN_1FNSpatialAngle;
-			double? indexFingerMCPDominantF1FNSpatialAngle = gesture.IndexFingerMCPDominantF1FNSpatialAngle;
-			double? indexFingerMCPDominantTotalVectorAngle = gesture.IndexFingerMCPDominantTotalVectorAngle;
-			double? indexFingerMCPDominantSquaredTotalVectorAngle = gesture.IndexFingerMCPDominantSquaredTotalVectorAngle;
-			double? indexFingerMCPDominantTotalVectorDisplacement = gesture.IndexFingerMCPDominantTotalVectorDisplacement;
-			double? indexFingerMCPDominantTotalDisplacement = gesture.IndexFingerMCPDominantTotalDisplacement;
-			double? indexFingerMCPDominantMaximumDisplacement = gesture.IndexFingerMCPDominantMaximumDisplacement;
+			float indexFingerMCPDominantF1F2SpatialAngle = gesture.IndexFingerMCPDominantF1F2SpatialAngle;
+			float indexFingerMCPDominantFN_1FNSpatialAngle = gesture.IndexFingerMCPDominantFN_1FNSpatialAngle;
+			float indexFingerMCPDominantF1FNSpatialAngle = gesture.IndexFingerMCPDominantF1FNSpatialAngle;
+			float indexFingerMCPDominantTotalVectorAngle = gesture.IndexFingerMCPDominantTotalVectorAngle;
+			float indexFingerMCPDominantSquaredTotalVectorAngle = gesture.IndexFingerMCPDominantSquaredTotalVectorAngle;
+			float indexFingerMCPDominantTotalVectorDisplacement = gesture.IndexFingerMCPDominantTotalVectorDisplacement;
+			float indexFingerMCPDominantTotalDisplacement = gesture.IndexFingerMCPDominantTotalDisplacement;
+			float indexFingerMCPDominantMaximumDisplacement = gesture.IndexFingerMCPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.IndexFingerMCPLeft, JointType.IndexFingerMCPRight, features.HandDominance, true),
 				new JointGestureFeatures(indexFingerMCPDominantF1F2SpatialAngle, indexFingerMCPDominantFN_1FNSpatialAngle, indexFingerMCPDominantF1FNSpatialAngle,
 				indexFingerMCPDominantTotalVectorAngle, indexFingerMCPDominantSquaredTotalVectorAngle,
@@ -3402,14 +3402,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerPIPDominant joint features
-			double? indexFingerPIPDominantF1F2SpatialAngle = gesture.IndexFingerPIPDominantF1F2SpatialAngle;
-			double? indexFingerPIPDominantFN_1FNSpatialAngle = gesture.IndexFingerPIPDominantFN_1FNSpatialAngle;
-			double? indexFingerPIPDominantF1FNSpatialAngle = gesture.IndexFingerPIPDominantF1FNSpatialAngle;
-			double? indexFingerPIPDominantTotalVectorAngle = gesture.IndexFingerPIPDominantTotalVectorAngle;
-			double? indexFingerPIPDominantSquaredTotalVectorAngle = gesture.IndexFingerPIPDominantSquaredTotalVectorAngle;
-			double? indexFingerPIPDominantTotalVectorDisplacement = gesture.IndexFingerPIPDominantTotalVectorDisplacement;
-			double? indexFingerPIPDominantTotalDisplacement = gesture.IndexFingerPIPDominantTotalDisplacement;
-			double? indexFingerPIPDominantMaximumDisplacement = gesture.IndexFingerPIPDominantMaximumDisplacement;
+			float indexFingerPIPDominantF1F2SpatialAngle = gesture.IndexFingerPIPDominantF1F2SpatialAngle;
+			float indexFingerPIPDominantFN_1FNSpatialAngle = gesture.IndexFingerPIPDominantFN_1FNSpatialAngle;
+			float indexFingerPIPDominantF1FNSpatialAngle = gesture.IndexFingerPIPDominantF1FNSpatialAngle;
+			float indexFingerPIPDominantTotalVectorAngle = gesture.IndexFingerPIPDominantTotalVectorAngle;
+			float indexFingerPIPDominantSquaredTotalVectorAngle = gesture.IndexFingerPIPDominantSquaredTotalVectorAngle;
+			float indexFingerPIPDominantTotalVectorDisplacement = gesture.IndexFingerPIPDominantTotalVectorDisplacement;
+			float indexFingerPIPDominantTotalDisplacement = gesture.IndexFingerPIPDominantTotalDisplacement;
+			float indexFingerPIPDominantMaximumDisplacement = gesture.IndexFingerPIPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.IndexFingerPIPLeft, JointType.IndexFingerPIPRight, features.HandDominance, true),
 				new JointGestureFeatures(indexFingerPIPDominantF1F2SpatialAngle, indexFingerPIPDominantFN_1FNSpatialAngle, indexFingerPIPDominantF1FNSpatialAngle,
 				indexFingerPIPDominantTotalVectorAngle, indexFingerPIPDominantSquaredTotalVectorAngle,
@@ -3417,14 +3417,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerDIPDominant joint features
-			double? indexFingerDIPDominantF1F2SpatialAngle = gesture.IndexFingerDIPDominantF1F2SpatialAngle;
-			double? indexFingerDIPDominantFN_1FNSpatialAngle = gesture.IndexFingerDIPDominantFN_1FNSpatialAngle;
-			double? indexFingerDIPDominantF1FNSpatialAngle = gesture.IndexFingerDIPDominantF1FNSpatialAngle;
-			double? indexFingerDIPDominantTotalVectorAngle = gesture.IndexFingerDIPDominantTotalVectorAngle;
-			double? indexFingerDIPDominantSquaredTotalVectorAngle = gesture.IndexFingerDIPDominantSquaredTotalVectorAngle;
-			double? indexFingerDIPDominantTotalVectorDisplacement = gesture.IndexFingerDIPDominantTotalVectorDisplacement;
-			double? indexFingerDIPDominantTotalDisplacement = gesture.IndexFingerDIPDominantTotalDisplacement;
-			double? indexFingerDIPDominantMaximumDisplacement = gesture.IndexFingerDIPDominantMaximumDisplacement;
+			float indexFingerDIPDominantF1F2SpatialAngle = gesture.IndexFingerDIPDominantF1F2SpatialAngle;
+			float indexFingerDIPDominantFN_1FNSpatialAngle = gesture.IndexFingerDIPDominantFN_1FNSpatialAngle;
+			float indexFingerDIPDominantF1FNSpatialAngle = gesture.IndexFingerDIPDominantF1FNSpatialAngle;
+			float indexFingerDIPDominantTotalVectorAngle = gesture.IndexFingerDIPDominantTotalVectorAngle;
+			float indexFingerDIPDominantSquaredTotalVectorAngle = gesture.IndexFingerDIPDominantSquaredTotalVectorAngle;
+			float indexFingerDIPDominantTotalVectorDisplacement = gesture.IndexFingerDIPDominantTotalVectorDisplacement;
+			float indexFingerDIPDominantTotalDisplacement = gesture.IndexFingerDIPDominantTotalDisplacement;
+			float indexFingerDIPDominantMaximumDisplacement = gesture.IndexFingerDIPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.IndexFingerDIPLeft, JointType.IndexFingerDIPRight, features.HandDominance, true),
 				new JointGestureFeatures(indexFingerDIPDominantF1F2SpatialAngle, indexFingerDIPDominantFN_1FNSpatialAngle, indexFingerDIPDominantF1FNSpatialAngle,
 				indexFingerDIPDominantTotalVectorAngle, indexFingerDIPDominantSquaredTotalVectorAngle,
@@ -3432,14 +3432,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerTIPDominant joint features
-			double? indexFingerTIPDominantF1F2SpatialAngle = gesture.IndexFingerTIPDominantF1F2SpatialAngle;
-			double? indexFingerTIPDominantFN_1FNSpatialAngle = gesture.IndexFingerTIPDominantFN_1FNSpatialAngle;
-			double? indexFingerTIPDominantF1FNSpatialAngle = gesture.IndexFingerTIPDominantF1FNSpatialAngle;
-			double? indexFingerTIPDominantTotalVectorAngle = gesture.IndexFingerTIPDominantTotalVectorAngle;
-			double? indexFingerTIPDominantSquaredTotalVectorAngle = gesture.IndexFingerTIPDominantSquaredTotalVectorAngle;
-			double? indexFingerTIPDominantTotalVectorDisplacement = gesture.IndexFingerTIPDominantTotalVectorDisplacement;
-			double? indexFingerTIPDominantTotalDisplacement = gesture.IndexFingerTIPDominantTotalDisplacement;
-			double? indexFingerTIPDominantMaximumDisplacement = gesture.IndexFingerTIPDominantMaximumDisplacement;
+			float indexFingerTIPDominantF1F2SpatialAngle = gesture.IndexFingerTIPDominantF1F2SpatialAngle;
+			float indexFingerTIPDominantFN_1FNSpatialAngle = gesture.IndexFingerTIPDominantFN_1FNSpatialAngle;
+			float indexFingerTIPDominantF1FNSpatialAngle = gesture.IndexFingerTIPDominantF1FNSpatialAngle;
+			float indexFingerTIPDominantTotalVectorAngle = gesture.IndexFingerTIPDominantTotalVectorAngle;
+			float indexFingerTIPDominantSquaredTotalVectorAngle = gesture.IndexFingerTIPDominantSquaredTotalVectorAngle;
+			float indexFingerTIPDominantTotalVectorDisplacement = gesture.IndexFingerTIPDominantTotalVectorDisplacement;
+			float indexFingerTIPDominantTotalDisplacement = gesture.IndexFingerTIPDominantTotalDisplacement;
+			float indexFingerTIPDominantMaximumDisplacement = gesture.IndexFingerTIPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.IndexFingerTIPLeft, JointType.IndexFingerTIPRight, features.HandDominance, true),
 				new JointGestureFeatures(indexFingerTIPDominantF1F2SpatialAngle, indexFingerTIPDominantFN_1FNSpatialAngle, indexFingerTIPDominantF1FNSpatialAngle,
 				indexFingerTIPDominantTotalVectorAngle, indexFingerTIPDominantSquaredTotalVectorAngle,
@@ -3447,14 +3447,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerMCPDominant joint features
-			double? middleFingerMCPDominantF1F2SpatialAngle = gesture.MiddleFingerMCPDominantF1F2SpatialAngle;
-			double? middleFingerMCPDominantFN_1FNSpatialAngle = gesture.MiddleFingerMCPDominantFN_1FNSpatialAngle;
-			double? middleFingerMCPDominantF1FNSpatialAngle = gesture.MiddleFingerMCPDominantF1FNSpatialAngle;
-			double? middleFingerMCPDominantTotalVectorAngle = gesture.MiddleFingerMCPDominantTotalVectorAngle;
-			double? middleFingerMCPDominantSquaredTotalVectorAngle = gesture.MiddleFingerMCPDominantSquaredTotalVectorAngle;
-			double? middleFingerMCPDominantTotalVectorDisplacement = gesture.MiddleFingerMCPDominantTotalVectorDisplacement;
-			double? middleFingerMCPDominantTotalDisplacement = gesture.MiddleFingerMCPDominantTotalDisplacement;
-			double? middleFingerMCPDominantMaximumDisplacement = gesture.MiddleFingerMCPDominantMaximumDisplacement;
+			float middleFingerMCPDominantF1F2SpatialAngle = gesture.MiddleFingerMCPDominantF1F2SpatialAngle;
+			float middleFingerMCPDominantFN_1FNSpatialAngle = gesture.MiddleFingerMCPDominantFN_1FNSpatialAngle;
+			float middleFingerMCPDominantF1FNSpatialAngle = gesture.MiddleFingerMCPDominantF1FNSpatialAngle;
+			float middleFingerMCPDominantTotalVectorAngle = gesture.MiddleFingerMCPDominantTotalVectorAngle;
+			float middleFingerMCPDominantSquaredTotalVectorAngle = gesture.MiddleFingerMCPDominantSquaredTotalVectorAngle;
+			float middleFingerMCPDominantTotalVectorDisplacement = gesture.MiddleFingerMCPDominantTotalVectorDisplacement;
+			float middleFingerMCPDominantTotalDisplacement = gesture.MiddleFingerMCPDominantTotalDisplacement;
+			float middleFingerMCPDominantMaximumDisplacement = gesture.MiddleFingerMCPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.MiddleFingerMCPLeft, JointType.MiddleFingerMCPRight, features.HandDominance, true),
 				new JointGestureFeatures(middleFingerMCPDominantF1F2SpatialAngle, middleFingerMCPDominantFN_1FNSpatialAngle, middleFingerMCPDominantF1FNSpatialAngle,
 				middleFingerMCPDominantTotalVectorAngle, middleFingerMCPDominantSquaredTotalVectorAngle,
@@ -3462,14 +3462,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerPIPDominant joint features
-			double? middleFingerPIPDominantF1F2SpatialAngle = gesture.MiddleFingerPIPDominantF1F2SpatialAngle;
-			double? middleFingerPIPDominantFN_1FNSpatialAngle = gesture.MiddleFingerPIPDominantFN_1FNSpatialAngle;
-			double? middleFingerPIPDominantF1FNSpatialAngle = gesture.MiddleFingerPIPDominantF1FNSpatialAngle;
-			double? middleFingerPIPDominantTotalVectorAngle = gesture.MiddleFingerPIPDominantTotalVectorAngle;
-			double? middleFingerPIPDominantSquaredTotalVectorAngle = gesture.MiddleFingerPIPDominantSquaredTotalVectorAngle;
-			double? middleFingerPIPDominantTotalVectorDisplacement = gesture.MiddleFingerPIPDominantTotalVectorDisplacement;
-			double? middleFingerPIPDominantTotalDisplacement = gesture.MiddleFingerPIPDominantTotalDisplacement;
-			double? middleFingerPIPDominantMaximumDisplacement = gesture.MiddleFingerPIPDominantMaximumDisplacement;
+			float middleFingerPIPDominantF1F2SpatialAngle = gesture.MiddleFingerPIPDominantF1F2SpatialAngle;
+			float middleFingerPIPDominantFN_1FNSpatialAngle = gesture.MiddleFingerPIPDominantFN_1FNSpatialAngle;
+			float middleFingerPIPDominantF1FNSpatialAngle = gesture.MiddleFingerPIPDominantF1FNSpatialAngle;
+			float middleFingerPIPDominantTotalVectorAngle = gesture.MiddleFingerPIPDominantTotalVectorAngle;
+			float middleFingerPIPDominantSquaredTotalVectorAngle = gesture.MiddleFingerPIPDominantSquaredTotalVectorAngle;
+			float middleFingerPIPDominantTotalVectorDisplacement = gesture.MiddleFingerPIPDominantTotalVectorDisplacement;
+			float middleFingerPIPDominantTotalDisplacement = gesture.MiddleFingerPIPDominantTotalDisplacement;
+			float middleFingerPIPDominantMaximumDisplacement = gesture.MiddleFingerPIPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.MiddleFingerPIPLeft, JointType.MiddleFingerPIPRight, features.HandDominance, true),
 				new JointGestureFeatures(middleFingerPIPDominantF1F2SpatialAngle, middleFingerPIPDominantFN_1FNSpatialAngle, middleFingerPIPDominantF1FNSpatialAngle,
 				middleFingerPIPDominantTotalVectorAngle, middleFingerPIPDominantSquaredTotalVectorAngle,
@@ -3477,14 +3477,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerDIPDominant joint features
-			double? middleFingerDIPDominantF1F2SpatialAngle = gesture.MiddleFingerDIPDominantF1F2SpatialAngle;
-			double? middleFingerDIPDominantFN_1FNSpatialAngle = gesture.MiddleFingerDIPDominantFN_1FNSpatialAngle;
-			double? middleFingerDIPDominantF1FNSpatialAngle = gesture.MiddleFingerDIPDominantF1FNSpatialAngle;
-			double? middleFingerDIPDominantTotalVectorAngle = gesture.MiddleFingerDIPDominantTotalVectorAngle;
-			double? middleFingerDIPDominantSquaredTotalVectorAngle = gesture.MiddleFingerDIPDominantSquaredTotalVectorAngle;
-			double? middleFingerDIPDominantTotalVectorDisplacement = gesture.MiddleFingerDIPDominantTotalVectorDisplacement;
-			double? middleFingerDIPDominantTotalDisplacement = gesture.MiddleFingerDIPDominantTotalDisplacement;
-			double? middleFingerDIPDominantMaximumDisplacement = gesture.MiddleFingerDIPDominantMaximumDisplacement;
+			float middleFingerDIPDominantF1F2SpatialAngle = gesture.MiddleFingerDIPDominantF1F2SpatialAngle;
+			float middleFingerDIPDominantFN_1FNSpatialAngle = gesture.MiddleFingerDIPDominantFN_1FNSpatialAngle;
+			float middleFingerDIPDominantF1FNSpatialAngle = gesture.MiddleFingerDIPDominantF1FNSpatialAngle;
+			float middleFingerDIPDominantTotalVectorAngle = gesture.MiddleFingerDIPDominantTotalVectorAngle;
+			float middleFingerDIPDominantSquaredTotalVectorAngle = gesture.MiddleFingerDIPDominantSquaredTotalVectorAngle;
+			float middleFingerDIPDominantTotalVectorDisplacement = gesture.MiddleFingerDIPDominantTotalVectorDisplacement;
+			float middleFingerDIPDominantTotalDisplacement = gesture.MiddleFingerDIPDominantTotalDisplacement;
+			float middleFingerDIPDominantMaximumDisplacement = gesture.MiddleFingerDIPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.MiddleFingerDIPLeft, JointType.MiddleFingerDIPRight, features.HandDominance, true),
 				new JointGestureFeatures(middleFingerDIPDominantF1F2SpatialAngle, middleFingerDIPDominantFN_1FNSpatialAngle, middleFingerDIPDominantF1FNSpatialAngle,
 				middleFingerDIPDominantTotalVectorAngle, middleFingerDIPDominantSquaredTotalVectorAngle,
@@ -3492,14 +3492,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerTIPDominant joint features
-			double? middleFingerTIPDominantF1F2SpatialAngle = gesture.MiddleFingerTIPDominantF1F2SpatialAngle;
-			double? middleFingerTIPDominantFN_1FNSpatialAngle = gesture.MiddleFingerTIPDominantFN_1FNSpatialAngle;
-			double? middleFingerTIPDominantF1FNSpatialAngle = gesture.MiddleFingerTIPDominantF1FNSpatialAngle;
-			double? middleFingerTIPDominantTotalVectorAngle = gesture.MiddleFingerTIPDominantTotalVectorAngle;
-			double? middleFingerTIPDominantSquaredTotalVectorAngle = gesture.MiddleFingerTIPDominantSquaredTotalVectorAngle;
-			double? middleFingerTIPDominantTotalVectorDisplacement = gesture.MiddleFingerTIPDominantTotalVectorDisplacement;
-			double? middleFingerTIPDominantTotalDisplacement = gesture.MiddleFingerTIPDominantTotalDisplacement;
-			double? middleFingerTIPDominantMaximumDisplacement = gesture.MiddleFingerTIPDominantMaximumDisplacement;
+			float middleFingerTIPDominantF1F2SpatialAngle = gesture.MiddleFingerTIPDominantF1F2SpatialAngle;
+			float middleFingerTIPDominantFN_1FNSpatialAngle = gesture.MiddleFingerTIPDominantFN_1FNSpatialAngle;
+			float middleFingerTIPDominantF1FNSpatialAngle = gesture.MiddleFingerTIPDominantF1FNSpatialAngle;
+			float middleFingerTIPDominantTotalVectorAngle = gesture.MiddleFingerTIPDominantTotalVectorAngle;
+			float middleFingerTIPDominantSquaredTotalVectorAngle = gesture.MiddleFingerTIPDominantSquaredTotalVectorAngle;
+			float middleFingerTIPDominantTotalVectorDisplacement = gesture.MiddleFingerTIPDominantTotalVectorDisplacement;
+			float middleFingerTIPDominantTotalDisplacement = gesture.MiddleFingerTIPDominantTotalDisplacement;
+			float middleFingerTIPDominantMaximumDisplacement = gesture.MiddleFingerTIPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.MiddleFingerTIPLeft, JointType.MiddleFingerTIPRight, features.HandDominance, true),
 				new JointGestureFeatures(middleFingerTIPDominantF1F2SpatialAngle, middleFingerTIPDominantFN_1FNSpatialAngle, middleFingerTIPDominantF1FNSpatialAngle,
 				middleFingerTIPDominantTotalVectorAngle, middleFingerTIPDominantSquaredTotalVectorAngle,
@@ -3507,14 +3507,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerMCPDominant joint features
-			double? ringFingerMCPDominantF1F2SpatialAngle = gesture.RingFingerMCPDominantF1F2SpatialAngle;
-			double? ringFingerMCPDominantFN_1FNSpatialAngle = gesture.RingFingerMCPDominantFN_1FNSpatialAngle;
-			double? ringFingerMCPDominantF1FNSpatialAngle = gesture.RingFingerMCPDominantF1FNSpatialAngle;
-			double? ringFingerMCPDominantTotalVectorAngle = gesture.RingFingerMCPDominantTotalVectorAngle;
-			double? ringFingerMCPDominantSquaredTotalVectorAngle = gesture.RingFingerMCPDominantSquaredTotalVectorAngle;
-			double? ringFingerMCPDominantTotalVectorDisplacement = gesture.RingFingerMCPDominantTotalVectorDisplacement;
-			double? ringFingerMCPDominantTotalDisplacement = gesture.RingFingerMCPDominantTotalDisplacement;
-			double? ringFingerMCPDominantMaximumDisplacement = gesture.RingFingerMCPDominantMaximumDisplacement;
+			float ringFingerMCPDominantF1F2SpatialAngle = gesture.RingFingerMCPDominantF1F2SpatialAngle;
+			float ringFingerMCPDominantFN_1FNSpatialAngle = gesture.RingFingerMCPDominantFN_1FNSpatialAngle;
+			float ringFingerMCPDominantF1FNSpatialAngle = gesture.RingFingerMCPDominantF1FNSpatialAngle;
+			float ringFingerMCPDominantTotalVectorAngle = gesture.RingFingerMCPDominantTotalVectorAngle;
+			float ringFingerMCPDominantSquaredTotalVectorAngle = gesture.RingFingerMCPDominantSquaredTotalVectorAngle;
+			float ringFingerMCPDominantTotalVectorDisplacement = gesture.RingFingerMCPDominantTotalVectorDisplacement;
+			float ringFingerMCPDominantTotalDisplacement = gesture.RingFingerMCPDominantTotalDisplacement;
+			float ringFingerMCPDominantMaximumDisplacement = gesture.RingFingerMCPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.RingFingerMCPLeft, JointType.RingFingerMCPRight, features.HandDominance, true),
 				new JointGestureFeatures(ringFingerMCPDominantF1F2SpatialAngle, ringFingerMCPDominantFN_1FNSpatialAngle, ringFingerMCPDominantF1FNSpatialAngle,
 				ringFingerMCPDominantTotalVectorAngle, ringFingerMCPDominantSquaredTotalVectorAngle,
@@ -3522,14 +3522,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerPIPDominant joint features
-			double? ringFingerPIPDominantF1F2SpatialAngle = gesture.RingFingerPIPDominantF1F2SpatialAngle;
-			double? ringFingerPIPDominantFN_1FNSpatialAngle = gesture.RingFingerPIPDominantFN_1FNSpatialAngle;
-			double? ringFingerPIPDominantF1FNSpatialAngle = gesture.RingFingerPIPDominantF1FNSpatialAngle;
-			double? ringFingerPIPDominantTotalVectorAngle = gesture.RingFingerPIPDominantTotalVectorAngle;
-			double? ringFingerPIPDominantSquaredTotalVectorAngle = gesture.RingFingerPIPDominantSquaredTotalVectorAngle;
-			double? ringFingerPIPDominantTotalVectorDisplacement = gesture.RingFingerPIPDominantTotalVectorDisplacement;
-			double? ringFingerPIPDominantTotalDisplacement = gesture.RingFingerPIPDominantTotalDisplacement;
-			double? ringFingerPIPDominantMaximumDisplacement = gesture.RingFingerPIPDominantMaximumDisplacement;
+			float ringFingerPIPDominantF1F2SpatialAngle = gesture.RingFingerPIPDominantF1F2SpatialAngle;
+			float ringFingerPIPDominantFN_1FNSpatialAngle = gesture.RingFingerPIPDominantFN_1FNSpatialAngle;
+			float ringFingerPIPDominantF1FNSpatialAngle = gesture.RingFingerPIPDominantF1FNSpatialAngle;
+			float ringFingerPIPDominantTotalVectorAngle = gesture.RingFingerPIPDominantTotalVectorAngle;
+			float ringFingerPIPDominantSquaredTotalVectorAngle = gesture.RingFingerPIPDominantSquaredTotalVectorAngle;
+			float ringFingerPIPDominantTotalVectorDisplacement = gesture.RingFingerPIPDominantTotalVectorDisplacement;
+			float ringFingerPIPDominantTotalDisplacement = gesture.RingFingerPIPDominantTotalDisplacement;
+			float ringFingerPIPDominantMaximumDisplacement = gesture.RingFingerPIPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.RingFingerPIPLeft, JointType.RingFingerPIPRight, features.HandDominance, true),
 				new JointGestureFeatures(ringFingerPIPDominantF1F2SpatialAngle, ringFingerPIPDominantFN_1FNSpatialAngle, ringFingerPIPDominantF1FNSpatialAngle,
 				ringFingerPIPDominantTotalVectorAngle, ringFingerPIPDominantSquaredTotalVectorAngle,
@@ -3537,14 +3537,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerDIPDominant joint features
-			double? ringFingerDIPDominantF1F2SpatialAngle = gesture.RingFingerDIPDominantF1F2SpatialAngle;
-			double? ringFingerDIPDominantFN_1FNSpatialAngle = gesture.RingFingerDIPDominantFN_1FNSpatialAngle;
-			double? ringFingerDIPDominantF1FNSpatialAngle = gesture.RingFingerDIPDominantF1FNSpatialAngle;
-			double? ringFingerDIPDominantTotalVectorAngle = gesture.RingFingerDIPDominantTotalVectorAngle;
-			double? ringFingerDIPDominantSquaredTotalVectorAngle = gesture.RingFingerDIPDominantSquaredTotalVectorAngle;
-			double? ringFingerDIPDominantTotalVectorDisplacement = gesture.RingFingerDIPDominantTotalVectorDisplacement;
-			double? ringFingerDIPDominantTotalDisplacement = gesture.RingFingerDIPDominantTotalDisplacement;
-			double? ringFingerDIPDominantMaximumDisplacement = gesture.RingFingerDIPDominantMaximumDisplacement;
+			float ringFingerDIPDominantF1F2SpatialAngle = gesture.RingFingerDIPDominantF1F2SpatialAngle;
+			float ringFingerDIPDominantFN_1FNSpatialAngle = gesture.RingFingerDIPDominantFN_1FNSpatialAngle;
+			float ringFingerDIPDominantF1FNSpatialAngle = gesture.RingFingerDIPDominantF1FNSpatialAngle;
+			float ringFingerDIPDominantTotalVectorAngle = gesture.RingFingerDIPDominantTotalVectorAngle;
+			float ringFingerDIPDominantSquaredTotalVectorAngle = gesture.RingFingerDIPDominantSquaredTotalVectorAngle;
+			float ringFingerDIPDominantTotalVectorDisplacement = gesture.RingFingerDIPDominantTotalVectorDisplacement;
+			float ringFingerDIPDominantTotalDisplacement = gesture.RingFingerDIPDominantTotalDisplacement;
+			float ringFingerDIPDominantMaximumDisplacement = gesture.RingFingerDIPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.RingFingerDIPLeft, JointType.RingFingerDIPRight, features.HandDominance, true),
 				new JointGestureFeatures(ringFingerDIPDominantF1F2SpatialAngle, ringFingerDIPDominantFN_1FNSpatialAngle, ringFingerDIPDominantF1FNSpatialAngle,
 				ringFingerDIPDominantTotalVectorAngle, ringFingerDIPDominantSquaredTotalVectorAngle,
@@ -3552,14 +3552,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerTIPDominant joint features
-			double? ringFingerTIPDominantF1F2SpatialAngle = gesture.RingFingerTIPDominantF1F2SpatialAngle;
-			double? ringFingerTIPDominantFN_1FNSpatialAngle = gesture.RingFingerTIPDominantFN_1FNSpatialAngle;
-			double? ringFingerTIPDominantF1FNSpatialAngle = gesture.RingFingerTIPDominantF1FNSpatialAngle;
-			double? ringFingerTIPDominantTotalVectorAngle = gesture.RingFingerTIPDominantTotalVectorAngle;
-			double? ringFingerTIPDominantSquaredTotalVectorAngle = gesture.RingFingerTIPDominantSquaredTotalVectorAngle;
-			double? ringFingerTIPDominantTotalVectorDisplacement = gesture.RingFingerTIPDominantTotalVectorDisplacement;
-			double? ringFingerTIPDominantTotalDisplacement = gesture.RingFingerTIPDominantTotalDisplacement;
-			double? ringFingerTIPDominantMaximumDisplacement = gesture.RingFingerTIPDominantMaximumDisplacement;
+			float ringFingerTIPDominantF1F2SpatialAngle = gesture.RingFingerTIPDominantF1F2SpatialAngle;
+			float ringFingerTIPDominantFN_1FNSpatialAngle = gesture.RingFingerTIPDominantFN_1FNSpatialAngle;
+			float ringFingerTIPDominantF1FNSpatialAngle = gesture.RingFingerTIPDominantF1FNSpatialAngle;
+			float ringFingerTIPDominantTotalVectorAngle = gesture.RingFingerTIPDominantTotalVectorAngle;
+			float ringFingerTIPDominantSquaredTotalVectorAngle = gesture.RingFingerTIPDominantSquaredTotalVectorAngle;
+			float ringFingerTIPDominantTotalVectorDisplacement = gesture.RingFingerTIPDominantTotalVectorDisplacement;
+			float ringFingerTIPDominantTotalDisplacement = gesture.RingFingerTIPDominantTotalDisplacement;
+			float ringFingerTIPDominantMaximumDisplacement = gesture.RingFingerTIPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.RingFingerTIPLeft, JointType.RingFingerTIPRight, features.HandDominance, true),
 				new JointGestureFeatures(ringFingerTIPDominantF1F2SpatialAngle, ringFingerTIPDominantFN_1FNSpatialAngle, ringFingerTIPDominantF1FNSpatialAngle,
 				ringFingerTIPDominantTotalVectorAngle, ringFingerTIPDominantSquaredTotalVectorAngle,
@@ -3567,14 +3567,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyMCPDominant joint features
-			double? pinkyMCPDominantF1F2SpatialAngle = gesture.PinkyMCPDominantF1F2SpatialAngle;
-			double? pinkyMCPDominantFN_1FNSpatialAngle = gesture.PinkyMCPDominantFN_1FNSpatialAngle;
-			double? pinkyMCPDominantF1FNSpatialAngle = gesture.PinkyMCPDominantF1FNSpatialAngle;
-			double? pinkyMCPDominantTotalVectorAngle = gesture.PinkyMCPDominantTotalVectorAngle;
-			double? pinkyMCPDominantSquaredTotalVectorAngle = gesture.PinkyMCPDominantSquaredTotalVectorAngle;
-			double? pinkyMCPDominantTotalVectorDisplacement = gesture.PinkyMCPDominantTotalVectorDisplacement;
-			double? pinkyMCPDominantTotalDisplacement = gesture.PinkyMCPDominantTotalDisplacement;
-			double? pinkyMCPDominantMaximumDisplacement = gesture.PinkyMCPDominantMaximumDisplacement;
+			float pinkyMCPDominantF1F2SpatialAngle = gesture.PinkyMCPDominantF1F2SpatialAngle;
+			float pinkyMCPDominantFN_1FNSpatialAngle = gesture.PinkyMCPDominantFN_1FNSpatialAngle;
+			float pinkyMCPDominantF1FNSpatialAngle = gesture.PinkyMCPDominantF1FNSpatialAngle;
+			float pinkyMCPDominantTotalVectorAngle = gesture.PinkyMCPDominantTotalVectorAngle;
+			float pinkyMCPDominantSquaredTotalVectorAngle = gesture.PinkyMCPDominantSquaredTotalVectorAngle;
+			float pinkyMCPDominantTotalVectorDisplacement = gesture.PinkyMCPDominantTotalVectorDisplacement;
+			float pinkyMCPDominantTotalDisplacement = gesture.PinkyMCPDominantTotalDisplacement;
+			float pinkyMCPDominantMaximumDisplacement = gesture.PinkyMCPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.PinkyMCPLeft, JointType.PinkyMCPRight, features.HandDominance, true),
 				new JointGestureFeatures(pinkyMCPDominantF1F2SpatialAngle, pinkyMCPDominantFN_1FNSpatialAngle, pinkyMCPDominantF1FNSpatialAngle,
 				pinkyMCPDominantTotalVectorAngle, pinkyMCPDominantSquaredTotalVectorAngle,
@@ -3582,14 +3582,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyPIPDominant joint features
-			double? pinkyPIPDominantF1F2SpatialAngle = gesture.PinkyPIPDominantF1F2SpatialAngle;
-			double? pinkyPIPDominantFN_1FNSpatialAngle = gesture.PinkyPIPDominantFN_1FNSpatialAngle;
-			double? pinkyPIPDominantF1FNSpatialAngle = gesture.PinkyPIPDominantF1FNSpatialAngle;
-			double? pinkyPIPDominantTotalVectorAngle = gesture.PinkyPIPDominantTotalVectorAngle;
-			double? pinkyPIPDominantSquaredTotalVectorAngle = gesture.PinkyPIPDominantSquaredTotalVectorAngle;
-			double? pinkyPIPDominantTotalVectorDisplacement = gesture.PinkyPIPDominantTotalVectorDisplacement;
-			double? pinkyPIPDominantTotalDisplacement = gesture.PinkyPIPDominantTotalDisplacement;
-			double? pinkyPIPDominantMaximumDisplacement = gesture.PinkyPIPDominantMaximumDisplacement;
+			float pinkyPIPDominantF1F2SpatialAngle = gesture.PinkyPIPDominantF1F2SpatialAngle;
+			float pinkyPIPDominantFN_1FNSpatialAngle = gesture.PinkyPIPDominantFN_1FNSpatialAngle;
+			float pinkyPIPDominantF1FNSpatialAngle = gesture.PinkyPIPDominantF1FNSpatialAngle;
+			float pinkyPIPDominantTotalVectorAngle = gesture.PinkyPIPDominantTotalVectorAngle;
+			float pinkyPIPDominantSquaredTotalVectorAngle = gesture.PinkyPIPDominantSquaredTotalVectorAngle;
+			float pinkyPIPDominantTotalVectorDisplacement = gesture.PinkyPIPDominantTotalVectorDisplacement;
+			float pinkyPIPDominantTotalDisplacement = gesture.PinkyPIPDominantTotalDisplacement;
+			float pinkyPIPDominantMaximumDisplacement = gesture.PinkyPIPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.PinkyPIPLeft, JointType.PinkyPIPRight, features.HandDominance, true),
 				new JointGestureFeatures(pinkyPIPDominantF1F2SpatialAngle, pinkyPIPDominantFN_1FNSpatialAngle, pinkyPIPDominantF1FNSpatialAngle,
 				pinkyPIPDominantTotalVectorAngle, pinkyPIPDominantSquaredTotalVectorAngle,
@@ -3597,14 +3597,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyDIPDominant joint features
-			double? pinkyDIPDominantF1F2SpatialAngle = gesture.PinkyDIPDominantF1F2SpatialAngle;
-			double? pinkyDIPDominantFN_1FNSpatialAngle = gesture.PinkyDIPDominantFN_1FNSpatialAngle;
-			double? pinkyDIPDominantF1FNSpatialAngle = gesture.PinkyDIPDominantF1FNSpatialAngle;
-			double? pinkyDIPDominantTotalVectorAngle = gesture.PinkyDIPDominantTotalVectorAngle;
-			double? pinkyDIPDominantSquaredTotalVectorAngle = gesture.PinkyDIPDominantSquaredTotalVectorAngle;
-			double? pinkyDIPDominantTotalVectorDisplacement = gesture.PinkyDIPDominantTotalVectorDisplacement;
-			double? pinkyDIPDominantTotalDisplacement = gesture.PinkyDIPDominantTotalDisplacement;
-			double? pinkyDIPDominantMaximumDisplacement = gesture.PinkyDIPDominantMaximumDisplacement;
+			float pinkyDIPDominantF1F2SpatialAngle = gesture.PinkyDIPDominantF1F2SpatialAngle;
+			float pinkyDIPDominantFN_1FNSpatialAngle = gesture.PinkyDIPDominantFN_1FNSpatialAngle;
+			float pinkyDIPDominantF1FNSpatialAngle = gesture.PinkyDIPDominantF1FNSpatialAngle;
+			float pinkyDIPDominantTotalVectorAngle = gesture.PinkyDIPDominantTotalVectorAngle;
+			float pinkyDIPDominantSquaredTotalVectorAngle = gesture.PinkyDIPDominantSquaredTotalVectorAngle;
+			float pinkyDIPDominantTotalVectorDisplacement = gesture.PinkyDIPDominantTotalVectorDisplacement;
+			float pinkyDIPDominantTotalDisplacement = gesture.PinkyDIPDominantTotalDisplacement;
+			float pinkyDIPDominantMaximumDisplacement = gesture.PinkyDIPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.PinkyDIPLeft, JointType.PinkyDIPRight, features.HandDominance, true),
 				new JointGestureFeatures(pinkyDIPDominantF1F2SpatialAngle, pinkyDIPDominantFN_1FNSpatialAngle, pinkyDIPDominantF1FNSpatialAngle,
 				pinkyDIPDominantTotalVectorAngle, pinkyDIPDominantSquaredTotalVectorAngle,
@@ -3612,14 +3612,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyTIPDominant joint features
-			double? pinkyTIPDominantF1F2SpatialAngle = gesture.PinkyTIPDominantF1F2SpatialAngle;
-			double? pinkyTIPDominantFN_1FNSpatialAngle = gesture.PinkyTIPDominantFN_1FNSpatialAngle;
-			double? pinkyTIPDominantF1FNSpatialAngle = gesture.PinkyTIPDominantF1FNSpatialAngle;
-			double? pinkyTIPDominantTotalVectorAngle = gesture.PinkyTIPDominantTotalVectorAngle;
-			double? pinkyTIPDominantSquaredTotalVectorAngle = gesture.PinkyTIPDominantSquaredTotalVectorAngle;
-			double? pinkyTIPDominantTotalVectorDisplacement = gesture.PinkyTIPDominantTotalVectorDisplacement;
-			double? pinkyTIPDominantTotalDisplacement = gesture.PinkyTIPDominantTotalDisplacement;
-			double? pinkyTIPDominantMaximumDisplacement = gesture.PinkyTIPDominantMaximumDisplacement;
+			float pinkyTIPDominantF1F2SpatialAngle = gesture.PinkyTIPDominantF1F2SpatialAngle;
+			float pinkyTIPDominantFN_1FNSpatialAngle = gesture.PinkyTIPDominantFN_1FNSpatialAngle;
+			float pinkyTIPDominantF1FNSpatialAngle = gesture.PinkyTIPDominantF1FNSpatialAngle;
+			float pinkyTIPDominantTotalVectorAngle = gesture.PinkyTIPDominantTotalVectorAngle;
+			float pinkyTIPDominantSquaredTotalVectorAngle = gesture.PinkyTIPDominantSquaredTotalVectorAngle;
+			float pinkyTIPDominantTotalVectorDisplacement = gesture.PinkyTIPDominantTotalVectorDisplacement;
+			float pinkyTIPDominantTotalDisplacement = gesture.PinkyTIPDominantTotalDisplacement;
+			float pinkyTIPDominantMaximumDisplacement = gesture.PinkyTIPDominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.PinkyTIPLeft, JointType.PinkyTIPRight, features.HandDominance, true),
 				new JointGestureFeatures(pinkyTIPDominantF1F2SpatialAngle, pinkyTIPDominantFN_1FNSpatialAngle, pinkyTIPDominantF1FNSpatialAngle,
 				pinkyTIPDominantTotalVectorAngle, pinkyTIPDominantSquaredTotalVectorAngle,
@@ -3627,16 +3627,16 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region HandDominant joint features
-			double? handDominantF1F2SpatialAngle = gesture.HandDominantF1F2SpatialAngle;
-			double? handDominantFN_1FNSpatialAngle = gesture.HandDominantFN_1FNSpatialAngle;
-			double? handDominantF1FNSpatialAngle = gesture.HandDominantF1FNSpatialAngle;
-			double? handDominantTotalVectorAngle = gesture.HandDominantTotalVectorAngle;
-			double? handDominantSquaredTotalVectorAngle = gesture.HandDominantSquaredTotalVectorAngle;
-			double? handDominantTotalVectorDisplacement = gesture.HandDominantTotalVectorDisplacement;
-			double? handDominantTotalDisplacement = gesture.HandDominantTotalDisplacement;
-			double? handDominantMaximumDisplacement = gesture.HandDominantMaximumDisplacement;
-			double? handDominantBoundingBoxDiagonalLength = gesture.HandDominantBoundingBoxDiagonalLength;
-			double? handDominantBoundingBoxAngle = gesture.HandDominantBoundingBoxAngle;
+			float handDominantF1F2SpatialAngle = gesture.HandDominantF1F2SpatialAngle;
+			float handDominantFN_1FNSpatialAngle = gesture.HandDominantFN_1FNSpatialAngle;
+			float handDominantF1FNSpatialAngle = gesture.HandDominantF1FNSpatialAngle;
+			float handDominantTotalVectorAngle = gesture.HandDominantTotalVectorAngle;
+			float handDominantSquaredTotalVectorAngle = gesture.HandDominantSquaredTotalVectorAngle;
+			float handDominantTotalVectorDisplacement = gesture.HandDominantTotalVectorDisplacement;
+			float handDominantTotalDisplacement = gesture.HandDominantTotalDisplacement;
+			float handDominantMaximumDisplacement = gesture.HandDominantMaximumDisplacement;
+			float handDominantBoundingBoxDiagonalLength = gesture.HandDominantBoundingBoxDiagonalLength;
+			float handDominantBoundingBoxAngle = gesture.HandDominantBoundingBoxAngle;
 			//HandState[] handDominantHandStates = gesture.HandDominantHandStates;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.HandLeft, JointType.HandRight, features.HandDominance, true), 
 				new HandJointGestureFeatures(handDominantF1F2SpatialAngle, handDominantFN_1FNSpatialAngle, handDominantF1FNSpatialAngle,
@@ -3646,14 +3646,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region WristNondominant joint features
-			double? wristNondominantF1F2SpatialAngle = gesture.WristNondominantF1F2SpatialAngle;
-			double? wristNondominantFN_1FNSpatialAngle = gesture.WristNondominantFN_1FNSpatialAngle;
-			double? wristNondominantF1FNSpatialAngle = gesture.WristNondominantF1FNSpatialAngle;
-			double? wristNondominantTotalVectorAngle = gesture.WristNondominantTotalVectorAngle;
-			double? wristNondominantSquaredTotalVectorAngle = gesture.WristNondominantSquaredTotalVectorAngle;
-			double? wristNondominantTotalVectorDisplacement = gesture.WristNondominantTotalVectorDisplacement;
-			double? wristNondominantTotalDisplacement = gesture.WristNondominantTotalDisplacement;
-			double? wristNondominantMaximumDisplacement = gesture.WristNondominantMaximumDisplacement;
+			float wristNondominantF1F2SpatialAngle = gesture.WristNondominantF1F2SpatialAngle;
+			float wristNondominantFN_1FNSpatialAngle = gesture.WristNondominantFN_1FNSpatialAngle;
+			float wristNondominantF1FNSpatialAngle = gesture.WristNondominantF1FNSpatialAngle;
+			float wristNondominantTotalVectorAngle = gesture.WristNondominantTotalVectorAngle;
+			float wristNondominantSquaredTotalVectorAngle = gesture.WristNondominantSquaredTotalVectorAngle;
+			float wristNondominantTotalVectorDisplacement = gesture.WristNondominantTotalVectorDisplacement;
+			float wristNondominantTotalDisplacement = gesture.WristNondominantTotalDisplacement;
+			float wristNondominantMaximumDisplacement = gesture.WristNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.WristLeft, JointType.WristRight, features.HandDominance, false),
 				new JointGestureFeatures(wristNondominantF1F2SpatialAngle, wristNondominantFN_1FNSpatialAngle, wristNondominantF1FNSpatialAngle,
 				wristNondominantTotalVectorAngle, wristNondominantSquaredTotalVectorAngle,
@@ -3661,14 +3661,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbCMCNondominant joint features
-			double? thumbCMCNondominantF1F2SpatialAngle = gesture.ThumbCMCNondominantF1F2SpatialAngle;
-			double? thumbCMCNondominantFN_1FNSpatialAngle = gesture.ThumbCMCNondominantFN_1FNSpatialAngle;
-			double? thumbCMCNondominantF1FNSpatialAngle = gesture.ThumbCMCNondominantF1FNSpatialAngle;
-			double? thumbCMCNondominantTotalVectorAngle = gesture.ThumbCMCNondominantTotalVectorAngle;
-			double? thumbCMCNondominantSquaredTotalVectorAngle = gesture.ThumbCMCNondominantSquaredTotalVectorAngle;
-			double? thumbCMCNondominantTotalVectorDisplacement = gesture.ThumbCMCNondominantTotalVectorDisplacement;
-			double? thumbCMCNondominantTotalDisplacement = gesture.ThumbCMCNondominantTotalDisplacement;
-			double? thumbCMCNondominantMaximumDisplacement = gesture.ThumbCMCNondominantMaximumDisplacement;
+			float thumbCMCNondominantF1F2SpatialAngle = gesture.ThumbCMCNondominantF1F2SpatialAngle;
+			float thumbCMCNondominantFN_1FNSpatialAngle = gesture.ThumbCMCNondominantFN_1FNSpatialAngle;
+			float thumbCMCNondominantF1FNSpatialAngle = gesture.ThumbCMCNondominantF1FNSpatialAngle;
+			float thumbCMCNondominantTotalVectorAngle = gesture.ThumbCMCNondominantTotalVectorAngle;
+			float thumbCMCNondominantSquaredTotalVectorAngle = gesture.ThumbCMCNondominantSquaredTotalVectorAngle;
+			float thumbCMCNondominantTotalVectorDisplacement = gesture.ThumbCMCNondominantTotalVectorDisplacement;
+			float thumbCMCNondominantTotalDisplacement = gesture.ThumbCMCNondominantTotalDisplacement;
+			float thumbCMCNondominantMaximumDisplacement = gesture.ThumbCMCNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.ThumbCMCLeft, JointType.ThumbCMCRight, features.HandDominance, false),
 				new JointGestureFeatures(thumbCMCNondominantF1F2SpatialAngle, thumbCMCNondominantFN_1FNSpatialAngle, thumbCMCNondominantF1FNSpatialAngle,
 				thumbCMCNondominantTotalVectorAngle, thumbCMCNondominantSquaredTotalVectorAngle,
@@ -3676,14 +3676,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbMCPNondominant joint features
-			double? thumbMCPNondominantF1F2SpatialAngle = gesture.ThumbMCPNondominantF1F2SpatialAngle;
-			double? thumbMCPNondominantFN_1FNSpatialAngle = gesture.ThumbMCPNondominantFN_1FNSpatialAngle;
-			double? thumbMCPNondominantF1FNSpatialAngle = gesture.ThumbMCPNondominantF1FNSpatialAngle;
-			double? thumbMCPNondominantTotalVectorAngle = gesture.ThumbMCPNondominantTotalVectorAngle;
-			double? thumbMCPNondominantSquaredTotalVectorAngle = gesture.ThumbMCPNondominantSquaredTotalVectorAngle;
-			double? thumbMCPNondominantTotalVectorDisplacement = gesture.ThumbMCPNondominantTotalVectorDisplacement;
-			double? thumbMCPNondominantTotalDisplacement = gesture.ThumbMCPNondominantTotalDisplacement;
-			double? thumbMCPNondominantMaximumDisplacement = gesture.ThumbMCPNondominantMaximumDisplacement;
+			float thumbMCPNondominantF1F2SpatialAngle = gesture.ThumbMCPNondominantF1F2SpatialAngle;
+			float thumbMCPNondominantFN_1FNSpatialAngle = gesture.ThumbMCPNondominantFN_1FNSpatialAngle;
+			float thumbMCPNondominantF1FNSpatialAngle = gesture.ThumbMCPNondominantF1FNSpatialAngle;
+			float thumbMCPNondominantTotalVectorAngle = gesture.ThumbMCPNondominantTotalVectorAngle;
+			float thumbMCPNondominantSquaredTotalVectorAngle = gesture.ThumbMCPNondominantSquaredTotalVectorAngle;
+			float thumbMCPNondominantTotalVectorDisplacement = gesture.ThumbMCPNondominantTotalVectorDisplacement;
+			float thumbMCPNondominantTotalDisplacement = gesture.ThumbMCPNondominantTotalDisplacement;
+			float thumbMCPNondominantMaximumDisplacement = gesture.ThumbMCPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.ThumbMCPLeft, JointType.ThumbMCPRight, features.HandDominance, false),
 				new JointGestureFeatures(thumbMCPNondominantF1F2SpatialAngle, thumbMCPNondominantFN_1FNSpatialAngle, thumbMCPNondominantF1FNSpatialAngle,
 				thumbMCPNondominantTotalVectorAngle, thumbMCPNondominantSquaredTotalVectorAngle,
@@ -3691,14 +3691,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbIPNondominant joint features
-			double? thumbIPNondominantF1F2SpatialAngle = gesture.ThumbIPNondominantF1F2SpatialAngle;
-			double? thumbIPNondominantFN_1FNSpatialAngle = gesture.ThumbIPNondominantFN_1FNSpatialAngle;
-			double? thumbIPNondominantF1FNSpatialAngle = gesture.ThumbIPNondominantF1FNSpatialAngle;
-			double? thumbIPNondominantTotalVectorAngle = gesture.ThumbIPNondominantTotalVectorAngle;
-			double? thumbIPNondominantSquaredTotalVectorAngle = gesture.ThumbIPNondominantSquaredTotalVectorAngle;
-			double? thumbIPNondominantTotalVectorDisplacement = gesture.ThumbIPNondominantTotalVectorDisplacement;
-			double? thumbIPNondominantTotalDisplacement = gesture.ThumbIPNondominantTotalDisplacement;
-			double? thumbIPNondominantMaximumDisplacement = gesture.ThumbIPNondominantMaximumDisplacement;
+			float thumbIPNondominantF1F2SpatialAngle = gesture.ThumbIPNondominantF1F2SpatialAngle;
+			float thumbIPNondominantFN_1FNSpatialAngle = gesture.ThumbIPNondominantFN_1FNSpatialAngle;
+			float thumbIPNondominantF1FNSpatialAngle = gesture.ThumbIPNondominantF1FNSpatialAngle;
+			float thumbIPNondominantTotalVectorAngle = gesture.ThumbIPNondominantTotalVectorAngle;
+			float thumbIPNondominantSquaredTotalVectorAngle = gesture.ThumbIPNondominantSquaredTotalVectorAngle;
+			float thumbIPNondominantTotalVectorDisplacement = gesture.ThumbIPNondominantTotalVectorDisplacement;
+			float thumbIPNondominantTotalDisplacement = gesture.ThumbIPNondominantTotalDisplacement;
+			float thumbIPNondominantMaximumDisplacement = gesture.ThumbIPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.ThumbIPLeft, JointType.ThumbIPRight, features.HandDominance, false),
 				new JointGestureFeatures(thumbIPNondominantF1F2SpatialAngle, thumbIPNondominantFN_1FNSpatialAngle, thumbIPNondominantF1FNSpatialAngle,
 				thumbIPNondominantTotalVectorAngle, thumbIPNondominantSquaredTotalVectorAngle,
@@ -3706,14 +3706,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region ThumbTIPNondominant joint features
-			double? thumbTIPNondominantF1F2SpatialAngle = gesture.ThumbTIPNondominantF1F2SpatialAngle;
-			double? thumbTIPNondominantFN_1FNSpatialAngle = gesture.ThumbTIPNondominantFN_1FNSpatialAngle;
-			double? thumbTIPNondominantF1FNSpatialAngle = gesture.ThumbTIPNondominantF1FNSpatialAngle;
-			double? thumbTIPNondominantTotalVectorAngle = gesture.ThumbTIPNondominantTotalVectorAngle;
-			double? thumbTIPNondominantSquaredTotalVectorAngle = gesture.ThumbTIPNondominantSquaredTotalVectorAngle;
-			double? thumbTIPNondominantTotalVectorDisplacement = gesture.ThumbTIPNondominantTotalVectorDisplacement;
-			double? thumbTIPNondominantTotalDisplacement = gesture.ThumbTIPNondominantTotalDisplacement;
-			double? thumbTIPNondominantMaximumDisplacement = gesture.ThumbTIPNondominantMaximumDisplacement;
+			float thumbTIPNondominantF1F2SpatialAngle = gesture.ThumbTIPNondominantF1F2SpatialAngle;
+			float thumbTIPNondominantFN_1FNSpatialAngle = gesture.ThumbTIPNondominantFN_1FNSpatialAngle;
+			float thumbTIPNondominantF1FNSpatialAngle = gesture.ThumbTIPNondominantF1FNSpatialAngle;
+			float thumbTIPNondominantTotalVectorAngle = gesture.ThumbTIPNondominantTotalVectorAngle;
+			float thumbTIPNondominantSquaredTotalVectorAngle = gesture.ThumbTIPNondominantSquaredTotalVectorAngle;
+			float thumbTIPNondominantTotalVectorDisplacement = gesture.ThumbTIPNondominantTotalVectorDisplacement;
+			float thumbTIPNondominantTotalDisplacement = gesture.ThumbTIPNondominantTotalDisplacement;
+			float thumbTIPNondominantMaximumDisplacement = gesture.ThumbTIPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.ThumbTIPLeft, JointType.ThumbTIPRight, features.HandDominance, false),
 				new JointGestureFeatures(thumbTIPNondominantF1F2SpatialAngle, thumbTIPNondominantFN_1FNSpatialAngle, thumbTIPNondominantF1FNSpatialAngle,
 				thumbTIPNondominantTotalVectorAngle, thumbTIPNondominantSquaredTotalVectorAngle,
@@ -3721,14 +3721,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerMCPNondominant joint features
-			double? indexFingerMCPNondominantF1F2SpatialAngle = gesture.IndexFingerMCPNondominantF1F2SpatialAngle;
-			double? indexFingerMCPNondominantFN_1FNSpatialAngle = gesture.IndexFingerMCPNondominantFN_1FNSpatialAngle;
-			double? indexFingerMCPNondominantF1FNSpatialAngle = gesture.IndexFingerMCPNondominantF1FNSpatialAngle;
-			double? indexFingerMCPNondominantTotalVectorAngle = gesture.IndexFingerMCPNondominantTotalVectorAngle;
-			double? indexFingerMCPNondominantSquaredTotalVectorAngle = gesture.IndexFingerMCPNondominantSquaredTotalVectorAngle;
-			double? indexFingerMCPNondominantTotalVectorDisplacement = gesture.IndexFingerMCPNondominantTotalVectorDisplacement;
-			double? indexFingerMCPNondominantTotalDisplacement = gesture.IndexFingerMCPNondominantTotalDisplacement;
-			double? indexFingerMCPNondominantMaximumDisplacement = gesture.IndexFingerMCPNondominantMaximumDisplacement;
+			float indexFingerMCPNondominantF1F2SpatialAngle = gesture.IndexFingerMCPNondominantF1F2SpatialAngle;
+			float indexFingerMCPNondominantFN_1FNSpatialAngle = gesture.IndexFingerMCPNondominantFN_1FNSpatialAngle;
+			float indexFingerMCPNondominantF1FNSpatialAngle = gesture.IndexFingerMCPNondominantF1FNSpatialAngle;
+			float indexFingerMCPNondominantTotalVectorAngle = gesture.IndexFingerMCPNondominantTotalVectorAngle;
+			float indexFingerMCPNondominantSquaredTotalVectorAngle = gesture.IndexFingerMCPNondominantSquaredTotalVectorAngle;
+			float indexFingerMCPNondominantTotalVectorDisplacement = gesture.IndexFingerMCPNondominantTotalVectorDisplacement;
+			float indexFingerMCPNondominantTotalDisplacement = gesture.IndexFingerMCPNondominantTotalDisplacement;
+			float indexFingerMCPNondominantMaximumDisplacement = gesture.IndexFingerMCPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.IndexFingerMCPLeft, JointType.IndexFingerMCPRight, features.HandDominance, false),
 				new JointGestureFeatures(indexFingerMCPNondominantF1F2SpatialAngle, indexFingerMCPNondominantFN_1FNSpatialAngle, indexFingerMCPNondominantF1FNSpatialAngle,
 				indexFingerMCPNondominantTotalVectorAngle, indexFingerMCPNondominantSquaredTotalVectorAngle,
@@ -3736,14 +3736,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerPIPNondominant joint features
-			double? indexFingerPIPNondominantF1F2SpatialAngle = gesture.IndexFingerPIPNondominantF1F2SpatialAngle;
-			double? indexFingerPIPNondominantFN_1FNSpatialAngle = gesture.IndexFingerPIPNondominantFN_1FNSpatialAngle;
-			double? indexFingerPIPNondominantF1FNSpatialAngle = gesture.IndexFingerPIPNondominantF1FNSpatialAngle;
-			double? indexFingerPIPNondominantTotalVectorAngle = gesture.IndexFingerPIPNondominantTotalVectorAngle;
-			double? indexFingerPIPNondominantSquaredTotalVectorAngle = gesture.IndexFingerPIPNondominantSquaredTotalVectorAngle;
-			double? indexFingerPIPNondominantTotalVectorDisplacement = gesture.IndexFingerPIPNondominantTotalVectorDisplacement;
-			double? indexFingerPIPNondominantTotalDisplacement = gesture.IndexFingerPIPNondominantTotalDisplacement;
-			double? indexFingerPIPNondominantMaximumDisplacement = gesture.IndexFingerPIPNondominantMaximumDisplacement;
+			float indexFingerPIPNondominantF1F2SpatialAngle = gesture.IndexFingerPIPNondominantF1F2SpatialAngle;
+			float indexFingerPIPNondominantFN_1FNSpatialAngle = gesture.IndexFingerPIPNondominantFN_1FNSpatialAngle;
+			float indexFingerPIPNondominantF1FNSpatialAngle = gesture.IndexFingerPIPNondominantF1FNSpatialAngle;
+			float indexFingerPIPNondominantTotalVectorAngle = gesture.IndexFingerPIPNondominantTotalVectorAngle;
+			float indexFingerPIPNondominantSquaredTotalVectorAngle = gesture.IndexFingerPIPNondominantSquaredTotalVectorAngle;
+			float indexFingerPIPNondominantTotalVectorDisplacement = gesture.IndexFingerPIPNondominantTotalVectorDisplacement;
+			float indexFingerPIPNondominantTotalDisplacement = gesture.IndexFingerPIPNondominantTotalDisplacement;
+			float indexFingerPIPNondominantMaximumDisplacement = gesture.IndexFingerPIPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.IndexFingerPIPLeft, JointType.IndexFingerPIPRight, features.HandDominance, false),
 				new JointGestureFeatures(indexFingerPIPNondominantF1F2SpatialAngle, indexFingerPIPNondominantFN_1FNSpatialAngle, indexFingerPIPNondominantF1FNSpatialAngle,
 				indexFingerPIPNondominantTotalVectorAngle, indexFingerPIPNondominantSquaredTotalVectorAngle,
@@ -3751,14 +3751,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerDIPNondominant joint features
-			double? indexFingerDIPNondominantF1F2SpatialAngle = gesture.IndexFingerDIPNondominantF1F2SpatialAngle;
-			double? indexFingerDIPNondominantFN_1FNSpatialAngle = gesture.IndexFingerDIPNondominantFN_1FNSpatialAngle;
-			double? indexFingerDIPNondominantF1FNSpatialAngle = gesture.IndexFingerDIPNondominantF1FNSpatialAngle;
-			double? indexFingerDIPNondominantTotalVectorAngle = gesture.IndexFingerDIPNondominantTotalVectorAngle;
-			double? indexFingerDIPNondominantSquaredTotalVectorAngle = gesture.IndexFingerDIPNondominantSquaredTotalVectorAngle;
-			double? indexFingerDIPNondominantTotalVectorDisplacement = gesture.IndexFingerDIPNondominantTotalVectorDisplacement;
-			double? indexFingerDIPNondominantTotalDisplacement = gesture.IndexFingerDIPNondominantTotalDisplacement;
-			double? indexFingerDIPNondominantMaximumDisplacement = gesture.IndexFingerDIPNondominantMaximumDisplacement;
+			float indexFingerDIPNondominantF1F2SpatialAngle = gesture.IndexFingerDIPNondominantF1F2SpatialAngle;
+			float indexFingerDIPNondominantFN_1FNSpatialAngle = gesture.IndexFingerDIPNondominantFN_1FNSpatialAngle;
+			float indexFingerDIPNondominantF1FNSpatialAngle = gesture.IndexFingerDIPNondominantF1FNSpatialAngle;
+			float indexFingerDIPNondominantTotalVectorAngle = gesture.IndexFingerDIPNondominantTotalVectorAngle;
+			float indexFingerDIPNondominantSquaredTotalVectorAngle = gesture.IndexFingerDIPNondominantSquaredTotalVectorAngle;
+			float indexFingerDIPNondominantTotalVectorDisplacement = gesture.IndexFingerDIPNondominantTotalVectorDisplacement;
+			float indexFingerDIPNondominantTotalDisplacement = gesture.IndexFingerDIPNondominantTotalDisplacement;
+			float indexFingerDIPNondominantMaximumDisplacement = gesture.IndexFingerDIPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.IndexFingerDIPLeft, JointType.IndexFingerDIPRight, features.HandDominance, false),
 				new JointGestureFeatures(indexFingerDIPNondominantF1F2SpatialAngle, indexFingerDIPNondominantFN_1FNSpatialAngle, indexFingerDIPNondominantF1FNSpatialAngle,
 				indexFingerDIPNondominantTotalVectorAngle, indexFingerDIPNondominantSquaredTotalVectorAngle,
@@ -3766,14 +3766,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region IndexFingerTIPNondominant joint features
-			double? indexFingerTIPNondominantF1F2SpatialAngle = gesture.IndexFingerTIPNondominantF1F2SpatialAngle;
-			double? indexFingerTIPNondominantFN_1FNSpatialAngle = gesture.IndexFingerTIPNondominantFN_1FNSpatialAngle;
-			double? indexFingerTIPNondominantF1FNSpatialAngle = gesture.IndexFingerTIPNondominantF1FNSpatialAngle;
-			double? indexFingerTIPNondominantTotalVectorAngle = gesture.IndexFingerTIPNondominantTotalVectorAngle;
-			double? indexFingerTIPNondominantSquaredTotalVectorAngle = gesture.IndexFingerTIPNondominantSquaredTotalVectorAngle;
-			double? indexFingerTIPNondominantTotalVectorDisplacement = gesture.IndexFingerTIPNondominantTotalVectorDisplacement;
-			double? indexFingerTIPNondominantTotalDisplacement = gesture.IndexFingerTIPNondominantTotalDisplacement;
-			double? indexFingerTIPNondominantMaximumDisplacement = gesture.IndexFingerTIPNondominantMaximumDisplacement;
+			float indexFingerTIPNondominantF1F2SpatialAngle = gesture.IndexFingerTIPNondominantF1F2SpatialAngle;
+			float indexFingerTIPNondominantFN_1FNSpatialAngle = gesture.IndexFingerTIPNondominantFN_1FNSpatialAngle;
+			float indexFingerTIPNondominantF1FNSpatialAngle = gesture.IndexFingerTIPNondominantF1FNSpatialAngle;
+			float indexFingerTIPNondominantTotalVectorAngle = gesture.IndexFingerTIPNondominantTotalVectorAngle;
+			float indexFingerTIPNondominantSquaredTotalVectorAngle = gesture.IndexFingerTIPNondominantSquaredTotalVectorAngle;
+			float indexFingerTIPNondominantTotalVectorDisplacement = gesture.IndexFingerTIPNondominantTotalVectorDisplacement;
+			float indexFingerTIPNondominantTotalDisplacement = gesture.IndexFingerTIPNondominantTotalDisplacement;
+			float indexFingerTIPNondominantMaximumDisplacement = gesture.IndexFingerTIPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.IndexFingerTIPLeft, JointType.IndexFingerTIPRight, features.HandDominance, false),
 				new JointGestureFeatures(indexFingerTIPNondominantF1F2SpatialAngle, indexFingerTIPNondominantFN_1FNSpatialAngle, indexFingerTIPNondominantF1FNSpatialAngle,
 				indexFingerTIPNondominantTotalVectorAngle, indexFingerTIPNondominantSquaredTotalVectorAngle,
@@ -3781,14 +3781,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerMCPNondominant joint features
-			double? middleFingerMCPNondominantF1F2SpatialAngle = gesture.MiddleFingerMCPNondominantF1F2SpatialAngle;
-			double? middleFingerMCPNondominantFN_1FNSpatialAngle = gesture.MiddleFingerMCPNondominantFN_1FNSpatialAngle;
-			double? middleFingerMCPNondominantF1FNSpatialAngle = gesture.MiddleFingerMCPNondominantF1FNSpatialAngle;
-			double? middleFingerMCPNondominantTotalVectorAngle = gesture.MiddleFingerMCPNondominantTotalVectorAngle;
-			double? middleFingerMCPNondominantSquaredTotalVectorAngle = gesture.MiddleFingerMCPNondominantSquaredTotalVectorAngle;
-			double? middleFingerMCPNondominantTotalVectorDisplacement = gesture.MiddleFingerMCPNondominantTotalVectorDisplacement;
-			double? middleFingerMCPNondominantTotalDisplacement = gesture.MiddleFingerMCPNondominantTotalDisplacement;
-			double? middleFingerMCPNondominantMaximumDisplacement = gesture.MiddleFingerMCPNondominantMaximumDisplacement;
+			float middleFingerMCPNondominantF1F2SpatialAngle = gesture.MiddleFingerMCPNondominantF1F2SpatialAngle;
+			float middleFingerMCPNondominantFN_1FNSpatialAngle = gesture.MiddleFingerMCPNondominantFN_1FNSpatialAngle;
+			float middleFingerMCPNondominantF1FNSpatialAngle = gesture.MiddleFingerMCPNondominantF1FNSpatialAngle;
+			float middleFingerMCPNondominantTotalVectorAngle = gesture.MiddleFingerMCPNondominantTotalVectorAngle;
+			float middleFingerMCPNondominantSquaredTotalVectorAngle = gesture.MiddleFingerMCPNondominantSquaredTotalVectorAngle;
+			float middleFingerMCPNondominantTotalVectorDisplacement = gesture.MiddleFingerMCPNondominantTotalVectorDisplacement;
+			float middleFingerMCPNondominantTotalDisplacement = gesture.MiddleFingerMCPNondominantTotalDisplacement;
+			float middleFingerMCPNondominantMaximumDisplacement = gesture.MiddleFingerMCPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.MiddleFingerMCPLeft, JointType.MiddleFingerMCPRight, features.HandDominance, false),
 				new JointGestureFeatures(middleFingerMCPNondominantF1F2SpatialAngle, middleFingerMCPNondominantFN_1FNSpatialAngle, middleFingerMCPNondominantF1FNSpatialAngle,
 				middleFingerMCPNondominantTotalVectorAngle, middleFingerMCPNondominantSquaredTotalVectorAngle,
@@ -3796,14 +3796,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerPIPNondominant joint features
-			double? middleFingerPIPNondominantF1F2SpatialAngle = gesture.MiddleFingerPIPNondominantF1F2SpatialAngle;
-			double? middleFingerPIPNondominantFN_1FNSpatialAngle = gesture.MiddleFingerPIPNondominantFN_1FNSpatialAngle;
-			double? middleFingerPIPNondominantF1FNSpatialAngle = gesture.MiddleFingerPIPNondominantF1FNSpatialAngle;
-			double? middleFingerPIPNondominantTotalVectorAngle = gesture.MiddleFingerPIPNondominantTotalVectorAngle;
-			double? middleFingerPIPNondominantSquaredTotalVectorAngle = gesture.MiddleFingerPIPNondominantSquaredTotalVectorAngle;
-			double? middleFingerPIPNondominantTotalVectorDisplacement = gesture.MiddleFingerPIPNondominantTotalVectorDisplacement;
-			double? middleFingerPIPNondominantTotalDisplacement = gesture.MiddleFingerPIPNondominantTotalDisplacement;
-			double? middleFingerPIPNondominantMaximumDisplacement = gesture.MiddleFingerPIPNondominantMaximumDisplacement;
+			float middleFingerPIPNondominantF1F2SpatialAngle = gesture.MiddleFingerPIPNondominantF1F2SpatialAngle;
+			float middleFingerPIPNondominantFN_1FNSpatialAngle = gesture.MiddleFingerPIPNondominantFN_1FNSpatialAngle;
+			float middleFingerPIPNondominantF1FNSpatialAngle = gesture.MiddleFingerPIPNondominantF1FNSpatialAngle;
+			float middleFingerPIPNondominantTotalVectorAngle = gesture.MiddleFingerPIPNondominantTotalVectorAngle;
+			float middleFingerPIPNondominantSquaredTotalVectorAngle = gesture.MiddleFingerPIPNondominantSquaredTotalVectorAngle;
+			float middleFingerPIPNondominantTotalVectorDisplacement = gesture.MiddleFingerPIPNondominantTotalVectorDisplacement;
+			float middleFingerPIPNondominantTotalDisplacement = gesture.MiddleFingerPIPNondominantTotalDisplacement;
+			float middleFingerPIPNondominantMaximumDisplacement = gesture.MiddleFingerPIPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.MiddleFingerPIPLeft, JointType.MiddleFingerPIPRight, features.HandDominance, false),
 				new JointGestureFeatures(middleFingerPIPNondominantF1F2SpatialAngle, middleFingerPIPNondominantFN_1FNSpatialAngle, middleFingerPIPNondominantF1FNSpatialAngle,
 				middleFingerPIPNondominantTotalVectorAngle, middleFingerPIPNondominantSquaredTotalVectorAngle,
@@ -3811,14 +3811,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerDIPNondominant joint features
-			double? middleFingerDIPNondominantF1F2SpatialAngle = gesture.MiddleFingerDIPNondominantF1F2SpatialAngle;
-			double? middleFingerDIPNondominantFN_1FNSpatialAngle = gesture.MiddleFingerDIPNondominantFN_1FNSpatialAngle;
-			double? middleFingerDIPNondominantF1FNSpatialAngle = gesture.MiddleFingerDIPNondominantF1FNSpatialAngle;
-			double? middleFingerDIPNondominantTotalVectorAngle = gesture.MiddleFingerDIPNondominantTotalVectorAngle;
-			double? middleFingerDIPNondominantSquaredTotalVectorAngle = gesture.MiddleFingerDIPNondominantSquaredTotalVectorAngle;
-			double? middleFingerDIPNondominantTotalVectorDisplacement = gesture.MiddleFingerDIPNondominantTotalVectorDisplacement;
-			double? middleFingerDIPNondominantTotalDisplacement = gesture.MiddleFingerDIPNondominantTotalDisplacement;
-			double? middleFingerDIPNondominantMaximumDisplacement = gesture.MiddleFingerDIPNondominantMaximumDisplacement;
+			float middleFingerDIPNondominantF1F2SpatialAngle = gesture.MiddleFingerDIPNondominantF1F2SpatialAngle;
+			float middleFingerDIPNondominantFN_1FNSpatialAngle = gesture.MiddleFingerDIPNondominantFN_1FNSpatialAngle;
+			float middleFingerDIPNondominantF1FNSpatialAngle = gesture.MiddleFingerDIPNondominantF1FNSpatialAngle;
+			float middleFingerDIPNondominantTotalVectorAngle = gesture.MiddleFingerDIPNondominantTotalVectorAngle;
+			float middleFingerDIPNondominantSquaredTotalVectorAngle = gesture.MiddleFingerDIPNondominantSquaredTotalVectorAngle;
+			float middleFingerDIPNondominantTotalVectorDisplacement = gesture.MiddleFingerDIPNondominantTotalVectorDisplacement;
+			float middleFingerDIPNondominantTotalDisplacement = gesture.MiddleFingerDIPNondominantTotalDisplacement;
+			float middleFingerDIPNondominantMaximumDisplacement = gesture.MiddleFingerDIPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.MiddleFingerDIPLeft, JointType.MiddleFingerDIPRight, features.HandDominance, false),
 				new JointGestureFeatures(middleFingerDIPNondominantF1F2SpatialAngle, middleFingerDIPNondominantFN_1FNSpatialAngle, middleFingerDIPNondominantF1FNSpatialAngle,
 				middleFingerDIPNondominantTotalVectorAngle, middleFingerDIPNondominantSquaredTotalVectorAngle,
@@ -3826,14 +3826,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region MiddleFingerTIPNondominant joint features
-			double? middleFingerTIPNondominantF1F2SpatialAngle = gesture.MiddleFingerTIPNondominantF1F2SpatialAngle;
-			double? middleFingerTIPNondominantFN_1FNSpatialAngle = gesture.MiddleFingerTIPNondominantFN_1FNSpatialAngle;
-			double? middleFingerTIPNondominantF1FNSpatialAngle = gesture.MiddleFingerTIPNondominantF1FNSpatialAngle;
-			double? middleFingerTIPNondominantTotalVectorAngle = gesture.MiddleFingerTIPNondominantTotalVectorAngle;
-			double? middleFingerTIPNondominantSquaredTotalVectorAngle = gesture.MiddleFingerTIPNondominantSquaredTotalVectorAngle;
-			double? middleFingerTIPNondominantTotalVectorDisplacement = gesture.MiddleFingerTIPNondominantTotalVectorDisplacement;
-			double? middleFingerTIPNondominantTotalDisplacement = gesture.MiddleFingerTIPNondominantTotalDisplacement;
-			double? middleFingerTIPNondominantMaximumDisplacement = gesture.MiddleFingerTIPNondominantMaximumDisplacement;
+			float middleFingerTIPNondominantF1F2SpatialAngle = gesture.MiddleFingerTIPNondominantF1F2SpatialAngle;
+			float middleFingerTIPNondominantFN_1FNSpatialAngle = gesture.MiddleFingerTIPNondominantFN_1FNSpatialAngle;
+			float middleFingerTIPNondominantF1FNSpatialAngle = gesture.MiddleFingerTIPNondominantF1FNSpatialAngle;
+			float middleFingerTIPNondominantTotalVectorAngle = gesture.MiddleFingerTIPNondominantTotalVectorAngle;
+			float middleFingerTIPNondominantSquaredTotalVectorAngle = gesture.MiddleFingerTIPNondominantSquaredTotalVectorAngle;
+			float middleFingerTIPNondominantTotalVectorDisplacement = gesture.MiddleFingerTIPNondominantTotalVectorDisplacement;
+			float middleFingerTIPNondominantTotalDisplacement = gesture.MiddleFingerTIPNondominantTotalDisplacement;
+			float middleFingerTIPNondominantMaximumDisplacement = gesture.MiddleFingerTIPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.MiddleFingerTIPLeft, JointType.MiddleFingerTIPRight, features.HandDominance, false),
 				new JointGestureFeatures(middleFingerTIPNondominantF1F2SpatialAngle, middleFingerTIPNondominantFN_1FNSpatialAngle, middleFingerTIPNondominantF1FNSpatialAngle,
 				middleFingerTIPNondominantTotalVectorAngle, middleFingerTIPNondominantSquaredTotalVectorAngle,
@@ -3841,14 +3841,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerMCPNondominant joint features
-			double? ringFingerMCPNondominantF1F2SpatialAngle = gesture.RingFingerMCPNondominantF1F2SpatialAngle;
-			double? ringFingerMCPNondominantFN_1FNSpatialAngle = gesture.RingFingerMCPNondominantFN_1FNSpatialAngle;
-			double? ringFingerMCPNondominantF1FNSpatialAngle = gesture.RingFingerMCPNondominantF1FNSpatialAngle;
-			double? ringFingerMCPNondominantTotalVectorAngle = gesture.RingFingerMCPNondominantTotalVectorAngle;
-			double? ringFingerMCPNondominantSquaredTotalVectorAngle = gesture.RingFingerMCPNondominantSquaredTotalVectorAngle;
-			double? ringFingerMCPNondominantTotalVectorDisplacement = gesture.RingFingerMCPNondominantTotalVectorDisplacement;
-			double? ringFingerMCPNondominantTotalDisplacement = gesture.RingFingerMCPNondominantTotalDisplacement;
-			double? ringFingerMCPNondominantMaximumDisplacement = gesture.RingFingerMCPNondominantMaximumDisplacement;
+			float ringFingerMCPNondominantF1F2SpatialAngle = gesture.RingFingerMCPNondominantF1F2SpatialAngle;
+			float ringFingerMCPNondominantFN_1FNSpatialAngle = gesture.RingFingerMCPNondominantFN_1FNSpatialAngle;
+			float ringFingerMCPNondominantF1FNSpatialAngle = gesture.RingFingerMCPNondominantF1FNSpatialAngle;
+			float ringFingerMCPNondominantTotalVectorAngle = gesture.RingFingerMCPNondominantTotalVectorAngle;
+			float ringFingerMCPNondominantSquaredTotalVectorAngle = gesture.RingFingerMCPNondominantSquaredTotalVectorAngle;
+			float ringFingerMCPNondominantTotalVectorDisplacement = gesture.RingFingerMCPNondominantTotalVectorDisplacement;
+			float ringFingerMCPNondominantTotalDisplacement = gesture.RingFingerMCPNondominantTotalDisplacement;
+			float ringFingerMCPNondominantMaximumDisplacement = gesture.RingFingerMCPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.RingFingerMCPLeft, JointType.RingFingerMCPRight, features.HandDominance, false),
 				new JointGestureFeatures(ringFingerMCPNondominantF1F2SpatialAngle, ringFingerMCPNondominantFN_1FNSpatialAngle, ringFingerMCPNondominantF1FNSpatialAngle,
 				ringFingerMCPNondominantTotalVectorAngle, ringFingerMCPNondominantSquaredTotalVectorAngle,
@@ -3856,14 +3856,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerPIPNondominant joint features
-			double? ringFingerPIPNondominantF1F2SpatialAngle = gesture.RingFingerPIPNondominantF1F2SpatialAngle;
-			double? ringFingerPIPNondominantFN_1FNSpatialAngle = gesture.RingFingerPIPNondominantFN_1FNSpatialAngle;
-			double? ringFingerPIPNondominantF1FNSpatialAngle = gesture.RingFingerPIPNondominantF1FNSpatialAngle;
-			double? ringFingerPIPNondominantTotalVectorAngle = gesture.RingFingerPIPNondominantTotalVectorAngle;
-			double? ringFingerPIPNondominantSquaredTotalVectorAngle = gesture.RingFingerPIPNondominantSquaredTotalVectorAngle;
-			double? ringFingerPIPNondominantTotalVectorDisplacement = gesture.RingFingerPIPNondominantTotalVectorDisplacement;
-			double? ringFingerPIPNondominantTotalDisplacement = gesture.RingFingerPIPNondominantTotalDisplacement;
-			double? ringFingerPIPNondominantMaximumDisplacement = gesture.RingFingerPIPNondominantMaximumDisplacement;
+			float ringFingerPIPNondominantF1F2SpatialAngle = gesture.RingFingerPIPNondominantF1F2SpatialAngle;
+			float ringFingerPIPNondominantFN_1FNSpatialAngle = gesture.RingFingerPIPNondominantFN_1FNSpatialAngle;
+			float ringFingerPIPNondominantF1FNSpatialAngle = gesture.RingFingerPIPNondominantF1FNSpatialAngle;
+			float ringFingerPIPNondominantTotalVectorAngle = gesture.RingFingerPIPNondominantTotalVectorAngle;
+			float ringFingerPIPNondominantSquaredTotalVectorAngle = gesture.RingFingerPIPNondominantSquaredTotalVectorAngle;
+			float ringFingerPIPNondominantTotalVectorDisplacement = gesture.RingFingerPIPNondominantTotalVectorDisplacement;
+			float ringFingerPIPNondominantTotalDisplacement = gesture.RingFingerPIPNondominantTotalDisplacement;
+			float ringFingerPIPNondominantMaximumDisplacement = gesture.RingFingerPIPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.RingFingerPIPLeft, JointType.RingFingerPIPRight, features.HandDominance, false),
 				new JointGestureFeatures(ringFingerPIPNondominantF1F2SpatialAngle, ringFingerPIPNondominantFN_1FNSpatialAngle, ringFingerPIPNondominantF1FNSpatialAngle,
 				ringFingerPIPNondominantTotalVectorAngle, ringFingerPIPNondominantSquaredTotalVectorAngle,
@@ -3871,14 +3871,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerDIPNondominant joint features
-			double? ringFingerDIPNondominantF1F2SpatialAngle = gesture.RingFingerDIPNondominantF1F2SpatialAngle;
-			double? ringFingerDIPNondominantFN_1FNSpatialAngle = gesture.RingFingerDIPNondominantFN_1FNSpatialAngle;
-			double? ringFingerDIPNondominantF1FNSpatialAngle = gesture.RingFingerDIPNondominantF1FNSpatialAngle;
-			double? ringFingerDIPNondominantTotalVectorAngle = gesture.RingFingerDIPNondominantTotalVectorAngle;
-			double? ringFingerDIPNondominantSquaredTotalVectorAngle = gesture.RingFingerDIPNondominantSquaredTotalVectorAngle;
-			double? ringFingerDIPNondominantTotalVectorDisplacement = gesture.RingFingerDIPNondominantTotalVectorDisplacement;
-			double? ringFingerDIPNondominantTotalDisplacement = gesture.RingFingerDIPNondominantTotalDisplacement;
-			double? ringFingerDIPNondominantMaximumDisplacement = gesture.RingFingerDIPNondominantMaximumDisplacement;
+			float ringFingerDIPNondominantF1F2SpatialAngle = gesture.RingFingerDIPNondominantF1F2SpatialAngle;
+			float ringFingerDIPNondominantFN_1FNSpatialAngle = gesture.RingFingerDIPNondominantFN_1FNSpatialAngle;
+			float ringFingerDIPNondominantF1FNSpatialAngle = gesture.RingFingerDIPNondominantF1FNSpatialAngle;
+			float ringFingerDIPNondominantTotalVectorAngle = gesture.RingFingerDIPNondominantTotalVectorAngle;
+			float ringFingerDIPNondominantSquaredTotalVectorAngle = gesture.RingFingerDIPNondominantSquaredTotalVectorAngle;
+			float ringFingerDIPNondominantTotalVectorDisplacement = gesture.RingFingerDIPNondominantTotalVectorDisplacement;
+			float ringFingerDIPNondominantTotalDisplacement = gesture.RingFingerDIPNondominantTotalDisplacement;
+			float ringFingerDIPNondominantMaximumDisplacement = gesture.RingFingerDIPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.RingFingerDIPLeft, JointType.RingFingerDIPRight, features.HandDominance, false),
 				new JointGestureFeatures(ringFingerDIPNondominantF1F2SpatialAngle, ringFingerDIPNondominantFN_1FNSpatialAngle, ringFingerDIPNondominantF1FNSpatialAngle,
 				ringFingerDIPNondominantTotalVectorAngle, ringFingerDIPNondominantSquaredTotalVectorAngle,
@@ -3886,14 +3886,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region RingFingerTIPNondominant joint features
-			double? ringFingerTIPNondominantF1F2SpatialAngle = gesture.RingFingerTIPNondominantF1F2SpatialAngle;
-			double? ringFingerTIPNondominantFN_1FNSpatialAngle = gesture.RingFingerTIPNondominantFN_1FNSpatialAngle;
-			double? ringFingerTIPNondominantF1FNSpatialAngle = gesture.RingFingerTIPNondominantF1FNSpatialAngle;
-			double? ringFingerTIPNondominantTotalVectorAngle = gesture.RingFingerTIPNondominantTotalVectorAngle;
-			double? ringFingerTIPNondominantSquaredTotalVectorAngle = gesture.RingFingerTIPNondominantSquaredTotalVectorAngle;
-			double? ringFingerTIPNondominantTotalVectorDisplacement = gesture.RingFingerTIPNondominantTotalVectorDisplacement;
-			double? ringFingerTIPNondominantTotalDisplacement = gesture.RingFingerTIPNondominantTotalDisplacement;
-			double? ringFingerTIPNondominantMaximumDisplacement = gesture.RingFingerTIPNondominantMaximumDisplacement;
+			float ringFingerTIPNondominantF1F2SpatialAngle = gesture.RingFingerTIPNondominantF1F2SpatialAngle;
+			float ringFingerTIPNondominantFN_1FNSpatialAngle = gesture.RingFingerTIPNondominantFN_1FNSpatialAngle;
+			float ringFingerTIPNondominantF1FNSpatialAngle = gesture.RingFingerTIPNondominantF1FNSpatialAngle;
+			float ringFingerTIPNondominantTotalVectorAngle = gesture.RingFingerTIPNondominantTotalVectorAngle;
+			float ringFingerTIPNondominantSquaredTotalVectorAngle = gesture.RingFingerTIPNondominantSquaredTotalVectorAngle;
+			float ringFingerTIPNondominantTotalVectorDisplacement = gesture.RingFingerTIPNondominantTotalVectorDisplacement;
+			float ringFingerTIPNondominantTotalDisplacement = gesture.RingFingerTIPNondominantTotalDisplacement;
+			float ringFingerTIPNondominantMaximumDisplacement = gesture.RingFingerTIPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.RingFingerTIPLeft, JointType.RingFingerTIPRight, features.HandDominance, false),
 				new JointGestureFeatures(ringFingerTIPNondominantF1F2SpatialAngle, ringFingerTIPNondominantFN_1FNSpatialAngle, ringFingerTIPNondominantF1FNSpatialAngle,
 				ringFingerTIPNondominantTotalVectorAngle, ringFingerTIPNondominantSquaredTotalVectorAngle,
@@ -3901,14 +3901,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyMCPNondominant joint features
-			double? pinkyMCPNondominantF1F2SpatialAngle = gesture.PinkyMCPNondominantF1F2SpatialAngle;
-			double? pinkyMCPNondominantFN_1FNSpatialAngle = gesture.PinkyMCPNondominantFN_1FNSpatialAngle;
-			double? pinkyMCPNondominantF1FNSpatialAngle = gesture.PinkyMCPNondominantF1FNSpatialAngle;
-			double? pinkyMCPNondominantTotalVectorAngle = gesture.PinkyMCPNondominantTotalVectorAngle;
-			double? pinkyMCPNondominantSquaredTotalVectorAngle = gesture.PinkyMCPNondominantSquaredTotalVectorAngle;
-			double? pinkyMCPNondominantTotalVectorDisplacement = gesture.PinkyMCPNondominantTotalVectorDisplacement;
-			double? pinkyMCPNondominantTotalDisplacement = gesture.PinkyMCPNondominantTotalDisplacement;
-			double? pinkyMCPNondominantMaximumDisplacement = gesture.PinkyMCPNondominantMaximumDisplacement;
+			float pinkyMCPNondominantF1F2SpatialAngle = gesture.PinkyMCPNondominantF1F2SpatialAngle;
+			float pinkyMCPNondominantFN_1FNSpatialAngle = gesture.PinkyMCPNondominantFN_1FNSpatialAngle;
+			float pinkyMCPNondominantF1FNSpatialAngle = gesture.PinkyMCPNondominantF1FNSpatialAngle;
+			float pinkyMCPNondominantTotalVectorAngle = gesture.PinkyMCPNondominantTotalVectorAngle;
+			float pinkyMCPNondominantSquaredTotalVectorAngle = gesture.PinkyMCPNondominantSquaredTotalVectorAngle;
+			float pinkyMCPNondominantTotalVectorDisplacement = gesture.PinkyMCPNondominantTotalVectorDisplacement;
+			float pinkyMCPNondominantTotalDisplacement = gesture.PinkyMCPNondominantTotalDisplacement;
+			float pinkyMCPNondominantMaximumDisplacement = gesture.PinkyMCPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.PinkyMCPLeft, JointType.PinkyMCPRight, features.HandDominance, false),
 				new JointGestureFeatures(pinkyMCPNondominantF1F2SpatialAngle, pinkyMCPNondominantFN_1FNSpatialAngle, pinkyMCPNondominantF1FNSpatialAngle,
 				pinkyMCPNondominantTotalVectorAngle, pinkyMCPNondominantSquaredTotalVectorAngle,
@@ -3916,14 +3916,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyPIPNondominant joint features
-			double? pinkyPIPNondominantF1F2SpatialAngle = gesture.PinkyPIPNondominantF1F2SpatialAngle;
-			double? pinkyPIPNondominantFN_1FNSpatialAngle = gesture.PinkyPIPNondominantFN_1FNSpatialAngle;
-			double? pinkyPIPNondominantF1FNSpatialAngle = gesture.PinkyPIPNondominantF1FNSpatialAngle;
-			double? pinkyPIPNondominantTotalVectorAngle = gesture.PinkyPIPNondominantTotalVectorAngle;
-			double? pinkyPIPNondominantSquaredTotalVectorAngle = gesture.PinkyPIPNondominantSquaredTotalVectorAngle;
-			double? pinkyPIPNondominantTotalVectorDisplacement = gesture.PinkyPIPNondominantTotalVectorDisplacement;
-			double? pinkyPIPNondominantTotalDisplacement = gesture.PinkyPIPNondominantTotalDisplacement;
-			double? pinkyPIPNondominantMaximumDisplacement = gesture.PinkyPIPNondominantMaximumDisplacement;
+			float pinkyPIPNondominantF1F2SpatialAngle = gesture.PinkyPIPNondominantF1F2SpatialAngle;
+			float pinkyPIPNondominantFN_1FNSpatialAngle = gesture.PinkyPIPNondominantFN_1FNSpatialAngle;
+			float pinkyPIPNondominantF1FNSpatialAngle = gesture.PinkyPIPNondominantF1FNSpatialAngle;
+			float pinkyPIPNondominantTotalVectorAngle = gesture.PinkyPIPNondominantTotalVectorAngle;
+			float pinkyPIPNondominantSquaredTotalVectorAngle = gesture.PinkyPIPNondominantSquaredTotalVectorAngle;
+			float pinkyPIPNondominantTotalVectorDisplacement = gesture.PinkyPIPNondominantTotalVectorDisplacement;
+			float pinkyPIPNondominantTotalDisplacement = gesture.PinkyPIPNondominantTotalDisplacement;
+			float pinkyPIPNondominantMaximumDisplacement = gesture.PinkyPIPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.PinkyPIPLeft, JointType.PinkyPIPRight, features.HandDominance, false),
 				new JointGestureFeatures(pinkyPIPNondominantF1F2SpatialAngle, pinkyPIPNondominantFN_1FNSpatialAngle, pinkyPIPNondominantF1FNSpatialAngle,
 				pinkyPIPNondominantTotalVectorAngle, pinkyPIPNondominantSquaredTotalVectorAngle,
@@ -3931,14 +3931,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyDIPNondominant joint features
-			double? pinkyDIPNondominantF1F2SpatialAngle = gesture.PinkyDIPNondominantF1F2SpatialAngle;
-			double? pinkyDIPNondominantFN_1FNSpatialAngle = gesture.PinkyDIPNondominantFN_1FNSpatialAngle;
-			double? pinkyDIPNondominantF1FNSpatialAngle = gesture.PinkyDIPNondominantF1FNSpatialAngle;
-			double? pinkyDIPNondominantTotalVectorAngle = gesture.PinkyDIPNondominantTotalVectorAngle;
-			double? pinkyDIPNondominantSquaredTotalVectorAngle = gesture.PinkyDIPNondominantSquaredTotalVectorAngle;
-			double? pinkyDIPNondominantTotalVectorDisplacement = gesture.PinkyDIPNondominantTotalVectorDisplacement;
-			double? pinkyDIPNondominantTotalDisplacement = gesture.PinkyDIPNondominantTotalDisplacement;
-			double? pinkyDIPNondominantMaximumDisplacement = gesture.PinkyDIPNondominantMaximumDisplacement;
+			float pinkyDIPNondominantF1F2SpatialAngle = gesture.PinkyDIPNondominantF1F2SpatialAngle;
+			float pinkyDIPNondominantFN_1FNSpatialAngle = gesture.PinkyDIPNondominantFN_1FNSpatialAngle;
+			float pinkyDIPNondominantF1FNSpatialAngle = gesture.PinkyDIPNondominantF1FNSpatialAngle;
+			float pinkyDIPNondominantTotalVectorAngle = gesture.PinkyDIPNondominantTotalVectorAngle;
+			float pinkyDIPNondominantSquaredTotalVectorAngle = gesture.PinkyDIPNondominantSquaredTotalVectorAngle;
+			float pinkyDIPNondominantTotalVectorDisplacement = gesture.PinkyDIPNondominantTotalVectorDisplacement;
+			float pinkyDIPNondominantTotalDisplacement = gesture.PinkyDIPNondominantTotalDisplacement;
+			float pinkyDIPNondominantMaximumDisplacement = gesture.PinkyDIPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.PinkyDIPLeft, JointType.PinkyDIPRight, features.HandDominance, false),
 				new JointGestureFeatures(pinkyDIPNondominantF1F2SpatialAngle, pinkyDIPNondominantFN_1FNSpatialAngle, pinkyDIPNondominantF1FNSpatialAngle,
 				pinkyDIPNondominantTotalVectorAngle, pinkyDIPNondominantSquaredTotalVectorAngle,
@@ -3946,14 +3946,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region PinkyTIPNondominant joint features
-			double? pinkyTIPNondominantF1F2SpatialAngle = gesture.PinkyTIPNondominantF1F2SpatialAngle;
-			double? pinkyTIPNondominantFN_1FNSpatialAngle = gesture.PinkyTIPNondominantFN_1FNSpatialAngle;
-			double? pinkyTIPNondominantF1FNSpatialAngle = gesture.PinkyTIPNondominantF1FNSpatialAngle;
-			double? pinkyTIPNondominantTotalVectorAngle = gesture.PinkyTIPNondominantTotalVectorAngle;
-			double? pinkyTIPNondominantSquaredTotalVectorAngle = gesture.PinkyTIPNondominantSquaredTotalVectorAngle;
-			double? pinkyTIPNondominantTotalVectorDisplacement = gesture.PinkyTIPNondominantTotalVectorDisplacement;
-			double? pinkyTIPNondominantTotalDisplacement = gesture.PinkyTIPNondominantTotalDisplacement;
-			double? pinkyTIPNondominantMaximumDisplacement = gesture.PinkyTIPNondominantMaximumDisplacement;
+			float pinkyTIPNondominantF1F2SpatialAngle = gesture.PinkyTIPNondominantF1F2SpatialAngle;
+			float pinkyTIPNondominantFN_1FNSpatialAngle = gesture.PinkyTIPNondominantFN_1FNSpatialAngle;
+			float pinkyTIPNondominantF1FNSpatialAngle = gesture.PinkyTIPNondominantF1FNSpatialAngle;
+			float pinkyTIPNondominantTotalVectorAngle = gesture.PinkyTIPNondominantTotalVectorAngle;
+			float pinkyTIPNondominantSquaredTotalVectorAngle = gesture.PinkyTIPNondominantSquaredTotalVectorAngle;
+			float pinkyTIPNondominantTotalVectorDisplacement = gesture.PinkyTIPNondominantTotalVectorDisplacement;
+			float pinkyTIPNondominantTotalDisplacement = gesture.PinkyTIPNondominantTotalDisplacement;
+			float pinkyTIPNondominantMaximumDisplacement = gesture.PinkyTIPNondominantMaximumDisplacement;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.PinkyTIPLeft, JointType.PinkyTIPRight, features.HandDominance, false),
 				new JointGestureFeatures(pinkyTIPNondominantF1F2SpatialAngle, pinkyTIPNondominantFN_1FNSpatialAngle, pinkyTIPNondominantF1FNSpatialAngle,
 				pinkyTIPNondominantTotalVectorAngle, pinkyTIPNondominantSquaredTotalVectorAngle,
@@ -3961,16 +3961,16 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region HandNondominant joint features
-			double? handNondominantF1F2SpatialAngle = gesture.HandNondominantF1F2SpatialAngle;
-			double? handNondominantFN_1FNSpatialAngle = gesture.HandNondominantFN_1FNSpatialAngle;
-			double? handNondominantF1FNSpatialAngle = gesture.HandNondominantF1FNSpatialAngle;
-			double? handNondominantTotalVectorAngle = gesture.HandNondominantTotalVectorAngle;
-			double? handNondominantSquaredTotalVectorAngle = gesture.HandNondominantSquaredTotalVectorAngle;
-			double? handNondominantTotalVectorDisplacement = gesture.HandNondominantTotalVectorDisplacement;
-			double? handNondominantTotalDisplacement = gesture.HandNondominantTotalDisplacement;
-			double? handNondominantMaximumDisplacement = gesture.HandNondominantMaximumDisplacement;
-			double? handNondominantBoundingBoxDiagonalLength = gesture.HandNondominantBoundingBoxDiagonalLength;
-			double? handNondominantBoundingBoxAngle = gesture.HandNondominantBoundingBoxAngle;
+			float handNondominantF1F2SpatialAngle = gesture.HandNondominantF1F2SpatialAngle;
+			float handNondominantFN_1FNSpatialAngle = gesture.HandNondominantFN_1FNSpatialAngle;
+			float handNondominantF1FNSpatialAngle = gesture.HandNondominantF1FNSpatialAngle;
+			float handNondominantTotalVectorAngle = gesture.HandNondominantTotalVectorAngle;
+			float handNondominantSquaredTotalVectorAngle = gesture.HandNondominantSquaredTotalVectorAngle;
+			float handNondominantTotalVectorDisplacement = gesture.HandNondominantTotalVectorDisplacement;
+			float handNondominantTotalDisplacement = gesture.HandNondominantTotalDisplacement;
+			float handNondominantMaximumDisplacement = gesture.HandNondominantMaximumDisplacement;
+			float handNondominantBoundingBoxDiagonalLength = gesture.HandNondominantBoundingBoxDiagonalLength;
+			float handNondominantBoundingBoxAngle = gesture.HandNondominantBoundingBoxAngle;
 			//HandState[] handNondominantHandStates = gesture.HandNondominantHandStates;
 			features.AddJointGestureFeature(GetJointTypeByHandDominance(JointType.HandLeft, JointType.HandRight, features.HandDominance, false),
 				new HandJointGestureFeatures(handNondominantF1F2SpatialAngle, handNondominantFN_1FNSpatialAngle, handNondominantF1FNSpatialAngle,
@@ -3980,440 +3980,440 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			#endregion
 
 			#region WristThumbCMCDominant bone features
-			double? wristThumbCMCDominantBoneInitialAngle = gesture.WristThumbCMCDominantBoneInitialAngle;
-			double? wristThumbCMCDominantBoneFinalAngle = gesture.WristThumbCMCDominantBoneFinalAngle;
-			double? wristThumbCMCDominantBoneMeanAngle = gesture.WristThumbCMCDominantBoneMeanAngle;
-			double? wristThumbCMCDominantBoneMaximumAngle = gesture.WristThumbCMCDominantBoneMaximumAngle;
+			float wristThumbCMCDominantBoneInitialAngle = gesture.WristThumbCMCDominantBoneInitialAngle;
+			float wristThumbCMCDominantBoneFinalAngle = gesture.WristThumbCMCDominantBoneFinalAngle;
+			float wristThumbCMCDominantBoneMeanAngle = gesture.WristThumbCMCDominantBoneMeanAngle;
+			float wristThumbCMCDominantBoneMaximumAngle = gesture.WristThumbCMCDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.WristThumbCMCLeftBone, MediaPipeHandLandmarksBonesDefs.WristThumbCMCRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(wristThumbCMCDominantBoneInitialAngle, wristThumbCMCDominantBoneFinalAngle,
 				wristThumbCMCDominantBoneMeanAngle, wristThumbCMCDominantBoneMaximumAngle));
 			#endregion
 
 			#region ThumbCMCThumbMCPDominant bone features
-			double? thumbCMCThumbMCPDominantBoneInitialAngle = gesture.ThumbCMCThumbMCPDominantBoneInitialAngle;
-			double? thumbCMCThumbMCPDominantBoneFinalAngle = gesture.ThumbCMCThumbMCPDominantBoneFinalAngle;
-			double? thumbCMCThumbMCPDominantBoneMeanAngle = gesture.ThumbCMCThumbMCPDominantBoneMeanAngle;
-			double? thumbCMCThumbMCPDominantBoneMaximumAngle = gesture.ThumbCMCThumbMCPDominantBoneMaximumAngle;
+			float thumbCMCThumbMCPDominantBoneInitialAngle = gesture.ThumbCMCThumbMCPDominantBoneInitialAngle;
+			float thumbCMCThumbMCPDominantBoneFinalAngle = gesture.ThumbCMCThumbMCPDominantBoneFinalAngle;
+			float thumbCMCThumbMCPDominantBoneMeanAngle = gesture.ThumbCMCThumbMCPDominantBoneMeanAngle;
+			float thumbCMCThumbMCPDominantBoneMaximumAngle = gesture.ThumbCMCThumbMCPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbCMCThumbMCPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbCMCThumbMCPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(thumbCMCThumbMCPDominantBoneInitialAngle, thumbCMCThumbMCPDominantBoneFinalAngle,
 				thumbCMCThumbMCPDominantBoneMeanAngle, thumbCMCThumbMCPDominantBoneMaximumAngle));
 			#endregion
 
 			#region ThumbMCPThumbIPDominant bone features
-			double? thumbMCPThumbIPDominantBoneInitialAngle = gesture.ThumbMCPThumbIPDominantBoneInitialAngle;
-			double? thumbMCPThumbIPDominantBoneFinalAngle = gesture.ThumbMCPThumbIPDominantBoneFinalAngle;
-			double? thumbMCPThumbIPDominantBoneMeanAngle = gesture.ThumbMCPThumbIPDominantBoneMeanAngle;
-			double? thumbMCPThumbIPDominantBoneMaximumAngle = gesture.ThumbMCPThumbIPDominantBoneMaximumAngle;
+			float thumbMCPThumbIPDominantBoneInitialAngle = gesture.ThumbMCPThumbIPDominantBoneInitialAngle;
+			float thumbMCPThumbIPDominantBoneFinalAngle = gesture.ThumbMCPThumbIPDominantBoneFinalAngle;
+			float thumbMCPThumbIPDominantBoneMeanAngle = gesture.ThumbMCPThumbIPDominantBoneMeanAngle;
+			float thumbMCPThumbIPDominantBoneMaximumAngle = gesture.ThumbMCPThumbIPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbMCPThumbIPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbMCPThumbIPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(thumbMCPThumbIPDominantBoneInitialAngle, thumbMCPThumbIPDominantBoneFinalAngle,
 				thumbMCPThumbIPDominantBoneMeanAngle, thumbMCPThumbIPDominantBoneMaximumAngle));
 			#endregion
 
 			#region ThumbIPThumbTIPDominant bone features
-			double? thumbIPThumbTIPDominantBoneInitialAngle = gesture.ThumbIPThumbTIPDominantBoneInitialAngle;
-			double? thumbIPThumbTIPDominantBoneFinalAngle = gesture.ThumbIPThumbTIPDominantBoneFinalAngle;
-			double? thumbIPThumbTIPDominantBoneMeanAngle = gesture.ThumbIPThumbTIPDominantBoneMeanAngle;
-			double? thumbIPThumbTIPDominantBoneMaximumAngle = gesture.ThumbIPThumbTIPDominantBoneMaximumAngle;
+			float thumbIPThumbTIPDominantBoneInitialAngle = gesture.ThumbIPThumbTIPDominantBoneInitialAngle;
+			float thumbIPThumbTIPDominantBoneFinalAngle = gesture.ThumbIPThumbTIPDominantBoneFinalAngle;
+			float thumbIPThumbTIPDominantBoneMeanAngle = gesture.ThumbIPThumbTIPDominantBoneMeanAngle;
+			float thumbIPThumbTIPDominantBoneMaximumAngle = gesture.ThumbIPThumbTIPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbIPThumbTIPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbIPThumbTIPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(thumbIPThumbTIPDominantBoneInitialAngle, thumbIPThumbTIPDominantBoneFinalAngle,
 				thumbIPThumbTIPDominantBoneMeanAngle, thumbIPThumbTIPDominantBoneMaximumAngle));
 			#endregion
 
 			#region WristIndexFingerMCPDominant bone features
-			double? wristIndexFingerMCPDominantBoneInitialAngle = gesture.WristIndexFingerMCPDominantBoneInitialAngle;
-			double? wristIndexFingerMCPDominantBoneFinalAngle = gesture.WristIndexFingerMCPDominantBoneFinalAngle;
-			double? wristIndexFingerMCPDominantBoneMeanAngle = gesture.WristIndexFingerMCPDominantBoneMeanAngle;
-			double? wristIndexFingerMCPDominantBoneMaximumAngle = gesture.WristIndexFingerMCPDominantBoneMaximumAngle;
+			float wristIndexFingerMCPDominantBoneInitialAngle = gesture.WristIndexFingerMCPDominantBoneInitialAngle;
+			float wristIndexFingerMCPDominantBoneFinalAngle = gesture.WristIndexFingerMCPDominantBoneFinalAngle;
+			float wristIndexFingerMCPDominantBoneMeanAngle = gesture.WristIndexFingerMCPDominantBoneMeanAngle;
+			float wristIndexFingerMCPDominantBoneMaximumAngle = gesture.WristIndexFingerMCPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.WristIndexFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.WristIndexFingerMCPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(wristIndexFingerMCPDominantBoneInitialAngle, wristIndexFingerMCPDominantBoneFinalAngle,
 				wristIndexFingerMCPDominantBoneMeanAngle, wristIndexFingerMCPDominantBoneMaximumAngle));
 			#endregion
 
 			#region IndexFingerMCPIndexFingerPIPDominant bone features
-			double? indexFingerMCPIndexFingerPIPDominantBoneInitialAngle = gesture.IndexFingerMCPIndexFingerPIPDominantBoneInitialAngle;
-			double? indexFingerMCPIndexFingerPIPDominantBoneFinalAngle = gesture.IndexFingerMCPIndexFingerPIPDominantBoneFinalAngle;
-			double? indexFingerMCPIndexFingerPIPDominantBoneMeanAngle = gesture.IndexFingerMCPIndexFingerPIPDominantBoneMeanAngle;
-			double? indexFingerMCPIndexFingerPIPDominantBoneMaximumAngle = gesture.IndexFingerMCPIndexFingerPIPDominantBoneMaximumAngle;
+			float indexFingerMCPIndexFingerPIPDominantBoneInitialAngle = gesture.IndexFingerMCPIndexFingerPIPDominantBoneInitialAngle;
+			float indexFingerMCPIndexFingerPIPDominantBoneFinalAngle = gesture.IndexFingerMCPIndexFingerPIPDominantBoneFinalAngle;
+			float indexFingerMCPIndexFingerPIPDominantBoneMeanAngle = gesture.IndexFingerMCPIndexFingerPIPDominantBoneMeanAngle;
+			float indexFingerMCPIndexFingerPIPDominantBoneMaximumAngle = gesture.IndexFingerMCPIndexFingerPIPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.IndexFingerMCPIndexFingerPIPLeftBone, MediaPipeHandLandmarksBonesDefs.IndexFingerMCPIndexFingerPIPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(indexFingerMCPIndexFingerPIPDominantBoneInitialAngle, indexFingerMCPIndexFingerPIPDominantBoneFinalAngle,
 				indexFingerMCPIndexFingerPIPDominantBoneMeanAngle, indexFingerMCPIndexFingerPIPDominantBoneMaximumAngle));
 			#endregion
 
 			#region IndexFingerPIPIndexFingerDIPDominant bone features
-			double? indexFingerPIPIndexFingerDIPDominantBoneInitialAngle = gesture.IndexFingerPIPIndexFingerDIPDominantBoneInitialAngle;
-			double? indexFingerPIPIndexFingerDIPDominantBoneFinalAngle = gesture.IndexFingerPIPIndexFingerDIPDominantBoneFinalAngle;
-			double? indexFingerPIPIndexFingerDIPDominantBoneMeanAngle = gesture.IndexFingerPIPIndexFingerDIPDominantBoneMeanAngle;
-			double? indexFingerPIPIndexFingerDIPDominantBoneMaximumAngle = gesture.IndexFingerPIPIndexFingerDIPDominantBoneMaximumAngle;
+			float indexFingerPIPIndexFingerDIPDominantBoneInitialAngle = gesture.IndexFingerPIPIndexFingerDIPDominantBoneInitialAngle;
+			float indexFingerPIPIndexFingerDIPDominantBoneFinalAngle = gesture.IndexFingerPIPIndexFingerDIPDominantBoneFinalAngle;
+			float indexFingerPIPIndexFingerDIPDominantBoneMeanAngle = gesture.IndexFingerPIPIndexFingerDIPDominantBoneMeanAngle;
+			float indexFingerPIPIndexFingerDIPDominantBoneMaximumAngle = gesture.IndexFingerPIPIndexFingerDIPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.IndexFingerPIPIndexFingerDIPLeftBone, MediaPipeHandLandmarksBonesDefs.IndexFingerPIPIndexFingerDIPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(indexFingerPIPIndexFingerDIPDominantBoneInitialAngle, indexFingerPIPIndexFingerDIPDominantBoneFinalAngle,
 				indexFingerPIPIndexFingerDIPDominantBoneMeanAngle, indexFingerPIPIndexFingerDIPDominantBoneMaximumAngle));
 			#endregion
 
 			#region IndexFingerDIPIndexFingerTIPDominant bone features
-			double? indexFingerDIPIndexFingerTIPDominantBoneInitialAngle = gesture.IndexFingerDIPIndexFingerTIPDominantBoneInitialAngle;
-			double? indexFingerDIPIndexFingerTIPDominantBoneFinalAngle = gesture.IndexFingerDIPIndexFingerTIPDominantBoneFinalAngle;
-			double? indexFingerDIPIndexFingerTIPDominantBoneMeanAngle = gesture.IndexFingerDIPIndexFingerTIPDominantBoneMeanAngle;
-			double? indexFingerDIPIndexFingerTIPDominantBoneMaximumAngle = gesture.IndexFingerDIPIndexFingerTIPDominantBoneMaximumAngle;
+			float indexFingerDIPIndexFingerTIPDominantBoneInitialAngle = gesture.IndexFingerDIPIndexFingerTIPDominantBoneInitialAngle;
+			float indexFingerDIPIndexFingerTIPDominantBoneFinalAngle = gesture.IndexFingerDIPIndexFingerTIPDominantBoneFinalAngle;
+			float indexFingerDIPIndexFingerTIPDominantBoneMeanAngle = gesture.IndexFingerDIPIndexFingerTIPDominantBoneMeanAngle;
+			float indexFingerDIPIndexFingerTIPDominantBoneMaximumAngle = gesture.IndexFingerDIPIndexFingerTIPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.IndexFingerDIPIndexFingerTIPLeftBone, MediaPipeHandLandmarksBonesDefs.IndexFingerDIPIndexFingerTIPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(indexFingerDIPIndexFingerTIPDominantBoneInitialAngle, indexFingerDIPIndexFingerTIPDominantBoneFinalAngle,
 				indexFingerDIPIndexFingerTIPDominantBoneMeanAngle, indexFingerDIPIndexFingerTIPDominantBoneMaximumAngle));
 			#endregion
 
 			#region MiddleFingerMCPMiddleFingerPIPDominant bone features
-			double? middleFingerMCPMiddleFingerPIPDominantBoneInitialAngle = gesture.MiddleFingerMCPMiddleFingerPIPDominantBoneInitialAngle;
-			double? middleFingerMCPMiddleFingerPIPDominantBoneFinalAngle = gesture.MiddleFingerMCPMiddleFingerPIPDominantBoneFinalAngle;
-			double? middleFingerMCPMiddleFingerPIPDominantBoneMeanAngle = gesture.MiddleFingerMCPMiddleFingerPIPDominantBoneMeanAngle;
-			double? middleFingerMCPMiddleFingerPIPDominantBoneMaximumAngle = gesture.MiddleFingerMCPMiddleFingerPIPDominantBoneMaximumAngle;
+			float middleFingerMCPMiddleFingerPIPDominantBoneInitialAngle = gesture.MiddleFingerMCPMiddleFingerPIPDominantBoneInitialAngle;
+			float middleFingerMCPMiddleFingerPIPDominantBoneFinalAngle = gesture.MiddleFingerMCPMiddleFingerPIPDominantBoneFinalAngle;
+			float middleFingerMCPMiddleFingerPIPDominantBoneMeanAngle = gesture.MiddleFingerMCPMiddleFingerPIPDominantBoneMeanAngle;
+			float middleFingerMCPMiddleFingerPIPDominantBoneMaximumAngle = gesture.MiddleFingerMCPMiddleFingerPIPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.MiddleFingerMCPMiddleFingerPIPLeftBone, MediaPipeHandLandmarksBonesDefs.MiddleFingerMCPMiddleFingerPIPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(middleFingerMCPMiddleFingerPIPDominantBoneInitialAngle, middleFingerMCPMiddleFingerPIPDominantBoneFinalAngle,
 				middleFingerMCPMiddleFingerPIPDominantBoneMeanAngle, middleFingerMCPMiddleFingerPIPDominantBoneMaximumAngle));
 			#endregion
 
 			#region MiddleFingerPIPMiddleFingerDIPDominant bone features
-			double? middleFingerPIPMiddleFingerDIPDominantBoneInitialAngle = gesture.MiddleFingerPIPMiddleFingerDIPDominantBoneInitialAngle;
-			double? middleFingerPIPMiddleFingerDIPDominantBoneFinalAngle = gesture.MiddleFingerPIPMiddleFingerDIPDominantBoneFinalAngle;
-			double? middleFingerPIPMiddleFingerDIPDominantBoneMeanAngle = gesture.MiddleFingerPIPMiddleFingerDIPDominantBoneMeanAngle;
-			double? middleFingerPIPMiddleFingerDIPDominantBoneMaximumAngle = gesture.MiddleFingerPIPMiddleFingerDIPDominantBoneMaximumAngle;
+			float middleFingerPIPMiddleFingerDIPDominantBoneInitialAngle = gesture.MiddleFingerPIPMiddleFingerDIPDominantBoneInitialAngle;
+			float middleFingerPIPMiddleFingerDIPDominantBoneFinalAngle = gesture.MiddleFingerPIPMiddleFingerDIPDominantBoneFinalAngle;
+			float middleFingerPIPMiddleFingerDIPDominantBoneMeanAngle = gesture.MiddleFingerPIPMiddleFingerDIPDominantBoneMeanAngle;
+			float middleFingerPIPMiddleFingerDIPDominantBoneMaximumAngle = gesture.MiddleFingerPIPMiddleFingerDIPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.MiddleFingerPIPMiddleFingerDIPLeftBone, MediaPipeHandLandmarksBonesDefs.MiddleFingerPIPMiddleFingerDIPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(middleFingerPIPMiddleFingerDIPDominantBoneInitialAngle, middleFingerPIPMiddleFingerDIPDominantBoneFinalAngle,
 				middleFingerPIPMiddleFingerDIPDominantBoneMeanAngle, middleFingerPIPMiddleFingerDIPDominantBoneMaximumAngle));
 			#endregion
 
 			#region MiddleFingerDIPMiddleFingerTIPDominant bone features
-			double? middleFingerDIPMiddleFingerTIPDominantBoneInitialAngle = gesture.MiddleFingerDIPMiddleFingerTIPDominantBoneInitialAngle;
-			double? middleFingerDIPMiddleFingerTIPDominantBoneFinalAngle = gesture.MiddleFingerDIPMiddleFingerTIPDominantBoneFinalAngle;
-			double? middleFingerDIPMiddleFingerTIPDominantBoneMeanAngle = gesture.MiddleFingerDIPMiddleFingerTIPDominantBoneMeanAngle;
-			double? middleFingerDIPMiddleFingerTIPDominantBoneMaximumAngle = gesture.MiddleFingerDIPMiddleFingerTIPDominantBoneMaximumAngle;
+			float middleFingerDIPMiddleFingerTIPDominantBoneInitialAngle = gesture.MiddleFingerDIPMiddleFingerTIPDominantBoneInitialAngle;
+			float middleFingerDIPMiddleFingerTIPDominantBoneFinalAngle = gesture.MiddleFingerDIPMiddleFingerTIPDominantBoneFinalAngle;
+			float middleFingerDIPMiddleFingerTIPDominantBoneMeanAngle = gesture.MiddleFingerDIPMiddleFingerTIPDominantBoneMeanAngle;
+			float middleFingerDIPMiddleFingerTIPDominantBoneMaximumAngle = gesture.MiddleFingerDIPMiddleFingerTIPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.MiddleFingerDIPMiddleFingerTIPLeftBone, MediaPipeHandLandmarksBonesDefs.MiddleFingerDIPMiddleFingerTIPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(middleFingerDIPMiddleFingerTIPDominantBoneInitialAngle, middleFingerDIPMiddleFingerTIPDominantBoneFinalAngle,
 				middleFingerDIPMiddleFingerTIPDominantBoneMeanAngle, middleFingerDIPMiddleFingerTIPDominantBoneMaximumAngle));
 			#endregion
 
 			#region RingFingerMCPRingFingerPIPDominant bone features
-			double? ringFingerMCPRingFingerPIPDominantBoneInitialAngle = gesture.RingFingerMCPRingFingerPIPDominantBoneInitialAngle;
-			double? ringFingerMCPRingFingerPIPDominantBoneFinalAngle = gesture.RingFingerMCPRingFingerPIPDominantBoneFinalAngle;
-			double? ringFingerMCPRingFingerPIPDominantBoneMeanAngle = gesture.RingFingerMCPRingFingerPIPDominantBoneMeanAngle;
-			double? ringFingerMCPRingFingerPIPDominantBoneMaximumAngle = gesture.RingFingerMCPRingFingerPIPDominantBoneMaximumAngle;
+			float ringFingerMCPRingFingerPIPDominantBoneInitialAngle = gesture.RingFingerMCPRingFingerPIPDominantBoneInitialAngle;
+			float ringFingerMCPRingFingerPIPDominantBoneFinalAngle = gesture.RingFingerMCPRingFingerPIPDominantBoneFinalAngle;
+			float ringFingerMCPRingFingerPIPDominantBoneMeanAngle = gesture.RingFingerMCPRingFingerPIPDominantBoneMeanAngle;
+			float ringFingerMCPRingFingerPIPDominantBoneMaximumAngle = gesture.RingFingerMCPRingFingerPIPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.RingFingerMCPRingFingerPIPLeftBone, MediaPipeHandLandmarksBonesDefs.RingFingerMCPRingFingerPIPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(ringFingerMCPRingFingerPIPDominantBoneInitialAngle, ringFingerMCPRingFingerPIPDominantBoneFinalAngle,
 				ringFingerMCPRingFingerPIPDominantBoneMeanAngle, ringFingerMCPRingFingerPIPDominantBoneMaximumAngle));
 			#endregion
 
 			#region RingFingerPIPRingFingerDIPDominant bone features
-			double? ringFingerPIPRingFingerDIPDominantBoneInitialAngle = gesture.RingFingerPIPRingFingerDIPDominantBoneInitialAngle;
-			double? ringFingerPIPRingFingerDIPDominantBoneFinalAngle = gesture.RingFingerPIPRingFingerDIPDominantBoneFinalAngle;
-			double? ringFingerPIPRingFingerDIPDominantBoneMeanAngle = gesture.RingFingerPIPRingFingerDIPDominantBoneMeanAngle;
-			double? ringFingerPIPRingFingerDIPDominantBoneMaximumAngle = gesture.RingFingerPIPRingFingerDIPDominantBoneMaximumAngle;
+			float ringFingerPIPRingFingerDIPDominantBoneInitialAngle = gesture.RingFingerPIPRingFingerDIPDominantBoneInitialAngle;
+			float ringFingerPIPRingFingerDIPDominantBoneFinalAngle = gesture.RingFingerPIPRingFingerDIPDominantBoneFinalAngle;
+			float ringFingerPIPRingFingerDIPDominantBoneMeanAngle = gesture.RingFingerPIPRingFingerDIPDominantBoneMeanAngle;
+			float ringFingerPIPRingFingerDIPDominantBoneMaximumAngle = gesture.RingFingerPIPRingFingerDIPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.RingFingerPIPRingFingerDIPLeftBone, MediaPipeHandLandmarksBonesDefs.RingFingerPIPRingFingerDIPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(ringFingerPIPRingFingerDIPDominantBoneInitialAngle, ringFingerPIPRingFingerDIPDominantBoneFinalAngle,
 				ringFingerPIPRingFingerDIPDominantBoneMeanAngle, ringFingerPIPRingFingerDIPDominantBoneMaximumAngle));
 			#endregion
 
 			#region RingFingerDIPRingFingerTIPDominant bone features
-			double? ringFingerDIPRingFingerTIPDominantBoneInitialAngle = gesture.RingFingerDIPRingFingerTIPDominantBoneInitialAngle;
-			double? ringFingerDIPRingFingerTIPDominantBoneFinalAngle = gesture.RingFingerDIPRingFingerTIPDominantBoneFinalAngle;
-			double? ringFingerDIPRingFingerTIPDominantBoneMeanAngle = gesture.RingFingerDIPRingFingerTIPDominantBoneMeanAngle;
-			double? ringFingerDIPRingFingerTIPDominantBoneMaximumAngle = gesture.RingFingerDIPRingFingerTIPDominantBoneMaximumAngle;
+			float ringFingerDIPRingFingerTIPDominantBoneInitialAngle = gesture.RingFingerDIPRingFingerTIPDominantBoneInitialAngle;
+			float ringFingerDIPRingFingerTIPDominantBoneFinalAngle = gesture.RingFingerDIPRingFingerTIPDominantBoneFinalAngle;
+			float ringFingerDIPRingFingerTIPDominantBoneMeanAngle = gesture.RingFingerDIPRingFingerTIPDominantBoneMeanAngle;
+			float ringFingerDIPRingFingerTIPDominantBoneMaximumAngle = gesture.RingFingerDIPRingFingerTIPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.RingFingerDIPRingFingerTIPLeftBone, MediaPipeHandLandmarksBonesDefs.RingFingerDIPRingFingerTIPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(ringFingerDIPRingFingerTIPDominantBoneInitialAngle, ringFingerDIPRingFingerTIPDominantBoneFinalAngle,
 				ringFingerDIPRingFingerTIPDominantBoneMeanAngle, ringFingerDIPRingFingerTIPDominantBoneMaximumAngle));
 			#endregion
 
 			#region WristPinkyMCPDominant bone features
-			double? wristPinkyMCPDominantBoneInitialAngle = gesture.WristPinkyMCPDominantBoneInitialAngle;
-			double? wristPinkyMCPDominantBoneFinalAngle = gesture.WristPinkyMCPDominantBoneFinalAngle;
-			double? wristPinkyMCPDominantBoneMeanAngle = gesture.WristPinkyMCPDominantBoneMeanAngle;
-			double? wristPinkyMCPDominantBoneMaximumAngle = gesture.WristPinkyMCPDominantBoneMaximumAngle;
+			float wristPinkyMCPDominantBoneInitialAngle = gesture.WristPinkyMCPDominantBoneInitialAngle;
+			float wristPinkyMCPDominantBoneFinalAngle = gesture.WristPinkyMCPDominantBoneFinalAngle;
+			float wristPinkyMCPDominantBoneMeanAngle = gesture.WristPinkyMCPDominantBoneMeanAngle;
+			float wristPinkyMCPDominantBoneMaximumAngle = gesture.WristPinkyMCPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.WristPinkyMCPLeftBone, MediaPipeHandLandmarksBonesDefs.WristPinkyMCPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(wristPinkyMCPDominantBoneInitialAngle, wristPinkyMCPDominantBoneFinalAngle,
 				wristPinkyMCPDominantBoneMeanAngle, wristPinkyMCPDominantBoneMaximumAngle));
 			#endregion
 
 			#region PinkyMCPPinkyPIPDominant bone features
-			double? pinkyMCPPinkyPIPDominantBoneInitialAngle = gesture.PinkyMCPPinkyPIPDominantBoneInitialAngle;
-			double? pinkyMCPPinkyPIPDominantBoneFinalAngle = gesture.PinkyMCPPinkyPIPDominantBoneFinalAngle;
-			double? pinkyMCPPinkyPIPDominantBoneMeanAngle = gesture.PinkyMCPPinkyPIPDominantBoneMeanAngle;
-			double? pinkyMCPPinkyPIPDominantBoneMaximumAngle = gesture.PinkyMCPPinkyPIPDominantBoneMaximumAngle;
+			float pinkyMCPPinkyPIPDominantBoneInitialAngle = gesture.PinkyMCPPinkyPIPDominantBoneInitialAngle;
+			float pinkyMCPPinkyPIPDominantBoneFinalAngle = gesture.PinkyMCPPinkyPIPDominantBoneFinalAngle;
+			float pinkyMCPPinkyPIPDominantBoneMeanAngle = gesture.PinkyMCPPinkyPIPDominantBoneMeanAngle;
+			float pinkyMCPPinkyPIPDominantBoneMaximumAngle = gesture.PinkyMCPPinkyPIPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.PinkyMCPPinkyPIPLeftBone, MediaPipeHandLandmarksBonesDefs.PinkyMCPPinkyPIPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(pinkyMCPPinkyPIPDominantBoneInitialAngle, pinkyMCPPinkyPIPDominantBoneFinalAngle,
 				pinkyMCPPinkyPIPDominantBoneMeanAngle, pinkyMCPPinkyPIPDominantBoneMaximumAngle));
 			#endregion
 
 			#region PinkyPIPPinkyDIPDominant bone features
-			double? pinkyPIPPinkyDIPDominantBoneInitialAngle = gesture.PinkyPIPPinkyDIPDominantBoneInitialAngle;
-			double? pinkyPIPPinkyDIPDominantBoneFinalAngle = gesture.PinkyPIPPinkyDIPDominantBoneFinalAngle;
-			double? pinkyPIPPinkyDIPDominantBoneMeanAngle = gesture.PinkyPIPPinkyDIPDominantBoneMeanAngle;
-			double? pinkyPIPPinkyDIPDominantBoneMaximumAngle = gesture.PinkyPIPPinkyDIPDominantBoneMaximumAngle;
+			float pinkyPIPPinkyDIPDominantBoneInitialAngle = gesture.PinkyPIPPinkyDIPDominantBoneInitialAngle;
+			float pinkyPIPPinkyDIPDominantBoneFinalAngle = gesture.PinkyPIPPinkyDIPDominantBoneFinalAngle;
+			float pinkyPIPPinkyDIPDominantBoneMeanAngle = gesture.PinkyPIPPinkyDIPDominantBoneMeanAngle;
+			float pinkyPIPPinkyDIPDominantBoneMaximumAngle = gesture.PinkyPIPPinkyDIPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.PinkyPIPPinkyDIPLeftBone, MediaPipeHandLandmarksBonesDefs.PinkyPIPPinkyDIPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(pinkyPIPPinkyDIPDominantBoneInitialAngle, pinkyPIPPinkyDIPDominantBoneFinalAngle,
 				pinkyPIPPinkyDIPDominantBoneMeanAngle, pinkyPIPPinkyDIPDominantBoneMaximumAngle));
 			#endregion
 
 			#region PinkyDIPPinkyTIPDominant bone features
-			double? pinkyDIPPinkyTIPDominantBoneInitialAngle = gesture.PinkyDIPPinkyTIPDominantBoneInitialAngle;
-			double? pinkyDIPPinkyTIPDominantBoneFinalAngle = gesture.PinkyDIPPinkyTIPDominantBoneFinalAngle;
-			double? pinkyDIPPinkyTIPDominantBoneMeanAngle = gesture.PinkyDIPPinkyTIPDominantBoneMeanAngle;
-			double? pinkyDIPPinkyTIPDominantBoneMaximumAngle = gesture.PinkyDIPPinkyTIPDominantBoneMaximumAngle;
+			float pinkyDIPPinkyTIPDominantBoneInitialAngle = gesture.PinkyDIPPinkyTIPDominantBoneInitialAngle;
+			float pinkyDIPPinkyTIPDominantBoneFinalAngle = gesture.PinkyDIPPinkyTIPDominantBoneFinalAngle;
+			float pinkyDIPPinkyTIPDominantBoneMeanAngle = gesture.PinkyDIPPinkyTIPDominantBoneMeanAngle;
+			float pinkyDIPPinkyTIPDominantBoneMaximumAngle = gesture.PinkyDIPPinkyTIPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.PinkyDIPPinkyTIPLeftBone, MediaPipeHandLandmarksBonesDefs.PinkyDIPPinkyTIPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(pinkyDIPPinkyTIPDominantBoneInitialAngle, pinkyDIPPinkyTIPDominantBoneFinalAngle,
 				pinkyDIPPinkyTIPDominantBoneMeanAngle, pinkyDIPPinkyTIPDominantBoneMaximumAngle));
 			#endregion
 
 			#region ThumbMCPIndexFingerMCPDominant bone features
-			double? thumbMCPIndexFingerMCPDominantBoneInitialAngle = gesture.ThumbMCPIndexFingerMCPDominantBoneInitialAngle;
-			double? thumbMCPIndexFingerMCPDominantBoneFinalAngle = gesture.ThumbMCPIndexFingerMCPDominantBoneFinalAngle;
-			double? thumbMCPIndexFingerMCPDominantBoneMeanAngle = gesture.ThumbMCPIndexFingerMCPDominantBoneMeanAngle;
-			double? thumbMCPIndexFingerMCPDominantBoneMaximumAngle = gesture.ThumbMCPIndexFingerMCPDominantBoneMaximumAngle;
+			float thumbMCPIndexFingerMCPDominantBoneInitialAngle = gesture.ThumbMCPIndexFingerMCPDominantBoneInitialAngle;
+			float thumbMCPIndexFingerMCPDominantBoneFinalAngle = gesture.ThumbMCPIndexFingerMCPDominantBoneFinalAngle;
+			float thumbMCPIndexFingerMCPDominantBoneMeanAngle = gesture.ThumbMCPIndexFingerMCPDominantBoneMeanAngle;
+			float thumbMCPIndexFingerMCPDominantBoneMaximumAngle = gesture.ThumbMCPIndexFingerMCPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbMCPIndexFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbMCPIndexFingerMCPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(thumbMCPIndexFingerMCPDominantBoneInitialAngle, thumbMCPIndexFingerMCPDominantBoneFinalAngle,
 				thumbMCPIndexFingerMCPDominantBoneMeanAngle, thumbMCPIndexFingerMCPDominantBoneMaximumAngle));
 			#endregion
 
 			#region IndexFingerMCPMiddleFingerMCPDominant bone features
-			double? indexFingerMCPMiddleFingerMCPDominantBoneInitialAngle = gesture.IndexFingerMCPMiddleFingerMCPDominantBoneInitialAngle;
-			double? indexFingerMCPMiddleFingerMCPDominantBoneFinalAngle = gesture.IndexFingerMCPMiddleFingerMCPDominantBoneFinalAngle;
-			double? indexFingerMCPMiddleFingerMCPDominantBoneMeanAngle = gesture.IndexFingerMCPMiddleFingerMCPDominantBoneMeanAngle;
-			double? indexFingerMCPMiddleFingerMCPDominantBoneMaximumAngle = gesture.IndexFingerMCPMiddleFingerMCPDominantBoneMaximumAngle;
+			float indexFingerMCPMiddleFingerMCPDominantBoneInitialAngle = gesture.IndexFingerMCPMiddleFingerMCPDominantBoneInitialAngle;
+			float indexFingerMCPMiddleFingerMCPDominantBoneFinalAngle = gesture.IndexFingerMCPMiddleFingerMCPDominantBoneFinalAngle;
+			float indexFingerMCPMiddleFingerMCPDominantBoneMeanAngle = gesture.IndexFingerMCPMiddleFingerMCPDominantBoneMeanAngle;
+			float indexFingerMCPMiddleFingerMCPDominantBoneMaximumAngle = gesture.IndexFingerMCPMiddleFingerMCPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.IndexFingerMCPMiddleFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.IndexFingerMCPMiddleFingerMCPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(indexFingerMCPMiddleFingerMCPDominantBoneInitialAngle, indexFingerMCPMiddleFingerMCPDominantBoneFinalAngle,
 				indexFingerMCPMiddleFingerMCPDominantBoneMeanAngle, indexFingerMCPMiddleFingerMCPDominantBoneMaximumAngle));
 			#endregion
 
 			#region MiddleFingerMCPRingFingerMCPDominant bone features
-			double? middleFingerMCPRingFingerMCPDominantBoneInitialAngle = gesture.MiddleFingerMCPRingFingerMCPDominantBoneInitialAngle;
-			double? middleFingerMCPRingFingerMCPDominantBoneFinalAngle = gesture.MiddleFingerMCPRingFingerMCPDominantBoneFinalAngle;
-			double? middleFingerMCPRingFingerMCPDominantBoneMeanAngle = gesture.MiddleFingerMCPRingFingerMCPDominantBoneMeanAngle;
-			double? middleFingerMCPRingFingerMCPDominantBoneMaximumAngle = gesture.MiddleFingerMCPRingFingerMCPDominantBoneMaximumAngle;
+			float middleFingerMCPRingFingerMCPDominantBoneInitialAngle = gesture.MiddleFingerMCPRingFingerMCPDominantBoneInitialAngle;
+			float middleFingerMCPRingFingerMCPDominantBoneFinalAngle = gesture.MiddleFingerMCPRingFingerMCPDominantBoneFinalAngle;
+			float middleFingerMCPRingFingerMCPDominantBoneMeanAngle = gesture.MiddleFingerMCPRingFingerMCPDominantBoneMeanAngle;
+			float middleFingerMCPRingFingerMCPDominantBoneMaximumAngle = gesture.MiddleFingerMCPRingFingerMCPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.MiddleFingerMCPRingFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.MiddleFingerMCPRingFingerMCPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(middleFingerMCPRingFingerMCPDominantBoneInitialAngle, middleFingerMCPRingFingerMCPDominantBoneFinalAngle,
 				middleFingerMCPRingFingerMCPDominantBoneMeanAngle, middleFingerMCPRingFingerMCPDominantBoneMaximumAngle));
 			#endregion
 
 			#region RingFingerMCPPinkyMCPDominant bone features
-			double? ringFingerMCPPinkyMCPDominantBoneInitialAngle = gesture.RingFingerMCPPinkyMCPDominantBoneInitialAngle;
-			double? ringFingerMCPPinkyMCPDominantBoneFinalAngle = gesture.RingFingerMCPPinkyMCPDominantBoneFinalAngle;
-			double? ringFingerMCPPinkyMCPDominantBoneMeanAngle = gesture.RingFingerMCPPinkyMCPDominantBoneMeanAngle;
-			double? ringFingerMCPPinkyMCPDominantBoneMaximumAngle = gesture.RingFingerMCPPinkyMCPDominantBoneMaximumAngle;
+			float ringFingerMCPPinkyMCPDominantBoneInitialAngle = gesture.RingFingerMCPPinkyMCPDominantBoneInitialAngle;
+			float ringFingerMCPPinkyMCPDominantBoneFinalAngle = gesture.RingFingerMCPPinkyMCPDominantBoneFinalAngle;
+			float ringFingerMCPPinkyMCPDominantBoneMeanAngle = gesture.RingFingerMCPPinkyMCPDominantBoneMeanAngle;
+			float ringFingerMCPPinkyMCPDominantBoneMaximumAngle = gesture.RingFingerMCPPinkyMCPDominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.RingFingerMCPPinkyMCPLeftBone, MediaPipeHandLandmarksBonesDefs.RingFingerMCPPinkyMCPRightBone,
 				features.HandDominance, true), new BoneJointsAngleData(ringFingerMCPPinkyMCPDominantBoneInitialAngle, ringFingerMCPPinkyMCPDominantBoneFinalAngle,
 				ringFingerMCPPinkyMCPDominantBoneMeanAngle, ringFingerMCPPinkyMCPDominantBoneMaximumAngle));
 			#endregion
 
 			#region WristThumbCMCNondominant bone features
-			double? wristThumbCMCNondominantBoneInitialAngle = gesture.WristThumbCMCNondominantBoneInitialAngle;
-			double? wristThumbCMCNondominantBoneFinalAngle = gesture.WristThumbCMCNondominantBoneFinalAngle;
-			double? wristThumbCMCNondominantBoneMeanAngle = gesture.WristThumbCMCNondominantBoneMeanAngle;
-			double? wristThumbCMCNondominantBoneMaximumAngle = gesture.WristThumbCMCNondominantBoneMaximumAngle;
+			float wristThumbCMCNondominantBoneInitialAngle = gesture.WristThumbCMCNondominantBoneInitialAngle;
+			float wristThumbCMCNondominantBoneFinalAngle = gesture.WristThumbCMCNondominantBoneFinalAngle;
+			float wristThumbCMCNondominantBoneMeanAngle = gesture.WristThumbCMCNondominantBoneMeanAngle;
+			float wristThumbCMCNondominantBoneMaximumAngle = gesture.WristThumbCMCNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.WristThumbCMCLeftBone, MediaPipeHandLandmarksBonesDefs.WristThumbCMCRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(wristThumbCMCNondominantBoneInitialAngle, wristThumbCMCNondominantBoneFinalAngle,
 				wristThumbCMCNondominantBoneMeanAngle, wristThumbCMCNondominantBoneMaximumAngle));
 			#endregion
 
 			#region ThumbCMCThumbMCPNondominant bone features
-			double? thumbCMCThumbMCPNondominantBoneInitialAngle = gesture.ThumbCMCThumbMCPNondominantBoneInitialAngle;
-			double? thumbCMCThumbMCPNondominantBoneFinalAngle = gesture.ThumbCMCThumbMCPNondominantBoneFinalAngle;
-			double? thumbCMCThumbMCPNondominantBoneMeanAngle = gesture.ThumbCMCThumbMCPNondominantBoneMeanAngle;
-			double? thumbCMCThumbMCPNondominantBoneMaximumAngle = gesture.ThumbCMCThumbMCPNondominantBoneMaximumAngle;
+			float thumbCMCThumbMCPNondominantBoneInitialAngle = gesture.ThumbCMCThumbMCPNondominantBoneInitialAngle;
+			float thumbCMCThumbMCPNondominantBoneFinalAngle = gesture.ThumbCMCThumbMCPNondominantBoneFinalAngle;
+			float thumbCMCThumbMCPNondominantBoneMeanAngle = gesture.ThumbCMCThumbMCPNondominantBoneMeanAngle;
+			float thumbCMCThumbMCPNondominantBoneMaximumAngle = gesture.ThumbCMCThumbMCPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbCMCThumbMCPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbCMCThumbMCPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(thumbCMCThumbMCPNondominantBoneInitialAngle, thumbCMCThumbMCPNondominantBoneFinalAngle,
 				thumbCMCThumbMCPNondominantBoneMeanAngle, thumbCMCThumbMCPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region ThumbMCPThumbIPNondominant bone features
-			double? thumbMCPThumbIPNondominantBoneInitialAngle = gesture.ThumbMCPThumbIPNondominantBoneInitialAngle;
-			double? thumbMCPThumbIPNondominantBoneFinalAngle = gesture.ThumbMCPThumbIPNondominantBoneFinalAngle;
-			double? thumbMCPThumbIPNondominantBoneMeanAngle = gesture.ThumbMCPThumbIPNondominantBoneMeanAngle;
-			double? thumbMCPThumbIPNondominantBoneMaximumAngle = gesture.ThumbMCPThumbIPNondominantBoneMaximumAngle;
+			float thumbMCPThumbIPNondominantBoneInitialAngle = gesture.ThumbMCPThumbIPNondominantBoneInitialAngle;
+			float thumbMCPThumbIPNondominantBoneFinalAngle = gesture.ThumbMCPThumbIPNondominantBoneFinalAngle;
+			float thumbMCPThumbIPNondominantBoneMeanAngle = gesture.ThumbMCPThumbIPNondominantBoneMeanAngle;
+			float thumbMCPThumbIPNondominantBoneMaximumAngle = gesture.ThumbMCPThumbIPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbMCPThumbIPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbMCPThumbIPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(thumbMCPThumbIPNondominantBoneInitialAngle, thumbMCPThumbIPNondominantBoneFinalAngle,
 				thumbMCPThumbIPNondominantBoneMeanAngle, thumbMCPThumbIPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region ThumbIPThumbTIPNondominant bone features
-			double? thumbIPThumbTIPNondominantBoneInitialAngle = gesture.ThumbIPThumbTIPNondominantBoneInitialAngle;
-			double? thumbIPThumbTIPNondominantBoneFinalAngle = gesture.ThumbIPThumbTIPNondominantBoneFinalAngle;
-			double? thumbIPThumbTIPNondominantBoneMeanAngle = gesture.ThumbIPThumbTIPNondominantBoneMeanAngle;
-			double? thumbIPThumbTIPNondominantBoneMaximumAngle = gesture.ThumbIPThumbTIPNondominantBoneMaximumAngle;
+			float thumbIPThumbTIPNondominantBoneInitialAngle = gesture.ThumbIPThumbTIPNondominantBoneInitialAngle;
+			float thumbIPThumbTIPNondominantBoneFinalAngle = gesture.ThumbIPThumbTIPNondominantBoneFinalAngle;
+			float thumbIPThumbTIPNondominantBoneMeanAngle = gesture.ThumbIPThumbTIPNondominantBoneMeanAngle;
+			float thumbIPThumbTIPNondominantBoneMaximumAngle = gesture.ThumbIPThumbTIPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbIPThumbTIPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbIPThumbTIPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(thumbIPThumbTIPNondominantBoneInitialAngle, thumbIPThumbTIPNondominantBoneFinalAngle,
 				thumbIPThumbTIPNondominantBoneMeanAngle, thumbIPThumbTIPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region WristIndexFingerMCPNondominant bone features
-			double? wristIndexFingerMCPNondominantBoneInitialAngle = gesture.WristIndexFingerMCPNondominantBoneInitialAngle;
-			double? wristIndexFingerMCPNondominantBoneFinalAngle = gesture.WristIndexFingerMCPNondominantBoneFinalAngle;
-			double? wristIndexFingerMCPNondominantBoneMeanAngle = gesture.WristIndexFingerMCPNondominantBoneMeanAngle;
-			double? wristIndexFingerMCPNondominantBoneMaximumAngle = gesture.WristIndexFingerMCPNondominantBoneMaximumAngle;
+			float wristIndexFingerMCPNondominantBoneInitialAngle = gesture.WristIndexFingerMCPNondominantBoneInitialAngle;
+			float wristIndexFingerMCPNondominantBoneFinalAngle = gesture.WristIndexFingerMCPNondominantBoneFinalAngle;
+			float wristIndexFingerMCPNondominantBoneMeanAngle = gesture.WristIndexFingerMCPNondominantBoneMeanAngle;
+			float wristIndexFingerMCPNondominantBoneMaximumAngle = gesture.WristIndexFingerMCPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.WristIndexFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.WristIndexFingerMCPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(wristIndexFingerMCPNondominantBoneInitialAngle, wristIndexFingerMCPNondominantBoneFinalAngle,
 				wristIndexFingerMCPNondominantBoneMeanAngle, wristIndexFingerMCPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region IndexFingerMCPIndexFingerPIPNondominant bone features
-			double? indexFingerMCPIndexFingerPIPNondominantBoneInitialAngle = gesture.IndexFingerMCPIndexFingerPIPNondominantBoneInitialAngle;
-			double? indexFingerMCPIndexFingerPIPNondominantBoneFinalAngle = gesture.IndexFingerMCPIndexFingerPIPNondominantBoneFinalAngle;
-			double? indexFingerMCPIndexFingerPIPNondominantBoneMeanAngle = gesture.IndexFingerMCPIndexFingerPIPNondominantBoneMeanAngle;
-			double? indexFingerMCPIndexFingerPIPNondominantBoneMaximumAngle = gesture.IndexFingerMCPIndexFingerPIPNondominantBoneMaximumAngle;
+			float indexFingerMCPIndexFingerPIPNondominantBoneInitialAngle = gesture.IndexFingerMCPIndexFingerPIPNondominantBoneInitialAngle;
+			float indexFingerMCPIndexFingerPIPNondominantBoneFinalAngle = gesture.IndexFingerMCPIndexFingerPIPNondominantBoneFinalAngle;
+			float indexFingerMCPIndexFingerPIPNondominantBoneMeanAngle = gesture.IndexFingerMCPIndexFingerPIPNondominantBoneMeanAngle;
+			float indexFingerMCPIndexFingerPIPNondominantBoneMaximumAngle = gesture.IndexFingerMCPIndexFingerPIPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.IndexFingerMCPIndexFingerPIPLeftBone, MediaPipeHandLandmarksBonesDefs.IndexFingerMCPIndexFingerPIPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(indexFingerMCPIndexFingerPIPNondominantBoneInitialAngle, indexFingerMCPIndexFingerPIPNondominantBoneFinalAngle,
 				indexFingerMCPIndexFingerPIPNondominantBoneMeanAngle, indexFingerMCPIndexFingerPIPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region IndexFingerPIPIndexFingerDIPNondominant bone features
-			double? indexFingerPIPIndexFingerDIPNondominantBoneInitialAngle = gesture.IndexFingerPIPIndexFingerDIPNondominantBoneInitialAngle;
-			double? indexFingerPIPIndexFingerDIPNondominantBoneFinalAngle = gesture.IndexFingerPIPIndexFingerDIPNondominantBoneFinalAngle;
-			double? indexFingerPIPIndexFingerDIPNondominantBoneMeanAngle = gesture.IndexFingerPIPIndexFingerDIPNondominantBoneMeanAngle;
-			double? indexFingerPIPIndexFingerDIPNondominantBoneMaximumAngle = gesture.IndexFingerPIPIndexFingerDIPNondominantBoneMaximumAngle;
+			float indexFingerPIPIndexFingerDIPNondominantBoneInitialAngle = gesture.IndexFingerPIPIndexFingerDIPNondominantBoneInitialAngle;
+			float indexFingerPIPIndexFingerDIPNondominantBoneFinalAngle = gesture.IndexFingerPIPIndexFingerDIPNondominantBoneFinalAngle;
+			float indexFingerPIPIndexFingerDIPNondominantBoneMeanAngle = gesture.IndexFingerPIPIndexFingerDIPNondominantBoneMeanAngle;
+			float indexFingerPIPIndexFingerDIPNondominantBoneMaximumAngle = gesture.IndexFingerPIPIndexFingerDIPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.IndexFingerPIPIndexFingerDIPLeftBone, MediaPipeHandLandmarksBonesDefs.IndexFingerPIPIndexFingerDIPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(indexFingerPIPIndexFingerDIPNondominantBoneInitialAngle, indexFingerPIPIndexFingerDIPNondominantBoneFinalAngle,
 				indexFingerPIPIndexFingerDIPNondominantBoneMeanAngle, indexFingerPIPIndexFingerDIPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region IndexFingerDIPIndexFingerTIPNondominant bone features
-			double? indexFingerDIPIndexFingerTIPNondominantBoneInitialAngle = gesture.IndexFingerDIPIndexFingerTIPNondominantBoneInitialAngle;
-			double? indexFingerDIPIndexFingerTIPNondominantBoneFinalAngle = gesture.IndexFingerDIPIndexFingerTIPNondominantBoneFinalAngle;
-			double? indexFingerDIPIndexFingerTIPNondominantBoneMeanAngle = gesture.IndexFingerDIPIndexFingerTIPNondominantBoneMeanAngle;
-			double? indexFingerDIPIndexFingerTIPNondominantBoneMaximumAngle = gesture.IndexFingerDIPIndexFingerTIPNondominantBoneMaximumAngle;
+			float indexFingerDIPIndexFingerTIPNondominantBoneInitialAngle = gesture.IndexFingerDIPIndexFingerTIPNondominantBoneInitialAngle;
+			float indexFingerDIPIndexFingerTIPNondominantBoneFinalAngle = gesture.IndexFingerDIPIndexFingerTIPNondominantBoneFinalAngle;
+			float indexFingerDIPIndexFingerTIPNondominantBoneMeanAngle = gesture.IndexFingerDIPIndexFingerTIPNondominantBoneMeanAngle;
+			float indexFingerDIPIndexFingerTIPNondominantBoneMaximumAngle = gesture.IndexFingerDIPIndexFingerTIPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.IndexFingerDIPIndexFingerTIPLeftBone, MediaPipeHandLandmarksBonesDefs.IndexFingerDIPIndexFingerTIPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(indexFingerDIPIndexFingerTIPNondominantBoneInitialAngle, indexFingerDIPIndexFingerTIPNondominantBoneFinalAngle,
 				indexFingerDIPIndexFingerTIPNondominantBoneMeanAngle, indexFingerDIPIndexFingerTIPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region MiddleFingerMCPMiddleFingerPIPNondominant bone features
-			double? middleFingerMCPMiddleFingerPIPNondominantBoneInitialAngle = gesture.MiddleFingerMCPMiddleFingerPIPNondominantBoneInitialAngle;
-			double? middleFingerMCPMiddleFingerPIPNondominantBoneFinalAngle = gesture.MiddleFingerMCPMiddleFingerPIPNondominantBoneFinalAngle;
-			double? middleFingerMCPMiddleFingerPIPNondominantBoneMeanAngle = gesture.MiddleFingerMCPMiddleFingerPIPNondominantBoneMeanAngle;
-			double? middleFingerMCPMiddleFingerPIPNondominantBoneMaximumAngle = gesture.MiddleFingerMCPMiddleFingerPIPNondominantBoneMaximumAngle;
+			float middleFingerMCPMiddleFingerPIPNondominantBoneInitialAngle = gesture.MiddleFingerMCPMiddleFingerPIPNondominantBoneInitialAngle;
+			float middleFingerMCPMiddleFingerPIPNondominantBoneFinalAngle = gesture.MiddleFingerMCPMiddleFingerPIPNondominantBoneFinalAngle;
+			float middleFingerMCPMiddleFingerPIPNondominantBoneMeanAngle = gesture.MiddleFingerMCPMiddleFingerPIPNondominantBoneMeanAngle;
+			float middleFingerMCPMiddleFingerPIPNondominantBoneMaximumAngle = gesture.MiddleFingerMCPMiddleFingerPIPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.MiddleFingerMCPMiddleFingerPIPLeftBone, MediaPipeHandLandmarksBonesDefs.MiddleFingerMCPMiddleFingerPIPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(middleFingerMCPMiddleFingerPIPNondominantBoneInitialAngle, middleFingerMCPMiddleFingerPIPNondominantBoneFinalAngle,
 				middleFingerMCPMiddleFingerPIPNondominantBoneMeanAngle, middleFingerMCPMiddleFingerPIPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region MiddleFingerPIPMiddleFingerDIPNondominant bone features
-			double? middleFingerPIPMiddleFingerDIPNondominantBoneInitialAngle = gesture.MiddleFingerPIPMiddleFingerDIPNondominantBoneInitialAngle;
-			double? middleFingerPIPMiddleFingerDIPNondominantBoneFinalAngle = gesture.MiddleFingerPIPMiddleFingerDIPNondominantBoneFinalAngle;
-			double? middleFingerPIPMiddleFingerDIPNondominantBoneMeanAngle = gesture.MiddleFingerPIPMiddleFingerDIPNondominantBoneMeanAngle;
-			double? middleFingerPIPMiddleFingerDIPNondominantBoneMaximumAngle = gesture.MiddleFingerPIPMiddleFingerDIPNondominantBoneMaximumAngle;
+			float middleFingerPIPMiddleFingerDIPNondominantBoneInitialAngle = gesture.MiddleFingerPIPMiddleFingerDIPNondominantBoneInitialAngle;
+			float middleFingerPIPMiddleFingerDIPNondominantBoneFinalAngle = gesture.MiddleFingerPIPMiddleFingerDIPNondominantBoneFinalAngle;
+			float middleFingerPIPMiddleFingerDIPNondominantBoneMeanAngle = gesture.MiddleFingerPIPMiddleFingerDIPNondominantBoneMeanAngle;
+			float middleFingerPIPMiddleFingerDIPNondominantBoneMaximumAngle = gesture.MiddleFingerPIPMiddleFingerDIPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.MiddleFingerPIPMiddleFingerDIPLeftBone, MediaPipeHandLandmarksBonesDefs.MiddleFingerPIPMiddleFingerDIPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(middleFingerPIPMiddleFingerDIPNondominantBoneInitialAngle, middleFingerPIPMiddleFingerDIPNondominantBoneFinalAngle,
 				middleFingerPIPMiddleFingerDIPNondominantBoneMeanAngle, middleFingerPIPMiddleFingerDIPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region MiddleFingerDIPMiddleFingerTIPNondominant bone features
-			double? middleFingerDIPMiddleFingerTIPNondominantBoneInitialAngle = gesture.MiddleFingerDIPMiddleFingerTIPNondominantBoneInitialAngle;
-			double? middleFingerDIPMiddleFingerTIPNondominantBoneFinalAngle = gesture.MiddleFingerDIPMiddleFingerTIPNondominantBoneFinalAngle;
-			double? middleFingerDIPMiddleFingerTIPNondominantBoneMeanAngle = gesture.MiddleFingerDIPMiddleFingerTIPNondominantBoneMeanAngle;
-			double? middleFingerDIPMiddleFingerTIPNondominantBoneMaximumAngle = gesture.MiddleFingerDIPMiddleFingerTIPNondominantBoneMaximumAngle;
+			float middleFingerDIPMiddleFingerTIPNondominantBoneInitialAngle = gesture.MiddleFingerDIPMiddleFingerTIPNondominantBoneInitialAngle;
+			float middleFingerDIPMiddleFingerTIPNondominantBoneFinalAngle = gesture.MiddleFingerDIPMiddleFingerTIPNondominantBoneFinalAngle;
+			float middleFingerDIPMiddleFingerTIPNondominantBoneMeanAngle = gesture.MiddleFingerDIPMiddleFingerTIPNondominantBoneMeanAngle;
+			float middleFingerDIPMiddleFingerTIPNondominantBoneMaximumAngle = gesture.MiddleFingerDIPMiddleFingerTIPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.MiddleFingerDIPMiddleFingerTIPLeftBone, MediaPipeHandLandmarksBonesDefs.MiddleFingerDIPMiddleFingerTIPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(middleFingerDIPMiddleFingerTIPNondominantBoneInitialAngle, middleFingerDIPMiddleFingerTIPNondominantBoneFinalAngle,
 				middleFingerDIPMiddleFingerTIPNondominantBoneMeanAngle, middleFingerDIPMiddleFingerTIPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region RingFingerMCPRingFingerPIPNondominant bone features
-			double? ringFingerMCPRingFingerPIPNondominantBoneInitialAngle = gesture.RingFingerMCPRingFingerPIPNondominantBoneInitialAngle;
-			double? ringFingerMCPRingFingerPIPNondominantBoneFinalAngle = gesture.RingFingerMCPRingFingerPIPNondominantBoneFinalAngle;
-			double? ringFingerMCPRingFingerPIPNondominantBoneMeanAngle = gesture.RingFingerMCPRingFingerPIPNondominantBoneMeanAngle;
-			double? ringFingerMCPRingFingerPIPNondominantBoneMaximumAngle = gesture.RingFingerMCPRingFingerPIPNondominantBoneMaximumAngle;
+			float ringFingerMCPRingFingerPIPNondominantBoneInitialAngle = gesture.RingFingerMCPRingFingerPIPNondominantBoneInitialAngle;
+			float ringFingerMCPRingFingerPIPNondominantBoneFinalAngle = gesture.RingFingerMCPRingFingerPIPNondominantBoneFinalAngle;
+			float ringFingerMCPRingFingerPIPNondominantBoneMeanAngle = gesture.RingFingerMCPRingFingerPIPNondominantBoneMeanAngle;
+			float ringFingerMCPRingFingerPIPNondominantBoneMaximumAngle = gesture.RingFingerMCPRingFingerPIPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.RingFingerMCPRingFingerPIPLeftBone, MediaPipeHandLandmarksBonesDefs.RingFingerMCPRingFingerPIPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(ringFingerMCPRingFingerPIPNondominantBoneInitialAngle, ringFingerMCPRingFingerPIPNondominantBoneFinalAngle,
 				ringFingerMCPRingFingerPIPNondominantBoneMeanAngle, ringFingerMCPRingFingerPIPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region RingFingerPIPRingFingerDIPNondominant bone features
-			double? ringFingerPIPRingFingerDIPNondominantBoneInitialAngle = gesture.RingFingerPIPRingFingerDIPNondominantBoneInitialAngle;
-			double? ringFingerPIPRingFingerDIPNondominantBoneFinalAngle = gesture.RingFingerPIPRingFingerDIPNondominantBoneFinalAngle;
-			double? ringFingerPIPRingFingerDIPNondominantBoneMeanAngle = gesture.RingFingerPIPRingFingerDIPNondominantBoneMeanAngle;
-			double? ringFingerPIPRingFingerDIPNondominantBoneMaximumAngle = gesture.RingFingerPIPRingFingerDIPNondominantBoneMaximumAngle;
+			float ringFingerPIPRingFingerDIPNondominantBoneInitialAngle = gesture.RingFingerPIPRingFingerDIPNondominantBoneInitialAngle;
+			float ringFingerPIPRingFingerDIPNondominantBoneFinalAngle = gesture.RingFingerPIPRingFingerDIPNondominantBoneFinalAngle;
+			float ringFingerPIPRingFingerDIPNondominantBoneMeanAngle = gesture.RingFingerPIPRingFingerDIPNondominantBoneMeanAngle;
+			float ringFingerPIPRingFingerDIPNondominantBoneMaximumAngle = gesture.RingFingerPIPRingFingerDIPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.RingFingerPIPRingFingerDIPLeftBone, MediaPipeHandLandmarksBonesDefs.RingFingerPIPRingFingerDIPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(ringFingerPIPRingFingerDIPNondominantBoneInitialAngle, ringFingerPIPRingFingerDIPNondominantBoneFinalAngle,
 				ringFingerPIPRingFingerDIPNondominantBoneMeanAngle, ringFingerPIPRingFingerDIPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region RingFingerDIPRingFingerTIPNondominant bone features
-			double? ringFingerDIPRingFingerTIPNondominantBoneInitialAngle = gesture.RingFingerDIPRingFingerTIPNondominantBoneInitialAngle;
-			double? ringFingerDIPRingFingerTIPNondominantBoneFinalAngle = gesture.RingFingerDIPRingFingerTIPNondominantBoneFinalAngle;
-			double? ringFingerDIPRingFingerTIPNondominantBoneMeanAngle = gesture.RingFingerDIPRingFingerTIPNondominantBoneMeanAngle;
-			double? ringFingerDIPRingFingerTIPNondominantBoneMaximumAngle = gesture.RingFingerDIPRingFingerTIPNondominantBoneMaximumAngle;
+			float ringFingerDIPRingFingerTIPNondominantBoneInitialAngle = gesture.RingFingerDIPRingFingerTIPNondominantBoneInitialAngle;
+			float ringFingerDIPRingFingerTIPNondominantBoneFinalAngle = gesture.RingFingerDIPRingFingerTIPNondominantBoneFinalAngle;
+			float ringFingerDIPRingFingerTIPNondominantBoneMeanAngle = gesture.RingFingerDIPRingFingerTIPNondominantBoneMeanAngle;
+			float ringFingerDIPRingFingerTIPNondominantBoneMaximumAngle = gesture.RingFingerDIPRingFingerTIPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.RingFingerDIPRingFingerTIPLeftBone, MediaPipeHandLandmarksBonesDefs.RingFingerDIPRingFingerTIPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(ringFingerDIPRingFingerTIPNondominantBoneInitialAngle, ringFingerDIPRingFingerTIPNondominantBoneFinalAngle,
 				ringFingerDIPRingFingerTIPNondominantBoneMeanAngle, ringFingerDIPRingFingerTIPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region WristPinkyMCPNondominant bone features
-			double? wristPinkyMCPNondominantBoneInitialAngle = gesture.WristPinkyMCPNondominantBoneInitialAngle;
-			double? wristPinkyMCPNondominantBoneFinalAngle = gesture.WristPinkyMCPNondominantBoneFinalAngle;
-			double? wristPinkyMCPNondominantBoneMeanAngle = gesture.WristPinkyMCPNondominantBoneMeanAngle;
-			double? wristPinkyMCPNondominantBoneMaximumAngle = gesture.WristPinkyMCPNondominantBoneMaximumAngle;
+			float wristPinkyMCPNondominantBoneInitialAngle = gesture.WristPinkyMCPNondominantBoneInitialAngle;
+			float wristPinkyMCPNondominantBoneFinalAngle = gesture.WristPinkyMCPNondominantBoneFinalAngle;
+			float wristPinkyMCPNondominantBoneMeanAngle = gesture.WristPinkyMCPNondominantBoneMeanAngle;
+			float wristPinkyMCPNondominantBoneMaximumAngle = gesture.WristPinkyMCPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.WristPinkyMCPLeftBone, MediaPipeHandLandmarksBonesDefs.WristPinkyMCPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(wristPinkyMCPNondominantBoneInitialAngle, wristPinkyMCPNondominantBoneFinalAngle,
 				wristPinkyMCPNondominantBoneMeanAngle, wristPinkyMCPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region PinkyMCPPinkyPIPNondominant bone features
-			double? pinkyMCPPinkyPIPNondominantBoneInitialAngle = gesture.PinkyMCPPinkyPIPNondominantBoneInitialAngle;
-			double? pinkyMCPPinkyPIPNondominantBoneFinalAngle = gesture.PinkyMCPPinkyPIPNondominantBoneFinalAngle;
-			double? pinkyMCPPinkyPIPNondominantBoneMeanAngle = gesture.PinkyMCPPinkyPIPNondominantBoneMeanAngle;
-			double? pinkyMCPPinkyPIPNondominantBoneMaximumAngle = gesture.PinkyMCPPinkyPIPNondominantBoneMaximumAngle;
+			float pinkyMCPPinkyPIPNondominantBoneInitialAngle = gesture.PinkyMCPPinkyPIPNondominantBoneInitialAngle;
+			float pinkyMCPPinkyPIPNondominantBoneFinalAngle = gesture.PinkyMCPPinkyPIPNondominantBoneFinalAngle;
+			float pinkyMCPPinkyPIPNondominantBoneMeanAngle = gesture.PinkyMCPPinkyPIPNondominantBoneMeanAngle;
+			float pinkyMCPPinkyPIPNondominantBoneMaximumAngle = gesture.PinkyMCPPinkyPIPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.PinkyMCPPinkyPIPLeftBone, MediaPipeHandLandmarksBonesDefs.PinkyMCPPinkyPIPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(pinkyMCPPinkyPIPNondominantBoneInitialAngle, pinkyMCPPinkyPIPNondominantBoneFinalAngle,
 				pinkyMCPPinkyPIPNondominantBoneMeanAngle, pinkyMCPPinkyPIPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region PinkyPIPPinkyDIPNondominant bone features
-			double? pinkyPIPPinkyDIPNondominantBoneInitialAngle = gesture.PinkyPIPPinkyDIPNondominantBoneInitialAngle;
-			double? pinkyPIPPinkyDIPNondominantBoneFinalAngle = gesture.PinkyPIPPinkyDIPNondominantBoneFinalAngle;
-			double? pinkyPIPPinkyDIPNondominantBoneMeanAngle = gesture.PinkyPIPPinkyDIPNondominantBoneMeanAngle;
-			double? pinkyPIPPinkyDIPNondominantBoneMaximumAngle = gesture.PinkyPIPPinkyDIPNondominantBoneMaximumAngle;
+			float pinkyPIPPinkyDIPNondominantBoneInitialAngle = gesture.PinkyPIPPinkyDIPNondominantBoneInitialAngle;
+			float pinkyPIPPinkyDIPNondominantBoneFinalAngle = gesture.PinkyPIPPinkyDIPNondominantBoneFinalAngle;
+			float pinkyPIPPinkyDIPNondominantBoneMeanAngle = gesture.PinkyPIPPinkyDIPNondominantBoneMeanAngle;
+			float pinkyPIPPinkyDIPNondominantBoneMaximumAngle = gesture.PinkyPIPPinkyDIPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.PinkyPIPPinkyDIPLeftBone, MediaPipeHandLandmarksBonesDefs.PinkyPIPPinkyDIPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(pinkyPIPPinkyDIPNondominantBoneInitialAngle, pinkyPIPPinkyDIPNondominantBoneFinalAngle,
 				pinkyPIPPinkyDIPNondominantBoneMeanAngle, pinkyPIPPinkyDIPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region PinkyDIPPinkyTIPNondominant bone features
-			double? pinkyDIPPinkyTIPNondominantBoneInitialAngle = gesture.PinkyDIPPinkyTIPNondominantBoneInitialAngle;
-			double? pinkyDIPPinkyTIPNondominantBoneFinalAngle = gesture.PinkyDIPPinkyTIPNondominantBoneFinalAngle;
-			double? pinkyDIPPinkyTIPNondominantBoneMeanAngle = gesture.PinkyDIPPinkyTIPNondominantBoneMeanAngle;
-			double? pinkyDIPPinkyTIPNondominantBoneMaximumAngle = gesture.PinkyDIPPinkyTIPNondominantBoneMaximumAngle;
+			float pinkyDIPPinkyTIPNondominantBoneInitialAngle = gesture.PinkyDIPPinkyTIPNondominantBoneInitialAngle;
+			float pinkyDIPPinkyTIPNondominantBoneFinalAngle = gesture.PinkyDIPPinkyTIPNondominantBoneFinalAngle;
+			float pinkyDIPPinkyTIPNondominantBoneMeanAngle = gesture.PinkyDIPPinkyTIPNondominantBoneMeanAngle;
+			float pinkyDIPPinkyTIPNondominantBoneMaximumAngle = gesture.PinkyDIPPinkyTIPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.PinkyDIPPinkyTIPLeftBone, MediaPipeHandLandmarksBonesDefs.PinkyDIPPinkyTIPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(pinkyDIPPinkyTIPNondominantBoneInitialAngle, pinkyDIPPinkyTIPNondominantBoneFinalAngle,
 				pinkyDIPPinkyTIPNondominantBoneMeanAngle, pinkyDIPPinkyTIPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region ThumbMCPIndexFingerMCPNondominant bone features
-			double? thumbMCPIndexFingerMCPNondominantBoneInitialAngle = gesture.ThumbMCPIndexFingerMCPNondominantBoneInitialAngle;
-			double? thumbMCPIndexFingerMCPNondominantBoneFinalAngle = gesture.ThumbMCPIndexFingerMCPNondominantBoneFinalAngle;
-			double? thumbMCPIndexFingerMCPNondominantBoneMeanAngle = gesture.ThumbMCPIndexFingerMCPNondominantBoneMeanAngle;
-			double? thumbMCPIndexFingerMCPNondominantBoneMaximumAngle = gesture.ThumbMCPIndexFingerMCPNondominantBoneMaximumAngle;
+			float thumbMCPIndexFingerMCPNondominantBoneInitialAngle = gesture.ThumbMCPIndexFingerMCPNondominantBoneInitialAngle;
+			float thumbMCPIndexFingerMCPNondominantBoneFinalAngle = gesture.ThumbMCPIndexFingerMCPNondominantBoneFinalAngle;
+			float thumbMCPIndexFingerMCPNondominantBoneMeanAngle = gesture.ThumbMCPIndexFingerMCPNondominantBoneMeanAngle;
+			float thumbMCPIndexFingerMCPNondominantBoneMaximumAngle = gesture.ThumbMCPIndexFingerMCPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.ThumbMCPIndexFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.ThumbMCPIndexFingerMCPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(thumbMCPIndexFingerMCPNondominantBoneInitialAngle, thumbMCPIndexFingerMCPNondominantBoneFinalAngle,
 				thumbMCPIndexFingerMCPNondominantBoneMeanAngle, thumbMCPIndexFingerMCPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region IndexFingerMCPMiddleFingerMCPNondominant bone features
-			double? indexFingerMCPMiddleFingerMCPNondominantBoneInitialAngle = gesture.IndexFingerMCPMiddleFingerMCPNondominantBoneInitialAngle;
-			double? indexFingerMCPMiddleFingerMCPNondominantBoneFinalAngle = gesture.IndexFingerMCPMiddleFingerMCPNondominantBoneFinalAngle;
-			double? indexFingerMCPMiddleFingerMCPNondominantBoneMeanAngle = gesture.IndexFingerMCPMiddleFingerMCPNondominantBoneMeanAngle;
-			double? indexFingerMCPMiddleFingerMCPNondominantBoneMaximumAngle = gesture.IndexFingerMCPMiddleFingerMCPNondominantBoneMaximumAngle;
+			float indexFingerMCPMiddleFingerMCPNondominantBoneInitialAngle = gesture.IndexFingerMCPMiddleFingerMCPNondominantBoneInitialAngle;
+			float indexFingerMCPMiddleFingerMCPNondominantBoneFinalAngle = gesture.IndexFingerMCPMiddleFingerMCPNondominantBoneFinalAngle;
+			float indexFingerMCPMiddleFingerMCPNondominantBoneMeanAngle = gesture.IndexFingerMCPMiddleFingerMCPNondominantBoneMeanAngle;
+			float indexFingerMCPMiddleFingerMCPNondominantBoneMaximumAngle = gesture.IndexFingerMCPMiddleFingerMCPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.IndexFingerMCPMiddleFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.IndexFingerMCPMiddleFingerMCPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(indexFingerMCPMiddleFingerMCPNondominantBoneInitialAngle, indexFingerMCPMiddleFingerMCPNondominantBoneFinalAngle,
 				indexFingerMCPMiddleFingerMCPNondominantBoneMeanAngle, indexFingerMCPMiddleFingerMCPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region MiddleFingerMCPRingFingerMCPNondominant bone features
-			double? middleFingerMCPRingFingerMCPNondominantBoneInitialAngle = gesture.MiddleFingerMCPRingFingerMCPNondominantBoneInitialAngle;
-			double? middleFingerMCPRingFingerMCPNondominantBoneFinalAngle = gesture.MiddleFingerMCPRingFingerMCPNondominantBoneFinalAngle;
-			double? middleFingerMCPRingFingerMCPNondominantBoneMeanAngle = gesture.MiddleFingerMCPRingFingerMCPNondominantBoneMeanAngle;
-			double? middleFingerMCPRingFingerMCPNondominantBoneMaximumAngle = gesture.MiddleFingerMCPRingFingerMCPNondominantBoneMaximumAngle;
+			float middleFingerMCPRingFingerMCPNondominantBoneInitialAngle = gesture.MiddleFingerMCPRingFingerMCPNondominantBoneInitialAngle;
+			float middleFingerMCPRingFingerMCPNondominantBoneFinalAngle = gesture.MiddleFingerMCPRingFingerMCPNondominantBoneFinalAngle;
+			float middleFingerMCPRingFingerMCPNondominantBoneMeanAngle = gesture.MiddleFingerMCPRingFingerMCPNondominantBoneMeanAngle;
+			float middleFingerMCPRingFingerMCPNondominantBoneMaximumAngle = gesture.MiddleFingerMCPRingFingerMCPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.MiddleFingerMCPRingFingerMCPLeftBone, MediaPipeHandLandmarksBonesDefs.MiddleFingerMCPRingFingerMCPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(middleFingerMCPRingFingerMCPNondominantBoneInitialAngle, middleFingerMCPRingFingerMCPNondominantBoneFinalAngle,
 				middleFingerMCPRingFingerMCPNondominantBoneMeanAngle, middleFingerMCPRingFingerMCPNondominantBoneMaximumAngle));
 			#endregion
 
 			#region RingFingerMCPPinkyMCPNondominant bone features
-			double? ringFingerMCPPinkyMCPNondominantBoneInitialAngle = gesture.RingFingerMCPPinkyMCPNondominantBoneInitialAngle;
-			double? ringFingerMCPPinkyMCPNondominantBoneFinalAngle = gesture.RingFingerMCPPinkyMCPNondominantBoneFinalAngle;
-			double? ringFingerMCPPinkyMCPNondominantBoneMeanAngle = gesture.RingFingerMCPPinkyMCPNondominantBoneMeanAngle;
-			double? ringFingerMCPPinkyMCPNondominantBoneMaximumAngle = gesture.RingFingerMCPPinkyMCPNondominantBoneMaximumAngle;
+			float ringFingerMCPPinkyMCPNondominantBoneInitialAngle = gesture.RingFingerMCPPinkyMCPNondominantBoneInitialAngle;
+			float ringFingerMCPPinkyMCPNondominantBoneFinalAngle = gesture.RingFingerMCPPinkyMCPNondominantBoneFinalAngle;
+			float ringFingerMCPPinkyMCPNondominantBoneMeanAngle = gesture.RingFingerMCPPinkyMCPNondominantBoneMeanAngle;
+			float ringFingerMCPPinkyMCPNondominantBoneMaximumAngle = gesture.RingFingerMCPPinkyMCPNondominantBoneMaximumAngle;
 			features.AddBoneJointsAngleData(GetBoneByHandDominance(MediaPipeHandLandmarksBonesDefs.RingFingerMCPPinkyMCPLeftBone, MediaPipeHandLandmarksBonesDefs.RingFingerMCPPinkyMCPRightBone,
 				features.HandDominance, false), new BoneJointsAngleData(ringFingerMCPPinkyMCPNondominantBoneInitialAngle, ringFingerMCPPinkyMCPNondominantBoneFinalAngle,
 				ringFingerMCPPinkyMCPNondominantBoneMeanAngle, ringFingerMCPPinkyMCPNondominantBoneMaximumAngle));

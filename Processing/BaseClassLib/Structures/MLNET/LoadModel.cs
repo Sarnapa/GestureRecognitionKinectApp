@@ -48,6 +48,7 @@
 		InvalidParameters,
 		FileNotExists,
 		UnsupportedModelFileExtension,
+		UnsupportedGestureDataViewType,
 		UnexpectedError,
 		// Code archived - failed attempt with mediapipe model in ONNX format
 		//UnsupportedBodyTrackingModelUsageKind,
