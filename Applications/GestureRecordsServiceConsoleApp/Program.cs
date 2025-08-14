@@ -17,10 +17,10 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp
 			//[
 			//	ArgumentsConsts.CALCULATION_FEATURES_METHOD,
 			//	ArgumentsConsts.DIRECTORY_MODE,
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_14\Kinect",
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_14\MediaPipeHandLandmarks",
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\GesturesDataset\Kinect",
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\GesturesDataset\MediaPipeHandLandmarks",
 			//	ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_TRACKING_MODE,
-			//	GestureLabel.goodbye.ToString(),
+			//	//GestureLabel.goodbye.ToString(),
 			//];
 
 			// For testing purposes
