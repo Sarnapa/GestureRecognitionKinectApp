@@ -15,11 +15,11 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 		private MediaPipeBodyTrackingWebSocketClient? client;
 
 		private int handLandmarksModelNumHands = 2;
-		private float handLandmarksModelMinHandDetectionConfidence = 0.3f;
+		private float handLandmarksModelMinHandDetectionConfidence = 0.2f;
 		private float handLandmarksModelMinHandPresenceConfidence = 0.5f;
 		private float handLandmarksModelMinTrackingConfidence = 0.5f;
-		private float trackedJointScoreThreshold = 0.3f;
-		private float inferredJointScoreThreshold = 0.2f;
+		private float trackedJointScoreThreshold = 0.2f;
+		private float inferredJointScoreThreshold = 0.1f;
 
 		#endregion
 

@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.NavigationService;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using static GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.ViewModelLocator;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
@@ -16,6 +17,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		private JointGestureFeaturesViewModel[] jointsFeatures;
 		private BoneJointsAngleDataViewModel[] bonesFeatures;
 		private HandJointsDistanceViewModel handJointsDistances;
+		private HandDominance gestureHandDominance;
 		private string gestureLabel;
 		private int currentJointFeaturesIdx, currentBoneFeaturesIdx;
 		#endregion
@@ -48,6 +50,21 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			get
 			{
 				return this.handJointsDistances;
+			}
+		}
+
+		public string GestureHandDominance
+		{
+			get
+			{
+				switch (this.gestureHandDominance)
+				{
+					case HandDominance.Left:
+					case HandDominance.Right:
+						return this.gestureHandDominance.ToString();
+				}
+
+				return string.Empty;
 			}
 		}
 
@@ -186,6 +203,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				this.jointsFeatures = m.Features.JointsGestureFeaturesDict.Select(f => new JointGestureFeaturesViewModel(f.Key, f.Value)).ToArray();
 				this.bonesFeatures = m.Features.BoneJointsAngleDataDict.Select(b => new BoneJointsAngleDataViewModel(b.Key, b.Value)).ToArray();
 				this.handJointsDistances = new HandJointsDistanceViewModel(m.Features.BetweenHandJointsDistanceMax, m.Features.BetweenHandJointsDistanceMean);
+				this.gestureHandDominance = m.Features.HandDominance;
 				this.gestureLabel = m.Label;
 				RaisePropertyChanged(nameof(CurrentJointFeatures));
 				Application.Current?.Dispatcher.Invoke(() =>

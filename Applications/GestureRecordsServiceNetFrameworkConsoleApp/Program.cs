@@ -15,7 +15,7 @@ namespace GestureRecognition.Applications.GestureRecordsServiceNetFrameworkConso
 			//{
 			//	ArgumentsConsts.SERIALIZATION_MODE_DIRECTORY,
 			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Yes\OldData\2025_02_02",
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Yes\2025_08_07\"
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Yes\2025_08_14\Kinect\TMP"
 			//};
 
 			if (args.Length < 3)

@@ -1,6 +1,7 @@
 ﻿using GestureRecognition.Applications.GestureRecordsServiceConsoleApp.GestureData;
 using GestureRecognition.Applications.GestureRecordsServiceConsoleApp.GestureRecognitionFeatures;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
+using GestureRecognition.Processing.BaseClassLib.Structures.DataPreparation;
 
 namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp
 {
@@ -16,11 +17,10 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp
 			//[
 			//	ArgumentsConsts.CALCULATION_FEATURES_METHOD,
 			//	ArgumentsConsts.DIRECTORY_MODE,
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_10\Kinect",
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_11\Kinect",
-			//	ArgumentsConsts.GOODBYE_GESTURE_LABEL,
-			//	// @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Yes\2025_08_10\MediaPipeHandLandmarks",
-			//	// ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_TRACKING_MODE,
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_14\Kinect",
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\Goodbye\2025_08_14\MediaPipeHandLandmarks",
+			//	ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_TRACKING_MODE,
+			//	GestureLabel.goodbye.ToString(),
 			//];
 
 			// For testing purposes

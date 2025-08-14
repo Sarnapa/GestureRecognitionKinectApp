@@ -50,9 +50,10 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 				gestureFeaturesTasks.Add(CalculateBoneJointsAngleDataTask(gestureFeatures, bodyFrames, bone));
 
 			gestureFeaturesTasks.Add(CalculateBetweenHandJointsDistanceFeaturesTask(gestureFeatures, bodyFrames));
-			gestureFeaturesTasks.Add(GetHandDominanceTask(gestureFeatures, bodyFrames));
 
-			await Task.WhenAll(gestureFeaturesTasks);
+			await Task.WhenAll(gestureFeaturesTasks).ConfigureAwait(false);
+
+			gestureFeatures.HandDominance = GetHandDominance(gestureFeatures);
 
 			return gestureFeatures;
 		}
@@ -139,22 +140,23 @@ namespace GestureRecognition.Processing.GestureRecognitionFeaturesProcUnit
 			gestureFeatures.BetweenHandJointsDistanceMean = betweenHandJointsDistanceMean;
 		}
 
-		private Task GetHandDominanceTask(GestureFeatures gestureFeatures, BodyData[] bodyFrames)
+		private HandDominance GetHandDominance(GestureFeatures gestureFeatures)
 		{
-			return Task.Run(() => GetHandDominance(gestureFeatures, bodyFrames));
-		}
+			float handLeftTotalDisplacement = float.NaN;
+			if (gestureFeatures.JointsGestureFeaturesDict.TryGetValue(JointType.HandLeft, out JointGestureFeatures handLeftGestureFeatures))
+				handLeftTotalDisplacement = handLeftGestureFeatures.TotalDisplacement;
 
-		private void GetHandDominance(GestureFeatures gestureFeatures, BodyData[] bodyFrames)
-		{
-			int leftHandDominanceFramesCount = bodyFrames.Where(f => f.HandDominance == HandDominance.Left).Count();
-			int rightHandDominanceFramesCount = bodyFrames.Where(f => f.HandDominance == HandDominance.Right).Count();
+			float handRightTotalDisplacement = float.NaN;
+			if (gestureFeatures.JointsGestureFeaturesDict.TryGetValue(JointType.HandRight, out JointGestureFeatures handRightGestureFeatures))
+				handRightTotalDisplacement = handRightGestureFeatures.TotalDisplacement;
 
-			if (leftHandDominanceFramesCount > rightHandDominanceFramesCount)
-				gestureFeatures.HandDominance = HandDominance.Left;
-			else if (leftHandDominanceFramesCount < rightHandDominanceFramesCount)
-				gestureFeatures.HandDominance = HandDominance.Right;
-			else
-				gestureFeatures.HandDominance = HandDominance.Unknown;
+			if (!float.IsNaN(handLeftTotalDisplacement) && float.IsNaN(handRightTotalDisplacement))
+				return HandDominance.Left;
+
+			if (float.IsNaN(handLeftTotalDisplacement) && !float.IsNaN(handRightTotalDisplacement))
+				return HandDominance.Right;
+
+			return handLeftTotalDisplacement > handRightTotalDisplacement ? HandDominance.Left : HandDominance.Right;
 		}
 		#endregion
 	}

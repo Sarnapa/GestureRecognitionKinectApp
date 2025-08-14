@@ -20,183 +20,187 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecogniti
 				return false;
 
 			return
-			#region ElbowLeft joint features
-			GestureFeatureEquals(x.ElbowLeftF1F2SpatialAngle, y.ElbowLeftF1F2SpatialAngle) &&
-			GestureFeatureEquals(x.ElbowLeftFN_1FNSpatialAngle, y.ElbowLeftFN_1FNSpatialAngle) &&
-			GestureFeatureEquals(x.ElbowLeftF1FNSpatialAngle, y.ElbowLeftF1FNSpatialAngle) &&
-			GestureFeatureEquals(x.ElbowLeftTotalVectorAngle, y.ElbowLeftTotalVectorAngle) &&
-			GestureFeatureEquals(x.ElbowLeftSquaredTotalVectorAngle, y.ElbowLeftSquaredTotalVectorAngle) &&
-			GestureFeatureEquals(x.ElbowLeftTotalVectorDisplacement, y.ElbowLeftTotalVectorDisplacement) &&
-			GestureFeatureEquals(x.ElbowLeftTotalDisplacement, y.ElbowLeftTotalDisplacement) &&
-			GestureFeatureEquals(x.ElbowLeftMaximumDisplacement, y.ElbowLeftMaximumDisplacement) &&
+			#region ElbowDominant joint features
+			GestureFeatureEquals(x.ElbowDominantF1F2SpatialAngle, y.ElbowDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.ElbowDominantFN_1FNSpatialAngle, y.ElbowDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ElbowDominantF1FNSpatialAngle, y.ElbowDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ElbowDominantTotalVectorAngle, y.ElbowDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.ElbowDominantSquaredTotalVectorAngle, y.ElbowDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.ElbowDominantTotalVectorDisplacement, y.ElbowDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.ElbowDominantTotalDisplacement, y.ElbowDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.ElbowDominantMaximumDisplacement, y.ElbowDominantMaximumDisplacement) &&
 			#endregion
 
-			#region ElbowRight joint features
-			GestureFeatureEquals(x.ElbowRightF1F2SpatialAngle, y.ElbowRightF1F2SpatialAngle) &&
-			GestureFeatureEquals(x.ElbowRightFN_1FNSpatialAngle, y.ElbowRightFN_1FNSpatialAngle) &&
-			GestureFeatureEquals(x.ElbowRightF1FNSpatialAngle, y.ElbowRightF1FNSpatialAngle) &&
-			GestureFeatureEquals(x.ElbowRightTotalVectorAngle, y.ElbowRightTotalVectorAngle) &&
-			GestureFeatureEquals(x.ElbowRightSquaredTotalVectorAngle, y.ElbowRightSquaredTotalVectorAngle) &&
-			GestureFeatureEquals(x.ElbowRightTotalVectorDisplacement, y.ElbowRightTotalVectorDisplacement) &&
-			GestureFeatureEquals(x.ElbowRightTotalDisplacement, y.ElbowRightTotalDisplacement) &&
-			GestureFeatureEquals(x.ElbowRightMaximumDisplacement, y.ElbowRightMaximumDisplacement) &&
+			#region ElbowNondominant joint features
+			GestureFeatureEquals(x.ElbowNondominantF1F2SpatialAngle, y.ElbowNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.ElbowNondominantFN_1FNSpatialAngle, y.ElbowNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ElbowNondominantF1FNSpatialAngle, y.ElbowNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ElbowNondominantTotalVectorAngle, y.ElbowNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.ElbowNondominantSquaredTotalVectorAngle, y.ElbowNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.ElbowNondominantTotalVectorDisplacement, y.ElbowNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.ElbowNondominantTotalDisplacement, y.ElbowNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.ElbowNondominantMaximumDisplacement, y.ElbowNondominantMaximumDisplacement) &&
 			#endregion
 
-			#region WristLeft joint features
-			GestureFeatureEquals(x.WristLeftF1F2SpatialAngle, y.WristLeftF1F2SpatialAngle) &&
-			GestureFeatureEquals(x.WristLeftFN_1FNSpatialAngle, y.WristLeftFN_1FNSpatialAngle) &&
-			GestureFeatureEquals(x.WristLeftF1FNSpatialAngle, y.WristLeftF1FNSpatialAngle) &&
-			GestureFeatureEquals(x.WristLeftTotalVectorAngle, y.WristLeftTotalVectorAngle) &&
-			GestureFeatureEquals(x.WristLeftSquaredTotalVectorAngle, y.WristLeftSquaredTotalVectorAngle) &&
-			GestureFeatureEquals(x.WristLeftTotalVectorDisplacement, y.WristLeftTotalVectorDisplacement) &&
-			GestureFeatureEquals(x.WristLeftTotalDisplacement, y.WristLeftTotalDisplacement) &&
-			GestureFeatureEquals(x.WristLeftMaximumDisplacement, y.WristLeftMaximumDisplacement) &&
+			#region WristDominant joint features
+			GestureFeatureEquals(x.WristDominantF1F2SpatialAngle, y.WristDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.WristDominantFN_1FNSpatialAngle, y.WristDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.WristDominantF1FNSpatialAngle, y.WristDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.WristDominantTotalVectorAngle, y.WristDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.WristDominantSquaredTotalVectorAngle, y.WristDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.WristDominantTotalVectorDisplacement, y.WristDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.WristDominantTotalDisplacement, y.WristDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.WristDominantMaximumDisplacement, y.WristDominantMaximumDisplacement) &&
 			#endregion
 
-			#region WristRight joint features
-			GestureFeatureEquals(x.WristRightF1F2SpatialAngle, y.WristRightF1F2SpatialAngle) &&
-			GestureFeatureEquals(x.WristRightFN_1FNSpatialAngle, y.WristRightFN_1FNSpatialAngle) &&
-			GestureFeatureEquals(x.WristRightF1FNSpatialAngle, y.WristRightF1FNSpatialAngle) &&
-			GestureFeatureEquals(x.WristRightTotalVectorAngle, y.WristRightTotalVectorAngle) &&
-			GestureFeatureEquals(x.WristRightSquaredTotalVectorAngle, y.WristRightSquaredTotalVectorAngle) &&
-			GestureFeatureEquals(x.WristRightTotalVectorDisplacement, y.WristRightTotalVectorDisplacement) &&
-			GestureFeatureEquals(x.WristRightTotalDisplacement, y.WristRightTotalDisplacement) &&
-			GestureFeatureEquals(x.WristRightMaximumDisplacement, y.WristRightMaximumDisplacement) &&
+			#region WristNondominant joint features
+			GestureFeatureEquals(x.WristNondominantF1F2SpatialAngle, y.WristNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.WristNondominantFN_1FNSpatialAngle, y.WristNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.WristNondominantF1FNSpatialAngle, y.WristNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.WristNondominantTotalVectorAngle, y.WristNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.WristNondominantSquaredTotalVectorAngle, y.WristNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.WristNondominantTotalVectorDisplacement, y.WristNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.WristNondominantTotalDisplacement, y.WristNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.WristNondominantMaximumDisplacement, y.WristNondominantMaximumDisplacement) &&
 			#endregion
 
-			#region HandLeft joint features
-			GestureFeatureEquals(x.HandLeftF1F2SpatialAngle, y.HandLeftF1F2SpatialAngle) &&
-			GestureFeatureEquals(x.HandLeftFN_1FNSpatialAngle, y.HandLeftFN_1FNSpatialAngle) &&
-			GestureFeatureEquals(x.HandLeftF1FNSpatialAngle, y.HandLeftF1FNSpatialAngle) &&
-			GestureFeatureEquals(x.HandLeftTotalVectorAngle, y.HandLeftTotalVectorAngle) &&
-			GestureFeatureEquals(x.HandLeftSquaredTotalVectorAngle, y.HandLeftSquaredTotalVectorAngle) &&
-			GestureFeatureEquals(x.HandLeftTotalVectorDisplacement, y.HandLeftTotalVectorDisplacement) &&
-			GestureFeatureEquals(x.HandLeftTotalDisplacement, y.HandLeftTotalDisplacement) &&
-			GestureFeatureEquals(x.HandLeftMaximumDisplacement, y.HandLeftMaximumDisplacement) &&
-			GestureFeatureEquals(x.HandLeftBoundingBoxDiagonalLength, y.HandLeftBoundingBoxDiagonalLength) &&
-			GestureFeatureEquals(x.HandLeftBoundingBoxAngle, y.HandLeftBoundingBoxAngle) &&
+			#region HandDominant joint features
+			GestureFeatureEquals(x.HandDominantF1F2SpatialAngle, y.HandDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.HandDominantFN_1FNSpatialAngle, y.HandDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.HandDominantF1FNSpatialAngle, y.HandDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.HandDominantTotalVectorAngle, y.HandDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.HandDominantSquaredTotalVectorAngle, y.HandDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.HandDominantTotalVectorDisplacement, y.HandDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.HandDominantTotalDisplacement, y.HandDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.HandDominantMaximumDisplacement, y.HandDominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.HandDominantBoundingBoxDiagonalLength, y.HandDominantBoundingBoxDiagonalLength) &&
+			GestureFeatureEquals(x.HandDominantBoundingBoxAngle, y.HandDominantBoundingBoxAngle) &&
 			// Turned off for now, if the results are not satisfactory then turn it on
-			// HandLeftHandStates
+			// HandDominantHandStates
 			#endregion
 
-			#region HandRight joint features
-			GestureFeatureEquals(x.HandRightF1F2SpatialAngle, y.HandRightF1F2SpatialAngle) &&
-			GestureFeatureEquals(x.HandRightFN_1FNSpatialAngle, y.HandRightFN_1FNSpatialAngle) &&
-			GestureFeatureEquals(x.HandRightF1FNSpatialAngle, y.HandRightF1FNSpatialAngle) &&
-			GestureFeatureEquals(x.HandRightTotalVectorAngle, y.HandRightTotalVectorAngle) &&
-			GestureFeatureEquals(x.HandRightSquaredTotalVectorAngle, y.HandRightSquaredTotalVectorAngle) &&
-			GestureFeatureEquals(x.HandRightTotalVectorDisplacement, y.HandRightTotalVectorDisplacement) &&
-			GestureFeatureEquals(x.HandRightTotalDisplacement, y.HandRightTotalDisplacement) &&
-			GestureFeatureEquals(x.HandRightMaximumDisplacement, y.HandRightMaximumDisplacement) &&
-			GestureFeatureEquals(x.HandRightBoundingBoxDiagonalLength, y.HandRightBoundingBoxDiagonalLength) &&
-			GestureFeatureEquals(x.HandRightBoundingBoxAngle, y.HandRightBoundingBoxAngle) &&
+			#region HandNondominant joint features
+			GestureFeatureEquals(x.HandNondominantF1F2SpatialAngle, y.HandNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.HandNondominantFN_1FNSpatialAngle, y.HandNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.HandNondominantF1FNSpatialAngle, y.HandNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.HandNondominantTotalVectorAngle, y.HandNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.HandNondominantSquaredTotalVectorAngle, y.HandNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.HandNondominantTotalVectorDisplacement, y.HandNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.HandNondominantTotalDisplacement, y.HandNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.HandNondominantMaximumDisplacement, y.HandNondominantMaximumDisplacement) &&
+			GestureFeatureEquals(x.HandNondominantBoundingBoxDiagonalLength, y.HandNondominantBoundingBoxDiagonalLength) &&
+			GestureFeatureEquals(x.HandNondominantBoundingBoxAngle, y.HandNondominantBoundingBoxAngle) &&
 			// Turned off for now, if the results are not satisfactory then turn it on
-			// HandRightHandStates
+			// HandNondominantHandStates
 			#endregion
 
-			#region ThumbLeft joint features
-			GestureFeatureEquals(x.ThumbLeftF1F2SpatialAngle, y.ThumbLeftF1F2SpatialAngle) &&
-			GestureFeatureEquals(x.ThumbLeftFN_1FNSpatialAngle, y.ThumbLeftFN_1FNSpatialAngle) &&
-			GestureFeatureEquals(x.ThumbLeftF1FNSpatialAngle, y.ThumbLeftF1FNSpatialAngle) &&
-			GestureFeatureEquals(x.ThumbLeftTotalVectorAngle, y.ThumbLeftTotalVectorAngle) &&
-			GestureFeatureEquals(x.ThumbLeftSquaredTotalVectorAngle, y.ThumbLeftSquaredTotalVectorAngle) &&
-			GestureFeatureEquals(x.ThumbLeftTotalVectorDisplacement, y.ThumbLeftTotalVectorDisplacement) &&
-			GestureFeatureEquals(x.ThumbLeftTotalDisplacement, y.ThumbLeftTotalDisplacement) &&
-			GestureFeatureEquals(x.ThumbLeftMaximumDisplacement, y.ThumbLeftMaximumDisplacement) &&
+			#region ThumbDominant joint features
+			GestureFeatureEquals(x.ThumbDominantF1F2SpatialAngle, y.ThumbDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.ThumbDominantFN_1FNSpatialAngle, y.ThumbDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbDominantF1FNSpatialAngle, y.ThumbDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbDominantTotalVectorAngle, y.ThumbDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbDominantSquaredTotalVectorAngle, y.ThumbDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbDominantTotalVectorDisplacement, y.ThumbDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.ThumbDominantTotalDisplacement, y.ThumbDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.ThumbDominantMaximumDisplacement, y.ThumbDominantMaximumDisplacement) &&
 			#endregion
 
-			#region ThumbRight joint features
-			GestureFeatureEquals(x.ThumbRightF1F2SpatialAngle, y.ThumbRightF1F2SpatialAngle) &&
-			GestureFeatureEquals(x.ThumbRightFN_1FNSpatialAngle, y.ThumbRightFN_1FNSpatialAngle) &&
-			GestureFeatureEquals(x.ThumbRightF1FNSpatialAngle, y.ThumbRightF1FNSpatialAngle) &&
-			GestureFeatureEquals(x.ThumbRightTotalVectorAngle, y.ThumbRightTotalVectorAngle) &&
-			GestureFeatureEquals(x.ThumbRightSquaredTotalVectorAngle, y.ThumbRightSquaredTotalVectorAngle) &&
-			GestureFeatureEquals(x.ThumbRightTotalVectorDisplacement, y.ThumbRightTotalVectorDisplacement) &&
-			GestureFeatureEquals(x.ThumbRightTotalDisplacement, y.ThumbRightTotalDisplacement) &&
-			GestureFeatureEquals(x.ThumbRightMaximumDisplacement, y.ThumbRightMaximumDisplacement) &&
+			#region ThumbNondominant joint features
+			GestureFeatureEquals(x.ThumbNondominantF1F2SpatialAngle, y.ThumbNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.ThumbNondominantFN_1FNSpatialAngle, y.ThumbNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbNondominantF1FNSpatialAngle, y.ThumbNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.ThumbNondominantTotalVectorAngle, y.ThumbNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbNondominantSquaredTotalVectorAngle, y.ThumbNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.ThumbNondominantTotalVectorDisplacement, y.ThumbNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.ThumbNondominantTotalDisplacement, y.ThumbNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.ThumbNondominantMaximumDisplacement, y.ThumbNondominantMaximumDisplacement) &&
 			#endregion
 
-			#region HandTipLeft joint features
-			GestureFeatureEquals(x.HandTipLeftF1F2SpatialAngle, y.HandTipLeftF1F2SpatialAngle) &&
-			GestureFeatureEquals(x.HandTipLeftFN_1FNSpatialAngle, y.HandTipLeftFN_1FNSpatialAngle) &&
-			GestureFeatureEquals(x.HandTipLeftF1FNSpatialAngle, y.HandTipLeftF1FNSpatialAngle) &&
-			GestureFeatureEquals(x.HandTipLeftTotalVectorAngle, y.HandTipLeftTotalVectorAngle) &&
-			GestureFeatureEquals(x.HandTipLeftSquaredTotalVectorAngle, y.HandTipLeftSquaredTotalVectorAngle) &&
-			GestureFeatureEquals(x.HandTipLeftTotalVectorDisplacement, y.HandTipLeftTotalVectorDisplacement) &&
-			GestureFeatureEquals(x.HandTipLeftTotalDisplacement, y.HandTipLeftTotalDisplacement) &&
-			GestureFeatureEquals(x.HandTipLeftMaximumDisplacement, y.HandTipLeftMaximumDisplacement) &&
+			#region HandTipDominant joint features
+			GestureFeatureEquals(x.HandTipDominantF1F2SpatialAngle, y.HandTipDominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.HandTipDominantFN_1FNSpatialAngle, y.HandTipDominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.HandTipDominantF1FNSpatialAngle, y.HandTipDominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.HandTipDominantTotalVectorAngle, y.HandTipDominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.HandTipDominantSquaredTotalVectorAngle, y.HandTipDominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.HandTipDominantTotalVectorDisplacement, y.HandTipDominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.HandTipDominantTotalDisplacement, y.HandTipDominantTotalDisplacement) &&
+			GestureFeatureEquals(x.HandTipDominantMaximumDisplacement, y.HandTipDominantMaximumDisplacement) &&
 			#endregion
 
-			#region HandTipRight joint features
-			GestureFeatureEquals(x.HandTipRightF1F2SpatialAngle, y.HandTipRightF1F2SpatialAngle) &&
-			GestureFeatureEquals(x.HandTipRightFN_1FNSpatialAngle, y.HandTipRightFN_1FNSpatialAngle) &&
-			GestureFeatureEquals(x.HandTipRightF1FNSpatialAngle, y.HandTipRightF1FNSpatialAngle) &&
-			GestureFeatureEquals(x.HandTipRightTotalVectorAngle, y.HandTipRightTotalVectorAngle) &&
-			GestureFeatureEquals(x.HandTipRightSquaredTotalVectorAngle, y.HandTipRightSquaredTotalVectorAngle) &&
-			GestureFeatureEquals(x.HandTipRightTotalVectorDisplacement, y.HandTipRightTotalVectorDisplacement) &&
-			GestureFeatureEquals(x.HandTipRightTotalDisplacement, y.HandTipRightTotalDisplacement) &&
-			GestureFeatureEquals(x.HandTipRightMaximumDisplacement, y.HandTipRightMaximumDisplacement) &&
+			#region HandTipNondominant joint features
+			GestureFeatureEquals(x.HandTipNondominantF1F2SpatialAngle, y.HandTipNondominantF1F2SpatialAngle) &&
+			GestureFeatureEquals(x.HandTipNondominantFN_1FNSpatialAngle, y.HandTipNondominantFN_1FNSpatialAngle) &&
+			GestureFeatureEquals(x.HandTipNondominantF1FNSpatialAngle, y.HandTipNondominantF1FNSpatialAngle) &&
+			GestureFeatureEquals(x.HandTipNondominantTotalVectorAngle, y.HandTipNondominantTotalVectorAngle) &&
+			GestureFeatureEquals(x.HandTipNondominantSquaredTotalVectorAngle, y.HandTipNondominantSquaredTotalVectorAngle) &&
+			GestureFeatureEquals(x.HandTipNondominantTotalVectorDisplacement, y.HandTipNondominantTotalVectorDisplacement) &&
+			GestureFeatureEquals(x.HandTipNondominantTotalDisplacement, y.HandTipNondominantTotalDisplacement) &&
+			GestureFeatureEquals(x.HandTipNondominantMaximumDisplacement, y.HandTipNondominantMaximumDisplacement) &&
 			#endregion
 
-			#region ElbowLeftWristLeft bone features
-			GestureFeatureEquals(x.ElbowLeftWristLeftBoneInitialAngle, y.ElbowLeftWristLeftBoneInitialAngle) &&
-			GestureFeatureEquals(x.ElbowLeftWristLeftBoneFinalAngle, y.ElbowLeftWristLeftBoneFinalAngle) &&
-			GestureFeatureEquals(x.ElbowLeftWristLeftBoneMeanAngle, y.ElbowLeftWristLeftBoneMeanAngle) &&
-			GestureFeatureEquals(x.ElbowLeftWristLeftBoneMaximumAngle, y.ElbowLeftWristLeftBoneMaximumAngle) &&
+			#region ElbowWristDominant bone features
+			GestureFeatureEquals(x.ElbowWristDominantBoneInitialAngle, y.ElbowWristDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.ElbowWristDominantBoneFinalAngle, y.ElbowWristDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.ElbowWristDominantBoneMeanAngle, y.ElbowWristDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.ElbowWristDominantBoneMaximumAngle, y.ElbowWristDominantBoneMaximumAngle) &&
 			#endregion
 
-			#region ElbowRightWristRight bone features
-			GestureFeatureEquals(x.ElbowRightWristRightBoneInitialAngle, y.ElbowRightWristRightBoneInitialAngle) &&
-			GestureFeatureEquals(x.ElbowRightWristRightBoneFinalAngle, y.ElbowRightWristRightBoneFinalAngle) &&
-			GestureFeatureEquals(x.ElbowRightWristRightBoneMeanAngle, y.ElbowRightWristRightBoneMeanAngle) &&
-			GestureFeatureEquals(x.ElbowRightWristRightBoneMaximumAngle, y.ElbowRightWristRightBoneMaximumAngle) &&
+			#region ElbowWristNondominant bone features
+			GestureFeatureEquals(x.ElbowWristNondominantBoneInitialAngle, y.ElbowWristNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.ElbowWristNondominantBoneFinalAngle, y.ElbowWristNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.ElbowWristNondominantBoneMeanAngle, y.ElbowWristNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.ElbowWristNondominantBoneMaximumAngle, y.ElbowWristNondominantBoneMaximumAngle) &&
 			#endregion
 
-			#region WristLeftHandLeft bone features
-			GestureFeatureEquals(x.WristLeftHandLeftBoneInitialAngle, y.WristLeftHandLeftBoneInitialAngle) &&
-			GestureFeatureEquals(x.WristLeftHandLeftBoneFinalAngle, y.WristLeftHandLeftBoneFinalAngle) &&
-			GestureFeatureEquals(x.WristLeftHandLeftBoneMeanAngle, y.WristLeftHandLeftBoneMeanAngle) &&
-			GestureFeatureEquals(x.WristLeftHandLeftBoneMaximumAngle, y.WristLeftHandLeftBoneMaximumAngle) &&
+			#region WristHandDominant bone features
+			GestureFeatureEquals(x.WristHandDominantBoneInitialAngle, y.WristHandDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.WristHandDominantBoneFinalAngle, y.WristHandDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.WristHandDominantBoneMeanAngle, y.WristHandDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.WristHandDominantBoneMaximumAngle, y.WristHandDominantBoneMaximumAngle) &&
 			#endregion
 
-			#region WristRightHandRight bone features
-			GestureFeatureEquals(x.WristRightHandRightBoneInitialAngle, y.WristRightHandRightBoneInitialAngle) &&
-			GestureFeatureEquals(x.WristRightHandRightBoneFinalAngle, y.WristRightHandRightBoneFinalAngle) &&
-			GestureFeatureEquals(x.WristRightHandRightBoneMeanAngle, y.WristRightHandRightBoneMeanAngle) &&
-			GestureFeatureEquals(x.WristRightHandRightBoneMaximumAngle, y.WristRightHandRightBoneMaximumAngle) &&
+			#region WristHandNondominant bone features
+			GestureFeatureEquals(x.WristHandNondominantBoneInitialAngle, y.WristHandNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.WristHandNondominantBoneFinalAngle, y.WristHandNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.WristHandNondominantBoneMeanAngle, y.WristHandNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.WristHandNondominantBoneMaximumAngle, y.WristHandNondominantBoneMaximumAngle) &&
 			#endregion
 
-			#region HandLeftHandTipLeft bone features
-			GestureFeatureEquals(x.HandLeftHandTipLeftBoneInitialAngle, y.HandLeftHandTipLeftBoneInitialAngle) &&
-			GestureFeatureEquals(x.HandLeftHandTipLeftBoneFinalAngle, y.HandLeftHandTipLeftBoneFinalAngle) &&
-			GestureFeatureEquals(x.HandLeftHandTipLeftBoneMeanAngle, y.HandLeftHandTipLeftBoneMeanAngle) &&
-			GestureFeatureEquals(x.HandLeftHandTipLeftBoneMaximumAngle, y.HandLeftHandTipLeftBoneMaximumAngle) &&
+			#region HandHandTipDominant bone features
+			GestureFeatureEquals(x.HandHandTipDominantBoneInitialAngle, y.HandHandTipDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.HandHandTipDominantBoneFinalAngle, y.HandHandTipDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.HandHandTipDominantBoneMeanAngle, y.HandHandTipDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.HandHandTipDominantBoneMaximumAngle, y.HandHandTipDominantBoneMaximumAngle) &&
 			#endregion
 
-			#region HandRightHandTipRight bone features
-			GestureFeatureEquals(x.HandRightHandTipRightBoneInitialAngle, y.HandRightHandTipRightBoneInitialAngle) &&
-			GestureFeatureEquals(x.HandRightHandTipRightBoneFinalAngle, y.HandRightHandTipRightBoneFinalAngle) &&
-			GestureFeatureEquals(x.HandRightHandTipRightBoneMeanAngle, y.HandRightHandTipRightBoneMeanAngle) &&
-			GestureFeatureEquals(x.HandRightHandTipRightBoneMaximumAngle, y.HandRightHandTipRightBoneMaximumAngle) &&
+			#region HandHandTipNondominant bone features
+			GestureFeatureEquals(x.HandHandTipNondominantBoneInitialAngle, y.HandHandTipNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.HandHandTipNondominantBoneFinalAngle, y.HandHandTipNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.HandHandTipNondominantBoneMeanAngle, y.HandHandTipNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.HandHandTipNondominantBoneMaximumAngle, y.HandHandTipNondominantBoneMaximumAngle) &&
 			#endregion
 
-			#region WristLeftThumbLeft bone features
-			GestureFeatureEquals(x.WristLeftThumbLeftBoneInitialAngle, y.WristLeftThumbLeftBoneInitialAngle) &&
-			GestureFeatureEquals(x.WristLeftThumbLeftBoneFinalAngle, y.WristLeftThumbLeftBoneFinalAngle) &&
-			GestureFeatureEquals(x.WristLeftThumbLeftBoneMeanAngle, y.WristLeftThumbLeftBoneMeanAngle) &&
-			GestureFeatureEquals(x.WristLeftThumbLeftBoneMaximumAngle, y.WristLeftThumbLeftBoneMaximumAngle) &&
+			#region WristThumbDominant bone features
+			GestureFeatureEquals(x.WristThumbDominantBoneInitialAngle, y.WristThumbDominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.WristThumbDominantBoneFinalAngle, y.WristThumbDominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.WristThumbDominantBoneMeanAngle, y.WristThumbDominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.WristThumbDominantBoneMaximumAngle, y.WristThumbDominantBoneMaximumAngle) &&
 			#endregion
 
-			#region WristRightThumbRight bone features
-			GestureFeatureEquals(x.WristRightThumbRightBoneInitialAngle, y.WristRightThumbRightBoneInitialAngle) &&
-			GestureFeatureEquals(x.WristRightThumbRightBoneFinalAngle, y.WristRightThumbRightBoneFinalAngle) &&
-			GestureFeatureEquals(x.WristRightThumbRightBoneMeanAngle, y.WristRightThumbRightBoneMeanAngle) &&
-			GestureFeatureEquals(x.WristRightThumbRightBoneMaximumAngle, y.WristRightThumbRightBoneMaximumAngle) &&
+			#region WristThumbNondominant bone features
+			GestureFeatureEquals(x.WristThumbNondominantBoneInitialAngle, y.WristThumbNondominantBoneInitialAngle) &&
+			GestureFeatureEquals(x.WristThumbNondominantBoneFinalAngle, y.WristThumbNondominantBoneFinalAngle) &&
+			GestureFeatureEquals(x.WristThumbNondominantBoneMeanAngle, y.WristThumbNondominantBoneMeanAngle) &&
+			GestureFeatureEquals(x.WristThumbNondominantBoneMaximumAngle, y.WristThumbNondominantBoneMaximumAngle) &&
 			#endregion
 
 			#region Hands distances features
 			GestureFeatureEquals(x.BetweenHandJointsDistanceMax, y.BetweenHandJointsDistanceMax) &&
 			GestureFeatureEquals(x.BetweenHandJointsDistanceMean, y.BetweenHandJointsDistanceMean) &&
+			#endregion
+
+			#region HandDominance
+			x.HandDominance == y.HandDominance &&
 			#endregion
 
 			#region Label
@@ -211,183 +215,187 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecogniti
 
 			var hash = new HashCode();
 
-			#region ElbowLeft joint features
-			hash.Add(obj.ElbowLeftF1F2SpatialAngle);
-			hash.Add(obj.ElbowLeftFN_1FNSpatialAngle);
-			hash.Add(obj.ElbowLeftF1FNSpatialAngle);
-			hash.Add(obj.ElbowLeftTotalVectorAngle);
-			hash.Add(obj.ElbowLeftSquaredTotalVectorAngle);
-			hash.Add(obj.ElbowLeftTotalVectorDisplacement);
-			hash.Add(obj.ElbowLeftTotalDisplacement);
-			hash.Add(obj.ElbowLeftMaximumDisplacement);
+			#region ElbowDominant joint features
+			hash.Add(obj.ElbowDominantF1F2SpatialAngle);
+			hash.Add(obj.ElbowDominantFN_1FNSpatialAngle);
+			hash.Add(obj.ElbowDominantF1FNSpatialAngle);
+			hash.Add(obj.ElbowDominantTotalVectorAngle);
+			hash.Add(obj.ElbowDominantSquaredTotalVectorAngle);
+			hash.Add(obj.ElbowDominantTotalVectorDisplacement);
+			hash.Add(obj.ElbowDominantTotalDisplacement);
+			hash.Add(obj.ElbowDominantMaximumDisplacement);
 			#endregion
 
-			#region ElbowRight joint features
-			hash.Add(obj.ElbowRightF1F2SpatialAngle);
-			hash.Add(obj.ElbowRightFN_1FNSpatialAngle);
-			hash.Add(obj.ElbowRightF1FNSpatialAngle);
-			hash.Add(obj.ElbowRightTotalVectorAngle);
-			hash.Add(obj.ElbowRightSquaredTotalVectorAngle);
-			hash.Add(obj.ElbowRightTotalVectorDisplacement);
-			hash.Add(obj.ElbowRightTotalDisplacement);
-			hash.Add(obj.ElbowRightMaximumDisplacement);
+			#region ElbowNondominant joint features
+			hash.Add(obj.ElbowNondominantF1F2SpatialAngle);
+			hash.Add(obj.ElbowNondominantFN_1FNSpatialAngle);
+			hash.Add(obj.ElbowNondominantF1FNSpatialAngle);
+			hash.Add(obj.ElbowNondominantTotalVectorAngle);
+			hash.Add(obj.ElbowNondominantSquaredTotalVectorAngle);
+			hash.Add(obj.ElbowNondominantTotalVectorDisplacement);
+			hash.Add(obj.ElbowNondominantTotalDisplacement);
+			hash.Add(obj.ElbowNondominantMaximumDisplacement);
 			#endregion
 
-			#region WristLeft joint features
-			hash.Add(obj.WristLeftF1F2SpatialAngle);
-			hash.Add(obj.WristLeftFN_1FNSpatialAngle);
-			hash.Add(obj.WristLeftF1FNSpatialAngle);
-			hash.Add(obj.WristLeftTotalVectorAngle);
-			hash.Add(obj.WristLeftSquaredTotalVectorAngle);
-			hash.Add(obj.WristLeftTotalVectorDisplacement);
-			hash.Add(obj.WristLeftTotalDisplacement);
-			hash.Add(obj.WristLeftMaximumDisplacement);
+			#region WristDominant joint features
+			hash.Add(obj.WristDominantF1F2SpatialAngle);
+			hash.Add(obj.WristDominantFN_1FNSpatialAngle);
+			hash.Add(obj.WristDominantF1FNSpatialAngle);
+			hash.Add(obj.WristDominantTotalVectorAngle);
+			hash.Add(obj.WristDominantSquaredTotalVectorAngle);
+			hash.Add(obj.WristDominantTotalVectorDisplacement);
+			hash.Add(obj.WristDominantTotalDisplacement);
+			hash.Add(obj.WristDominantMaximumDisplacement);
 			#endregion
 
-			#region WristRight joint features
-			hash.Add(obj.WristRightF1F2SpatialAngle);
-			hash.Add(obj.WristRightFN_1FNSpatialAngle);
-			hash.Add(obj.WristRightF1FNSpatialAngle);
-			hash.Add(obj.WristRightTotalVectorAngle);
-			hash.Add(obj.WristRightSquaredTotalVectorAngle);
-			hash.Add(obj.WristRightTotalVectorDisplacement);
-			hash.Add(obj.WristRightTotalDisplacement);
-			hash.Add(obj.WristRightMaximumDisplacement);
+			#region WristNondominant joint features
+			hash.Add(obj.WristNondominantF1F2SpatialAngle);
+			hash.Add(obj.WristNondominantFN_1FNSpatialAngle);
+			hash.Add(obj.WristNondominantF1FNSpatialAngle);
+			hash.Add(obj.WristNondominantTotalVectorAngle);
+			hash.Add(obj.WristNondominantSquaredTotalVectorAngle);
+			hash.Add(obj.WristNondominantTotalVectorDisplacement);
+			hash.Add(obj.WristNondominantTotalDisplacement);
+			hash.Add(obj.WristNondominantMaximumDisplacement);
 			#endregion
 
-			#region HandLeft joint features
-			hash.Add(obj.HandLeftF1F2SpatialAngle);
-			hash.Add(obj.HandLeftFN_1FNSpatialAngle);
-			hash.Add(obj.HandLeftF1FNSpatialAngle);
-			hash.Add(obj.HandLeftTotalVectorAngle);
-			hash.Add(obj.HandLeftSquaredTotalVectorAngle);
-			hash.Add(obj.HandLeftTotalVectorDisplacement);
-			hash.Add(obj.HandLeftTotalDisplacement);
-			hash.Add(obj.HandLeftMaximumDisplacement);
-			hash.Add(obj.HandLeftBoundingBoxDiagonalLength);
-			hash.Add(obj.HandLeftBoundingBoxAngle);
+			#region HandDominant joint features
+			hash.Add(obj.HandDominantF1F2SpatialAngle);
+			hash.Add(obj.HandDominantFN_1FNSpatialAngle);
+			hash.Add(obj.HandDominantF1FNSpatialAngle);
+			hash.Add(obj.HandDominantTotalVectorAngle);
+			hash.Add(obj.HandDominantSquaredTotalVectorAngle);
+			hash.Add(obj.HandDominantTotalVectorDisplacement);
+			hash.Add(obj.HandDominantTotalDisplacement);
+			hash.Add(obj.HandDominantMaximumDisplacement);
+			hash.Add(obj.HandDominantBoundingBoxDiagonalLength);
+			hash.Add(obj.HandDominantBoundingBoxAngle);
 			// Turned off for now, if the results are not satisfactory then turn it on
-			// HandLeftHandStates
+			// HandDominantHandStates
 			#endregion
 
-			#region HandRight joint features
-			hash.Add(obj.HandRightF1F2SpatialAngle);
-			hash.Add(obj.HandRightFN_1FNSpatialAngle);
-			hash.Add(obj.HandRightF1FNSpatialAngle);
-			hash.Add(obj.HandRightTotalVectorAngle);
-			hash.Add(obj.HandRightSquaredTotalVectorAngle);
-			hash.Add(obj.HandRightTotalVectorDisplacement);
-			hash.Add(obj.HandRightTotalDisplacement);
-			hash.Add(obj.HandRightMaximumDisplacement);
-			hash.Add(obj.HandRightBoundingBoxDiagonalLength);
-			hash.Add(obj.HandRightBoundingBoxAngle);
+			#region HandNondominant joint features
+			hash.Add(obj.HandNondominantF1F2SpatialAngle);
+			hash.Add(obj.HandNondominantFN_1FNSpatialAngle);
+			hash.Add(obj.HandNondominantF1FNSpatialAngle);
+			hash.Add(obj.HandNondominantTotalVectorAngle);
+			hash.Add(obj.HandNondominantSquaredTotalVectorAngle);
+			hash.Add(obj.HandNondominantTotalVectorDisplacement);
+			hash.Add(obj.HandNondominantTotalDisplacement);
+			hash.Add(obj.HandNondominantMaximumDisplacement);
+			hash.Add(obj.HandNondominantBoundingBoxDiagonalLength);
+			hash.Add(obj.HandNondominantBoundingBoxAngle);
 			// Turned off for now, if the results are not satisfactory then turn it on
-			// HandRightHandStates
+			// HandNondominantHandStates
 			#endregion
 
-			#region ThumbLeft joint features
-			hash.Add(obj.ThumbLeftF1F2SpatialAngle);
-			hash.Add(obj.ThumbLeftFN_1FNSpatialAngle);
-			hash.Add(obj.ThumbLeftF1FNSpatialAngle);
-			hash.Add(obj.ThumbLeftTotalVectorAngle);
-			hash.Add(obj.ThumbLeftSquaredTotalVectorAngle);
-			hash.Add(obj.ThumbLeftTotalVectorDisplacement);
-			hash.Add(obj.ThumbLeftTotalDisplacement);
-			hash.Add(obj.ThumbLeftMaximumDisplacement);
+			#region ThumbDominant joint features
+			hash.Add(obj.ThumbDominantF1F2SpatialAngle);
+			hash.Add(obj.ThumbDominantFN_1FNSpatialAngle);
+			hash.Add(obj.ThumbDominantF1FNSpatialAngle);
+			hash.Add(obj.ThumbDominantTotalVectorAngle);
+			hash.Add(obj.ThumbDominantSquaredTotalVectorAngle);
+			hash.Add(obj.ThumbDominantTotalVectorDisplacement);
+			hash.Add(obj.ThumbDominantTotalDisplacement);
+			hash.Add(obj.ThumbDominantMaximumDisplacement);
 			#endregion
 
-			#region ThumbRight joint features
-			hash.Add(obj.ThumbRightF1F2SpatialAngle);
-			hash.Add(obj.ThumbRightFN_1FNSpatialAngle);
-			hash.Add(obj.ThumbRightF1FNSpatialAngle);
-			hash.Add(obj.ThumbRightTotalVectorAngle);
-			hash.Add(obj.ThumbRightSquaredTotalVectorAngle);
-			hash.Add(obj.ThumbRightTotalVectorDisplacement);
-			hash.Add(obj.ThumbRightTotalDisplacement);
-			hash.Add(obj.ThumbRightMaximumDisplacement);
+			#region ThumbNondominant joint features
+			hash.Add(obj.ThumbNondominantF1F2SpatialAngle);
+			hash.Add(obj.ThumbNondominantFN_1FNSpatialAngle);
+			hash.Add(obj.ThumbNondominantF1FNSpatialAngle);
+			hash.Add(obj.ThumbNondominantTotalVectorAngle);
+			hash.Add(obj.ThumbNondominantSquaredTotalVectorAngle);
+			hash.Add(obj.ThumbNondominantTotalVectorDisplacement);
+			hash.Add(obj.ThumbNondominantTotalDisplacement);
+			hash.Add(obj.ThumbNondominantMaximumDisplacement);
 			#endregion
 
-			#region HandTipLeft joint features
-			hash.Add(obj.HandTipLeftF1F2SpatialAngle);
-			hash.Add(obj.HandTipLeftFN_1FNSpatialAngle);
-			hash.Add(obj.HandTipLeftF1FNSpatialAngle);
-			hash.Add(obj.HandTipLeftTotalVectorAngle);
-			hash.Add(obj.HandTipLeftSquaredTotalVectorAngle);
-			hash.Add(obj.HandTipLeftTotalVectorDisplacement);
-			hash.Add(obj.HandTipLeftTotalDisplacement);
-			hash.Add(obj.HandTipLeftMaximumDisplacement);
+			#region HandTipDominant joint features
+			hash.Add(obj.HandTipDominantF1F2SpatialAngle);
+			hash.Add(obj.HandTipDominantFN_1FNSpatialAngle);
+			hash.Add(obj.HandTipDominantF1FNSpatialAngle);
+			hash.Add(obj.HandTipDominantTotalVectorAngle);
+			hash.Add(obj.HandTipDominantSquaredTotalVectorAngle);
+			hash.Add(obj.HandTipDominantTotalVectorDisplacement);
+			hash.Add(obj.HandTipDominantTotalDisplacement);
+			hash.Add(obj.HandTipDominantMaximumDisplacement);
 			#endregion
 
-			#region HandTipRight joint features
-			hash.Add(obj.HandTipRightF1F2SpatialAngle);
-			hash.Add(obj.HandTipRightFN_1FNSpatialAngle);
-			hash.Add(obj.HandTipRightF1FNSpatialAngle);
-			hash.Add(obj.HandTipRightTotalVectorAngle);
-			hash.Add(obj.HandTipRightSquaredTotalVectorAngle);
-			hash.Add(obj.HandTipRightTotalVectorDisplacement);
-			hash.Add(obj.HandTipRightTotalDisplacement);
-			hash.Add(obj.HandTipRightMaximumDisplacement);
+			#region HandTipNondominant joint features
+			hash.Add(obj.HandTipNondominantF1F2SpatialAngle);
+			hash.Add(obj.HandTipNondominantFN_1FNSpatialAngle);
+			hash.Add(obj.HandTipNondominantF1FNSpatialAngle);
+			hash.Add(obj.HandTipNondominantTotalVectorAngle);
+			hash.Add(obj.HandTipNondominantSquaredTotalVectorAngle);
+			hash.Add(obj.HandTipNondominantTotalVectorDisplacement);
+			hash.Add(obj.HandTipNondominantTotalDisplacement);
+			hash.Add(obj.HandTipNondominantMaximumDisplacement);
 			#endregion
 
-			#region ElbowLeftWristLeft bone features
-			hash.Add(obj.ElbowLeftWristLeftBoneInitialAngle);
-			hash.Add(obj.ElbowLeftWristLeftBoneFinalAngle);
-			hash.Add(obj.ElbowLeftWristLeftBoneMeanAngle);
-			hash.Add(obj.ElbowLeftWristLeftBoneMaximumAngle);
+			#region ElbowWristDominant bone features
+			hash.Add(obj.ElbowWristDominantBoneInitialAngle);
+			hash.Add(obj.ElbowWristDominantBoneFinalAngle);
+			hash.Add(obj.ElbowWristDominantBoneMeanAngle);
+			hash.Add(obj.ElbowWristDominantBoneMaximumAngle);
 			#endregion
 
-			#region ElbowRightWristRight bone features
-			hash.Add(obj.ElbowRightWristRightBoneInitialAngle);
-			hash.Add(obj.ElbowRightWristRightBoneFinalAngle);
-			hash.Add(obj.ElbowRightWristRightBoneMeanAngle);
-			hash.Add(obj.ElbowRightWristRightBoneMaximumAngle);
+			#region ElbowWristNondominant bone features
+			hash.Add(obj.ElbowWristNondominantBoneInitialAngle);
+			hash.Add(obj.ElbowWristNondominantBoneFinalAngle);
+			hash.Add(obj.ElbowWristNondominantBoneMeanAngle);
+			hash.Add(obj.ElbowWristNondominantBoneMaximumAngle);
 			#endregion
 
-			#region WristLeftHandLeft bone features
-			hash.Add(obj.WristLeftHandLeftBoneInitialAngle);
-			hash.Add(obj.WristLeftHandLeftBoneFinalAngle);
-			hash.Add(obj.WristLeftHandLeftBoneMeanAngle);
-			hash.Add(obj.WristLeftHandLeftBoneMaximumAngle);
+			#region WristHandDominant bone features
+			hash.Add(obj.WristHandDominantBoneInitialAngle);
+			hash.Add(obj.WristHandDominantBoneFinalAngle);
+			hash.Add(obj.WristHandDominantBoneMeanAngle);
+			hash.Add(obj.WristHandDominantBoneMaximumAngle);
 			#endregion
 
-			#region WristRightHandRight bone features
-			hash.Add(obj.WristRightHandRightBoneInitialAngle);
-			hash.Add(obj.WristRightHandRightBoneFinalAngle);
-			hash.Add(obj.WristRightHandRightBoneMeanAngle);
-			hash.Add(obj.WristRightHandRightBoneMaximumAngle);
+			#region WristHandNondominant bone features
+			hash.Add(obj.WristHandNondominantBoneInitialAngle);
+			hash.Add(obj.WristHandNondominantBoneFinalAngle);
+			hash.Add(obj.WristHandNondominantBoneMeanAngle);
+			hash.Add(obj.WristHandNondominantBoneMaximumAngle);
 			#endregion
 
-			#region HandLeftHandTipLeft bone features
-			hash.Add(obj.HandLeftHandTipLeftBoneInitialAngle);
-			hash.Add(obj.HandLeftHandTipLeftBoneFinalAngle);
-			hash.Add(obj.HandLeftHandTipLeftBoneMeanAngle);
-			hash.Add(obj.HandLeftHandTipLeftBoneMaximumAngle);
+			#region HandHandTipDominant bone features
+			hash.Add(obj.HandHandTipDominantBoneInitialAngle);
+			hash.Add(obj.HandHandTipDominantBoneFinalAngle);
+			hash.Add(obj.HandHandTipDominantBoneMeanAngle);
+			hash.Add(obj.HandHandTipDominantBoneMaximumAngle);
 			#endregion
 
-			#region HandRightHandTipRight bone features
-			hash.Add(obj.HandRightHandTipRightBoneInitialAngle);
-			hash.Add(obj.HandRightHandTipRightBoneFinalAngle);
-			hash.Add(obj.HandRightHandTipRightBoneMeanAngle);
-			hash.Add(obj.HandRightHandTipRightBoneMaximumAngle);
+			#region HandHandTipNondominant bone features
+			hash.Add(obj.HandHandTipNondominantBoneInitialAngle);
+			hash.Add(obj.HandHandTipNondominantBoneFinalAngle);
+			hash.Add(obj.HandHandTipNondominantBoneMeanAngle);
+			hash.Add(obj.HandHandTipNondominantBoneMaximumAngle);
 			#endregion
 
-			#region WristLeftThumbLeft bone features
-			hash.Add(obj.WristLeftThumbLeftBoneInitialAngle);
-			hash.Add(obj.WristLeftThumbLeftBoneFinalAngle);
-			hash.Add(obj.WristLeftThumbLeftBoneMeanAngle);
-			hash.Add(obj.WristLeftThumbLeftBoneMaximumAngle);
+			#region WristThumbDominant bone features
+			hash.Add(obj.WristThumbDominantBoneInitialAngle);
+			hash.Add(obj.WristThumbDominantBoneFinalAngle);
+			hash.Add(obj.WristThumbDominantBoneMeanAngle);
+			hash.Add(obj.WristThumbDominantBoneMaximumAngle);
 			#endregion
 
-			#region WristRightThumbRight bone features
-			hash.Add(obj.WristRightThumbRightBoneInitialAngle);
-			hash.Add(obj.WristRightThumbRightBoneFinalAngle);
-			hash.Add(obj.WristRightThumbRightBoneMeanAngle);
-			hash.Add(obj.WristRightThumbRightBoneMaximumAngle);
+			#region WristThumbNondominant bone features
+			hash.Add(obj.WristThumbNondominantBoneInitialAngle);
+			hash.Add(obj.WristThumbNondominantBoneFinalAngle);
+			hash.Add(obj.WristThumbNondominantBoneMeanAngle);
+			hash.Add(obj.WristThumbNondominantBoneMaximumAngle);
 			#endregion
 
 			#region Hands distances features
 			hash.Add(obj.BetweenHandJointsDistanceMax);
 			hash.Add(obj.BetweenHandJointsDistanceMean);
+			#endregion
+
+			#region HandDominance
+			hash.Add(obj.HandDominance);
 			#endregion
 
 			#region Label

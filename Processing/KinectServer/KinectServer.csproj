@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Kinect\KinectManager.cs" />
     <Compile Include="Kinect\KinectMappers.cs" />
+    <Compile Include="Kinect\KinectUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />

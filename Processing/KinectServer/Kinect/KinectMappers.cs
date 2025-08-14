@@ -94,15 +94,21 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 			if (body == null)
 				return null;
 
+			// An attempt at a more rigorous approach, where we only take joints from the hand that have TrackingConfidence set to High - it failed.
+			// var jointsDict = KinectUtils.GetJointsDict(body.Joints, body.HandLeftConfidence, body.HandRightConfidence);
+			var jointsDict = body.Joints?.ToDictionary(kv => kv.Key.Map(), kv => kv.Value.Map()) ?? new Dictionary<JointType, Joint>();
+			var handLeftConfidence = body.HandLeftConfidence.Map();
+			var handRightConfidence = body.HandRightConfidence.Map();
+
 			return new BodyData(
 				body.TrackingId,
 				body.IsTracked,
-				body.Joints?.ToDictionary(kv => kv.Key.Map(), kv => kv.Value.Map()) ?? new Dictionary<JointType, Joint>(),
+				jointsDict,
 				body.HandLeftState.Map(),
-				body.HandLeftConfidence.Map(),
+				handLeftConfidence,
 				body.HandRightState.Map(),
-				body.HandRightConfidence.Map(),
-				HandDominance.Unknown);
+				handRightConfidence
+				);
 		}
 
 		public static BodyData[] Map(this IEnumerable<MSKinect.Body> bodies)
@@ -117,16 +123,21 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 			if (body == null)
 				return null;
 
+			// An attempt at a more rigorous approach, where we only take joints from the hand that have TrackingConfidence set to High - it failed.
+			// var jointsDict = KinectUtils.GetJointsDict(body.Joints, body.HandLeftConfidence, body.HandRightConfidence);
+			var jointsDict = body.Joints?.ToDictionary(kv => kv.Key.Map(), kv => kv.Value.Map()) ?? new Dictionary<JointType, Joint>();
+			var handLeftConfidence = body.HandLeftConfidence.Map();
+			var handRightConfidence = body.HandRightConfidence.Map();
+
 			return new BodyDataWithColorSpacePoints(
 				body.TrackingId,
 				body.IsTracked,
-				body.Joints?.ToDictionary(kv => kv.Key.Map(), kv => kv.Value.Map()) ?? new Dictionary<JointType, Joint>(),
+				jointsDict,
 				body.HandLeftState.Map(),
-				body.HandLeftConfidence.Map(),
+				handLeftConfidence,
 				body.HandRightState.Map(),
-				body.HandRightConfidence.Map(),
-				HandDominance.Unknown,
-				jointsColorSpacePoints
+				handRightConfidence,
+				jointsColorSpacePoints // KinectUtils.GetFilteredBodyJointsColorSpacePointsDict(jointsDict, jointsColorSpacePoints)
 				);
 		}
 

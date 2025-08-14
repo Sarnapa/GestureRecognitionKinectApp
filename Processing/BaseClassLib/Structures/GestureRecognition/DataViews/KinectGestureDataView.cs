@@ -1,750 +1,748 @@
-﻿using Microsoft.ML.Data;
-
-namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews
+﻿namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews
 {
 	// TODO: Problem, że tutaj podajemy na sztywno te cechy, żeby nowy dodać punkt charakterystyczny trzeba będzie podać tutaj na sztywno do kodu.
 	public class KinectGestureDataView : GestureDataView
 	{
-		#region ElbowLeft joint features
-		public float ElbowLeftF1F2SpatialAngle
+		#region ElbowDominant joint features
+		public float ElbowDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float ElbowLeftFN_1FNSpatialAngle
+		public float ElbowDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float ElbowLeftF1FNSpatialAngle
+		public float ElbowDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float ElbowLeftTotalVectorAngle
+		public float ElbowDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public float ElbowLeftSquaredTotalVectorAngle
+		public float ElbowDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public float ElbowLeftTotalVectorDisplacement
+		public float ElbowDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float ElbowLeftTotalDisplacement
+		public float ElbowDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float ElbowLeftMaximumDisplacement
-		{
-			get;
-			set;
-		}
-		#endregion
-
-		#region ElbowRight joint features
-		public float ElbowRightF1F2SpatialAngle
-		{
-			get;
-			set;
-		}
-
-		public float ElbowRightFN_1FNSpatialAngle
-		{
-			get;
-			set;
-		}
-
-		public float ElbowRightF1FNSpatialAngle
-		{
-			get;
-			set;
-		}
-
-		public float ElbowRightTotalVectorAngle
-		{
-			get;
-			set;
-		}
-
-		public float ElbowRightSquaredTotalVectorAngle
-		{
-			get;
-			set;
-		}
-
-		public float ElbowRightTotalVectorDisplacement
-		{
-			get;
-			set;
-		}
-
-		public float ElbowRightTotalDisplacement
-		{
-			get;
-			set;
-		}
-
-		public float ElbowRightMaximumDisplacement
+		public float ElbowDominantMaximumDisplacement
 		{
 			get;
 			set;
 		}
 		#endregion
 
-		#region WristLeft joint features
-		public float WristLeftF1F2SpatialAngle
+		#region ElbowNondominant joint features
+		public float ElbowNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float WristLeftFN_1FNSpatialAngle
+		public float ElbowNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float WristLeftF1FNSpatialAngle
+		public float ElbowNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float WristLeftTotalVectorAngle
+		public float ElbowNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public float WristLeftSquaredTotalVectorAngle
+		public float ElbowNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public float WristLeftTotalVectorDisplacement
+		public float ElbowNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float WristLeftTotalDisplacement
+		public float ElbowNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float WristLeftMaximumDisplacement
-		{
-			get;
-			set;
-		}
-		#endregion
-
-		#region WristRight joint features
-		public float WristRightF1F2SpatialAngle
-		{
-			get;
-			set;
-		}
-
-		public float WristRightFN_1FNSpatialAngle
-		{
-			get;
-			set;
-		}
-
-		public float WristRightF1FNSpatialAngle
-		{
-			get;
-			set;
-		}
-
-		public float WristRightTotalVectorAngle
-		{
-			get;
-			set;
-		}
-
-		public float WristRightSquaredTotalVectorAngle
-		{
-			get;
-			set;
-		}
-
-		public float WristRightTotalVectorDisplacement
-		{
-			get;
-			set;
-		}
-
-		public float WristRightTotalDisplacement
-		{
-			get;
-			set;
-		}
-
-		public float WristRightMaximumDisplacement
+		public float ElbowNondominantMaximumDisplacement
 		{
 			get;
 			set;
 		}
 		#endregion
 
-		#region HandLeft joint features
-		public float HandLeftF1F2SpatialAngle
+		#region WristDominant joint features
+		public float WristDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandLeftFN_1FNSpatialAngle
+		public float WristDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandLeftF1FNSpatialAngle
+		public float WristDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandLeftTotalVectorAngle
+		public float WristDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandLeftSquaredTotalVectorAngle
+		public float WristDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandLeftTotalVectorDisplacement
+		public float WristDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float HandLeftTotalDisplacement
+		public float WristDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float HandLeftMaximumDisplacement
+		public float WristDominantMaximumDisplacement
+		{
+			get;
+			set;
+		}
+		#endregion
+
+		#region WristNondominant joint features
+		public float WristNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandLeftBoundingBoxDiagonalLength
+		public float WristNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandLeftBoundingBoxAngle
+		public float WristNondominantF1FNSpatialAngle
+		{
+			get;
+			set;
+		}
+
+		public float WristNondominantTotalVectorAngle
+		{
+			get;
+			set;
+		}
+
+		public float WristNondominantSquaredTotalVectorAngle
+		{
+			get;
+			set;
+		}
+
+		public float WristNondominantTotalVectorDisplacement
+		{
+			get;
+			set;
+		}
+
+		public float WristNondominantTotalDisplacement
+		{
+			get;
+			set;
+		}
+
+		public float WristNondominantMaximumDisplacement
+		{
+			get;
+			set;
+		}
+		#endregion
+
+		#region HandDominant joint features
+		public float HandDominantF1F2SpatialAngle
+		{
+			get;
+			set;
+		}
+
+		public float HandDominantFN_1FNSpatialAngle
+		{
+			get;
+			set;
+		}
+
+		public float HandDominantF1FNSpatialAngle
+		{
+			get;
+			set;
+		}
+
+		public float HandDominantTotalVectorAngle
+		{
+			get;
+			set;
+		}
+
+		public float HandDominantSquaredTotalVectorAngle
+		{
+			get;
+			set;
+		}
+
+		public float HandDominantTotalVectorDisplacement
+		{
+			get;
+			set;
+		}
+
+		public float HandDominantTotalDisplacement
+		{
+			get;
+			set;
+		}
+
+		public float HandDominantMaximumDisplacement
+		{
+			get;
+			set;
+		}
+
+		public float HandDominantBoundingBoxDiagonalLength
+		{
+			get;
+			set;
+		}
+
+		public float HandDominantBoundingBoxAngle
 		{
 			get;
 			set;
 		}
 
 		// Turned off for now, if the results are not satisfactory then turn it on
-		//public HandState[] HandLeftHandStates
+		//public HandState[] HandDominantHandStates
 		//{
 		//	get;
 		//	set;
 		//}
 		#endregion
 
-		#region HandRight joint features
-		public float HandRightF1F2SpatialAngle
+		#region HandNondominant joint features
+		public float HandNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandRightFN_1FNSpatialAngle
+		public float HandNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandRightF1FNSpatialAngle
+		public float HandNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandRightTotalVectorAngle
+		public float HandNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandRightSquaredTotalVectorAngle
+		public float HandNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandRightTotalVectorDisplacement
+		public float HandNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float HandRightTotalDisplacement
+		public float HandNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float HandRightMaximumDisplacement
+		public float HandNondominantMaximumDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float HandRightBoundingBoxDiagonalLength
+		public float HandNondominantBoundingBoxDiagonalLength
 		{
 			get;
 			set;
 		}
 
-		public float HandRightBoundingBoxAngle
+		public float HandNondominantBoundingBoxAngle
 		{
 			get;
 			set;
 		}
 
 		// Turned off for now, if the results are not satisfactory then turn it on
-		//public HandState[] HandRightHandStates
+		//public HandState[] HandNondominantHandStates
 		//{
 		//	get;
 		//	set;
 		//}
 		#endregion
 
-		#region ThumbLeft joint features
-		public float ThumbLeftF1F2SpatialAngle
+		#region ThumbDominant joint features
+		public float ThumbDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float ThumbLeftFN_1FNSpatialAngle
+		public float ThumbDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float ThumbLeftF1FNSpatialAngle
+		public float ThumbDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float ThumbLeftTotalVectorAngle
+		public float ThumbDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public float ThumbLeftSquaredTotalVectorAngle
+		public float ThumbDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public float ThumbLeftTotalVectorDisplacement
+		public float ThumbDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float ThumbLeftTotalDisplacement
+		public float ThumbDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float ThumbLeftMaximumDisplacement
-		{
-			get;
-			set;
-		}
-		#endregion
-
-		#region ThumbRight joint features
-		public float ThumbRightF1F2SpatialAngle
-		{
-			get;
-			set;
-		}
-
-		public float ThumbRightFN_1FNSpatialAngle
-		{
-			get;
-			set;
-		}
-
-		public float ThumbRightF1FNSpatialAngle
-		{
-			get;
-			set;
-		}
-
-		public float ThumbRightTotalVectorAngle
-		{
-			get;
-			set;
-		}
-
-		public float ThumbRightSquaredTotalVectorAngle
-		{
-			get;
-			set;
-		}
-
-		public float ThumbRightTotalVectorDisplacement
-		{
-			get;
-			set;
-		}
-
-		public float ThumbRightTotalDisplacement
-		{
-			get;
-			set;
-		}
-
-		public float ThumbRightMaximumDisplacement
+		public float ThumbDominantMaximumDisplacement
 		{
 			get;
 			set;
 		}
 		#endregion
 
-		#region HandTipLeft joint features
-		public float HandTipLeftF1F2SpatialAngle
+		#region ThumbNondominant joint features
+		public float ThumbNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandTipLeftFN_1FNSpatialAngle
+		public float ThumbNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandTipLeftF1FNSpatialAngle
+		public float ThumbNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandTipLeftTotalVectorAngle
+		public float ThumbNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandTipLeftSquaredTotalVectorAngle
+		public float ThumbNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandTipLeftTotalVectorDisplacement
+		public float ThumbNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float HandTipLeftTotalDisplacement
+		public float ThumbNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float HandTipLeftMaximumDisplacement
-		{
-			get;
-			set;
-		}
-		#endregion
-
-		#region HandTipRight joint features
-		public float HandTipRightF1F2SpatialAngle
-		{
-			get;
-			set;
-		}
-
-		public float HandTipRightFN_1FNSpatialAngle
-		{
-			get;
-			set;
-		}
-
-		public float HandTipRightF1FNSpatialAngle
-		{
-			get;
-			set;
-		}
-
-		public float HandTipRightTotalVectorAngle
-		{
-			get;
-			set;
-		}
-
-		public float HandTipRightSquaredTotalVectorAngle
-		{
-			get;
-			set;
-		}
-
-		public float HandTipRightTotalVectorDisplacement
-		{
-			get;
-			set;
-		}
-
-		public float HandTipRightTotalDisplacement
-		{
-			get;
-			set;
-		}
-
-		public float HandTipRightMaximumDisplacement
+		public float ThumbNondominantMaximumDisplacement
 		{
 			get;
 			set;
 		}
 		#endregion
 
-		#region ElbowLeftWristLeft bone features
-		public float ElbowLeftWristLeftBoneInitialAngle
+		#region HandTipDominant joint features
+		public float HandTipDominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float ElbowLeftWristLeftBoneFinalAngle
+		public float HandTipDominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float ElbowLeftWristLeftBoneMeanAngle
+		public float HandTipDominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float ElbowLeftWristLeftBoneMaximumAngle
-		{
-			get;
-			set;
-		}
-		#endregion
-
-		#region ElbowRightWristRight bone features
-		public float ElbowRightWristRightBoneInitialAngle
+		public float HandTipDominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public float ElbowRightWristRightBoneFinalAngle
+		public float HandTipDominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public float ElbowRightWristRightBoneMeanAngle
+		public float HandTipDominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float ElbowRightWristRightBoneMaximumAngle
-		{
-			get;
-			set;
-		}
-		#endregion
-
-		#region WristLeftHandLeft bone features
-		public float WristLeftHandLeftBoneInitialAngle
+		public float HandTipDominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float WristLeftHandLeftBoneFinalAngle
-		{
-			get;
-			set;
-		}
-
-		public float WristLeftHandLeftBoneMeanAngle
-		{
-			get;
-			set;
-		}
-
-		public float WristLeftHandLeftBoneMaximumAngle
+		public float HandTipDominantMaximumDisplacement
 		{
 			get;
 			set;
 		}
 		#endregion
 
-		#region WristRightHandRight bone features
-		public float WristRightHandRightBoneInitialAngle
+		#region HandTipNondominant joint features
+		public float HandTipNondominantF1F2SpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float WristRightHandRightBoneFinalAngle
+		public float HandTipNondominantFN_1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float WristRightHandRightBoneMeanAngle
+		public float HandTipNondominantF1FNSpatialAngle
 		{
 			get;
 			set;
 		}
 
-		public float WristRightHandRightBoneMaximumAngle
-		{
-			get;
-			set;
-		}
-		#endregion
-
-		#region HandLeftHandTipLeft bone features
-		public float HandLeftHandTipLeftBoneInitialAngle
+		public float HandTipNondominantTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandLeftHandTipLeftBoneFinalAngle
+		public float HandTipNondominantSquaredTotalVectorAngle
 		{
 			get;
 			set;
 		}
 
-		public float HandLeftHandTipLeftBoneMeanAngle
+		public float HandTipNondominantTotalVectorDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float HandLeftHandTipLeftBoneMaximumAngle
-		{
-			get;
-			set;
-		}
-		#endregion
-
-		#region HandRightHandTipRight bone features
-		public float HandRightHandTipRightBoneInitialAngle
+		public float HandTipNondominantTotalDisplacement
 		{
 			get;
 			set;
 		}
 
-		public float HandRightHandTipRightBoneFinalAngle
-		{
-			get;
-			set;
-		}
-
-		public float HandRightHandTipRightBoneMeanAngle
-		{
-			get;
-			set;
-		}
-
-		public float HandRightHandTipRightBoneMaximumAngle
+		public float HandTipNondominantMaximumDisplacement
 		{
 			get;
 			set;
 		}
 		#endregion
 
-		#region WristLeftThumbLeft bone features
-		public float WristLeftThumbLeftBoneInitialAngle
+		#region ElbowWristDominant bone features
+		public float ElbowWristDominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public float WristLeftThumbLeftBoneFinalAngle
+		public float ElbowWristDominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public float WristLeftThumbLeftBoneMeanAngle
+		public float ElbowWristDominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public float WristLeftThumbLeftBoneMaximumAngle
+		public float ElbowWristDominantBoneMaximumAngle
 		{
 			get;
 			set;
 		}
 		#endregion
 
-		#region WristRightThumbRight bone features
-		public float WristRightThumbRightBoneInitialAngle
+		#region ElbowWristNondominant bone features
+		public float ElbowWristNondominantBoneInitialAngle
 		{
 			get;
 			set;
 		}
 
-		public float WristRightThumbRightBoneFinalAngle
+		public float ElbowWristNondominantBoneFinalAngle
 		{
 			get;
 			set;
 		}
 
-		public float WristRightThumbRightBoneMeanAngle
+		public float ElbowWristNondominantBoneMeanAngle
 		{
 			get;
 			set;
 		}
 
-		public float WristRightThumbRightBoneMaximumAngle
+		public float ElbowWristNondominantBoneMaximumAngle
+		{
+			get;
+			set;
+		}
+		#endregion
+
+		#region WristHandDominant bone features
+		public float WristHandDominantBoneInitialAngle
+		{
+			get;
+			set;
+		}
+
+		public float WristHandDominantBoneFinalAngle
+		{
+			get;
+			set;
+		}
+
+		public float WristHandDominantBoneMeanAngle
+		{
+			get;
+			set;
+		}
+
+		public float WristHandDominantBoneMaximumAngle
+		{
+			get;
+			set;
+		}
+		#endregion
+
+		#region WristHandNondominant bone features
+		public float WristHandNondominantBoneInitialAngle
+		{
+			get;
+			set;
+		}
+
+		public float WristHandNondominantBoneFinalAngle
+		{
+			get;
+			set;
+		}
+
+		public float WristHandNondominantBoneMeanAngle
+		{
+			get;
+			set;
+		}
+
+		public float WristHandNondominantBoneMaximumAngle
+		{
+			get;
+			set;
+		}
+		#endregion
+
+		#region HandHandTipDominant bone features
+		public float HandHandTipDominantBoneInitialAngle
+		{
+			get;
+			set;
+		}
+
+		public float HandHandTipDominantBoneFinalAngle
+		{
+			get;
+			set;
+		}
+
+		public float HandHandTipDominantBoneMeanAngle
+		{
+			get;
+			set;
+		}
+
+		public float HandHandTipDominantBoneMaximumAngle
+		{
+			get;
+			set;
+		}
+		#endregion
+
+		#region HandHandTipNondominant bone features
+		public float HandHandTipNondominantBoneInitialAngle
+		{
+			get;
+			set;
+		}
+
+		public float HandHandTipNondominantBoneFinalAngle
+		{
+			get;
+			set;
+		}
+
+		public float HandHandTipNondominantBoneMeanAngle
+		{
+			get;
+			set;
+		}
+
+		public float HandHandTipNondominantBoneMaximumAngle
+		{
+			get;
+			set;
+		}
+		#endregion
+
+		#region WristThumbDominant bone features
+		public float WristThumbDominantBoneInitialAngle
+		{
+			get;
+			set;
+		}
+
+		public float WristThumbDominantBoneFinalAngle
+		{
+			get;
+			set;
+		}
+
+		public float WristThumbDominantBoneMeanAngle
+		{
+			get;
+			set;
+		}
+
+		public float WristThumbDominantBoneMaximumAngle
+		{
+			get;
+			set;
+		}
+		#endregion
+
+		#region WristThumbNondominant bone features
+		public float WristThumbNondominantBoneInitialAngle
+		{
+			get;
+			set;
+		}
+
+		public float WristThumbNondominantBoneFinalAngle
+		{
+			get;
+			set;
+		}
+
+		public float WristThumbNondominantBoneMeanAngle
+		{
+			get;
+			set;
+		}
+
+		public float WristThumbNondominantBoneMaximumAngle
 		{
 			get;
 			set;
@@ -759,6 +757,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecogniti
 		}
 
 		public float BetweenHandJointsDistanceMean
+		{
+			get;
+			set;
+		}
+		#endregion
+
+		#region HandDominance
+		public int HandDominance
 		{
 			get;
 			set;

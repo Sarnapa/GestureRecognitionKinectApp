@@ -181,13 +181,20 @@
                 <Label Grid.Row="1" Grid.Column="1" Content="{Binding BetweenHandJointsDistanceMean}"/>
             </Grid>
             <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Label Style="{StaticResource Header}" Content="Gesture Label"/>
-                <Label Grid.Column="1" Content="{Binding GestureLabel}"/>
+                <Label Style="{StaticResource Header}" Content="Gesture hand dominance"/>
+                <Label Grid.Column="1" Content="{Binding GestureHandDominance}"/>
+
+                <Label Grid.Row="1" Style="{StaticResource Header}" Content="Gesture Label"/>
+                <Label Grid.Row="1" Grid.Column="1" Content="{Binding GestureLabel}"/>
             </Grid>
         </Grid>
 

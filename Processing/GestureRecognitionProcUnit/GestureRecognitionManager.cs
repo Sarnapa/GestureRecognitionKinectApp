@@ -8,7 +8,6 @@ using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
 using GestureRecognition.Processing.BaseClassLib.Utils;
-using GestureRecognition.Processing.GestureRecognitionProcUnit.Models.TGM1;
 
 namespace GestureRecognition.Processing.GestureRecognitionProcUnit
 {
@@ -80,40 +79,40 @@ namespace GestureRecognition.Processing.GestureRecognitionProcUnit
 			bool success = false;
 			string gestureLabel = string.Empty;
 
-			if (parameters.Features.IsValid)
-			{
-				var gestureDataView = parameters.Features.MapToKinectGestureDataView(string.Empty);
-				var modelInput = gestureDataView.MapToModelInput();
-				try
-				{
-					var modelOutput = TGM1.Predict(modelInput);
-					if (modelOutput != null && !string.IsNullOrEmpty(modelOutput.PredictedLabel))
-					{
-						float score = modelOutput.Score?.Max() ?? float.NaN;
-						if (!float.IsNaN(score) && score > 0.5f)
-						{
-							success = true;
-							gestureLabel = modelOutput.PredictedLabel;
-						}
-						else
-						{
-							gestureLabel = "Gesture unknown";
-						}
-					}
-					else
-					{
-						gestureLabel = "Model return empty result";
-					}
-				}
-				catch (Exception ex)
-				{
-					gestureLabel = "Error during gesture prediction";
-				}
-			}
-			else
-			{
-				gestureLabel = "Invalid features";
-			}
+			//if (parameters.Features.IsValid)
+			//{
+			//	var gestureDataView = parameters.Features.MapToKinectGestureDataView(string.Empty);
+			//	var modelInput = gestureDataView.MapToModelInput();
+			//	try
+			//	{
+			//		var modelOutput = TGM1.Predict(modelInput);
+			//		if (modelOutput != null && !string.IsNullOrEmpty(modelOutput.PredictedLabel))
+			//		{
+			//			float score = modelOutput.Score?.Max() ?? float.NaN;
+			//			if (!float.IsNaN(score) && score > 0.5f)
+			//			{
+			//				success = true;
+			//				gestureLabel = modelOutput.PredictedLabel;
+			//			}
+			//			else
+			//			{
+			//				gestureLabel = "Gesture unknown";
+			//			}
+			//		}
+			//		else
+			//		{
+			//			gestureLabel = "Model return empty result";
+			//		}
+			//	}
+			//	catch (Exception ex)
+			//	{
+			//		gestureLabel = "Error during gesture prediction";
+			//	}
+			//}
+			//else
+			//{
+			//	gestureLabel = "Invalid features";
+			//}
 
 			return new RecognizeGestureResult(success, gestureLabel);
 		}

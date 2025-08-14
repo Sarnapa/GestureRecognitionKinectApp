@@ -178,9 +178,9 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 								if (kinectBodiesCount == 1)
 								{
 									var trackedBody = kinectBodies.FirstOrDefault();
-									var trackedBodyJointsColorSpacePointsDict = ConvertToColorSpace(trackedBody);
-									bodiesJointsColorSpacePointsDict.Add(trackedBody.TrackingId, trackedBodyJointsColorSpacePointsDict);
 									bodyFrame = kinectBodyFrame.Map(new[] { trackedBody });
+									var trackedBodyJointsColorSpacePointsDict = ConvertToColorSpace(trackedBody, bodyFrame.Bodies);
+									bodiesJointsColorSpacePointsDict.Add(trackedBody.TrackingId, trackedBodyJointsColorSpacePointsDict);
 								}
 								else
 								{
@@ -189,8 +189,8 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 							}
 							else
 							{
-								bodiesJointsColorSpacePointsDict = ConvertToColorSpace(kinectBodies);
 								bodyFrame = kinectBodyFrame.Map(kinectBodies);
+								bodiesJointsColorSpacePointsDict = ConvertToColorSpace(kinectBodies, bodyFrame.Bodies);
 							}
 						}
 						else 
@@ -271,20 +271,32 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 		#endregion
 
 		#region Convert body joints coordinations to color coordinations methods
-		private BodyJointsColorSpacePointsDict ConvertToColorSpace(MSKinect.Body body)
+		private BodyJointsColorSpacePointsDict ConvertToColorSpace(MSKinect.Body body, BodyData[] bodiesData)
 		{
-			return ConvertToColorSpace(new[] { body }).FirstOrDefault().Value;
+			return ConvertToColorSpace(new[] { body }, bodiesData).FirstOrDefault().Value;
 		}
 
-		private Dictionary<ulong, BodyJointsColorSpacePointsDict> ConvertToColorSpace(IEnumerable<MSKinect.Body> bodies)
+		private Dictionary<ulong, BodyJointsColorSpacePointsDict> ConvertToColorSpace(IEnumerable<MSKinect.Body> bodies, BodyData[] bodiesData)
 		{
-			if (bodies == null || !bodies.Any())
-				return new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
+			var result = new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
 
-			return bodies.Distinct(KinectBodyEqualityComparer.Instance).ToDictionary(b => b.TrackingId, b => ConvertToColorSpace(b?.Joints));
+			if (bodies == null || !bodies.Any() || bodiesData == null || !bodiesData.Any())
+				return result;
+
+			var bodiesDataDict = bodiesData.ToDictionary(b => b.TrackingId);
+
+			foreach (var body in bodies.Distinct(KinectBodyEqualityComparer.Instance))
+			{
+				if (bodiesDataDict.TryGetValue(body.TrackingId, out BodyData bodyData))
+				{
+					result.Add(body.TrackingId, ConvertToColorSpace(body.Joints, bodyData));
+				}
+			}
+
+			return result;
 		}
 
-		private BodyJointsColorSpacePointsDict ConvertToColorSpace(IReadOnlyDictionary<MSKinect.JointType, MSKinect.Joint> joints)
+		private BodyJointsColorSpacePointsDict ConvertToColorSpace(IReadOnlyDictionary<MSKinect.JointType, MSKinect.Joint> joints, BodyData bodyData)
 		{
 			var jointsPoints = new BodyJointsColorSpacePointsDict();
 
@@ -292,9 +304,13 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 			{
 				foreach (var jointType in joints.Keys)
 				{
-					var position = joints[jointType].Position;
-					var kinectColorSpacePosition = this.coordinateMapper.MapCameraPointToColorSpace(position);
-					jointsPoints[jointType.Map()] = kinectColorSpacePosition.Map();
+					// This comes from this more rigorous approach, we leave it just in case, because it does not reduce performance.
+					if (bodyData.Joints.ContainsKey(jointType.Map()))
+					{
+						var position = joints[jointType].Position;
+						var kinectColorSpacePosition = this.coordinateMapper.MapCameraPointToColorSpace(position);
+						jointsPoints[jointType.Map()] = kinectColorSpacePosition.Map();
+					}
 				}
 			}
 

@@ -45,11 +45,6 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 			get;
 			private set;
 		}
-		public HandDominance HandDominance
-		{
-			get;
-			private set;
-		}
 		#endregion
 
 		#region Constructors
@@ -58,8 +53,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 
 		public BodyData(ulong trackingId, bool isTracked, IReadOnlyDictionary<JointType, Joint> joints,
 			HandState handLeftState, TrackingConfidence handLeftConfidence,
-			HandState handRightState, TrackingConfidence handRightConfidence,
-			HandDominance handDominance)
+			HandState handRightState, TrackingConfidence handRightConfidence)
 		{
 			this.TrackingId = trackingId;
 			this.IsTracked = isTracked;
@@ -68,7 +62,6 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 			this.HandLeftConfidence = handLeftConfidence;
 			this.HandRightState = handRightState;
 			this.HandRightConfidence = handRightConfidence;
-			this.HandDominance = handDominance;
 		}
 
 		public BodyData(BodyData other)
@@ -84,7 +77,6 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.Body
 			this.HandLeftConfidence = other.HandLeftConfidence;
 			this.HandRightState = other.HandRightState;
 			this.HandRightConfidence = other.HandRightConfidence;
-			this.HandDominance = other.HandDominance;
 		}
 		#endregion
 	}

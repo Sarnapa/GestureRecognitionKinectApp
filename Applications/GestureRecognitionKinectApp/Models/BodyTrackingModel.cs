@@ -549,9 +549,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 			if (this.currentTrackedBody != null)
 				this.currentTrackedBody = null;
-
-			this.skippingFramesCounter = 0;
-			this.allowBodyTrackingLostFramesCounter = 0;
 		}
 		#endregion
 
@@ -973,7 +970,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				StopProcessingFrames();
 				if (this.TrackingState == BodyTrackingState.GestureRecording)
 					StopGestureRecording(true);
+
 				UpdateBodyTrackingStoppedStatusAndSendMessage(true, Properties.Resources.LostKinectConnection);
+				SendTrackedUsersCountChangedMessage(this.currentTrackedBodiesCount);
 			}
 		}
 		#endregion
@@ -1548,9 +1547,15 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		{
 			if (!this.IsBodyTrackingStoppedYet)
 			{
-				if (isStopped && this.IsMediaPipeBodyTrackingMode)
+				if (isStopped)
 				{
-					this.allowBodyTrackingLostFramesCounter = 0;
+					this.currentTrackedBodiesCount = 0;
+
+					if (this.IsMediaPipeBodyTrackingMode)
+					{
+						this.skippingFramesCounter = 0;
+						this.allowBodyTrackingLostFramesCounter = 0;
+					}
 				}
 
 				// Time to show message

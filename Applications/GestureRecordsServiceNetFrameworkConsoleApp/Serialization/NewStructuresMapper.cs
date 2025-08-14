@@ -22,8 +22,7 @@ namespace GestureRecognition.Applications.GestureRecordsServiceNetFrameworkConso
 				body.HandLeftState.Map(),
 				body.HandLeftConfidence.Map(),
 				body.HandRightState.Map(),
-				body.HandRightConfidence.Map(),
-				HandDominance.Unknown);
+				body.HandRightConfidence.Map());
 		}
 
 		public static BodyData[] Map(this IEnumerable<OldStructures.BodyData> bodies)
@@ -46,7 +45,6 @@ namespace GestureRecognition.Applications.GestureRecordsServiceNetFrameworkConso
 				body.HandLeftConfidence.Map(),
 				body.HandRightState.Map(),
 				body.HandRightConfidence.Map(),
-				HandDominance.Unknown,
 				body.JointsColorSpacePoints?.Map() ?? new BodyJointsColorSpacePointsDict()
 			);
 		}

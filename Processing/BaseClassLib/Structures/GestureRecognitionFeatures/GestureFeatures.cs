@@ -51,7 +51,8 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.GestureRecogniti
 				return this.joints.All(j => this.JointsGestureFeaturesDict.ContainsKey(j) 
 					&& this.JointsGestureFeaturesDict[j] != null)
 					&& this.bones.All(b => this.BoneJointsAngleDataDict.ContainsKey(b)
-					&& this.BoneJointsAngleDataDict[b] != null);
+					&& this.BoneJointsAngleDataDict[b] != null)
+					&& this.HandDominance != HandDominance.Unknown;
 			}
 		}
 		#endregion
