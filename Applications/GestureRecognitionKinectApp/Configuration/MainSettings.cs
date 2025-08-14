@@ -1,4 +1,5 @@
 ﻿using GestureRecognition.Processing.BaseClassLib.Structures.Body;
+using GestureRecognition.Processing.BaseClassLib.Structures.DataPreparation;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Configuration
 {
@@ -28,6 +29,36 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Configurat
 			get;
 			set;
 		} = false;
+
+		public bool AllowAutomaticGestureRecordExport
+		{
+			get;
+			set;
+		}
+
+		public GestureLabel DefaultGestureLabel
+		{
+			get;
+			set;
+		}
+
+		public UserName CurrentUser
+		{
+			get;
+			set;
+		}
+
+		public string GesturesDatasetPath
+		{
+			get;
+			set;
+		} = string.Empty;
+
+		public string GestureRecordFileNameExtraLabel
+		{
+			get;
+			set;
+		} = string.Empty;
 		#endregion
 	}
 }

@@ -16,11 +16,11 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 
 		private ModelKind poseLandmarksModelKind = ModelKind.PoseLandmarksLite;
 		private int poseLandmarksModelNumPoses = 1;
-		private float poseLandmarksModelMinPoseDetectionConfidence = 0.8f;
-		private float poseLandmarksModelMinPosePresenceConfidence = 0.8f;
-		private float poseLandmarksModelMinTrackingConfidence = 0.8f;
-		private float trackedJointVisibilityThreshold = 0.6f;
-		private float inferredJointVisibilityThreshold = 0.5f;
+		private float poseLandmarksModelMinPoseDetectionConfidence = 0.3f;
+		private float poseLandmarksModelMinPosePresenceConfidence = 0.5f;
+		private float poseLandmarksModelMinTrackingConfidence = 0.5f;
+		private float trackedJointVisibilityThreshold = 0.3f;
+		private float inferredJointVisibilityThreshold = 0.2f;
 		#endregion
 
 		#region Tests methods

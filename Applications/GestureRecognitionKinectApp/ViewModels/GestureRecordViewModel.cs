@@ -12,6 +12,7 @@ using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Mes
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.NavigationService;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Views.Dialogs;
 using static GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.ViewModelLocator;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Configuration;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 {
@@ -220,27 +221,53 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 
 		private void ExportGestureRecordCommandAction()
 		{
-			var gestureLabelInputDialog = new GestureLabelInputDialog();
-			if (gestureLabelInputDialog.ShowDialog() == true)
-			{
-				this.model.SetGestureLabel(gestureLabelInputDialog.GestureLabel);
+			string gestureRecordToSaveFilePath = string.Empty;
 
-				var saveFileDialog = new SaveFileDialog
+			#if ADMIN_MODE
+			if (ConfigService.MainSettings.AllowAutomaticGestureRecordExport 
+				&& !string.IsNullOrEmpty(ConfigService.MainSettings.GesturesDatasetPath))
+			{
+				var gestureLabel = ConfigService.MainSettings.DefaultGestureLabel;
+				var currentUser = ConfigService.MainSettings.CurrentUser;
+				string extraLabel = ConfigService.MainSettings.GestureRecordFileNameExtraLabel;
+				string nowText = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
+				string gestureRecordFileName = $"{gestureLabel}&{currentUser}&{extraLabel}&{nowText}.record";
+
+				gestureRecordToSaveFilePath = $"{ConfigService.MainSettings.GesturesDatasetPath}\\{ConfigService.MainSettings.BodyTrackingMode}\\{gestureRecordFileName}";
+
+				this.model.SetGestureLabel(gestureLabel.ToString());
+			}
+#endif
+
+			if (string.IsNullOrEmpty(gestureRecordToSaveFilePath))
+			{
+				var gestureLabelInputDialog = new GestureLabelInputDialog();
+				if (gestureLabelInputDialog.ShowDialog() == true)
 				{
-					Filter = $"Gesture record files (*{Consts.GestureRecordFileExtension})|*{Consts.GestureRecordFileExtension}"
-				};
-				bool? saveFileDialogRes = saveFileDialog.ShowDialog();
-				if (saveFileDialogRes.HasValue && saveFileDialogRes == true && !string.IsNullOrEmpty(saveFileDialog.FileName))
-				{
-					bool exportGestureRecordRes = this.model.ExportGestureRecord(saveFileDialog.FileName);
-					if (exportGestureRecordRes)
+					this.model.SetGestureLabel(gestureLabelInputDialog.GestureLabel);
+
+					var saveFileDialog = new SaveFileDialog
 					{
-						this.isTemporaryGestureRecordFile = false;
-						this.gestureRecordFilePath = saveFileDialog.FileName;
-						// TODO: Exporting gesture data failure handling.
-						this.model.ExportGestureData();
-						RaisePropertyChanged(nameof(ExportGestureRecordButtonVisibility));
+						Filter = $"Gesture record files (*{Consts.GestureRecordFileExtension})|*{Consts.GestureRecordFileExtension}"
+					};
+					bool? saveFileDialogRes = saveFileDialog.ShowDialog();
+					if (saveFileDialogRes.HasValue && saveFileDialogRes == true && !string.IsNullOrEmpty(saveFileDialog.FileName))
+					{
+						gestureRecordToSaveFilePath = saveFileDialog.FileName;
 					}
+				}
+			}
+
+			if (!string.IsNullOrEmpty(gestureRecordToSaveFilePath))
+			{
+				bool exportGestureRecordRes = this.model.ExportGestureRecord(gestureRecordToSaveFilePath);
+				if (exportGestureRecordRes)
+				{
+					this.isTemporaryGestureRecordFile = false;
+					this.gestureRecordFilePath = gestureRecordToSaveFilePath;
+					// TODO: Exporting gesture data failure handling.
+					this.model.ExportGestureData();
+					RaisePropertyChanged(nameof(ExportGestureRecordButtonVisibility));
 				}
 			}
 		}
@@ -263,7 +290,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				this.isGestureRecordFinished = false;
 			}
 		}
-		#endregion
+#endregion
 
 		#region Messages handlers
 		private void GestureRecordMessageHandler(GestureRecordMessage m)
@@ -300,7 +327,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		}
 		#endregion
 
-		#endregion
+#endregion
 
 		#region IDisposable implementation
 		public void Dispose()

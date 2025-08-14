@@ -88,7 +88,12 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
                 <Label Style="{StaticResource SettingsLabel}" Content="General settings"/>
@@ -134,6 +139,41 @@
                 <DockPanel Grid.Row="4" Margin="10,0,100,0">
                     <Label Style="{StaticResource SettingsOptionLabel}" Content="Allow body tracking lost&#x0a;for recording and recognizing&#x0a;using MediaPipe models:" />
                     <CheckBox HorizontalAlignment="Stretch" VerticalAlignment="Center" IsChecked="{Binding Path=AllowBodyTrackingLostForRecordingAndRecognizingUsingMediaPipeModels, Mode=TwoWay}" />
+                </DockPanel>
+
+                <DockPanel Grid.Row="5" Margin="10,0,100,0" Visibility="{Binding Path=AdminModeSettingsVisibility}">
+                    <Label Style="{StaticResource SettingsOptionLabel}" Content="Allow automatic gesture record export:" />
+                    <CheckBox HorizontalAlignment="Stretch" VerticalAlignment="Center" IsChecked="{Binding Path=AllowAutomaticGestureRecordExport, Mode=TwoWay}" />
+                </DockPanel>
+
+                <DockPanel Grid.Row="6" Margin="10,0,100,0" Visibility="{Binding Path=AdminModeSettingsVisibility}">
+                    <Label Style="{StaticResource SettingsOptionLabel}" Content="Default gesture label:" />
+                    <ComboBox HorizontalAlignment="Left" VerticalAlignment="Center"
+                              HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                              ItemsSource="{Binding GestureLabels}"
+                              SelectedItem="{Binding DefaultGestureLabel}"/>
+                </DockPanel>
+
+                <DockPanel Grid.Row="7" Margin="10,0,100,0" Visibility="{Binding Path=AdminModeSettingsVisibility}">
+                    <Label Style="{StaticResource SettingsOptionLabel}" Content="Current user:" />
+                    <ComboBox HorizontalAlignment="Left" VerticalAlignment="Center"
+                              HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                              ItemsSource="{Binding Users}"
+                              SelectedItem="{Binding CurrentUser}"/>
+                </DockPanel>
+
+                <DockPanel Grid.Row="8" Margin="10,0,100,0" Visibility="{Binding Path=AdminModeSettingsVisibility}">
+                    <Label Style="{StaticResource SettingsOptionLabel}" Content="Gestures dataset path:" />
+                    <TextBox HorizontalAlignment="Left" VerticalAlignment="Center"
+                             HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                             Text="{Binding GesturesDatasetPath}"/>
+                </DockPanel>
+
+                <DockPanel Grid.Row="9" Margin="10,0,100,0" Visibility="{Binding Path=AdminModeSettingsVisibility}">
+                    <Label Style="{StaticResource SettingsOptionLabel}" Content="Gesture record file name extra label:" />
+                    <TextBox HorizontalAlignment="Left" VerticalAlignment="Center"
+                             HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                             Text="{Binding GestureRecordFileNameExtraLabel}"/>
                 </DockPanel>
             </Grid>
         </Border>

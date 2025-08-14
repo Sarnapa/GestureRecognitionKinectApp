@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Configuration;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.NavigationService;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
+using GestureRecognition.Processing.BaseClassLib.Structures.DataPreparation;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 {
@@ -18,8 +14,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 	{
 		#region Private fields
 		private readonly IFrameNavigationService navigationService;
-		private ConcurrentDictionary<string, List<string>> errors = new ConcurrentDictionary<string, List<string>>();
-		private object _lock = new object();
 		#endregion
 
 		#region Public properties
@@ -77,6 +71,94 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			set
 			{
 				ConfigService.MainSettings.AllowBodyTrackingLostForRecordingAndRecognizingUsingMediaPipeModels = value;
+			}
+		}
+
+		public Visibility AdminModeSettingsVisibility
+		{
+			get
+			{
+				#if ADMIN_MODE
+					return Visibility.Visible;
+				#else
+					return Visibility.Collapsed;
+				#endif
+			}
+		}
+
+		public bool AllowAutomaticGestureRecordExport
+		{
+			get
+			{
+				return ConfigService.MainSettings.AllowAutomaticGestureRecordExport;
+			}
+			set
+			{
+				ConfigService.MainSettings.AllowAutomaticGestureRecordExport = value;
+			}
+		}
+
+		public string DefaultGestureLabel
+		{
+			get
+			{
+				return ConfigService.MainSettings.DefaultGestureLabel.ToString();
+			}
+			set
+			{
+				ConfigService.MainSettings.DefaultGestureLabel = Enum.Parse<GestureLabel>(value);
+			}
+		}
+
+		public string[] GestureLabels
+		{
+			get
+			{
+				return Enum.GetValues<GestureLabel>().Select(l => l.ToString()).ToArray();
+			}
+		}
+
+		public string CurrentUser
+		{
+			get
+			{
+				return ConfigService.MainSettings.CurrentUser.ToString();
+			}
+			set
+			{
+				ConfigService.MainSettings.CurrentUser = Enum.Parse<UserName>(value);
+			}
+		}
+
+		public string[] Users
+		{
+			get
+			{
+				return Enum.GetValues<UserName>().Select(l => l.ToString()).ToArray();
+			}
+		}
+
+		public string GesturesDatasetPath
+		{
+			get
+			{
+				return ConfigService.MainSettings.GesturesDatasetPath;
+			}
+			set
+			{
+				ConfigService.MainSettings.GesturesDatasetPath = value;
+			}
+		}
+
+		public string GestureRecordFileNameExtraLabel
+		{
+			get
+			{
+				return ConfigService.MainSettings.GestureRecordFileNameExtraLabel;
+			}
+			set
+			{
+				ConfigService.MainSettings.GestureRecordFileNameExtraLabel = value;
 			}
 		}
 

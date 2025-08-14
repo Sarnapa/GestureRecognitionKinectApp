@@ -18,8 +18,8 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 		private float handLandmarksModelMinHandDetectionConfidence = 0.3f;
 		private float handLandmarksModelMinHandPresenceConfidence = 0.5f;
 		private float handLandmarksModelMinTrackingConfidence = 0.5f;
-		private float trackedJointScoreThreshold = 0.6f;
-		private float inferredJointScoreThreshold = 0.5f;
+		private float trackedJointScoreThreshold = 0.3f;
+		private float inferredJointScoreThreshold = 0.2f;
 
 		#endregion
 
