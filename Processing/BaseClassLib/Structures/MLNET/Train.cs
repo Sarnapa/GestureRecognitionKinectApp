@@ -1,6 +1,4 @@
-﻿using GestureRecognition.Processing.BaseClassLib.Structures.Body;
-using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
-using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition;
+﻿using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition;
 
 namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
 {
@@ -11,6 +9,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
 
 	public class GestureRecognitionModelTrainParameters: BaseTrainParameters
 	{
+		#region Public properties
 		public string[] ExcludedFeatures
 		{
 			get;
@@ -21,19 +20,34 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
 		{
 			get;
 			set;
-		}
+		} = false;
 
 		public int PcaRank
 		{
 			get;
 			set;
-		}
+		} = 30;
 
 		public BaseClassificationAlgorithmParams AlgorithmParams
 		{
 			get;
 			set;
 		}
+		#endregion
+
+		#region Public methods
+		public override string ToString()
+		{
+			string exclucedFeaturesText = this.ExcludedFeatures == null ? "[]" :
+				$"[{string.Join(", ", this.ExcludedFeatures)}]";
+
+			return $"Excluded features: {exclucedFeaturesText}\n" +
+				$"Use PCA: {this.UsePca}\n" +
+				$"PCA rank: {this.PcaRank}\n" +
+				$"Algorithm params: \n" +
+				$"{this.AlgorithmParams}";
+		}
+		#endregion
 	}
 	#endregion
 

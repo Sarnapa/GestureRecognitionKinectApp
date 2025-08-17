@@ -2,6 +2,7 @@
 {
 	public enum MethodKind
 	{
-		ModelTrainingAndEvaluation
+		ModelTrainingAndEvaluation,
+		ModelEvaluation
 	}
 }

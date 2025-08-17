@@ -14,6 +14,12 @@
 
 	public class GestureRecognitionModelEvaluateParameters: BaseEvaluateParameters
 	{
+		#region Public methods
+		public override string ToString()
+		{
+			return $"Evaluation result presentation title: {this.EvaluationResultPresentationTitle}";
+		}
+		#endregion
 	}
 	#endregion
 

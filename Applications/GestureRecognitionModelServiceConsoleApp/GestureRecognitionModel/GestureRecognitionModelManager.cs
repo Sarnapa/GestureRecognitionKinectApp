@@ -1,6 +1,5 @@
-﻿using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
+﻿using GestureRecognition.Applications.GestureRecognitionModelServiceConsoleApp.GestureRecognitionModel.Data;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
-using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition;
 using GestureRecognition.Processing.MLNETProcUnit.GestureRecognition;
 
 namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleApp.GestureRecognitionModel
@@ -19,22 +18,48 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 		#endregion
 
 		#region Public methods
-		public void ExecuteModelTrainingAndEvaluationProcess(GestureDataView[] data, Type gestureDataType)
+		public void ExecuteModelTrainingAndEvaluationProcess(ModelTrainingAndEvaluationProcessParameters trainingAndEvaluationProcessParameters)
 		{
 			string methodName = $"{nameof(GestureRecognitionModelManager)}.{nameof(ExecuteModelTrainingAndEvaluationProcess)}";
 
 			ConsoleOutputUtils.WriteLine(methodName, "Model training and evaluation process started.");
 
+			ConsoleOutputUtils.WriteLine(methodName, trainingAndEvaluationProcessParameters.ToString());
+
 			var modelWrapper = InitializeModelWrapper();
-			if (SetData(modelWrapper, data, gestureDataType))
+			if (SetData(modelWrapper, trainingAndEvaluationProcessParameters.SetDataParams))
 			{
-				if (TrainModel(modelWrapper))
+				if (TrainModel(modelWrapper, trainingAndEvaluationProcessParameters.TrainingParams))
 				{
-					EvaluateModel(modelWrapper);
+					if (EvaluateModel(modelWrapper, trainingAndEvaluationProcessParameters.EvaluationParams))
+					{
+						if (!string.IsNullOrEmpty(trainingAndEvaluationProcessParameters.ModelFilePath))
+							SaveModel(modelWrapper, trainingAndEvaluationProcessParameters.ModelFilePath);
+					}
 				}
 			}
 
 			ConsoleOutputUtils.WriteLine(methodName, "Model training and evaluation process finished.");
+		}
+
+		public void ExecuteModelEvaluationProcess(ModelEvaluationProcessParameters evaluationProcessParameters)
+		{
+			string methodName = $"{nameof(GestureRecognitionModelManager)}.{nameof(ExecuteModelEvaluationProcess)}";
+
+			ConsoleOutputUtils.WriteLine(methodName, "Model evaluation process started.");
+
+			ConsoleOutputUtils.WriteLine(methodName, evaluationProcessParameters.ToString());
+
+			var modelWrapper = InitializeModelWrapper();
+			if (LoadModel(modelWrapper, evaluationProcessParameters.ModelFilePath))
+			{
+				if (SetData(modelWrapper, evaluationProcessParameters.SetTestDataParameters))
+				{
+					EvaluateModel(modelWrapper, evaluationProcessParameters.EvaluationParams);
+				}
+			}
+
+			ConsoleOutputUtils.WriteLine(methodName, "Model evaluation process finished.");
 		}
 		#endregion
 
@@ -43,99 +68,113 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 		{
 			string methodName = $"{nameof(GestureRecognitionModelManager)}.{nameof(InitializeModelWrapper)}";
 
+			ConsoleOutputUtils.WriteLine(methodName, "Initializing model wrapper started...");
+
 			var modelWrapperParams = new ModelWrapperParameters()
 			{
 				Seed = this.seed,
 			};
 			var modelWrapper = new GestureRecognitionModelWrapper(modelWrapperParams);
+
 			ConsoleOutputUtils.WriteLine(methodName, "Initializing model wrapper succeeded.");
 
 			return modelWrapper;
 		}
 
-		private bool SetData(GestureRecognitionModelWrapper modelWrapper, GestureDataView[] data, Type gestureDataType)
+		private bool SetData(GestureRecognitionModelWrapper modelWrapper, GestureRecognitionModelSetDataParameters setDataParams)
 		{
 			string methodName = $"{nameof(GestureRecognitionModelManager)}.{nameof(SetData)}";
 
-			if (!ValidateData(methodName, data, gestureDataType))
-				return false;
+			ConsoleOutputUtils.WriteLine(methodName, "Setting data started...");
 
-			var setDataParams = new GestureRecognitionModelSetDataParameters()
-			{
-				Data = data,
-				TestFraction = 0.2d
-			};
 			var setDataResult = modelWrapper.SetData(setDataParams);
 			if (!setDataResult.IsSuccess)
 			{
 				ConsoleOutputUtils.WriteLine(methodName, setDataResult.ErrorMessage);
 				return false;
 			}
+
 			ConsoleOutputUtils.WriteLine(methodName, "Setting data succeeded.");
 
 			return true;
 		}
 
-		private bool TrainModel(GestureRecognitionModelWrapper modelWrapper)
+		private bool TrainModel(GestureRecognitionModelWrapper modelWrapper, GestureRecognitionModelTrainParameters trainParams)
 		{
 			string methodName = $"{nameof(GestureRecognitionModelManager)}.{nameof(TrainModel)}";
-			
-			var trainParameters = new GestureRecognitionModelTrainParameters()
-			{
-				ExcludedFeatures = [],
-				UsePca = true,
-				PcaRank = 30,
-				AlgorithmParams = new FastForestParams()
-				{
-					TreesCount = 5,
-					LeavesCount = 4,
-				}
-			};
-			var trainResult = modelWrapper.TrainModel(trainParameters);
+
+			ConsoleOutputUtils.WriteLine(methodName, "Model training process started...");
+
+			var trainResult = modelWrapper.TrainModel(trainParams);
 			if (!trainResult.IsSuccess)
 			{
 				ConsoleOutputUtils.WriteLine(methodName, trainResult.ErrorMessage);
 				return false;
 			}
+
 			ConsoleOutputUtils.WriteLine(methodName, "Model training process succeeded.");
 
 			return true;
 		}
 
-		private bool EvaluateModel(GestureRecognitionModelWrapper modelWrapper)
+		private bool EvaluateModel(GestureRecognitionModelWrapper modelWrapper, GestureRecognitionModelEvaluateParameters evaluateParams)
 		{
 			string methodName = $"{nameof(GestureRecognitionModelManager)}.{nameof(EvaluateModel)}";
 
-			var evaluateParams = new GestureRecognitionModelEvaluateParameters()
-			{
-				EvaluationResultPresentationTitle = "Fast Forest classifier evaluation"
-			};
+			ConsoleOutputUtils.WriteLine(methodName, "Model evaluation process started...");
+
 			var evaluateResult = modelWrapper.Evaluate(evaluateParams);
 			if (!evaluateResult.IsSuccess)
 			{
 				ConsoleOutputUtils.WriteLine(methodName, evaluateResult.ErrorMessage);
 				return false;
 			}
+
 			ConsoleOutputUtils.WriteLine(methodName, "Model evaluation process succeded.");
 
 			return true;
 		}
 
-		private bool ValidateData(string methodName, GestureDataView[] data, Type gestureDataType)
+		private bool LoadModel(GestureRecognitionModelWrapper modelWrapper, string modelFilePath)
 		{
-			if (data == null || data.Length == 0)
+			string methodName = $"{nameof(GestureRecognitionModelManager)}.{nameof(LoadModel)}";
+
+			ConsoleOutputUtils.WriteLine(methodName, "Loading model started...");
+
+			var loadModelParams = new LoadGestureRecognitionModelParameters()
 			{
-				ConsoleOutputUtils.WriteLine(methodName, "Got no data. Training process has been abandoned.");
+				Path = modelFilePath
+			};
+			var loadModelResult = modelWrapper.LoadModel(loadModelParams);
+			if (!loadModelResult.IsSuccess)
+			{
+				ConsoleOutputUtils.WriteLine(methodName, loadModelResult.ErrorMessage);
 				return false;
 			}
 
-			if (gestureDataType == null || (gestureDataType != typeof(KinectGestureDataView)
-				&& gestureDataType != typeof(MediaPipeHandLandmarksGestureDataView)))
+			ConsoleOutputUtils.WriteLine(methodName, "Loading model succeded.");
+
+			return true;
+		}
+
+		private bool SaveModel(GestureRecognitionModelWrapper modelWrapper, string modelFilePath)
+		{
+			string methodName = $"{nameof(GestureRecognitionModelManager)}.{nameof(SaveModel)}";
+
+			ConsoleOutputUtils.WriteLine(methodName, "Saving model started...");
+
+			var saveModelParams = new SaveGestureRecognitionModelParameters()
 			{
-				ConsoleOutputUtils.WriteLine(methodName, $"Got invalid {nameof(GestureDataView)} type - got: {gestureDataType?.Name}, " +
-					$"expected: [{typeof(KinectGestureDataView).Name}, {typeof(MediaPipeHandLandmarksGestureDataView).Name}]");
+				Path = modelFilePath
+			};
+			var saveModelResult = modelWrapper.SaveModel(saveModelParams);
+			if (!saveModelResult.IsSuccess)
+			{
+				ConsoleOutputUtils.WriteLine(methodName, saveModelResult.ErrorMessage);
 				return false;
 			}
+
+			ConsoleOutputUtils.WriteLine(methodName, "Saving model succeded.");
 
 			return true;
 		}

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
 using Microsoft.ML;
 
 namespace GestureRecognition.Processing.BaseClassLib.Utils
@@ -48,6 +51,23 @@ namespace GestureRecognition.Processing.BaseClassLib.Utils
 
 			return best.type;
 		}
+
+		public static Dictionary<string, int> GetClassCountsDict(GestureDataView[] gesturesData)
+		{
+			var result = new Dictionary<string, int>();
+			if (gesturesData != null)
+			{
+				foreach (var gestureData in gesturesData)
+				{
+					if (gestureData is KinectGestureDataView kinectGestureDataView)
+						AddToClassCountsDict(result, kinectGestureDataView.Label);
+					else if (gestureData is MediaPipeHandLandmarksGestureDataView mediaPipeHandLandmarksGestureDataView)
+						AddToClassCountsDict(result, mediaPipeHandLandmarksGestureDataView.Label);
+				}
+			}
+
+			return result;
+		}
 		#endregion
 
 		#region Private methods
@@ -66,6 +86,14 @@ namespace GestureRecognition.Processing.BaseClassLib.Utils
 			}
 
 			return (dataType, matchesCount);
+		}
+
+		private static void AddToClassCountsDict(Dictionary<string, int> dict, string gestureLabel)
+		{
+			if (dict.ContainsKey(gestureLabel))
+				dict[gestureLabel] += 1;
+			else
+				dict.Add(gestureLabel, 1);
 		}
 		#endregion
 	}

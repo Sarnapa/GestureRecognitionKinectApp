@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.ML;
-using Microsoft.ML.Data;
 using Microsoft.ML.Trainers.FastTree;
 using Microsoft.ML.Transforms;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
@@ -90,7 +89,9 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 				LabelColumnName = GestureRecognitionModelColumnsConsts.LABEL_KEY_COL,
 				NumberOfTrees = fastForestParams.TreesCount,
 				NumberOfLeaves = fastForestParams.LeavesCount,
-				FeatureFraction = 1.0f,
+				MinimumExampleCountPerLeaf = fastForestParams.MinimumExampleCountPerLeaf,
+				FeatureFraction = fastForestParams.FeatureFraction,
+				BaggingExampleFraction = fastForestParams.BaggingExampleFraction,
 				Seed = seed ?? 42
 			});
 
@@ -102,9 +103,9 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 			);
 
 			pipeline = pipeline
-				//.Append(context.Transforms.CopyColumns(
-				//	inputColumnName: GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_COL,
-				//	outputColumnName: GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_KEY_COL))
+				.Append(context.Transforms.CopyColumns(
+					inputColumnName: GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_COL,
+					outputColumnName: GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_KEY_COL))
 				.Append(context.Transforms.Conversion.MapKeyToValue(
 					inputColumnName: GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_KEY_COL,
 					outputColumnName: GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_COL));

@@ -105,15 +105,30 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 							};
 						}
 					}
-					else if (setDataParameters.IsTrainTestData)
+					else if (setDataParameters.IsTrainData || setDataParameters.IsTestData)
 					{
-						var (trainDataValidationSuccess, trainDataValidationErrorMessage) = ValidateData(setDataParameters.TrainData);
-						if (trainDataValidationSuccess)
+						if (setDataParameters.IsTrainData)
+						{
+							var (trainDataValidationSuccess, trainDataValidationErrorMessage) = ValidateData(setDataParameters.TrainData);
+							if (trainDataValidationSuccess)
+							{
+								this.trainData = GetDataView(setDataParameters.TrainData);
+							}
+							else
+							{
+								result = new SetDataResult()
+								{
+									ErrorKind = SetDataErrorKind.InvalidParameters,
+									ErrorMessage = $"Setting invalid training data for gesture recognition model, error message - {trainDataValidationErrorMessage}."
+								};
+							}
+						}
+
+						if (result == null && setDataParameters.IsTestData)
 						{
 							var (testDataValidationSuccess, testDataValidationErrorMessage) = ValidateData(setDataParameters.TestData);
 							if (testDataValidationSuccess)
 							{
-								this.trainData = GetDataView(setDataParameters.TrainData);
 								this.testData = GetDataView(setDataParameters.TestData);
 							}
 							else
@@ -124,14 +139,6 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 									ErrorMessage = $"Setting invalid test data for gesture recognition model, error message - {testDataValidationErrorMessage}."
 								};
 							}
-						}
-						else
-						{
-							result = new SetDataResult()
-							{
-								ErrorKind = SetDataErrorKind.InvalidParameters,
-								ErrorMessage = $"Setting invalid training data for gesture recognition model, error message - {trainDataValidationErrorMessage}."
-							};
 						}
 					}
 					else
@@ -161,7 +168,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 				};
 			}
 
-			if (this.IsTrainData && this.IsTestData)
+			if (this.IsTrainData || this.IsTestData)
 			{
 				result = new SetDataResult();
 			}
@@ -170,7 +177,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 				result = new SetDataResult()
 				{
 					ErrorKind = SetDataErrorKind.InvalidOutput,
-					ErrorMessage = $"Setting training and test data for gesture recognition model failed. Training data - {this.IsTrainData}, test data - {this.IsTestData}."
+					ErrorMessage = $"Setting training and test data for gesture recognition model failed."
 				};
 			}
 

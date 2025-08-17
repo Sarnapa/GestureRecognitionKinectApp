@@ -12,6 +12,13 @@
 			}
 		}
 		#endregion
+
+		#region Public methods
+		public override string ToString()
+		{
+			return $"Algoritm kind: {this.AlgorithmKind}";
+		}
+		#endregion
 	}
 	#endregion
 
@@ -31,12 +38,42 @@
 		{
 			get;
 			set;
-		}
+		} = 500;
 
 		public int LeavesCount
 		{
 			get;
 			set;
+		} = 32;
+
+		public int MinimumExampleCountPerLeaf
+		{
+			get;
+			set;
+		} = 10;
+
+		public double FeatureFraction
+		{
+			get;
+			set;
+		} = 0.2d;
+
+		public double BaggingExampleFraction
+		{
+			get;
+			set;
+		} = 1.0d;
+		#endregion
+
+		#region Public methods
+		public override string ToString()
+		{
+			return $"Algoritm kind: {this.AlgorithmKind}\n" +
+				$"Trees count: {this.TreesCount}\n" +
+				$"Leaves count: {this.LeavesCount}\n" +
+				$"Minimum examples count per leaf: {this.MinimumExampleCountPerLeaf}\n" +
+				$"Features fraction: {this.FeatureFraction}\n" +
+				$"Bagging examples fraction: {this.BaggingExampleFraction}";
 		}
 		#endregion
 	}

@@ -1,6 +1,10 @@
-﻿using GestureRecognition.Applications.GestureRecognitionModelServiceConsoleApp.GestureData;
+﻿using System.Globalization;
+using GestureRecognition.Applications.GestureRecognitionModelServiceConsoleApp.GestureData;
 using GestureRecognition.Applications.GestureRecognitionModelServiceConsoleApp.GestureRecognitionModel;
+using GestureRecognition.Applications.GestureRecognitionModelServiceConsoleApp.GestureRecognitionModel.Data;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
+using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
+using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition;
 
 namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleApp
 {
@@ -12,16 +16,36 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			ConsoleOutputUtils.WriteLine(methodName, "Starting GestureRecognitionModelServiceConsoleApp...");
 
 			// For testing purposes
-			args =
-			[
-				ArgumentsConsts.MODEL_TRAINING_AND_EVALUATION,
-				@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\2025_08_11_MediaPipeHandLandmarks\GesturesData.csv",
-				ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_GESTURE_DATA_VIEW_TYPE,
-			];
+			//args =
+			//[
+			//	ArgumentsConsts.MODEL_TRAINING_AND_EVALUATION,
+			//	ArgumentsConsts.GESTURE_DATA_VIEW_TYPE_ARG, ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_GESTURE_DATA_VIEW_TYPE,
+			//	ArgumentsConsts.DATA_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\2025_08_11_MediaPipeHandLandmarks\GesturesData.csv",
+			//	ArgumentsConsts.SEED_ARG, "42",
+			//	ArgumentsConsts.USE_PCA_ARG, "True",
+			//	ArgumentsConsts.PCA_RANK_ARG, "30",
+			//	ArgumentsConsts.FAST_FOREST_ALG_ARG,
+			//	ArgumentsConsts.FAST_FOREST_TREES_COUNT_ARG, "500",
+			//	ArgumentsConsts.FAST_FOREST_LEAVES_COUNT_ARG, "32",
+			//	ArgumentsConsts.FAST_FOREST_MIN_EXAMPLE_COUNT_PER_LEAF_ARG, "10",
+			//	ArgumentsConsts.FAST_FOREST_FEATURE_FRACTION_ARG, "0.2",
+			//	ArgumentsConsts.FAST_FOREST_BAGGING_EXAMPLE_FRACTION_ARG, "1.0",
+			//	ArgumentsConsts.MODEL_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\2025_08_11_MediaPipeHandLandmarks\Model.zip",
+			//];
 
-			if (args.Length != 3)
+			//args =
+			//[
+			//	ArgumentsConsts.MODEL_EVALUATION,
+			//	ArgumentsConsts.MODEL_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\2025_08_11_MediaPipeHandLandmarks\Model.zip",
+			//	ArgumentsConsts.GESTURE_DATA_VIEW_TYPE_ARG, ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_GESTURE_DATA_VIEW_TYPE,
+			//	ArgumentsConsts.TEST_DATA_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\2025_08_11_MediaPipeHandLandmarks\GesturesData.csv",
+			//	ArgumentsConsts.EVAL_RESULT_PRESENTATION_TITLE, "Model.zip evaluation",
+			//	ArgumentsConsts.SEED_ARG, "42",
+			//];
+
+			if (args.Length < 3)
 			{
-				ConsoleOutputUtils.WriteLine(methodName, $"Invalid arguments count - got: {args.Length}, expected: 3.");
+				ConsoleOutputUtils.WriteLine(methodName, $"Invalid arguments count - got: {args.Length}, expected: at least 3.");
 				ConsoleOutputUtils.WriteLine(methodName, $"Press key to close console app.");
 				Console.ReadKey();
 				return;
@@ -33,6 +57,10 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			if (methodKindArg.Equals(ArgumentsConsts.MODEL_TRAINING_AND_EVALUATION, StringComparison.OrdinalIgnoreCase))
 			{
 				methodKind = MethodKind.ModelTrainingAndEvaluation;
+			}
+			else if (methodKindArg.Equals(ArgumentsConsts.MODEL_EVALUATION, StringComparison.OrdinalIgnoreCase))
+			{
+				methodKind = MethodKind.ModelEvaluation;
 			}
 			else
 			{
@@ -47,6 +75,9 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 					case MethodKind.ModelTrainingAndEvaluation:
 						ExecuteModelTrainingAndEvaluationProcess(args);
 						break;
+					case MethodKind.ModelEvaluation:
+						ExecuteModelEvaluationProcess(args); 
+						break;
 				}
 			}
 
@@ -55,51 +86,365 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 		}
 
 		#region Private methods
+
+		#region Processes methods
 		private static void ExecuteModelTrainingAndEvaluationProcess(string[] args)
 		{
 			string methodName = $"{nameof(Program)}.{nameof(ExecuteModelTrainingAndEvaluationProcess)}";
 
-			string gesturesDataFilePath = args[1];
-			string gestureDataViewTypeArg = args[2];
+			string[] methodArgs = args.Where(a => a.StartsWith('-')).ToArray();
+			if (methodArgs.Length != methodArgs.Distinct().Count())
+			{
+				ConsoleOutputUtils.WriteLine(methodName, $"[{methodName}] Duplicates were provided among the arguments.");
+				return;
+			}
+
+			var methodArgToIdx = args.Index().Where(a => methodArgs.Contains(a.Item)).ToDictionary(a => a.Item, a => a.Index);
+
+			#region GestureDataViewType
+			var gestureDataViewType = GetGestureDataViewType(methodName, args, methodArgToIdx);
+			if (gestureDataViewType == null)
+				return;
+			#endregion
+
+			#region SetDataParameters
+			string[] dataArgs = methodArgs.Intersect(ArgumentsConsts.DATA_FILE_PATH_ARGS).ToArray();
+			if (dataArgs.Length == 0 || dataArgs.Length > 2)
+			{
+				ConsoleOutputUtils.WriteLine(methodName, $"[{methodName}] Invalid arguments count regarding files providing with data for training and/or testing - " +
+					$"got: {args.Length}, expected: 1-2.");
+				return;
+			}
+
+			GestureRecognitionModelSetDataParameters? setDataParams = null;
+			if (dataArgs.Length == 1 && dataArgs.Contains(ArgumentsConsts.DATA_FILE_PATH_ARG))
+			{
+				var (gesturesData, getGesturesDataIsSuccess) = GetGesturesData(methodName, args, methodArgToIdx, ArgumentsConsts.DATA_FILE_PATH_ARG, gestureDataViewType, true);
+				if (!getGesturesDataIsSuccess)
+					return;
+
+				var (testFraction, getTestFractionIsSuccess) = GetArgDoubleValue(methodName, args, methodArgToIdx, ArgumentsConsts.TEST_DATA_FRACTION_ARG, false);
+
+				setDataParams = new GestureRecognitionModelSetDataParameters()
+				{
+					Data = gesturesData,
+					TestFraction = getTestFractionIsSuccess ? testFraction : 0.2d
+				};
+			}
+			else if (dataArgs.Length == 2 && dataArgs.Contains(ArgumentsConsts.TRAIN_DATA_FILE_PATH_ARG) && dataArgs.Contains(ArgumentsConsts.TEST_DATA_FILE_PATH_ARG))
+			{
+				var (gesturesTrainData, getGesturesTrainDataIsSuccess) = GetGesturesData(methodName, args, methodArgToIdx, ArgumentsConsts.TRAIN_DATA_FILE_PATH_ARG, gestureDataViewType, true);
+				if (!getGesturesTrainDataIsSuccess)
+					return;
+
+				var (gesturesTestData, getGesturesTestDataIsSuccess) = GetGesturesData(methodName, args, methodArgToIdx, ArgumentsConsts.TEST_DATA_FILE_PATH_ARG, gestureDataViewType, true);
+				if (!getGesturesTestDataIsSuccess)
+					return;
+
+				setDataParams = new GestureRecognitionModelSetDataParameters()
+				{
+					TrainData = gesturesTrainData,
+					TestData = gesturesTestData
+				};
+			}
+			else
+			{
+				ConsoleOutputUtils.WriteLine(methodName, $"[{methodName}] Invalid arguments regarding files providing with data for training and/or testing.");
+				return;
+			}
+			#endregion
+
+			#region TrainingParameters
+			var trainParams = new GestureRecognitionModelTrainParameters();
+
+			var (usePca, getUsePcaIsSuccess) = GetArgBoolValue(methodName, args, methodArgToIdx, ArgumentsConsts.USE_PCA_ARG, false);
+			if (getUsePcaIsSuccess && usePca.HasValue)
+			{
+				trainParams.UsePca = usePca.Value;
+			}
+
+			var (pcaRank, getPcaRankIsSuccess) = GetArgIntValue(methodName, args, methodArgToIdx, ArgumentsConsts.PCA_RANK_ARG, false);
+			if (getPcaRankIsSuccess && pcaRank.HasValue)
+			{
+				trainParams.PcaRank = pcaRank.Value;
+			}
+
+			#region FastForestParams
+			if (methodArgs.Contains(ArgumentsConsts.FAST_FOREST_ALG_ARG))
+			{
+				var ffParams = new FastForestParams();
+
+				var (treesCount, getTreesCountIsSuccess) = GetArgIntValue(methodName, args, methodArgToIdx, ArgumentsConsts.FAST_FOREST_TREES_COUNT_ARG, false);
+				if (getTreesCountIsSuccess && treesCount.HasValue)
+				{
+					ffParams.TreesCount = treesCount.Value;
+				}
+
+				var (leavesCount, getLeavesCountIsSuccess) = GetArgIntValue(methodName, args, methodArgToIdx, ArgumentsConsts.FAST_FOREST_LEAVES_COUNT_ARG, false);
+				if (getLeavesCountIsSuccess && leavesCount.HasValue)
+				{
+					ffParams.LeavesCount = leavesCount.Value;
+				}
+
+				var (minimumExampleCountPerLeaf, getMinimumExampleCountPerLeafIsSuccess) = GetArgIntValue(methodName, args, methodArgToIdx, ArgumentsConsts.FAST_FOREST_MIN_EXAMPLE_COUNT_PER_LEAF_ARG, false);
+				if (getMinimumExampleCountPerLeafIsSuccess && minimumExampleCountPerLeaf.HasValue)
+				{
+					ffParams.MinimumExampleCountPerLeaf = minimumExampleCountPerLeaf.Value;
+				}
+
+				var (featureFraction, getFeatureFractionIsSuccess) = GetArgDoubleValue(methodName, args, methodArgToIdx, ArgumentsConsts.FAST_FOREST_FEATURE_FRACTION_ARG, false);
+				if (getFeatureFractionIsSuccess)
+				{
+					ffParams.FeatureFraction = featureFraction;
+				}
+
+				var (baggingExampleFraction, getBaggingExampleFractionIsSuccess) = GetArgDoubleValue(methodName, args, methodArgToIdx, ArgumentsConsts.FAST_FOREST_BAGGING_EXAMPLE_FRACTION_ARG, false);
+				if (getBaggingExampleFractionIsSuccess)
+				{
+					ffParams.BaggingExampleFraction = baggingExampleFraction;
+				}
+
+				trainParams.AlgorithmParams = ffParams;
+			}
+			#endregion
+
+			#endregion
+
+			#region EvaluationParameters
+			var evaluationParams = GetEvaluationParams(methodName, args, methodArgToIdx);
+			#endregion
+
+			#region ModelFilePath
+			var (modelFilePath, _) = GetArgValue(methodName, args, methodArgToIdx, ArgumentsConsts.MODEL_FILE_PATH_ARG, false);
+			#endregion
+
+			#region Seed
+			int seed = GetSeed(methodName, args, methodArgToIdx);
+			#endregion
+
+			var gestureRecognitionModelManager = new GestureRecognitionModelManager(seed);
+			gestureRecognitionModelManager.ExecuteModelTrainingAndEvaluationProcess(new ModelTrainingAndEvaluationProcessParameters()
+			{
+				SetDataParams = setDataParams,
+				TrainingParams = trainParams,
+				EvaluationParams = evaluationParams,
+				ModelFilePath = modelFilePath,
+			});
+		}
+
+		private static void ExecuteModelEvaluationProcess(string[] args)
+		{
+			string methodName = $"{nameof(Program)}.{nameof(ExecuteModelEvaluationProcess)}";
+
+			string[] methodArgs = args.Where(a => a.StartsWith('-')).ToArray();
+			if (methodArgs.Length != methodArgs.Distinct().Count())
+			{
+				ConsoleOutputUtils.WriteLine(methodName, $"[{methodName}] Duplicates were provided among the arguments.");
+				return;
+			}
+
+			var methodArgToIdx = args.Index().Where(a => methodArgs.Contains(a.Item)).ToDictionary(a => a.Item, a => a.Index);
+
+			#region ModelFilePath
+			var (modelFilePath, getModelFilePathIsSuccess) = GetArgValue(methodName, args, methodArgToIdx, ArgumentsConsts.MODEL_FILE_PATH_ARG, true);
+			if (!getModelFilePathIsSuccess)
+				return;
+			#endregion
+
+			#region GestureDataViewType
+			var gestureDataViewType = GetGestureDataViewType(methodName, args, methodArgToIdx);
+			if (gestureDataViewType == null)
+				return;
+			#endregion
+
+			#region SetTestDataParameters
+			var (gesturesTestData, getGesturesTestDataIsSuccess) = GetGesturesData(methodName, args, methodArgToIdx, ArgumentsConsts.TEST_DATA_FILE_PATH_ARG, gestureDataViewType, true);
+			if (!getGesturesTestDataIsSuccess)
+				return;
+
+			var setTestDataParameters = new GestureRecognitionModelSetDataParameters()
+			{
+				TestData = gesturesTestData
+			};
+			#endregion
+
+			#region EvaluationParameters
+			var evaluationParams = GetEvaluationParams(methodName, args, methodArgToIdx);
+			#endregion
+
+			#region Seed
+			int seed = GetSeed(methodName, args, methodArgToIdx);
+			#endregion
+
+			var gestureRecognitionModelManager = new GestureRecognitionModelManager(seed);
+			gestureRecognitionModelManager.ExecuteModelEvaluationProcess(new ModelEvaluationProcessParameters()
+			{
+				ModelFilePath = modelFilePath,
+				SetTestDataParameters = setTestDataParameters,
+				EvaluationParams = evaluationParams
+			});
+		}
+		#endregion
+
+		#region Get parameters method
+		private static Type? GetGestureDataViewType(string methodName, string[] args, Dictionary<string, int> methodArgToIdx)
+		{
+			var (gestureDataViewTypeValue, getGestureDataViewTypeIsSuccess) = GetArgValue(methodName, args, methodArgToIdx, ArgumentsConsts.GESTURE_DATA_VIEW_TYPE_ARG, true);
+			if (!getGestureDataViewTypeIsSuccess)
+				return null;
 
 			Type? gestureDataViewType = null;
-			if (gestureDataViewTypeArg.Equals(ArgumentsConsts.KINECT_GESTURE_DATA_VIEW_TYPE, StringComparison.OrdinalIgnoreCase))
+			if (gestureDataViewTypeValue.Equals(ArgumentsConsts.KINECT_GESTURE_DATA_VIEW_TYPE, StringComparison.OrdinalIgnoreCase))
 			{
 				gestureDataViewType = typeof(KinectGestureDataView);
 			}
-			else if (gestureDataViewTypeArg.Equals(ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_GESTURE_DATA_VIEW_TYPE, StringComparison.OrdinalIgnoreCase))
+			else if (gestureDataViewTypeValue.Equals(ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_GESTURE_DATA_VIEW_TYPE, StringComparison.OrdinalIgnoreCase))
 			{
 				gestureDataViewType = typeof(MediaPipeHandLandmarksGestureDataView);
 			}
 			else
 			{
-				ConsoleOutputUtils.WriteLine(methodName, $"Invalid {nameof(GestureDataView)} type argument - got: {gestureDataViewTypeArg}, " +
+				ConsoleOutputUtils.WriteLine(methodName, $"[{methodName}] Invalid value for argument {ArgumentsConsts.GESTURE_DATA_VIEW_TYPE_ARG} - got: {gestureDataViewTypeValue}, " +
 					$"expected: [{ArgumentsConsts.KINECT_GESTURE_DATA_VIEW_TYPE}, {ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_GESTURE_DATA_VIEW_TYPE}].");
 			}
 
-			if (gestureDataViewType != null)
+			return gestureDataViewType;
+		}
+
+		private static int GetSeed(string methodName, string[] args, Dictionary<string, int> methodArgToIdx)
+		{
+			int seed = 42;
+			var (seedValue, getSeedIsSuccess) = GetArgIntValue(methodName, args, methodArgToIdx, ArgumentsConsts.SEED_ARG, false);
+			if (getSeedIsSuccess && seedValue.HasValue)
 			{
-				GestureDataView[] gesturesData;
-				string errorMessage;
-				if (gestureDataViewType == typeof(KinectGestureDataView))
+				seed = seedValue.Value;
+			}
+
+			return seed;
+		}
+
+		private static GestureRecognitionModelEvaluateParameters GetEvaluationParams(string methodName, string[] args, Dictionary<string, int> methodArgToIdx)
+		{
+			var evaluationParams = new GestureRecognitionModelEvaluateParameters();
+
+			var (evaluationResultPresentationTitle, getEvaluationResultPresentationTitleIsSuccess) = GetArgValue(methodName, args, methodArgToIdx, ArgumentsConsts.EVAL_RESULT_PRESENTATION_TITLE, false);
+			if (getEvaluationResultPresentationTitleIsSuccess && !string.IsNullOrEmpty(evaluationResultPresentationTitle))
+			{
+				evaluationParams.EvaluationResultPresentationTitle = evaluationResultPresentationTitle;
+			}
+
+			return evaluationParams;
+		}
+		#endregion
+
+		#region Get argument value methods
+		private static (int? value, bool isSuccess) GetArgIntValue(string methodName, string[] args, Dictionary<string, int> methodArgToIdx, string argName, bool argIsRequired)
+		{
+			var (stringValue, isSuccess) = GetArgValue(methodName, args, methodArgToIdx, argName, argIsRequired);
+			if (!isSuccess)
+				return (null, false);
+
+			if (int.TryParse(stringValue, CultureInfo.InvariantCulture, out int value))
+				return (value, true);
+
+			ConsoleOutputUtils.WriteLine(methodName, $"The int type was expected for argument {argName}.");
+			return (null, false);
+		}
+
+		private static (double value, bool isSuccess) GetArgDoubleValue(string methodName, string[] args, Dictionary<string, int> methodArgToIdx, string argName, bool argIsRequired)
+		{
+			var (stringValue, isSuccess) = GetArgValue(methodName, args, methodArgToIdx, argName, argIsRequired);
+			if (!isSuccess)
+				return (double.NaN, false);
+
+			if (double.TryParse(stringValue, CultureInfo.InvariantCulture, out double value))
+				return (value, true);
+
+			ConsoleOutputUtils.WriteLine(methodName, $"The double type was expected for argument {argName}.");
+			return (double.NaN, false);
+		}
+
+		private static (bool? value, bool isSuccess) GetArgBoolValue(string methodName, string[] args, Dictionary<string, int> methodArgToIdx, string argName, bool argIsRequired)
+		{
+			var (stringValue, isSuccess) = GetArgValue(methodName, args, methodArgToIdx, argName, argIsRequired);
+			if (!isSuccess)
+				return (null, false);
+
+			if (bool.TryParse(stringValue, out bool value))
+				return (value, true);
+
+			ConsoleOutputUtils.WriteLine(methodName, $"The bool type was expected for argument {argName}.");
+			return (null, false);
+		}
+
+		private static (string value, bool isSuccess) GetArgValue(string methodName, string[] args, Dictionary<string, int> methodArgToIdx, string argName, bool argIsRequired)
+		{
+			if (!methodArgToIdx.TryGetValue(argName, out int argIdx))
+			{
+				if (argIsRequired)
+					ConsoleOutputUtils.WriteLine(methodName, $"No argument named {argName} provided.");
+				
+				return (string.Empty, false);
+			}
+
+			if (args.Length <= argIdx + 1)
+			{
+				ConsoleOutputUtils.WriteLine(methodName, $"No value provided for argument {argName}.");
+				return (string.Empty, false);
+			}
+
+			string argValue = args[argIdx + 1];
+
+			if (string.IsNullOrEmpty(argValue))
+			{
+				ConsoleOutputUtils.WriteLine(methodName, $"Empty value provided for argument {argName}.");
+				return (string.Empty, false);
+			}
+
+			return (argValue, true);	
+		}
+		#endregion
+
+		#region Get gestures data methods
+		private static (GestureDataView[], bool isSuccess) GetGesturesData(string methodName, string[] args, Dictionary<string, int> methodArgToIdx, string argName,
+			Type gestureDataViewType, bool argIsRequired)
+		{
+			var (dataFilePath, isSuccess) = GetArgValue(methodName, args, methodArgToIdx, argName, argIsRequired);
+			if (!isSuccess)
+				return ([], false);
+
+			return GetGesturesData(methodName, dataFilePath, gestureDataViewType);
+		}
+
+		private static (GestureDataView[], bool isSuccess) GetGesturesData(string methodName, string gesturesDataFilePath, Type gestureDataViewType)
+		{
+			GestureDataView[] gesturesData = [];
+			if (gestureDataViewType == typeof(KinectGestureDataView))
+			{
+				(gesturesData, string getGesturesDataErrorMsg) = GestureDataUtils.GetGesturesData<KinectGestureDataView>(gesturesDataFilePath);
+
+				if (!string.IsNullOrEmpty(getGesturesDataErrorMsg))
 				{
-					(gesturesData, errorMessage) = GestureDataUtils.GetGesturesData<KinectGestureDataView>(gesturesDataFilePath);
-				}
-				else
-				{
-					(gesturesData, errorMessage) = GestureDataUtils.GetGesturesData<MediaPipeHandLandmarksGestureDataView>(gesturesDataFilePath);
+					ConsoleOutputUtils.WriteLine(methodName, getGesturesDataErrorMsg);
+					return ([], false);
 				}
 
-				if (!string.IsNullOrEmpty(errorMessage))
-				{
-					ConsoleOutputUtils.WriteLine(methodName, errorMessage);
-					return;
-				}
-				
-				var gestureRecognitionModelManager = new GestureRecognitionModelManager(42);
-				gestureRecognitionModelManager.ExecuteModelTrainingAndEvaluationProcess(gesturesData, gestureDataViewType);
 			}
+			else if (gestureDataViewType == typeof(MediaPipeHandLandmarksGestureDataView))
+			{
+				(gesturesData, string getGesturesDataErrorMsg) = GestureDataUtils.GetGesturesData<MediaPipeHandLandmarksGestureDataView>(gesturesDataFilePath);
+
+				if (!string.IsNullOrEmpty(getGesturesDataErrorMsg))
+				{
+					ConsoleOutputUtils.WriteLine(methodName, getGesturesDataErrorMsg);
+					return ([], false);
+				}
+			}
+
+			return (gesturesData, true);
 		}
+		#endregion
+
 		#endregion
 	}
 }
