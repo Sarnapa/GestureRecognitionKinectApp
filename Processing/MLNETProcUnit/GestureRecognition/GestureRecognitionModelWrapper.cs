@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.ML;
+using Microsoft.ML.Data;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.Predictions;
@@ -219,12 +220,27 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 
 							this.model = fastForestPipeline.Fit(this.trainData);
 
+							int? pcaComponentsCount = null;
+							if (trainParameters.UsePca && featuresCol == GestureRecognitionModelColumnsConsts.FEATURES_PCA_COL)
+							{
+								var dataView = this.model.Transform(this.trainData);
+								if (dataView.Schema != null)
+								{
+									var pcaComponentsCol = dataView.Schema.GetColumnOrNull(featuresCol);
+									if (pcaComponentsCol.HasValue && pcaComponentsCol.Value.Type is VectorDataViewType vectorType)
+										pcaComponentsCount = vectorType.Size;
+								}
+							}
+
 							if (this.IsKinectGestureDataView)
 								this.kinectPredictionEngine = this.mlContext.Model.CreatePredictionEngine<KinectGestureDataView, GesturePrediction>(this.model);
 							else
 								this.mediaPipeHandLandmarksPredictionEngine = this.mlContext.Model.CreatePredictionEngine<MediaPipeHandLandmarksGestureDataView, GesturePrediction>(this.model);
 
-							result = new GestureRecognitionModelTrainResult();
+							result = new GestureRecognitionModelTrainResult()
+							{
+								PcaComponentsCount = pcaComponentsCount
+							};
 						}
 						catch (Exception ex)
 						{
@@ -340,21 +356,21 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 			return result;
 		}
 
-		public override EvaluateResult Evaluate(BaseEvaluateParameters parameters)
+		public override BaseEvaluateResult Evaluate(BaseEvaluateParameters parameters)
 		{
 			if (parameters == null)
 				throw new ArgumentNullException(nameof(parameters));
 
 			if (!this.IsLoaded)
 			{
-				return new EvaluateResult()
+				return new GestureRecognitionModelEvaluateResult()
 				{
 					ErrorKind = EvaluateErrorKind.ModelNotLoaded,
 					ErrorMessage = $"Gesture recognition model is not loaded. Evaluation process has been abandoned."
 				};
 			}
 
-			EvaluateResult result;
+			BaseEvaluateResult result;
 			if (parameters is GestureRecognitionModelEvaluateParameters evaluateParameters)
 			{
 				if (this.IsTestData)
@@ -369,14 +385,38 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 								predictedLabelColumnName: GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_KEY_COL);
 							if (evaluateRes != null)
 							{
-								MulticlassMetricsConsolePresenter.Print(evaluateRes, string.IsNullOrEmpty(evaluateParameters.EvaluationResultPresentationTitle) ?
-									"Multiclass classifier evaluation" : evaluateParameters.EvaluationResultPresentationTitle);
+								Dictionary<int, string> labelsDict = null;
+								var predictedLabelKeyCol = preds.Schema.GetColumnOrNull(GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_KEY_COL);
+								if (predictedLabelKeyCol.HasValue && predictedLabelKeyCol.Value.HasKeyValues())
+								{
+									VBuffer<ReadOnlyMemory<char>> kv = default;
+									predictedLabelKeyCol.Value.GetKeyValues(ref kv);
+									if (kv.Length > 0)
+									{
+										labelsDict = kv.Items().ToDictionary(kv => kv.Key, kv => kv.Value.ToString());
+									}
+								}
 
-								result = new EvaluateResult();
+								if (labelsDict != null && labelsDict.Count > 0)
+								{
+									var multiclassClassificationEvalResult = MulticlassClassificationUtils.PrepareResult(evaluateRes, labelsDict);
+									result = new GestureRecognitionModelEvaluateResult()
+									{
+										MulticlassClassificationEvalResult = multiclassClassificationEvalResult
+									};
+								}
+								else
+								{
+									result = new GestureRecognitionModelEvaluateResult()
+									{
+										ErrorKind = EvaluateErrorKind.InvalidOutput,
+										ErrorMessage = $"Getting labels failed during gesture recognition model evaluation."
+									};
+								}
 							}
 							else
 							{
-								result = new EvaluateResult()
+								result = new GestureRecognitionModelEvaluateResult()
 								{
 									ErrorKind = EvaluateErrorKind.InvalidOutput,
 									ErrorMessage = $"Transforming input data failed during gesture recognition model evaluation."
@@ -385,7 +425,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 						}
 						else
 						{
-							result = new EvaluateResult()
+							result = new GestureRecognitionModelEvaluateResult()
 							{
 								ErrorKind = EvaluateErrorKind.InvalidOutput,
 								ErrorMessage = $"Gesture recognition model evaluation failed."
@@ -394,7 +434,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 					}
 					catch (Exception ex)
 					{
-						result = new EvaluateResult()
+						result = new GestureRecognitionModelEvaluateResult()
 						{
 							ErrorKind = EvaluateErrorKind.UnexpectedError,
 							ErrorMessage = $"Unexpected error during gesture recognition model evaluation, error message - {ex.Message}."
@@ -403,7 +443,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 				}
 				else
 				{
-					result = new EvaluateResult()
+					result = new GestureRecognitionModelEvaluateResult()
 					{
 						ErrorKind = EvaluateErrorKind.InvalidParameters,
 						ErrorMessage = $"Invalid parameters for gesture recognition model evaluation - no test data."
@@ -412,7 +452,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 			}
 			else
 			{
-				result = new EvaluateResult()
+				result = new GestureRecognitionModelEvaluateResult()
 				{
 					ErrorKind = EvaluateErrorKind.InvalidParameters,
 					ErrorMessage = $"Invalid parameters for gesture recognition model evaluation process."

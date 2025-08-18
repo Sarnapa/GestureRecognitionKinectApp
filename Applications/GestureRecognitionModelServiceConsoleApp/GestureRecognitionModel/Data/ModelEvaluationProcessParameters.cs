@@ -11,6 +11,12 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			set;
 		}
 
+		public required string TestDataFilePath
+		{
+			get;
+			set;
+		}
+
 		public required GestureRecognitionModelSetDataParameters SetTestDataParameters
 		{
 			get;
@@ -22,15 +28,23 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			get;
 			set;
 		}
+
+		public string? ModelProcessResultFilePath
+		{
+			get;
+			set;
+		}
 		#endregion
 
 		public override string ToString()
 		{
-			return $"\nModel file path: {this.ModelFilePath ?? string.Empty}\n\n" +
+			return $"Model file path: {this.ModelFilePath ?? string.Empty}\n" +
+				$"{nameof(this.TestDataFilePath)}: {this.TestDataFilePath ?? string.Empty}\n\n" +
 				$"{nameof(this.SetTestDataParameters)}:\n" +
 				$"{this.SetTestDataParameters}\n\n" +
 				$"{nameof(this.EvaluationParams)}:\n" +
-				$"{this.EvaluationParams}";
+				$"{this.EvaluationParams}\n\n" +
+				$"Result file path: {this.ModelProcessResultFilePath ?? string.Empty}";
 		}
 	}
 }

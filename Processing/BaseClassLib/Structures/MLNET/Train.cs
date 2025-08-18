@@ -73,6 +73,20 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
 
 	public class GestureRecognitionModelTrainResult: BaseTrainResult
 	{
+		#region Public properties
+		public int? PcaComponentsCount
+		{
+			get;
+			set;
+		}
+		#endregion
+
+		#region Public methods
+		public override string ToString()
+		{
+			return $"{nameof(this.PcaComponentsCount)}: {this.PcaComponentsCount?.ToString() ?? "NULL"}";
+		}
+		#endregion
 	}
 	#endregion
 

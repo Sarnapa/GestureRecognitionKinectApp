@@ -1,9 +1,7 @@
-﻿using System.ComponentModel;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.IO;
+using Microsoft.ML;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
-using Microsoft.ML;
 
 namespace GestureRecognition.Processing.MLNETProcUnit
 {
@@ -46,7 +44,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 		SetDataResult SetData(BaseSetDataParameters parameters);
 		BaseTrainResult TrainModel(BaseTrainParameters parameters);
 		BasePredictResult Predict(BasePredictParameters parameters);
-		EvaluateResult Evaluate(BaseEvaluateParameters parameters);
+		BaseEvaluateResult Evaluate(BaseEvaluateParameters parameters);
 		LoadModelResult LoadModel(BaseLoadModelParameters parameters);
 		SaveModelResult SaveModel(BaseSaveModelParameters parameters);
 		void Cleanup();
@@ -121,7 +119,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 		public abstract SetDataResult SetData(BaseSetDataParameters parameters);
 		public abstract BaseTrainResult TrainModel(BaseTrainParameters parameters);
 		public abstract BasePredictResult Predict(BasePredictParameters parameters);
-		public abstract EvaluateResult Evaluate(BaseEvaluateParameters parameters);
+		public abstract BaseEvaluateResult Evaluate(BaseEvaluateParameters parameters);
 		public abstract LoadModelResult LoadModel(BaseLoadModelParameters parameters);
 		public abstract SaveModelResult SaveModel(BaseSaveModelParameters parameters);
 		public abstract void Cleanup();

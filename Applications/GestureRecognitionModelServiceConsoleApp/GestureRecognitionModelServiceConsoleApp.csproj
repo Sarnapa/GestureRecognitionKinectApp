@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="33.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Processing\BaseClassLib\BaseClassLib.csproj" />
     <ProjectReference Include="..\..\Processing\MLNETProcUnit\MLNETProcUnit.csproj" />
   </ItemGroup>

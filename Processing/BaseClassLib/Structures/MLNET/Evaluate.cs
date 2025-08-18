@@ -1,15 +1,10 @@
-﻿namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
+﻿using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition;
+
+namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
 {
 	#region EvaluateParameters
 	public abstract class BaseEvaluateParameters: BaseParameters
 	{
-		#region Public properties
-		public string EvaluationResultPresentationTitle
-		{
-			get;
-			set;
-		}
-		#endregion
 	}
 
 	public class GestureRecognitionModelEvaluateParameters: BaseEvaluateParameters
@@ -17,14 +12,14 @@
 		#region Public methods
 		public override string ToString()
 		{
-			return $"Evaluation result presentation title: {this.EvaluationResultPresentationTitle}";
+			return string.Empty;
 		}
 		#endregion
 	}
 	#endregion
 
 	#region EvaluateResult
-	public class EvaluateResult: BaseResult
+	public abstract class BaseEvaluateResult: BaseResult
 	{
 		#region Public properties
 		public EvaluateErrorKind ErrorKind
@@ -40,6 +35,17 @@
 				return this.ErrorKind == EvaluateErrorKind.None;
 			}
 		}
+		#endregion
+	}
+
+	public class GestureRecognitionModelEvaluateResult: BaseEvaluateResult
+	{
+		#region Public properties
+		public MulticlassClassificationEvalResult MulticlassClassificationEvalResult
+		{
+			get;
+			set;
+		} = new MulticlassClassificationEvalResult();
 		#endregion
 	}
 	#endregion

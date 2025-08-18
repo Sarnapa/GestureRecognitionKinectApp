@@ -16,22 +16,23 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			ConsoleOutputUtils.WriteLine(methodName, "Starting GestureRecognitionModelServiceConsoleApp...");
 
 			// For testing purposes
-			//args =
-			//[
-			//	ArgumentsConsts.MODEL_TRAINING_AND_EVALUATION,
-			//	ArgumentsConsts.GESTURE_DATA_VIEW_TYPE_ARG, ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_GESTURE_DATA_VIEW_TYPE,
-			//	ArgumentsConsts.DATA_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\2025_08_11_MediaPipeHandLandmarks\GesturesData.csv",
-			//	ArgumentsConsts.SEED_ARG, "42",
-			//	ArgumentsConsts.USE_PCA_ARG, "True",
-			//	ArgumentsConsts.PCA_RANK_ARG, "30",
-			//	ArgumentsConsts.FAST_FOREST_ALG_ARG,
-			//	ArgumentsConsts.FAST_FOREST_TREES_COUNT_ARG, "500",
-			//	ArgumentsConsts.FAST_FOREST_LEAVES_COUNT_ARG, "32",
-			//	ArgumentsConsts.FAST_FOREST_MIN_EXAMPLE_COUNT_PER_LEAF_ARG, "10",
-			//	ArgumentsConsts.FAST_FOREST_FEATURE_FRACTION_ARG, "0.2",
-			//	ArgumentsConsts.FAST_FOREST_BAGGING_EXAMPLE_FRACTION_ARG, "1.0",
-			//	ArgumentsConsts.MODEL_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\2025_08_11_MediaPipeHandLandmarks\Model.zip",
-			//];
+			args =
+			[
+				ArgumentsConsts.MODEL_TRAINING_AND_EVALUATION,
+				ArgumentsConsts.GESTURE_DATA_VIEW_TYPE_ARG, ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_GESTURE_DATA_VIEW_TYPE,
+				ArgumentsConsts.DATA_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\2025_08_11_MediaPipeHandLandmarks\GesturesData.csv",
+				ArgumentsConsts.SEED_ARG, "42",
+				ArgumentsConsts.USE_PCA_ARG, "True",
+				ArgumentsConsts.PCA_RANK_ARG, "30",
+				ArgumentsConsts.FAST_FOREST_ALG_ARG,
+				ArgumentsConsts.FAST_FOREST_TREES_COUNT_ARG, "500",
+				ArgumentsConsts.FAST_FOREST_LEAVES_COUNT_ARG, "32",
+				ArgumentsConsts.FAST_FOREST_MIN_EXAMPLE_COUNT_PER_LEAF_ARG, "10",
+				ArgumentsConsts.FAST_FOREST_FEATURE_FRACTION_ARG, "0.2",
+				ArgumentsConsts.FAST_FOREST_BAGGING_EXAMPLE_FRACTION_ARG, "1.0",
+				ArgumentsConsts.MODEL_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\2025_08_11_MediaPipeHandLandmarks\Model.zip",
+				ArgumentsConsts.MODEL_PROCESS_RESULT_FILE_PATH, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\2025_08_11_MediaPipeHandLandmarks\ModelResult.csv"
+			];
 
 			//args =
 			//[
@@ -39,8 +40,8 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			//	ArgumentsConsts.MODEL_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\2025_08_11_MediaPipeHandLandmarks\Model.zip",
 			//	ArgumentsConsts.GESTURE_DATA_VIEW_TYPE_ARG, ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_GESTURE_DATA_VIEW_TYPE,
 			//	ArgumentsConsts.TEST_DATA_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\2025_08_11_MediaPipeHandLandmarks\GesturesData.csv",
-			//	ArgumentsConsts.EVAL_RESULT_PRESENTATION_TITLE, "Model.zip evaluation",
 			//	ArgumentsConsts.SEED_ARG, "42",
+			//	ArgumentsConsts.MODEL_PROCESS_RESULT_FILE_PATH, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\2025_08_11_MediaPipeHandLandmarks\ModelResult_onlyEval.csv"
 			//];
 
 			if (args.Length < 3)
@@ -117,9 +118,10 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			}
 
 			GestureRecognitionModelSetDataParameters? setDataParams = null;
+			string? gesturesDataFilePath = string.Empty, gesturesTrainDataFilePath = string.Empty, gesturesTestDataFilePath = string.Empty;
 			if (dataArgs.Length == 1 && dataArgs.Contains(ArgumentsConsts.DATA_FILE_PATH_ARG))
 			{
-				var (gesturesData, getGesturesDataIsSuccess) = GetGesturesData(methodName, args, methodArgToIdx, ArgumentsConsts.DATA_FILE_PATH_ARG, gestureDataViewType, true);
+				(var gesturesData, gesturesDataFilePath, bool getGesturesDataIsSuccess) = GetGesturesData(methodName, args, methodArgToIdx, ArgumentsConsts.DATA_FILE_PATH_ARG, gestureDataViewType, true);
 				if (!getGesturesDataIsSuccess)
 					return;
 
@@ -133,11 +135,11 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			}
 			else if (dataArgs.Length == 2 && dataArgs.Contains(ArgumentsConsts.TRAIN_DATA_FILE_PATH_ARG) && dataArgs.Contains(ArgumentsConsts.TEST_DATA_FILE_PATH_ARG))
 			{
-				var (gesturesTrainData, getGesturesTrainDataIsSuccess) = GetGesturesData(methodName, args, methodArgToIdx, ArgumentsConsts.TRAIN_DATA_FILE_PATH_ARG, gestureDataViewType, true);
+				(var gesturesTrainData, gesturesTrainDataFilePath, bool getGesturesTrainDataIsSuccess) = GetGesturesData(methodName, args, methodArgToIdx, ArgumentsConsts.TRAIN_DATA_FILE_PATH_ARG, gestureDataViewType, true);
 				if (!getGesturesTrainDataIsSuccess)
 					return;
 
-				var (gesturesTestData, getGesturesTestDataIsSuccess) = GetGesturesData(methodName, args, methodArgToIdx, ArgumentsConsts.TEST_DATA_FILE_PATH_ARG, gestureDataViewType, true);
+				(var gesturesTestData, gesturesTestDataFilePath, bool getGesturesTestDataIsSuccess) = GetGesturesData(methodName, args, methodArgToIdx, ArgumentsConsts.TEST_DATA_FILE_PATH_ARG, gestureDataViewType, true);
 				if (!getGesturesTestDataIsSuccess)
 					return;
 
@@ -218,6 +220,10 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			var (modelFilePath, _) = GetArgValue(methodName, args, methodArgToIdx, ArgumentsConsts.MODEL_FILE_PATH_ARG, false);
 			#endregion
 
+			#region ModelProcessResultFilePath
+			var (modelProcessResultFilePath, _) = GetArgValue(methodName, args, methodArgToIdx, ArgumentsConsts.MODEL_PROCESS_RESULT_FILE_PATH, false);
+			#endregion
+
 			#region Seed
 			int seed = GetSeed(methodName, args, methodArgToIdx);
 			#endregion
@@ -226,9 +232,13 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			gestureRecognitionModelManager.ExecuteModelTrainingAndEvaluationProcess(new ModelTrainingAndEvaluationProcessParameters()
 			{
 				SetDataParams = setDataParams,
+				DataFilePath = gesturesDataFilePath,
+				TrainDataFilePath = gesturesTrainDataFilePath,
+				TestDataFilePath = gesturesTestDataFilePath,
 				TrainingParams = trainParams,
 				EvaluationParams = evaluationParams,
 				ModelFilePath = modelFilePath,
+				ModelProcessResultFilePath = modelProcessResultFilePath,
 			});
 		}
 
@@ -258,7 +268,7 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			#endregion
 
 			#region SetTestDataParameters
-			var (gesturesTestData, getGesturesTestDataIsSuccess) = GetGesturesData(methodName, args, methodArgToIdx, ArgumentsConsts.TEST_DATA_FILE_PATH_ARG, gestureDataViewType, true);
+			var (gesturesTestData, gesturesTestDataFilePath, getGesturesTestDataIsSuccess) = GetGesturesData(methodName, args, methodArgToIdx, ArgumentsConsts.TEST_DATA_FILE_PATH_ARG, gestureDataViewType, true);
 			if (!getGesturesTestDataIsSuccess)
 				return;
 
@@ -272,6 +282,10 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			var evaluationParams = GetEvaluationParams(methodName, args, methodArgToIdx);
 			#endregion
 
+			#region ModelProcessResultFilePath
+			var (modelProcessResultFilePath, _) = GetArgValue(methodName, args, methodArgToIdx, ArgumentsConsts.MODEL_PROCESS_RESULT_FILE_PATH, false);
+			#endregion
+
 			#region Seed
 			int seed = GetSeed(methodName, args, methodArgToIdx);
 			#endregion
@@ -280,8 +294,10 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			gestureRecognitionModelManager.ExecuteModelEvaluationProcess(new ModelEvaluationProcessParameters()
 			{
 				ModelFilePath = modelFilePath,
+				TestDataFilePath = gesturesTestDataFilePath,
 				SetTestDataParameters = setTestDataParameters,
-				EvaluationParams = evaluationParams
+				EvaluationParams = evaluationParams,
+				ModelProcessResultFilePath = modelProcessResultFilePath,
 			});
 		}
 		#endregion
@@ -325,15 +341,7 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 
 		private static GestureRecognitionModelEvaluateParameters GetEvaluationParams(string methodName, string[] args, Dictionary<string, int> methodArgToIdx)
 		{
-			var evaluationParams = new GestureRecognitionModelEvaluateParameters();
-
-			var (evaluationResultPresentationTitle, getEvaluationResultPresentationTitleIsSuccess) = GetArgValue(methodName, args, methodArgToIdx, ArgumentsConsts.EVAL_RESULT_PRESENTATION_TITLE, false);
-			if (getEvaluationResultPresentationTitleIsSuccess && !string.IsNullOrEmpty(evaluationResultPresentationTitle))
-			{
-				evaluationParams.EvaluationResultPresentationTitle = evaluationResultPresentationTitle;
-			}
-
-			return evaluationParams;
+			return new GestureRecognitionModelEvaluateParameters();
 		}
 		#endregion
 
@@ -406,17 +414,17 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 		#endregion
 
 		#region Get gestures data methods
-		private static (GestureDataView[], bool isSuccess) GetGesturesData(string methodName, string[] args, Dictionary<string, int> methodArgToIdx, string argName,
+		private static (GestureDataView[] data, string dataFilePath, bool isSuccess) GetGesturesData(string methodName, string[] args, Dictionary<string, int> methodArgToIdx, string argName,
 			Type gestureDataViewType, bool argIsRequired)
 		{
 			var (dataFilePath, isSuccess) = GetArgValue(methodName, args, methodArgToIdx, argName, argIsRequired);
 			if (!isSuccess)
-				return ([], false);
+				return ([], dataFilePath, false);
 
 			return GetGesturesData(methodName, dataFilePath, gestureDataViewType);
 		}
 
-		private static (GestureDataView[], bool isSuccess) GetGesturesData(string methodName, string gesturesDataFilePath, Type gestureDataViewType)
+		private static (GestureDataView[] data, string dataFilePath, bool isSuccess) GetGesturesData(string methodName, string gesturesDataFilePath, Type gestureDataViewType)
 		{
 			GestureDataView[] gesturesData = [];
 			if (gestureDataViewType == typeof(KinectGestureDataView))
@@ -426,7 +434,7 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 				if (!string.IsNullOrEmpty(getGesturesDataErrorMsg))
 				{
 					ConsoleOutputUtils.WriteLine(methodName, getGesturesDataErrorMsg);
-					return ([], false);
+					return ([], gesturesDataFilePath, false);
 				}
 
 			}
@@ -437,11 +445,11 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 				if (!string.IsNullOrEmpty(getGesturesDataErrorMsg))
 				{
 					ConsoleOutputUtils.WriteLine(methodName, getGesturesDataErrorMsg);
-					return ([], false);
+					return ([], gesturesDataFilePath, false);
 				}
 			}
 
-			return (gesturesData, true);
+			return (gesturesData, gesturesDataFilePath, true);
 		}
 		#endregion
 
