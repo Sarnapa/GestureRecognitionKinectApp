@@ -96,6 +96,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
 		None,
 		AlreadyLoadedModel,
 		InvalidParameters,
+		InvalidOutput,
 		UnexpectedError,
 	}
 	#endregion

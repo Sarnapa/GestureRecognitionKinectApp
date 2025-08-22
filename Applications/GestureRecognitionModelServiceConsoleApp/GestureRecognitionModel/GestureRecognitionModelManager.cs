@@ -31,6 +31,19 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			var (_, isSetDataSuccess) = SetData(modelWrapper, trainingAndEvaluationProcessParameters.SetDataParams);
 			if (isSetDataSuccess)
 			{
+				if (trainingAndEvaluationProcessParameters.UseCv)
+				{
+					var crossValidateParams = new GestureRecognitionModelCrossValidateParameters()
+					{
+						FoldsCount = trainingAndEvaluationProcessParameters.CvFoldsCount,
+						TrainParams = trainingAndEvaluationProcessParameters.TrainingParams,
+						EvaluateParams = trainingAndEvaluationProcessParameters.EvaluationParams
+					};
+
+					CrossValidateModel(modelWrapper, crossValidateParams, trainingAndEvaluationProcessParameters.ModelCvProcessResultFilePath, this.seed,
+						trainingAndEvaluationProcessParameters.SetDataParams, trainingAndEvaluationProcessParameters.DataFilePath, trainingAndEvaluationProcessParameters.TrainDataFilePath);
+				}
+
 				var (trainModelResult, isTrainModelSuccess) = TrainModel(modelWrapper, trainingAndEvaluationProcessParameters.TrainingParams);
 				if (isTrainModelSuccess && trainModelResult != null)
 				{
@@ -43,7 +56,7 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 								&& !string.IsNullOrEmpty(trainingAndEvaluationProcessParameters.ModelProcessResultFilePath))
 							{
 								var trainingAndEvaluationProcessResult = GetModelProcessResult(trainingAndEvaluationProcessParameters.ModelProcessResultFilePath,
-									trainingAndEvaluationProcessParameters.ModelFilePath, this.seed, trainingAndEvaluationProcessParameters.SetDataParams,
+									trainingAndEvaluationProcessParameters.ModelFilePath, null, this.seed, trainingAndEvaluationProcessParameters.SetDataParams,
 									trainingAndEvaluationProcessParameters.DataFilePath, trainingAndEvaluationProcessParameters.TrainDataFilePath, trainingAndEvaluationProcessParameters.TestDataFilePath,
 									trainingAndEvaluationProcessParameters.TrainingParams, trainModelResult, evaluateModelResult);
 								if (trainingAndEvaluationProcessResult != null)
@@ -75,7 +88,7 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 					if (isEvaluateModelSuccess && evaluateModelResult != null && !string.IsNullOrEmpty(evaluationProcessParameters.ModelProcessResultFilePath))
 					{
 						var evaluationProcessResult = GetModelProcessResult(evaluationProcessParameters.ModelProcessResultFilePath,
-							evaluationProcessParameters.ModelFilePath, this.seed, evaluationProcessParameters.SetTestDataParameters,
+							evaluationProcessParameters.ModelFilePath, null, this.seed, evaluationProcessParameters.SetTestDataParameters,
 							string.Empty, string.Empty, evaluationProcessParameters.TestDataFilePath,
 							null, null, evaluateModelResult);
 						if (evaluationProcessResult != null)
@@ -121,6 +134,48 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			return (setDataResult, setDataResult.IsSuccess);
 		}
 
+		private bool CrossValidateModel(GestureRecognitionModelWrapper modelWrapper, GestureRecognitionModelCrossValidateParameters crossValidateParams,
+			string? modelCvProcessResultFilePath, int seed, GestureRecognitionModelSetDataParameters setDataParameters, string? dataFilePath, string? trainDataFilePath)
+		{
+			string methodName = $"{nameof(GestureRecognitionModelManager)}.{nameof(CrossValidateModel)}";
+
+			if (string.IsNullOrEmpty(modelCvProcessResultFilePath))
+			{
+				ConsoleOutputUtils.WriteLine(methodName, "The cross validation process only supports saving results to a file. An empty file path was received, so the process was aborted.");
+				return false;
+			}
+
+			ConsoleOutputUtils.WriteLine(methodName, "Model cross validation process started...");
+
+			var crossValidateResult = modelWrapper.CrossValidate(crossValidateParams);
+			if (crossValidateResult.IsSuccess)
+			{
+				ConsoleOutputUtils.WriteLine(methodName, $"Received results for {crossValidateResult.FoldsResults?.Length ?? 0} folds.");
+
+				var foldsResults = new List<ModelProcessResult>();
+				if (crossValidateResult.FoldsResults != null)
+				{
+					foreach (var cvResult in crossValidateResult.FoldsResults)
+					{
+						var foldResult = GetModelProcessResult(modelCvProcessResultFilePath, string.Empty, cvResult.FoldIdx, seed, setDataParameters, dataFilePath, trainDataFilePath, string.Empty,
+							crossValidateParams.TrainParams, cvResult.TrainResult, cvResult.EvaluateResult);
+
+						if (foldResult != null)
+							foldsResults.Add(foldResult);
+					}
+				}
+
+				ConsoleOutputUtils.WriteLine(methodName, $"After validating the results, attempt will be made to save the results for {foldsResults.Count} folds.");
+				ExportToCsv(modelCvProcessResultFilePath, foldsResults.ToArray());
+
+				ConsoleOutputUtils.WriteLine(methodName, "Model cross validation process finished. ");
+			}
+			else
+				ConsoleOutputUtils.WriteLine(methodName, crossValidateResult.ErrorMessage);
+
+			return crossValidateResult.IsSuccess;
+		}
+
 		private (GestureRecognitionModelTrainResult? result, bool isSuccess) TrainModel(GestureRecognitionModelWrapper modelWrapper, GestureRecognitionModelTrainParameters trainParams)
 		{
 			string methodName = $"{nameof(GestureRecognitionModelManager)}.{nameof(TrainModel)}";
@@ -128,21 +183,15 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			ConsoleOutputUtils.WriteLine(methodName, "Model training process started...");
 
 			var trainResult = modelWrapper.TrainModel(trainParams);
-			if (trainResult is GestureRecognitionModelTrainResult gestureRecognitionModelTrainResult)
+			if (trainResult.IsSuccess)
 			{
-				if (trainResult.IsSuccess)
-				{
-					ConsoleOutputUtils.WriteLine(methodName, $"\nModel training result:\n\n{gestureRecognitionModelTrainResult}");
-					ConsoleOutputUtils.WriteLine(methodName, "Model training process succeeded.");
-				}
-				else
-					ConsoleOutputUtils.WriteLine(methodName, trainResult.ErrorMessage);
-
-				return (gestureRecognitionModelTrainResult, trainResult.IsSuccess);
+				ConsoleOutputUtils.WriteLine(methodName, $"\nModel training result:\n\n{trainResult}");
+				ConsoleOutputUtils.WriteLine(methodName, "Model training process succeeded.");
 			}
+			else
+				ConsoleOutputUtils.WriteLine(methodName, trainResult.ErrorMessage);
 
-			ConsoleOutputUtils.WriteLine(methodName, $"Model training process failed - unexpected result type: [{trainResult.GetType().Name}].");
-			return (null, false);
+			return (trainResult, trainResult.IsSuccess);
 		}
 
 		private (GestureRecognitionModelEvaluateResult? result, bool isSuccess) EvaluateModel(GestureRecognitionModelWrapper modelWrapper, GestureRecognitionModelEvaluateParameters evaluateParams)
@@ -152,21 +201,15 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			ConsoleOutputUtils.WriteLine(methodName, "Model evaluation process started...");
 
 			var evaluateResult = modelWrapper.Evaluate(evaluateParams);
-			if (evaluateResult is GestureRecognitionModelEvaluateResult gestureRecognitionModelEvaluateResult)
+			if (evaluateResult.IsSuccess)
 			{
-				if (evaluateResult.IsSuccess)
-				{
-					ConsoleOutputUtils.WriteLine(methodName, $"\nModel evaluation result:\n\n{gestureRecognitionModelEvaluateResult.MulticlassClassificationEvalResult}");
-					ConsoleOutputUtils.WriteLine(methodName, "Model evaluation process succeded.");
-				}
-				else
-					ConsoleOutputUtils.WriteLine(methodName, evaluateResult.ErrorMessage);
-
-				return (gestureRecognitionModelEvaluateResult, evaluateResult.IsSuccess);
+				ConsoleOutputUtils.WriteLine(methodName, $"\nModel evaluation result:\n\n{evaluateResult.MulticlassClassificationEvalResult}");
+				ConsoleOutputUtils.WriteLine(methodName, "Model evaluation process succeded.");
 			}
+			else
+				ConsoleOutputUtils.WriteLine(methodName, evaluateResult.ErrorMessage);
 
-			ConsoleOutputUtils.WriteLine(methodName, $"Model evaluation process failed - unexpected result type: [{evaluateResult.GetType().Name}].");
-			return (null, false);
+			return (evaluateResult, evaluateResult.IsSuccess);
 		}
 
 		private bool LoadModel(GestureRecognitionModelWrapper modelWrapper, string modelFilePath)
@@ -213,7 +256,7 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			return true;
 		}
 
-		private ModelProcessResult? GetModelProcessResult(string modelProcessResultFilePath, string modelFilePath, int seed,
+		private ModelProcessResult? GetModelProcessResult(string modelProcessResultFilePath, string modelFilePath, int? foldIdx, int seed,
 			GestureRecognitionModelSetDataParameters setDataParameters, string? dataFilePath, string? trainDataFilePath, string? testDataFilePath,
 			GestureRecognitionModelTrainParameters? trainParams, GestureRecognitionModelTrainResult? trainResult,
 			GestureRecognitionModelEvaluateResult evaluateResult)
@@ -225,10 +268,15 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 				return null;
 
 			string modelProcessFileName = Path.GetFileNameWithoutExtension(modelProcessResultFilePath);
-			string perClassEvalResultsFileName = $"{modelProcessFileName}_PerClassEvalResults";
+			string perClassEvalResultsFileName;
+			if (foldIdx.HasValue)
+				perClassEvalResultsFileName = $"{modelProcessFileName}_Fold{foldIdx.Value}_PerClassEvalResults";
+			else
+				perClassEvalResultsFileName = $"{modelProcessFileName}_PerClassEvalResults";
+			
 			string perClassEvalResultsFilePath = modelProcessResultFilePath.Replace(modelProcessFileName, perClassEvalResultsFileName);
 
-			return ModelProcessResultMapper.Map(modelFilePath, seed, setDataParameters, dataFilePath, trainDataFilePath, testDataFilePath,
+			return ModelProcessResultMapper.Map(modelFilePath, foldIdx, seed, setDataParameters, dataFilePath, trainDataFilePath, testDataFilePath,
 					trainParams, trainResult, evaluateResult, perClassEvalResultsFilePath);
 		}
 

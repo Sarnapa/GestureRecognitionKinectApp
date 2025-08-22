@@ -23,6 +23,24 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			set;
 		}
 
+		public bool UseCv
+		{
+			get;
+			set;
+		}
+
+		public int CvFoldsCount
+		{
+			get;
+			set;
+		}
+
+		public string? ModelCvProcessResultFilePath
+		{
+			get;
+			set;
+		}
+
 		public required GestureRecognitionModelSetDataParameters SetDataParams 
 		{ 
 			get; 
@@ -60,6 +78,9 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			return $"{nameof(this.DataFilePath)}: {this.DataFilePath ?? string.Empty}\n" +
 				$"{nameof(this.TrainDataFilePath)}: {this.TrainDataFilePath ?? string.Empty}\n" +
 				$"{nameof(this.TestDataFilePath)}: {this.TestDataFilePath ?? string.Empty}\n\n" +
+				$"{nameof(this.UseCv)}: {this.UseCv}\n" +
+				$"{nameof(this.CvFoldsCount)}: {this.CvFoldsCount}\n" +
+				$"{nameof(this.ModelCvProcessResultFilePath)}: {this.ModelCvProcessResultFilePath ?? string.Empty}\n\n" +
 				$"{nameof(this.SetDataParams)}:\n" +
 				$"{this.SetDataParams}\n\n" +
 				$"{nameof(this.TrainingParams)}:\n" +

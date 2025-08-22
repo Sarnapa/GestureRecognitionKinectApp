@@ -22,6 +22,9 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 				ArgumentsConsts.GESTURE_DATA_VIEW_TYPE_ARG, ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_GESTURE_DATA_VIEW_TYPE,
 				ArgumentsConsts.DATA_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\2025_08_11_MediaPipeHandLandmarks\GesturesData.csv",
 				ArgumentsConsts.SEED_ARG, "42",
+				ArgumentsConsts.USE_CV_ARG, "True",
+				ArgumentsConsts.CV_FOLDS_COUNT_ARG, "10",
+				ArgumentsConsts.MODEL_CV_PROCESS_RESULT_FILE_PATH, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\2025_08_11_MediaPipeHandLandmarks\CV_ModelResult.csv",
 				ArgumentsConsts.USE_PCA_ARG, "True",
 				ArgumentsConsts.PCA_RANK_ARG, "30",
 				ArgumentsConsts.FAST_FOREST_ALG_ARG,
@@ -216,6 +219,17 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			var evaluationParams = GetEvaluationParams(methodName, args, methodArgToIdx);
 			#endregion
 
+			#region Cross validation
+			int? cvFoldsCount = null;
+			string modelCvProcessResultFilePath = string.Empty;
+			var (useCv, getUseCvIsSuccess) = GetArgBoolValue(methodName, args, methodArgToIdx, ArgumentsConsts.USE_CV_ARG, false);
+			if (useCv.HasValue && getUseCvIsSuccess)
+			{
+				(cvFoldsCount, _) = GetArgIntValue(methodName, args, methodArgToIdx, ArgumentsConsts.CV_FOLDS_COUNT_ARG, false);
+				(modelCvProcessResultFilePath, _) = GetArgValue(methodName, args, methodArgToIdx, ArgumentsConsts.MODEL_CV_PROCESS_RESULT_FILE_PATH, false);
+			}	
+			#endregion
+
 			#region ModelFilePath
 			var (modelFilePath, _) = GetArgValue(methodName, args, methodArgToIdx, ArgumentsConsts.MODEL_FILE_PATH_ARG, false);
 			#endregion
@@ -235,6 +249,9 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 				DataFilePath = gesturesDataFilePath,
 				TrainDataFilePath = gesturesTrainDataFilePath,
 				TestDataFilePath = gesturesTestDataFilePath,
+				UseCv = useCv ?? false,
+				CvFoldsCount = cvFoldsCount ?? (useCv.HasValue && useCv.Value ? 5 : 0),
+				ModelCvProcessResultFilePath = modelCvProcessResultFilePath,
 				TrainingParams = trainParams,
 				EvaluationParams = evaluationParams,
 				ModelFilePath = modelFilePath,

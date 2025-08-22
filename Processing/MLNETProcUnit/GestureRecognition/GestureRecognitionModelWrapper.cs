@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using Microsoft.ML;
 using Microsoft.ML.Data;
-using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.Predictions;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
@@ -12,10 +11,18 @@ using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition;
 using GestureRecognition.Processing.BaseClassLib.Utils;
 using GestureRecognition.Processing.MLNETProcUnit.Utils;
+using GestureRecognitionModelColumnsConsts = GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.GestureRecognitionModelColumnsConsts;
 
 namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 {
 	public class GestureRecognitionModelWrapper: ModelWrapper
+		<GestureRecognitionModelSetDataParameters,
+		GestureRecognitionModelTrainParameters, GestureRecognitionModelTrainResult,
+		GestureRecognitionModelPredictParameters, GestureRecognitionModelPredictResult,
+		GestureRecognitionModelEvaluateParameters, GestureRecognitionModelEvaluateResult,
+		GestureRecognitionModelCrossValidateParameters, GestureRecognitionModelCrossValidateResult,
+		LoadGestureRecognitionModelParameters,
+		SaveGestureRecognitionModelParameters>
 	{
 		#region Private fields
 		private Type gestureDataViewType;
@@ -58,88 +65,41 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 		#endregion
 
 		#region Public methods
-		public override SetDataResult SetData(BaseSetDataParameters parameters)
+		public override SetDataResult SetData(GestureRecognitionModelSetDataParameters parameters)
 		{
 			if (parameters == null)
 				throw new ArgumentNullException(nameof(parameters));
 
 			SetDataResult result = null;
-			if (parameters is GestureRecognitionModelSetDataParameters setDataParameters)
+			try
 			{
-				try
+				if (parameters.IsData)
 				{
-					if (setDataParameters.IsData)
+					var (validationSuccess, errorMessage) = ValidateData(parameters.Data);
+					if (validationSuccess)
 					{
-						var (validationSuccess, errorMessage) = ValidateData(setDataParameters.Data);
-						if (validationSuccess)
+						if (parameters.TestFraction > 0d && parameters.TestFraction < 1d)
 						{
-							if (setDataParameters.TestFraction > 0d && setDataParameters.TestFraction < 1d)
-							{
-								var data = GetDataView(setDataParameters.Data);
-								// It's a bit risky that the training may not work with some labels.
-								// However, in ML.NET, you can't do it directly, you have to improvise. Maybe it's better to do it yourself at the GestureDataView level.
-								var splitRes = this.mlContext.Data.TrainTestSplit(data, testFraction: setDataParameters.TestFraction, seed: this.seed);
+							var data = GetDataView(parameters.Data);
+							// It's a bit risky that the training may not work with some labels.
+							// However, in ML.NET, you can't do it directly, you have to improvise. Maybe it's better to do it yourself at the GestureDataView level.
+							var splitRes = this.mlContext.Data.TrainTestSplit(data, testFraction: parameters.TestFraction, seed: this.seed);
 
-								// For testing
-								//var train = this.mlContext.Data.CreateEnumerable<KinectGestureDataView>(splitRes.TrainSet, reuseRowObject: false).ToArray();
-								//var test = this.mlContext.Data.CreateEnumerable<KinectGestureDataView>(splitRes.TestSet, reuseRowObject: false).ToArray();
+							// For testing
+							//var train = this.mlContext.Data.CreateEnumerable<KinectGestureDataView>(splitRes.TrainSet, reuseRowObject: false).ToArray();
+							//var test = this.mlContext.Data.CreateEnumerable<KinectGestureDataView>(splitRes.TestSet, reuseRowObject: false).ToArray();
 
-								this.trainData = splitRes.TrainSet;
-								this.testData = splitRes.TestSet;
-							}
-							else
-							{
-								result = new SetDataResult()
-								{
-									ErrorKind = SetDataErrorKind.InvalidParameters,
-									ErrorMessage = $"Invalid {nameof(GestureRecognitionModelSetDataParameters.TestFraction)} parameter value provided. " +
-									$"Got: {setDataParameters.TestFraction}, expected: [0.0 - 1.0]."
-								};
-							}
+							this.trainData = splitRes.TrainSet;
+							this.testData = splitRes.TestSet;
 						}
 						else
 						{
 							result = new SetDataResult()
 							{
 								ErrorKind = SetDataErrorKind.InvalidParameters,
-								ErrorMessage = $"Setting invalid data for gesture recognition model, error message - {errorMessage}."
+								ErrorMessage = $"Invalid {nameof(GestureRecognitionModelSetDataParameters.TestFraction)} parameter value provided. " +
+								$"Got: {parameters.TestFraction}, expected: [0.0 - 1.0]."
 							};
-						}
-					}
-					else if (setDataParameters.IsTrainData || setDataParameters.IsTestData)
-					{
-						if (setDataParameters.IsTrainData)
-						{
-							var (trainDataValidationSuccess, trainDataValidationErrorMessage) = ValidateData(setDataParameters.TrainData);
-							if (trainDataValidationSuccess)
-							{
-								this.trainData = GetDataView(setDataParameters.TrainData);
-							}
-							else
-							{
-								result = new SetDataResult()
-								{
-									ErrorKind = SetDataErrorKind.InvalidParameters,
-									ErrorMessage = $"Setting invalid training data for gesture recognition model, error message - {trainDataValidationErrorMessage}."
-								};
-							}
-						}
-
-						if (result == null && setDataParameters.IsTestData)
-						{
-							var (testDataValidationSuccess, testDataValidationErrorMessage) = ValidateData(setDataParameters.TestData);
-							if (testDataValidationSuccess)
-							{
-								this.testData = GetDataView(setDataParameters.TestData);
-							}
-							else
-							{
-								result = new SetDataResult()
-								{
-									ErrorKind = SetDataErrorKind.InvalidParameters,
-									ErrorMessage = $"Setting invalid test data for gesture recognition model, error message - {testDataValidationErrorMessage}."
-								};
-							}
 						}
 					}
 					else
@@ -147,25 +107,61 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 						result = new SetDataResult()
 						{
 							ErrorKind = SetDataErrorKind.InvalidParameters,
-							ErrorMessage = $"Setting no data for gesture recognition model."
+							ErrorMessage = $"Setting invalid data for gesture recognition model, error message - {errorMessage}."
 						};
 					}
 				}
-				catch (Exception ex)
+				else if (parameters.IsTrainData || parameters.IsTestData)
+				{
+					if (parameters.IsTrainData)
+					{
+						var (trainDataValidationSuccess, trainDataValidationErrorMessage) = ValidateData(parameters.TrainData);
+						if (trainDataValidationSuccess)
+						{
+							this.trainData = GetDataView(parameters.TrainData);
+						}
+						else
+						{
+							result = new SetDataResult()
+							{
+								ErrorKind = SetDataErrorKind.InvalidParameters,
+								ErrorMessage = $"Setting invalid training data for gesture recognition model, error message - {trainDataValidationErrorMessage}."
+							};
+						}
+					}
+
+					if (result == null && parameters.IsTestData)
+					{
+						var (testDataValidationSuccess, testDataValidationErrorMessage) = ValidateData(parameters.TestData);
+						if (testDataValidationSuccess)
+						{
+							this.testData = GetDataView(parameters.TestData);
+						}
+						else
+						{
+							result = new SetDataResult()
+							{
+								ErrorKind = SetDataErrorKind.InvalidParameters,
+								ErrorMessage = $"Setting invalid test data for gesture recognition model, error message - {testDataValidationErrorMessage}."
+							};
+						}
+					}
+				}
+				else
 				{
 					result = new SetDataResult()
 					{
-						ErrorKind = SetDataErrorKind.UnexpectedError,
-						ErrorMessage = $"Unexpected error during gesture recognition model setting data, error message - {ex.Message}."
+						ErrorKind = SetDataErrorKind.InvalidParameters,
+						ErrorMessage = $"Setting no data for gesture recognition model."
 					};
 				}
 			}
-			else
+			catch (Exception ex)
 			{
 				result = new SetDataResult()
 				{
-					ErrorKind = SetDataErrorKind.InvalidParameters,
-					ErrorMessage = $"Invalid parameters for gesture recognition model setting data."
+					ErrorKind = SetDataErrorKind.UnexpectedError,
+					ErrorMessage = $"Unexpected error during gesture recognition model setting data, error message - {ex.Message}."
 				};
 			}
 
@@ -185,7 +181,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 			return result;
 		}
 
-		public override BaseTrainResult TrainModel(BaseTrainParameters parameters)
+		public override GestureRecognitionModelTrainResult TrainModel(GestureRecognitionModelTrainParameters parameters)
 		{
 			if (parameters == null)
 				throw new ArgumentNullException(nameof(parameters));
@@ -199,64 +195,25 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 				};
 			}
 
-			BaseTrainResult result;
-			if (parameters is GestureRecognitionModelTrainParameters trainParameters)
+			GestureRecognitionModelTrainResult result;
+			if (this.IsTrainData)
 			{
-				if (this.IsTrainData)
+				if (parameters.AlgorithmParams is FastForestParams fastForestParams)
 				{
-					if (trainParameters.AlgorithmParams is FastForestParams fastForestParams)
+					try
 					{
-						try
-						{
-							IEstimator<ITransformer> prepareDataPipeline;
-							string featuresCol;
+						var (fastForestPipeline, featuresCol) = GetModelPipeline(parameters, fastForestParams);
+						this.model = fastForestPipeline.Fit(this.trainData);						
+						CreatePredictionEngine();
 
-							if (this.IsKinectGestureDataView)
-								(prepareDataPipeline, featuresCol) = GestureRecognitionModelsPipelines.GetPrepareDataPipeline<KinectGestureDataView>(this.mlContext, this.seed, trainParameters);
-							else
-								(prepareDataPipeline, featuresCol) = GestureRecognitionModelsPipelines.GetPrepareDataPipeline<MediaPipeHandLandmarksGestureDataView>(this.mlContext, this.seed, trainParameters);
-
-							var fastForestPipeline = GestureRecognitionModelsPipelines.GetFastForestPipeline(this.mlContext, this.seed, prepareDataPipeline, featuresCol, fastForestParams);
-
-							this.model = fastForestPipeline.Fit(this.trainData);
-
-							int? pcaComponentsCount = null;
-							if (trainParameters.UsePca && featuresCol == GestureRecognitionModelColumnsConsts.FEATURES_PCA_COL)
-							{
-								var dataView = this.model.Transform(this.trainData);
-								if (dataView.Schema != null)
-								{
-									var pcaComponentsCol = dataView.Schema.GetColumnOrNull(featuresCol);
-									if (pcaComponentsCol.HasValue && pcaComponentsCol.Value.Type is VectorDataViewType vectorType)
-										pcaComponentsCount = vectorType.Size;
-								}
-							}
-
-							if (this.IsKinectGestureDataView)
-								this.kinectPredictionEngine = this.mlContext.Model.CreatePredictionEngine<KinectGestureDataView, GesturePrediction>(this.model);
-							else
-								this.mediaPipeHandLandmarksPredictionEngine = this.mlContext.Model.CreatePredictionEngine<MediaPipeHandLandmarksGestureDataView, GesturePrediction>(this.model);
-
-							result = new GestureRecognitionModelTrainResult()
-							{
-								PcaComponentsCount = pcaComponentsCount
-							};
-						}
-						catch (Exception ex)
-						{
-							result = new GestureRecognitionModelTrainResult()
-							{
-								ErrorKind = TrainErrorKind.UnexpectedError,
-								ErrorMessage = $"Unexpected error during gesture recognition model training, error message - {ex.Message}."
-							};
-						}
+						result = GetModelTrainResult(this.model, parameters, featuresCol);
 					}
-					else
+					catch (Exception ex)
 					{
 						result = new GestureRecognitionModelTrainResult()
 						{
-							ErrorKind = TrainErrorKind.InvalidParameters,
-							ErrorMessage = $"Invalid parameters for gesture recognition model training - invalid algorithms parameters."
+							ErrorKind = TrainErrorKind.UnexpectedError,
+							ErrorMessage = $"Unexpected error during gesture recognition model training, error message - {ex.Message}."
 						};
 					}
 				}
@@ -265,7 +222,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 					result = new GestureRecognitionModelTrainResult()
 					{
 						ErrorKind = TrainErrorKind.InvalidParameters,
-						ErrorMessage = $"Invalid parameters for gesture recognition model training - no training data."
+						ErrorMessage = $"Invalid parameters for gesture recognition model training - invalid algorithms parameters."
 					};
 				}
 			}
@@ -274,14 +231,14 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 				result = new GestureRecognitionModelTrainResult()
 				{
 					ErrorKind = TrainErrorKind.InvalidParameters,
-					ErrorMessage = $"Invalid parameters for gesture recognition model training."
+					ErrorMessage = $"Invalid parameters for gesture recognition model training - no training data."
 				};
 			}
 
 			return result;
 		}
 
-		public override BasePredictResult Predict(BasePredictParameters parameters)
+		public override GestureRecognitionModelPredictResult Predict(GestureRecognitionModelPredictParameters parameters)
 		{
 			if (parameters == null)
 				throw new ArgumentNullException(nameof(parameters));
@@ -295,68 +252,57 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 				};
 			}
 
-			BasePredictResult result;
-			if (parameters is GestureRecognitionModelPredictParameters predictParameters)
+			GestureRecognitionModelPredictResult result;
+			try
 			{
-				try
+				GesturePrediction gesturePrediction = null;
+				if (this.IsKinectGestureDataView && parameters.GestureData is KinectGestureDataView kinectGestureData)
 				{
-					GesturePrediction gesturePrediction = null;
-					if (this.IsKinectGestureDataView && predictParameters.GestureData is KinectGestureDataView kinectGestureData)
-					{
-						gesturePrediction = this.kinectPredictionEngine.Predict(kinectGestureData);
-					}
-					else if (this.IsMediaPipeHandLandmarksGestureDataView && predictParameters.GestureData is MediaPipeHandLandmarksGestureDataView mediaPipeHandLandmarksGestureData)
-					{
-						gesturePrediction = this.mediaPipeHandLandmarksPredictionEngine.Predict(mediaPipeHandLandmarksGestureData);
-					}
-					else
-					{
-						result = new GestureRecognitionModelPredictResult()
-						{
-							ErrorKind = PredictErrorKind.InvalidParameters,
-							ErrorMessage = $"Invalid gesture data type for given gesture recognition model."
-						};
-					}
-
-					if (!string.IsNullOrEmpty(gesturePrediction?.Label))
-					{
-						result = new GestureRecognitionModelPredictResult()
-						{
-							Prediction = gesturePrediction,
-						};
-					}
-					else
-					{
-						result = new GestureRecognitionModelPredictResult()
-						{
-							ErrorKind = PredictErrorKind.InvalidOutput,
-							ErrorMessage = $"Invalid predict result for given gesture recognition model."
-						};
-					}
+					gesturePrediction = this.kinectPredictionEngine.Predict(kinectGestureData);
 				}
-				catch (Exception ex)
+				else if (this.IsMediaPipeHandLandmarksGestureDataView && parameters.GestureData is MediaPipeHandLandmarksGestureDataView mediaPipeHandLandmarksGestureData)
+				{
+					gesturePrediction = this.mediaPipeHandLandmarksPredictionEngine.Predict(mediaPipeHandLandmarksGestureData);
+				}
+				else
 				{
 					result = new GestureRecognitionModelPredictResult()
 					{
-						ErrorKind = PredictErrorKind.UnexpectedError,
-						ErrorMessage = $"Unexpected error during prediction process for given gesture recognition model. " +
-							$"Exception type: {ex.GetType()}, exception message: {ex.Message}."
+						ErrorKind = PredictErrorKind.InvalidParameters,
+						ErrorMessage = $"Invalid gesture data type for given gesture recognition model."
+					};
+				}
+
+				if (!string.IsNullOrEmpty(gesturePrediction?.Label))
+				{
+					result = new GestureRecognitionModelPredictResult()
+					{
+						Prediction = gesturePrediction,
+					};
+				}
+				else
+				{
+					result = new GestureRecognitionModelPredictResult()
+					{
+						ErrorKind = PredictErrorKind.InvalidOutput,
+						ErrorMessage = $"Invalid predict result for given gesture recognition model."
 					};
 				}
 			}
-			else
+			catch (Exception ex)
 			{
 				result = new GestureRecognitionModelPredictResult()
 				{
-					ErrorKind = PredictErrorKind.InvalidParameters,
-					ErrorMessage = $"Invalid parameters for gesture recognition model prediction process."
+					ErrorKind = PredictErrorKind.UnexpectedError,
+					ErrorMessage = $"Unexpected error during prediction process for given gesture recognition model. " +
+						$"Exception type: {ex.GetType()}, exception message: {ex.Message}."
 				};
 			}
 
 			return result;
 		}
 
-		public override BaseEvaluateResult Evaluate(BaseEvaluateParameters parameters)
+		public override GestureRecognitionModelEvaluateResult Evaluate(GestureRecognitionModelEvaluateParameters parameters)
 		{
 			if (parameters == null)
 				throw new ArgumentNullException(nameof(parameters));
@@ -370,83 +316,29 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 				};
 			}
 
-			BaseEvaluateResult result;
-			if (parameters is GestureRecognitionModelEvaluateParameters evaluateParameters)
+			GestureRecognitionModelEvaluateResult result;
+			if (this.IsTestData)
 			{
-				if (this.IsTestData)
+				try
 				{
-					try
-					{
-						var preds = this.model.Transform(this.testData);
-						if (preds != null)
-						{
-							var evaluateRes = this.mlContext.MulticlassClassification.Evaluate(preds, 
-								labelColumnName: GestureRecognitionModelColumnsConsts.LABEL_KEY_COL,
-								predictedLabelColumnName: GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_KEY_COL);
-							if (evaluateRes != null)
-							{
-								Dictionary<int, string> labelsDict = null;
-								var predictedLabelKeyCol = preds.Schema.GetColumnOrNull(GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_KEY_COL);
-								if (predictedLabelKeyCol.HasValue && predictedLabelKeyCol.Value.HasKeyValues())
-								{
-									VBuffer<ReadOnlyMemory<char>> kv = default;
-									predictedLabelKeyCol.Value.GetKeyValues(ref kv);
-									if (kv.Length > 0)
-									{
-										labelsDict = kv.Items().ToDictionary(kv => kv.Key, kv => kv.Value.ToString());
-									}
-								}
+					var preds = this.model.Transform(this.testData);
 
-								if (labelsDict != null && labelsDict.Count > 0)
-								{
-									var multiclassClassificationEvalResult = MulticlassClassificationUtils.PrepareResult(evaluateRes, labelsDict);
-									result = new GestureRecognitionModelEvaluateResult()
-									{
-										MulticlassClassificationEvalResult = multiclassClassificationEvalResult
-									};
-								}
-								else
-								{
-									result = new GestureRecognitionModelEvaluateResult()
-									{
-										ErrorKind = EvaluateErrorKind.InvalidOutput,
-										ErrorMessage = $"Getting labels failed during gesture recognition model evaluation."
-									};
-								}
-							}
-							else
-							{
-								result = new GestureRecognitionModelEvaluateResult()
-								{
-									ErrorKind = EvaluateErrorKind.InvalidOutput,
-									ErrorMessage = $"Transforming input data failed during gesture recognition model evaluation."
-								};
-							}
-						}
-						else
-						{
-							result = new GestureRecognitionModelEvaluateResult()
-							{
-								ErrorKind = EvaluateErrorKind.InvalidOutput,
-								ErrorMessage = $"Gesture recognition model evaluation failed."
-							};
-						}
-					}
-					catch (Exception ex)
+					MulticlassClassificationMetrics evaluateRes = null;
+					if (preds != null)
 					{
-						result = new GestureRecognitionModelEvaluateResult()
-						{
-							ErrorKind = EvaluateErrorKind.UnexpectedError,
-							ErrorMessage = $"Unexpected error during gesture recognition model evaluation, error message - {ex.Message}."
-						};
+						evaluateRes = this.mlContext.MulticlassClassification.Evaluate(preds,
+							labelColumnName: GestureRecognitionModelColumnsConsts.LABEL_KEY_COL,
+							predictedLabelColumnName: GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_KEY_COL);
 					}
+
+					result = GetModelEvaluateResult(preds, evaluateRes);
 				}
-				else
+				catch (Exception ex)
 				{
 					result = new GestureRecognitionModelEvaluateResult()
 					{
-						ErrorKind = EvaluateErrorKind.InvalidParameters,
-						ErrorMessage = $"Invalid parameters for gesture recognition model evaluation - no test data."
+						ErrorKind = EvaluateErrorKind.UnexpectedError,
+						ErrorMessage = $"Unexpected error during gesture recognition model evaluation, error message - {ex.Message}."
 					};
 				}
 			}
@@ -455,68 +347,152 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 				result = new GestureRecognitionModelEvaluateResult()
 				{
 					ErrorKind = EvaluateErrorKind.InvalidParameters,
-					ErrorMessage = $"Invalid parameters for gesture recognition model evaluation process."
+					ErrorMessage = $"Invalid parameters for gesture recognition model evaluation - no test data."
 				};
 			}
 
 			return result;
 		}
 
-		public override LoadModelResult LoadModel(BaseLoadModelParameters parameters)
+		public override GestureRecognitionModelCrossValidateResult CrossValidate(GestureRecognitionModelCrossValidateParameters parameters)
+		{
+			if (parameters == null)
+				throw new ArgumentNullException(nameof(parameters));
+
+			GestureRecognitionModelCrossValidateResult result;
+			if (this.IsTrainData)
+			{
+				if (parameters.TrainParams != null)
+				{
+					if (parameters.TrainParams.AlgorithmParams is FastForestParams fastForestParams)
+					{
+						try
+						{
+							var (fastForestPipeline, featuresCol) = GetModelPipeline(parameters.TrainParams, fastForestParams);
+							var cvFoldsResults = this.mlContext.MulticlassClassification.CrossValidate(this.trainData, fastForestPipeline, parameters.FoldsCount,
+								labelColumnName: GestureRecognitionModelColumnsConsts.LABEL_KEY_COL, seed: this.seed);
+							if (cvFoldsResults != null)
+							{
+								if (cvFoldsResults.Count > 0)
+								{
+									var foldsResults = new List<CrossValidationFoldResult<GestureRecognitionModelTrainResult, GestureRecognitionModelEvaluateResult>>();
+									foreach (var cvFoldResult in cvFoldsResults)
+									{
+										var foldResult = new CrossValidationFoldResult<GestureRecognitionModelTrainResult, GestureRecognitionModelEvaluateResult>()
+										{
+											FoldIdx = cvFoldResult.Fold,
+											TrainResult = GetModelTrainResult(cvFoldResult.Model, parameters.TrainParams, featuresCol),
+											EvaluateResult = GetModelEvaluateResult(cvFoldResult.ScoredHoldOutSet, cvFoldResult.Metrics)
+										};
+										foldsResults.Add(foldResult);
+									}
+
+									result = new GestureRecognitionModelCrossValidateResult()
+									{
+										FoldsResults = foldsResults.ToArray()
+									};
+								}
+								else
+								{
+									result = new GestureRecognitionModelCrossValidateResult()
+									{
+										ErrorKind = CrossValidateErrorKind.InvalidOutput,
+										ErrorMessage = $"No fold results were obtained as a result of the cross-validation process."
+									};
+								}
+							}
+							else
+							{
+								result = new GestureRecognitionModelCrossValidateResult()
+								{
+									ErrorKind = CrossValidateErrorKind.InvalidOutput,
+									ErrorMessage = $"Gesture recognition model cross validation process failed."
+								};
+							}
+						}
+						catch (Exception ex)
+						{
+							result = new GestureRecognitionModelCrossValidateResult()
+							{
+								ErrorKind = CrossValidateErrorKind.UnexpectedError,
+								ErrorMessage = $"Unexpected error during gesture recognition model cross validation process, error message - {ex.Message}."
+							};
+						}
+					}
+					else
+					{
+						result = new GestureRecognitionModelCrossValidateResult()
+						{
+							ErrorKind = CrossValidateErrorKind.InvalidParameters,
+							ErrorMessage = $"Invalid parameters for gesture recognition model cross validation process - invalid algorithms parameters."
+						};
+					}
+				}
+				else
+				{
+					result = new GestureRecognitionModelCrossValidateResult()
+					{
+						ErrorKind = CrossValidateErrorKind.InvalidParameters,
+						ErrorMessage = $"Invalid parameters for gesture recognition model cross validation process - no training parameters."
+					};
+				}
+			}
+			else
+			{
+				result = new GestureRecognitionModelCrossValidateResult()
+				{
+					ErrorKind = CrossValidateErrorKind.InvalidParameters,
+					ErrorMessage = $"Invalid parameters for gesture recognition model cross validation process - no training data."
+				};
+			}
+
+			return result;
+		}
+
+		public override LoadModelResult LoadModel(LoadGestureRecognitionModelParameters parameters)
 		{
 			if (parameters == null)
 				throw new ArgumentNullException(nameof(parameters));
 
 			LoadModelResult result;
-			if (parameters is BaseClassLib.Structures.MLNET.LoadGestureRecognitionModelParameters loadParameters)
+			(bool fileExists, LoadModelResult fileNotExistResult) = CheckIfFileExists(parameters.Path);
+			if (fileExists)
 			{
-				(bool fileExists, LoadModelResult fileNotExistResult) = CheckIfFileExists(loadParameters.Path);
-				if (fileExists)
+				string modelFileExtension = Path.GetExtension(parameters.Path).ToLower();
+				(bool supportedModelFileExtension, LoadModelResult unsupportedModelFileExtension)
+					= CheckIfSupportedModelFileExtensionToLoad(modelFileExtension);
+				if (supportedModelFileExtension)
 				{
-					string modelFileExtension = Path.GetExtension(loadParameters.Path).ToLower();
-					(bool supportedModelFileExtension, LoadModelResult unsupportedModelFileExtension)
-						= CheckIfSupportedModelFileExtensionToLoad(modelFileExtension);
-					if (supportedModelFileExtension)
+					ModelPath = parameters.Path;
+					switch (modelFileExtension)
 					{
-						ModelPath = loadParameters.Path;
-						switch (modelFileExtension)
-						{
-							case Consts.ModelOnnxExtension:
-								result = new LoadModelResult()
-								{
-									ErrorKind = LoadModelErrorKind.UnsupportedModelFileExtension,
-									ErrorMessage = $"Unsupported model file extension for gesture recognition model: [{modelFileExtension}]. Only supported: [{Consts.ModelZipExtension}]]."
-								};
-								break;
-							default:
-								ModelKind = ModelKind.Standard;
-								result = LoadStandardModel(loadParameters);
-								break;
-						}
-					}
-					else
-					{
-						result = unsupportedModelFileExtension;
+						case Consts.ModelOnnxExtension:
+							result = new LoadModelResult()
+							{
+								ErrorKind = LoadModelErrorKind.UnsupportedModelFileExtension,
+								ErrorMessage = $"Unsupported model file extension for gesture recognition model: [{modelFileExtension}]. Only supported: [{Consts.ModelZipExtension}]]."
+							};
+							break;
+						default:
+							ModelKind = ModelKind.Standard;
+							result = LoadStandardModel(parameters);
+							break;
 					}
 				}
 				else
 				{
-					result = fileNotExistResult;
+					result = unsupportedModelFileExtension;
 				}
 			}
 			else
 			{
-				result = new LoadModelResult()
-				{
-					ErrorKind = LoadModelErrorKind.InvalidParameters,
-					ErrorMessage = $"Invalid parameters for gesture recognition model loading."
-				};
+				result = fileNotExistResult;
 			}
 
 			return result;
 		}
 
-		public override SaveModelResult SaveModel(BaseSaveModelParameters parameters)
+		public override SaveModelResult SaveModel(SaveGestureRecognitionModelParameters parameters)
 		{
 			if (parameters == null)
 				throw new ArgumentNullException(nameof(parameters));
@@ -531,40 +507,29 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 			}
 
 			SaveModelResult result;
-			if (parameters is SaveGestureRecognitionModelParameters saveParameters)
+			string modelFileExtension = Path.GetExtension(parameters.Path).ToLower();
+			(bool supportedModelFileExtension, SaveModelResult unsupportedModelFileExtension)
+				= CheckIfSupportedModelFileExtensionToSave(modelFileExtension);
+			if (supportedModelFileExtension)
 			{
-				string modelFileExtension = Path.GetExtension(saveParameters.Path).ToLower();
-				(bool supportedModelFileExtension, SaveModelResult unsupportedModelFileExtension)
-					= CheckIfSupportedModelFileExtensionToSave(modelFileExtension);
-				if (supportedModelFileExtension)
+				switch (modelFileExtension)
 				{
-					switch (modelFileExtension)
-					{
-						case Consts.ModelOnnxExtension:
-							result = new SaveModelResult()
-							{
-								ErrorKind = SaveModelErrorKind.UnsupportedModelFileExtension,
-								ErrorMessage = $"Unsupported model file extension for gesture recognition model: [{modelFileExtension}]. Only supported: [{Consts.ModelZipExtension}]]."
-							};
-							break;
-						default:
-							ModelKind = ModelKind.Standard;
-							result = SaveStandardModel(saveParameters);
-							break;
-					}
-				}
-				else
-				{
-					result = unsupportedModelFileExtension;
+					case Consts.ModelOnnxExtension:
+						result = new SaveModelResult()
+						{
+							ErrorKind = SaveModelErrorKind.UnsupportedModelFileExtension,
+							ErrorMessage = $"Unsupported model file extension for gesture recognition model: [{modelFileExtension}]. Only supported: [{Consts.ModelZipExtension}]]."
+						};
+						break;
+					default:
+						ModelKind = ModelKind.Standard;
+						result = SaveStandardModel(parameters);
+						break;
 				}
 			}
 			else
 			{
-				result = new SaveModelResult()
-				{
-					ErrorKind = SaveModelErrorKind.InvalidParameters,
-					ErrorMessage = $"Invalid parameters for gesture recognition model saving to file."
-				};
+				result = unsupportedModelFileExtension;
 			}
 
 			return result;
@@ -590,8 +555,101 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 
 		#region Private methods
 
+		#region Model pipeline methods
+		private (IEstimator<ITransformer> pipeline, string featuresCol) GetModelPipeline(GestureRecognitionModelTrainParameters parameters, FastForestParams fastForestParams)
+		{
+			IEstimator<ITransformer> prepareDataPipeline;
+			string featuresCol;
+			if (this.IsKinectGestureDataView)
+				(prepareDataPipeline, featuresCol) = GestureRecognitionModelsPipelines.GetPrepareDataPipeline<KinectGestureDataView>(this.mlContext, this.seed, parameters);
+			else
+				(prepareDataPipeline, featuresCol) = GestureRecognitionModelsPipelines.GetPrepareDataPipeline<MediaPipeHandLandmarksGestureDataView>(this.mlContext, this.seed, parameters);
+
+			var fastForestPipeline = GestureRecognitionModelsPipelines.GetFastForestPipeline(this.mlContext, this.seed, prepareDataPipeline, featuresCol, fastForestParams);
+			return (fastForestPipeline, featuresCol);
+		}
+		#endregion
+
+		#region Training methods
+		private GestureRecognitionModelTrainResult GetModelTrainResult(ITransformer model, GestureRecognitionModelTrainParameters parameters, string featuresCol)
+		{
+			if (model == null)
+			{
+				return new GestureRecognitionModelTrainResult()
+				{
+					ErrorKind = TrainErrorKind.InvalidOutput,
+					ErrorMessage = $"Gesture recognition model training failed."
+				};
+			}
+
+			int? pcaComponentsCount = GetPcaComponentsCount(model, parameters, featuresCol);
+			return new GestureRecognitionModelTrainResult()
+			{
+				PcaComponentsCount = pcaComponentsCount
+			};
+		}
+		#endregion
+
+		#region Prediction methods
+		private void CreatePredictionEngine()
+		{
+			if (this.IsKinectGestureDataView)
+				this.kinectPredictionEngine = this.mlContext.Model.CreatePredictionEngine<KinectGestureDataView, GesturePrediction>(this.model);
+			else
+				this.mediaPipeHandLandmarksPredictionEngine = this.mlContext.Model.CreatePredictionEngine<MediaPipeHandLandmarksGestureDataView, GesturePrediction>(this.model);
+		}
+		#endregion
+
+		#region Evaluation methods
+		private GestureRecognitionModelEvaluateResult GetModelEvaluateResult(IDataView preds, MulticlassClassificationMetrics evaluateRes)
+		{
+			GestureRecognitionModelEvaluateResult result;
+			if (preds != null)
+			{
+				if (evaluateRes != null)
+				{
+					var labelsDict = GetLabelsDict(preds);
+					if (labelsDict != null && labelsDict.Count > 0)
+					{
+						var multiclassClassificationEvalResult = MulticlassClassificationUtils.PrepareResult(evaluateRes, labelsDict);
+						result = new GestureRecognitionModelEvaluateResult()
+						{
+							MulticlassClassificationEvalResult = multiclassClassificationEvalResult
+						};
+					}
+					else
+					{
+						result = new GestureRecognitionModelEvaluateResult()
+						{
+							ErrorKind = EvaluateErrorKind.InvalidOutput,
+							ErrorMessage = $"Getting labels failed during gesture recognition model evaluation."
+						};
+					}
+				}
+				else
+				{
+					result = new GestureRecognitionModelEvaluateResult()
+					{
+						ErrorKind = EvaluateErrorKind.InvalidOutput,
+						ErrorMessage = $"Gesture recognition model evaluation failed."
+					};
+				}
+			}
+			else
+			{
+				result = new GestureRecognitionModelEvaluateResult()
+				{
+					ErrorKind = EvaluateErrorKind.InvalidOutput,
+					ErrorMessage = $"Transforming input data failed during gesture recognition model evaluation."
+				};
+			}
+
+			return result;
+		}
+		#endregion
+
 		#region Loading and saving gesture recognition models methods
-		private LoadModelResult LoadStandardModel(BaseClassLib.Structures.MLNET.LoadGestureRecognitionModelParameters parameters)
+		private LoadModelResult LoadStandardModel(LoadGestureRecognitionModelParameters parameters)
 		{
 			try
 			{
@@ -723,6 +781,40 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 				result = this.mlContext.Data.LoadFromEnumerable(data);
 
 			return result;
+		}
+
+		private int? GetPcaComponentsCount(ITransformer model, GestureRecognitionModelTrainParameters parameters, string featuresCol)
+		{
+			int? pcaComponentsCount = null;
+			if (parameters.UsePca && featuresCol == GestureRecognitionModelColumnsConsts.FEATURES_PCA_COL)
+			{
+				var dataView = model.Transform(this.trainData);
+				if (dataView.Schema != null)
+				{
+					var pcaComponentsCol = dataView.Schema.GetColumnOrNull(featuresCol);
+					if (pcaComponentsCol.HasValue && pcaComponentsCol.Value.Type is VectorDataViewType vectorType)
+						pcaComponentsCount = vectorType.Size;
+				}
+			}
+
+			return pcaComponentsCount;
+		}
+
+		private Dictionary<int, string> GetLabelsDict(IDataView preds)
+		{
+			Dictionary<int, string> labelsDict = null;
+			var predictedLabelKeyCol = preds.Schema.GetColumnOrNull(GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_KEY_COL);
+			if (predictedLabelKeyCol.HasValue && predictedLabelKeyCol.Value.HasKeyValues())
+			{
+				VBuffer<ReadOnlyMemory<char>> kv = default;
+				predictedLabelKeyCol.Value.GetKeyValues(ref kv);
+				if (kv.Length > 0)
+				{
+					labelsDict = kv.Items().ToDictionary(kv => kv.Key, kv => kv.Value.ToString());
+				}
+			}
+			
+			return labelsDict;
 		}
 		#endregion
 

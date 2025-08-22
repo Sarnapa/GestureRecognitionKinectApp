@@ -14,6 +14,12 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			set;
 		}
 
+		public int? FoldIdx
+		{
+			get;
+			set;
+		}
+
 		public int Seed
 		{
 			get;
@@ -195,7 +201,7 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 	#region ModelProcessResultMapper
 	public static class ModelProcessResultMapper
 	{
-		public static ModelProcessResult Map(string modelFilePath, int seed,
+		public static ModelProcessResult Map(string modelFilePath, int? foldIdx, int seed,
 			GestureRecognitionModelSetDataParameters setDataParameters, string? dataFilePath, string? trainDataFilePath, string? testDataFilePath,
 			GestureRecognitionModelTrainParameters? trainParams, GestureRecognitionModelTrainResult? trainResult,
 			GestureRecognitionModelEvaluateResult evaluateResult, string perClassEvalResultsFilePath)
@@ -205,6 +211,7 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			return new ModelProcessResult()
 			{
 				ModelFilePath = modelFilePath,
+				FoldIdx = foldIdx,
 				Seed = seed,
 				DataFilePath = dataFilePath,
 				TrainDataFilePath = trainDataFilePath,

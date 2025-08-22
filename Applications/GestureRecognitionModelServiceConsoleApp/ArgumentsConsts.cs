@@ -20,6 +20,10 @@
 
 		public const string SEED_ARG = "-seed";
 
+		public const string USE_CV_ARG = "-useCv";
+		public const string CV_FOLDS_COUNT_ARG = "-foldsCount";
+		public const string MODEL_CV_PROCESS_RESULT_FILE_PATH = "-cvResultFilePath";
+
 		// Unnecessary yet, therefore no support added.
 		// public const string EXCLUDED_FEATURES_ARG = "-excludedFeat";
 		public const string USE_PCA_ARG = "-usePca";

@@ -6,7 +6,25 @@ using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
 namespace GestureRecognition.Processing.MLNETProcUnit
 {
 	#region IModelWrapper
-	public interface IModelWrapper
+	public interface IModelWrapper<
+		SetDataParamsType,
+		TrainParamsType, TrainResultType,
+		PredictParamsType, PredictResultType,
+		EvaluateParamsType, EvaluateResultType,
+		CrossValidateParamsType, CrossValidateResultType,
+		LoadModelParamsType,
+		SaveModelParamsType>
+		where SetDataParamsType : BaseSetDataParameters
+		where TrainParamsType : BaseTrainParameters
+		where TrainResultType : BaseTrainResult
+		where PredictParamsType : BasePredictParameters
+		where PredictResultType : BasePredictResult
+		where EvaluateParamsType : BaseEvaluateParameters
+		where EvaluateResultType : BaseEvaluateResult
+		where CrossValidateParamsType : BaseCrossValidateParameters<TrainParamsType, EvaluateParamsType>
+		where CrossValidateResultType : BaseCrossValidateResult<TrainResultType, EvaluateResultType>
+		where LoadModelParamsType : BaseLoadModelParameters
+		where SaveModelParamsType : BaseSaveModelParameters
 	{
 		#region Properties
 		string ModelPath
@@ -41,19 +59,45 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 		#endregion
 
 		#region Methods
-		SetDataResult SetData(BaseSetDataParameters parameters);
-		BaseTrainResult TrainModel(BaseTrainParameters parameters);
-		BasePredictResult Predict(BasePredictParameters parameters);
-		BaseEvaluateResult Evaluate(BaseEvaluateParameters parameters);
-		LoadModelResult LoadModel(BaseLoadModelParameters parameters);
-		SaveModelResult SaveModel(BaseSaveModelParameters parameters);
+		SetDataResult SetData(SetDataParamsType parameters);
+		TrainResultType TrainModel(TrainParamsType parameters);
+		PredictResultType Predict(PredictParamsType parameters);
+		EvaluateResultType Evaluate(EvaluateParamsType parameters);
+		CrossValidateResultType CrossValidate(CrossValidateParamsType parameters);
+		LoadModelResult LoadModel(LoadModelParamsType parameters);
+		SaveModelResult SaveModel(SaveModelParamsType parameters);
 		void Cleanup();
 		#endregion
 	}
 	#endregion
 
 	#region ModelWrapper<Input, Output>
-	public abstract class ModelWrapper: IModelWrapper
+	public abstract class ModelWrapper<
+		SetDataParamsType,
+		TrainParamsType, TrainResultType,
+		PredictParamsType, PredictResultType,
+		EvaluateParamsType, EvaluateResultType,
+		CrossValidateParamsType, CrossValidateResultType,
+		LoadModelParamsType,
+		SaveModelParamsType>: IModelWrapper<
+		SetDataParamsType,
+		TrainParamsType, TrainResultType,
+		PredictParamsType, PredictResultType,
+		EvaluateParamsType, EvaluateResultType,
+		CrossValidateParamsType, CrossValidateResultType,
+		LoadModelParamsType,
+		SaveModelParamsType>
+		where SetDataParamsType : BaseSetDataParameters
+		where TrainParamsType : BaseTrainParameters
+		where TrainResultType : BaseTrainResult
+		where PredictParamsType : BasePredictParameters
+		where PredictResultType : BasePredictResult
+		where EvaluateParamsType : BaseEvaluateParameters
+		where EvaluateResultType : BaseEvaluateResult
+		where CrossValidateParamsType : BaseCrossValidateParameters<TrainParamsType, EvaluateParamsType>
+		where CrossValidateResultType : BaseCrossValidateResult<TrainResultType, EvaluateResultType>
+		where LoadModelParamsType : BaseLoadModelParameters
+		where SaveModelParamsType : BaseSaveModelParameters
 	{
 		#region Protected fields
 		protected readonly int? seed;
@@ -116,12 +160,13 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 		#endregion
 
 		#region Public methods
-		public abstract SetDataResult SetData(BaseSetDataParameters parameters);
-		public abstract BaseTrainResult TrainModel(BaseTrainParameters parameters);
-		public abstract BasePredictResult Predict(BasePredictParameters parameters);
-		public abstract BaseEvaluateResult Evaluate(BaseEvaluateParameters parameters);
-		public abstract LoadModelResult LoadModel(BaseLoadModelParameters parameters);
-		public abstract SaveModelResult SaveModel(BaseSaveModelParameters parameters);
+		public abstract SetDataResult SetData(SetDataParamsType parameters);
+		public abstract TrainResultType TrainModel(TrainParamsType parameters);
+		public abstract PredictResultType Predict(PredictParamsType parameters);
+		public abstract EvaluateResultType Evaluate(EvaluateParamsType parameters);
+		public abstract CrossValidateResultType CrossValidate(CrossValidateParamsType parameters);
+		public abstract LoadModelResult LoadModel(LoadModelParamsType parameters);
+		public abstract SaveModelResult SaveModel(SaveModelParamsType parameters);
 		public abstract void Cleanup();
 		#endregion
 
