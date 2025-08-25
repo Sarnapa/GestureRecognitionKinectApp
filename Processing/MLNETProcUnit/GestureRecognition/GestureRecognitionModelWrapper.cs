@@ -505,7 +505,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 							else if (parameters.HyperparamsTuner == HyperparamsTunerKind.GridSearch)
 							{
 								// TODO: Generalize more
-								targetModelsCount = (int)Math.Pow(parameters.GridSearchStepSize, 5) * (parameters.PrepareDataSearchSpace.PcaValues?.Values.Length ?? 1);
+								targetModelsCount = (int)Math.Pow(parameters.GridSearchStepSize, 6);
 							}
 
 							experiment.SetMonitor(new ConsoleAutoMLMonitor(parameters.MainMetric, targetModelsCount));
@@ -831,21 +831,21 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 
 		private static PrepareDataHyperparams GetPrepareDataHyperparams(MLParameter parameter)
 		{
-			var prepareDataHyperparamsDict = HyperparamsUtils.TryGetParams(parameter, [nameof(PrepareDataHyperparams.Pca)]);
+			var prepareDataHyperparamsDict = HyperparamsUtils.TryGetParams(parameter, [nameof(PrepareDataHyperparams.PcaRank)]);
 
-			PcaChoice pca = null;
-			if (prepareDataHyperparamsDict.TryGetValue(nameof(PrepareDataHyperparams.Pca), out MLParameter pcaParameter)
-				&& pcaParameter.ParameterType == ParameterType.Object)
+			int? pcaRank = null;
+			if (prepareDataHyperparamsDict.TryGetValue(nameof(PrepareDataHyperparams.PcaRank), out MLParameter pcaRankParameter)
+				&& pcaRankParameter.ParameterType == ParameterType.Integer)
 			{
-				pca = pcaParameter.AsType<PcaChoice>();
+				pcaRank = pcaRankParameter.AsType<int>();
 			}
 
-			if (pca == null)
+			if (!pcaRank.HasValue)
 				return null;
 
 			return new PrepareDataHyperparams()
 			{
-				Pca = pca
+				PcaRank = pcaRank.Value
 			};
 		}
 
@@ -1051,7 +1051,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 		private int? GetPcaComponentsCount(ITransformer model, GestureRecognitionModelTrainParameters parameters)
 		{
 			int? pcaComponentsCount = null;
-			if (parameters.PrepareDataHyperparams.UsePca)
+			if (parameters.PrepareDataHyperparams.PcaRank > 0)
 			{
 				var dataView = model.Transform(this.trainData);
 				if (dataView.Schema != null)

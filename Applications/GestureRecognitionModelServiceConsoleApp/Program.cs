@@ -27,15 +27,14 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			//	ArgumentsConsts.USE_CV_ARG, "True",
 			//	ArgumentsConsts.CV_FOLDS_COUNT_ARG, "10",
 			//	ArgumentsConsts.MODEL_CV_PROCESS_RESULT_FILE_PATH, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Tests\2025_08_11_MediaPipeHandLandmarks\CV_ModelResult.csv",
-			//	ArgumentsConsts.TUNE_HYPERPARAMS_MAX_MODEL_TO_EXPLORE_COUNT_ARG, "3",
-			//	//ArgumentsConsts.TUNE_HYPERPARAMS_TRAINING_TIME_IN_SECONDS_ARG, "600",
-			//	ArgumentsConsts.TUNE_HYPERPARAMS_TUNER_ARG, ArgumentsConsts.HYPERPARAMS_TUNER_ECICOSTFRUGAL,
+			//	// ArgumentsConsts.TUNE_HYPERPARAMS_MAX_MODEL_TO_EXPLORE_COUNT_ARG, "20",
+			//	// ArgumentsConsts.TUNE_HYPERPARAMS_TRAINING_TIME_IN_SECONDS_ARG, "600",
+			//	ArgumentsConsts.TUNE_HYPERPARAMS_TUNER_ARG, ArgumentsConsts.HYPERPARAMS_TUNER_GRIDSEARCH,
 			//	ArgumentsConsts.TUNE_HYPERPARAMS_GRID_SEARCH_STEP_SIZE_ARG, "5",
 			//	ArgumentsConsts.TUNE_HYPERPARAMS_FOLDS_COUNT_ARG, "5",
 			//	ArgumentsConsts.TUNE_HYPERPARAMS_MAIN_METRIC_ARG, ArgumentsConsts.MULTICLASS_CLASSIFICATION_METRIC_MACROACCURACY,
-			//	ArgumentsConsts.TUNE_HYPERPARAMS_USE_PCA_ARG, "2", "True",
-			//	ArgumentsConsts.TUNE_HYPERPARAMS_PCA_RANK_ARG, "10", "50", "30",
-			//	ArgumentsConsts.TUNE_HYPERPARAMS_FAST_FOREST_TREES_COUNT_ARG, "100", "900", "500", 
+			//	ArgumentsConsts.TUNE_HYPERPARAMS_PCA_RANK_ARG, "0", "60", "30",
+			//	ArgumentsConsts.TUNE_HYPERPARAMS_FAST_FOREST_TREES_COUNT_ARG, "100", "900", "500",
 			//	ArgumentsConsts.TUNE_HYPERPARAMS_FAST_FOREST_LEAVES_COUNT_ARG, "16", "256", "64",
 			//	ArgumentsConsts.TUNE_HYPERPARAMS_FAST_FOREST_MIN_EXAMPLE_COUNT_PER_LEAF_ARG, "5", "25", "10",
 			//	ArgumentsConsts.TUNE_HYPERPARAMS_FAST_FOREST_FEATURE_FRACTION_ARG, "0.1", "0.5", "0.3",
@@ -53,7 +52,6 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			//	ArgumentsConsts.USE_CV_ARG, "True",
 			//	ArgumentsConsts.CV_FOLDS_COUNT_ARG, "10",
 			//	ArgumentsConsts.MODEL_CV_PROCESS_RESULT_FILE_PATH, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Tests\2025_08_11_MediaPipeHandLandmarks\CV_ModelResult.csv",
-			//	ArgumentsConsts.USE_PCA_ARG, "True",
 			//	ArgumentsConsts.PCA_RANK_ARG, "30",
 			//	ArgumentsConsts.FAST_FOREST_ALG_ARG,
 			//	ArgumentsConsts.FAST_FOREST_TREES_COUNT_ARG, "500",
@@ -194,9 +192,9 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			#region PrepareDataSearchSpaceValues
 			var prepareDataSearchSpaceValues = new PrepareDataSearchSpaceValues();
 
-			var pcaValues = GetPcaValues(methodName, args, methodArgToIdx, tuneHyperparamsParams.GridSearchStepSize);
-			if (pcaValues != null)
-				prepareDataSearchSpaceValues.PcaValues = pcaValues;
+			var (pcaRankValues, getPcaRankValuesIsSuccess) = GetSearchSpaceIntRangeValues(methodName, args, methodArgToIdx, ArgumentsConsts.TUNE_HYPERPARAMS_PCA_RANK_ARG, false);
+			if (getPcaRankValuesIsSuccess && pcaRankValues != null)
+				prepareDataSearchSpaceValues.PcaRankValues = pcaRankValues;
 
 			tuneHyperparamsParams.PrepareDataSearchSpace = prepareDataSearchSpaceValues;
 			#endregion
@@ -311,16 +309,10 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			#region TrainingParameters
 			var trainParams = new GestureRecognitionModelTrainParameters();
 
-			var (usePca, getUsePcaIsSuccess) = GetArgBoolValue(methodName, args, methodArgToIdx, ArgumentsConsts.USE_PCA_ARG, false);
-			if (getUsePcaIsSuccess && usePca.HasValue)
-			{
-				trainParams.PrepareDataHyperparams.Pca.UsePca = usePca.Value;
-			}
-
 			var (pcaRank, getPcaRankIsSuccess) = GetArgIntValue(methodName, args, methodArgToIdx, ArgumentsConsts.PCA_RANK_ARG, false);
 			if (getPcaRankIsSuccess && pcaRank.HasValue)
 			{
-				trainParams.PrepareDataHyperparams.Pca.PcaRank = pcaRank.Value;
+				trainParams.PrepareDataHyperparams.PcaRank = pcaRank.Value;
 			}
 
 			#region FastForestParams
@@ -557,42 +549,6 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			}
 
 			return tuner;
-		}
-
-		private static SearchSpaceValues<PcaChoice>? GetPcaValues(string methodName, string[] args, Dictionary<string, int> methodArgToIdx, int gridSearchStepSize)
-		{
-			var (usePcaValues, getUsePcaValuesIsSuccess) = GetSearchSpaceBoolValues(methodName, args, methodArgToIdx, ArgumentsConsts.TUNE_HYPERPARAMS_USE_PCA_ARG, false);
-			if (getUsePcaValuesIsSuccess && usePcaValues != null)
-			{
-				if (usePcaValues.Values.Length == 1 && !usePcaValues.Default)
-				{
-					var def = new PcaChoice() { UsePca = false };
-					return new SearchSpaceValues<PcaChoice>()
-					{
-						Values = [def],
-						Default = def
-					};
-				}
-
-				var (pcaRankValues, getPcaRankValuesIsSuccess) = GetSearchSpaceIntRangeValues(methodName, args, methodArgToIdx, ArgumentsConsts.TUNE_HYPERPARAMS_PCA_RANK_ARG, false);
-				if (getUsePcaValuesIsSuccess && pcaRankValues != null)
-				{
-					int[] possiblePcaRanksValues = GetPossibleValues(pcaRankValues, gridSearchStepSize);
-					return GetPcaChoices(usePcaValues.Values, possiblePcaRanksValues, new PcaChoice() { UsePca = usePcaValues.Default, PcaRank = usePcaValues.Default ? pcaRankValues.Default : 0 });
-				}
-				else
-				{
-					PcaChoice defaultPcaChoice;
-					if (usePcaValues.Default)
-						defaultPcaChoice = new PcaChoice() { UsePca = true, PcaRank = 30 };
-					else
-						defaultPcaChoice = new PcaChoice() { UsePca = false };
-
-					return GetPcaChoices(usePcaValues.Values, [30], defaultPcaChoice);
-				}
-			}
-
-			return null;
 		}
 
 		private static int GetSeed(string methodName, string[] args, Dictionary<string, int> methodArgToIdx)
@@ -928,65 +884,6 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			}
 
 			return (gesturesData, gesturesDataFilePath, true);
-		}
-		#endregion
-
-		#region Other private methods
-		private static int[] GetPossibleValues(SearchSpaceIntRangeValues rangeValues, int gridSearchStepSize)
-		{
-			if (rangeValues == null)
-				return [];
-
-			int min = rangeValues.Min;
-			int max = rangeValues.Max;
-			int def = rangeValues.Default;
-
-			if (rangeValues.Min == rangeValues.Max)
-				return [def];
-
-			if (gridSearchStepSize <= 1)
-				return [def];
-
-			int step = (int)Math.Ceiling((rangeValues.Max - rangeValues.Min) / (double)(gridSearchStepSize - 1));
-
-			var result = new List<int>();
-			for (int i = min; i <= max; i += step)
-			{
-				result.Add(i);
-			}
-
-			if (!result.Contains(def))
-				result.Add(def);
-
-			if (!result.Contains(max))
-				result.Add(max);
-
-			return result.OrderBy(v => v).ToArray();
-		}
-
-		private static SearchSpaceValues<PcaChoice> GetPcaChoices(bool[] usePcaValues, int[] pcaRankValues, PcaChoice defaultPcaChoice)
-		{
-			var pcaChoices = new List<PcaChoice>();
-			foreach (bool usePca in usePcaValues)
-			{
-				if (usePca)
-				{
-					foreach (int pcaRank in pcaRankValues)
-					{
-						pcaChoices.Add(new PcaChoice() { UsePca = usePca, PcaRank = pcaRank });
-					}
-				}
-				else
-				{
-					pcaChoices.Add(new PcaChoice() { UsePca = usePca, PcaRank = 0 });
-				}
-			}
-
-			return new SearchSpaceValues<PcaChoice>()
-			{
-				Values = pcaChoices.ToArray(),
-				Default = defaultPcaChoice
-			};
 		}
 		#endregion
 

@@ -12,12 +12,13 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Processing\BaseClassLib\BaseClassLib.csproj" />
+    <ProjectReference Include="..\MLNETProcUnit\MLNETProcUnit.csproj" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.ML" Version="4.0.2" />
     <PackageReference Include="Microsoft.ML.FastTree" Version="4.0.2" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Models\TGM1\Info.txt" />
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>

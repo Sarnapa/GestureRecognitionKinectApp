@@ -270,11 +270,22 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Properties
                 return ResourceManager.GetString("NoGestureFeatures", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No ready - Kinect not found!.
-        /// </summary>
-        internal static string NoSensorStatusText {
+
+				/// <summary>
+				///   Looks up a localized string similar to No gesture recognition model loaded.
+				/// </summary>
+				internal static string NoGestureRecognitionModelLoadedText
+				{
+					get
+					{
+						return ResourceManager.GetString("NoGestureRecognitionModelLoadedText", resourceCulture);
+					}
+				}
+
+				/// <summary>
+				///   Looks up a localized string similar to No ready - Kinect not found!.
+				/// </summary>
+				internal static string NoSensorStatusText {
             get {
                 return ResourceManager.GetString("NoSensorStatusText", resourceCulture);
             }

@@ -74,6 +74,18 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			}
 		}
 
+		public float GesturePredictionScoreThreshold
+		{
+			get
+			{
+				return ConfigService.MainSettings.GesturePredictionScoreThreshold;
+			}
+			set
+			{
+				ConfigService.MainSettings.GesturePredictionScoreThreshold = value;
+			}
+		}
+
 		public Visibility AdminModeSettingsVisibility
 		{
 			get

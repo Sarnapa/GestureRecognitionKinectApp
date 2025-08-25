@@ -94,6 +94,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
                 <Label Style="{StaticResource SettingsLabel}" Content="General settings"/>
@@ -141,12 +142,28 @@
                     <CheckBox HorizontalAlignment="Stretch" VerticalAlignment="Center" IsChecked="{Binding Path=AllowBodyTrackingLostForRecordingAndRecognizingUsingMediaPipeModels, Mode=TwoWay}" />
                 </DockPanel>
 
-                <DockPanel Grid.Row="5" Margin="10,0,100,0" Visibility="{Binding Path=AdminModeSettingsVisibility}">
+
+                <DockPanel Grid.Row="5" Margin="10,0,100,0">
+                    <Label Style="{StaticResource SettingsOptionLabel}" Content="Gesture prediction score threshold:" />
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Slider Name="gesturePredictionScoreThresholdSlider" Style="{StaticResource DecimalRangeSliderStyle}" Value="{Binding GesturePredictionScoreThreshold}" />
+                        <TextBox Grid.Column="1" Text="{Binding ElementName=gesturePredictionScoreThresholdSlider, Path=Value, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:F2}'}" Margin="5,0,0,0" IsEnabled="False"/>
+                    </Grid>
+                </DockPanel>
+
+                <DockPanel Grid.Row="6" Margin="10,0,100,0" Visibility="{Binding Path=AdminModeSettingsVisibility}">
                     <Label Style="{StaticResource SettingsOptionLabel}" Content="Allow automatic gesture record export:" />
                     <CheckBox HorizontalAlignment="Stretch" VerticalAlignment="Center" IsChecked="{Binding Path=AllowAutomaticGestureRecordExport, Mode=TwoWay}" />
                 </DockPanel>
 
-                <DockPanel Grid.Row="6" Margin="10,0,100,0" Visibility="{Binding Path=AdminModeSettingsVisibility}">
+                <DockPanel Grid.Row="7" Margin="10,0,100,0" Visibility="{Binding Path=AdminModeSettingsVisibility}">
                     <Label Style="{StaticResource SettingsOptionLabel}" Content="Default gesture label:" />
                     <ComboBox HorizontalAlignment="Left" VerticalAlignment="Center"
                               HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
@@ -154,7 +171,7 @@
                               SelectedItem="{Binding DefaultGestureLabel}"/>
                 </DockPanel>
 
-                <DockPanel Grid.Row="7" Margin="10,0,100,0" Visibility="{Binding Path=AdminModeSettingsVisibility}">
+                <DockPanel Grid.Row="8" Margin="10,0,100,0" Visibility="{Binding Path=AdminModeSettingsVisibility}">
                     <Label Style="{StaticResource SettingsOptionLabel}" Content="Current user:" />
                     <ComboBox HorizontalAlignment="Left" VerticalAlignment="Center"
                               HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
@@ -162,14 +179,14 @@
                               SelectedItem="{Binding CurrentUser}"/>
                 </DockPanel>
 
-                <DockPanel Grid.Row="8" Margin="10,0,100,0" Visibility="{Binding Path=AdminModeSettingsVisibility}">
+                <DockPanel Grid.Row="9" Margin="10,0,100,0" Visibility="{Binding Path=AdminModeSettingsVisibility}">
                     <Label Style="{StaticResource SettingsOptionLabel}" Content="Gestures dataset path:" />
                     <TextBox HorizontalAlignment="Left" VerticalAlignment="Center"
                              HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
                              Text="{Binding GesturesDatasetPath}"/>
                 </DockPanel>
 
-                <DockPanel Grid.Row="9" Margin="10,0,100,0" Visibility="{Binding Path=AdminModeSettingsVisibility}">
+                <DockPanel Grid.Row="10" Margin="10,0,100,0" Visibility="{Binding Path=AdminModeSettingsVisibility}">
                     <Label Style="{StaticResource SettingsOptionLabel}" Content="Gesture record file name extra label:" />
                     <TextBox HorizontalAlignment="Left" VerticalAlignment="Center"
                              HorizontalContentAlignment="Left" VerticalContentAlignment="Center"

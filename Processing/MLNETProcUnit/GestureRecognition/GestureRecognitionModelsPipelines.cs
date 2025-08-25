@@ -53,14 +53,14 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 
 			pipeline = pipeline.Append(context.Transforms.NormalizeMeanVariance(GestureRecognitionModelColumnsConsts.FEATURES_COL));
 
-			if (hyperparams.Pca != null && hyperparams.Pca.UsePca)
+			if (hyperparams.PcaRank > 0)
 			{
 				// For now, we don't need the original column, so we overwrite it. If the need arises, unfortunately, it will be a problem for the entire hyperparameter tuning process.
 				pipeline = pipeline.Append(
 						context.Transforms.ProjectToPrincipalComponents(
 								inputColumnName: null,
 								outputColumnName: GestureRecognitionModelColumnsConsts.FEATURES_COL,
-								rank: hyperparams.Pca.PcaRank,
+								rank: hyperparams.PcaRank,
 								seed: seed
 						)
 				);
@@ -79,11 +79,11 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 			if (searchSpaceValues == null)
 				searchSpaceValues = new PrepareDataSearchSpaceValues();
 
-			var pcaSearchSpace = searchSpaceValues.PcaValues;
+			var pcaRankSearchValues = searchSpaceValues.PcaRankValues;
 
 			var searchSpace = new SearchSpace<PrepareDataHyperparams>
 			{
-				{ nameof(PrepareDataHyperparams.Pca), new ChoiceOption(pcaSearchSpace.Values?.ToArray() ?? [], pcaSearchSpace.Default) },
+				{ nameof(PrepareDataHyperparams.PcaRank), new UniformIntOption(min: pcaRankSearchValues.Min, max: pcaRankSearchValues.Max, defaultValue: pcaRankSearchValues.Default) },
 			};
 
 			IEstimator<ITransformer> Factory(MLContext ctx, PrepareDataHyperparams hparams) { return GetPrepareDataPipeline<T>(ctx, seed, hparams, excludedFeatures); }

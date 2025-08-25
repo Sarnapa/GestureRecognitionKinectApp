@@ -218,7 +218,6 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 				TestDataFilePath = testDataFilePath,
 				TestFraction = setDataParameters.TestFraction,
 				ExcludedFeatures = trainParams?.ExcludedFeatures,
-				UsePca = trainParams?.PrepareDataHyperparams?.UsePca,
 				PcaRank = trainParams?.PrepareDataHyperparams?.PcaRank,
 				PcaComponentsCount = trainResult?.PcaComponentsCount,
 				AlgorithmKind = ffParams?.AlgorithmKind.ToString(),

@@ -189,6 +189,9 @@ Further actions canceled.</value>
   <data name="NoGestureFeatures" xml:space="preserve">
     <value>Gesture features calculation failed</value>
   </data>
+  <data name="NoGestureRecognitionModelLoadedText" xml:space="preserve">
+    <value>No gesture recognition model loaded</value>
+  </data>
   <data name="NoSensorStatusText" xml:space="preserve">
     <value>No ready - Kinect not found!</value>
   </data>

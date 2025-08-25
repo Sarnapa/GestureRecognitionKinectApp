@@ -377,6 +377,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				return this.gestureRecognitionManager;
 			}
 		}
+
+		public string GestureRecognitionModelPath
+		{
+			get
+			{
+				return this.gestureRecognitionManager?.GestureRecognitionModelPath ?? string.Empty;
+			}
+		}
 		#endregion
 
 		#region Constructors
@@ -384,6 +392,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		{
 			this.kinectClient = new KinectClient();
 			this.gestureToRecognizeBodyFrames = new List<BodyData>();
+			this.gestureRecognitionManager = new GestureRecognitionManager();
 		}
 		#endregion
 
@@ -411,7 +420,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				this.allowBodyTrackingLostFramesMaxCount = 5;
 			}
 
-			this.gestureRecognitionManager = new GestureRecognitionManager();
 			this.gestureRecognitionFeaturesManager = new GestureRecognitionFeaturesManager(this.TrackingMode);
 
 			bool isKinectServerStarted = this.kinectClient.StartKinectServer();
@@ -499,6 +507,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			}
 		}
 
+		public LoadGestureRecognitionModelResult LoadGestureRecognitionModel(string gestureRecognitionModelPath)
+		{
+			return this.gestureRecognitionManager.LoadGestureRecognitionModel(new LoadGestureRecognitionModelParameters(gestureRecognitionModelPath, this.TrackingMode));
+		}
+
 		public async Task<RecognizeGestureResult> ExecuteGestureRecognitionProcess()
 		{
 			try
@@ -509,7 +522,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					var gestureFeatures = await this.gestureRecognitionFeaturesManager.CalculateFeatures(this.gestureToRecognizeBodyFrames.ToArray());
 					if (gestureFeatures != null && gestureFeatures.IsValid)
 					{
-						return await this.gestureRecognitionManager.RecognizeGestureAsync(new RecognizeGestureParameters(gestureFeatures, CancellationToken.None));
+						return await this.gestureRecognitionManager.RecognizeGestureAsync(new RecognizeGestureParameters(gestureFeatures, ConfigService.MainSettings.GesturePredictionScoreThreshold, 
+							this.TrackingMode, CancellationToken.None));
 					}
 					else
 						return new RecognizeGestureResult(false, "Error during calculating features for gesture.");
@@ -533,6 +547,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			// Code archived - failed attempt with mediapipe model in ONNX format
 			//if (appFinished)
 			//	CleanExternalBodyTrackingModels();
+
+			if (appFinished)
+			{
+				this.gestureRecognitionManager?.UnloadGestureRecognitionModel();
+				this.gestureRecognitionManager = null;
+			}
 
 			this.kinectClient.OnFrameArrived -= this.KinectClient_OnFrameArrived;
 			this.kinectClient.OnKinectIsAvailableChanged -= this.KinectClient_OnKinectIsAvailableChanged;

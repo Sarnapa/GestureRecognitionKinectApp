@@ -11,7 +11,7 @@ public sealed class ConsoleAutoMLMonitor: IMonitor
 {
 	#region Private fields
 	private readonly string[] allHyperparamsKeys = [
-		nameof(PrepareDataHyperparams.Pca),
+		nameof(PrepareDataHyperparams.PcaRank),
 		nameof(FastForestHyperparams.TreesCount),
 		nameof(FastForestHyperparams.LeavesCount),
 		nameof(FastForestHyperparams.MinimumExampleCountPerLeaf),
@@ -141,10 +141,10 @@ public sealed class ConsoleAutoMLMonitor: IMonitor
 				sb.Append(", ");
 			sb.Append(kv.Key);
 			sb.Append('=');
-			if (kv.Key == nameof(PrepareDataHyperparams.Pca) && kv.Value.ParameterType == ParameterType.Object)
+			if (kv.Key == nameof(PrepareDataHyperparams.PcaRank) && kv.Value.ParameterType == ParameterType.Integer)
 			{
-				var pca = kv.Value.AsType<PcaChoice>();
-				sb.Append(pca.ToString());
+				int pcaRank = kv.Value.AsType<int>();
+				sb.Append(pcaRank);
 			}
 			else
 				sb.Append(kv.Value.ToString());

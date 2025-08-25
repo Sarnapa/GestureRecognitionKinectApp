@@ -1,21 +1,19 @@
-﻿using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition.Hyperparameters;
-
-namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition.SearchSpace
+﻿namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition.SearchSpace
 {
 	public class PrepareDataSearchSpaceValues
 	{
 		#region Public properties
-		public SearchSpaceValues<PcaChoice> PcaValues
+		public SearchSpaceIntRangeValues PcaRankValues
 		{
 			get;
 			set;
-		} = new SearchSpaceValues<PcaChoice> { Values = new PcaChoice[] { new PcaChoice() }, Default = new PcaChoice() };
+		} = new SearchSpaceIntRangeValues { Min = 0, Max = 0, Default = 0 };
 		#endregion
 
 		#region Public methods
 		public override string ToString()
 		{
-			return $"{nameof(this.PcaValues)}: {this.PcaValues}";
+			return $"{nameof(this.PcaRankValues)}: {this.PcaRankValues}";
 		}
 		#endregion
 	}

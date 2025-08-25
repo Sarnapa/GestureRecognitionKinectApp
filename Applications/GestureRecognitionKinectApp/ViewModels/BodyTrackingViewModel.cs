@@ -13,10 +13,11 @@ using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Process
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Processing.Utilities;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.Messages;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.NavigationService;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
 using GestureRecognition.Processing.BaseClassLib.Utils;
 using static GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels.ViewModelLocator;
-using GestureRecognition.Processing.BaseClassLib.Structures.Body;
+using MLNETConsts = GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Consts;
 
 namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 {
@@ -90,6 +91,15 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			get
 			{
 				return $"Tracked users: {this.trackedUsersCount}";
+			}
+		}
+
+		public string GestureRecognitionModelPath
+		{
+			get
+			{
+				return string.IsNullOrEmpty(this.model.GestureRecognitionModelPath) ?
+					Properties.Resources.NoGestureRecognitionModelLoadedText : $"Gesture recognition model: {this.model.GestureRecognitionModelPath}";
 			}
 		}
 
@@ -183,10 +193,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		{
 			get
 			{
-				// TODO: Change when mechanism will be ready
-				//return this.model.TrackingState == BodyTrackingState.Standard
-				//	? Visibility.Visible : Visibility.Hidden;
-				return Visibility.Collapsed;
+				return this.model.TrackingState == BodyTrackingState.Standard
+					? Visibility.Visible : Visibility.Hidden;
 			}
 		}
 
@@ -434,6 +442,23 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 
 		private void ImportGestureRecognitionModelCommandAction()
 		{
+			var openFileDialog = new OpenFileDialog
+			{
+				Filter = $"Gesture recognition model files (*{MLNETConsts.ModelZipExtension})|*{MLNETConsts.ModelZipExtension}"
+			};
+			bool? openFileDialogRes = openFileDialog.ShowDialog();
+			if (openFileDialogRes.HasValue && openFileDialogRes == true && !string.IsNullOrEmpty(openFileDialog.FileName))
+			{
+				var loadModelResult = this.model.LoadGestureRecognitionModel(openFileDialog.FileName);
+				if (loadModelResult?.Success == true)
+				{
+					RaisePropertyChanged(nameof(GestureRecognitionModelPath));
+				}
+				else
+				{
+					MessageBoxUtils.ShowMessage(loadModelResult.ErrorMessage, MessageBoxButton.OK, MessageBoxImage.Error);
+				}
+			}
 		}
 
 		private void ImportGestureRecordCommandAction()

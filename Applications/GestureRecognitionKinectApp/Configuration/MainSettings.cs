@@ -30,6 +30,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Configurat
 			set;
 		} = false;
 
+		public float GesturePredictionScoreThreshold
+		{
+			get;
+			set;
+		} = 0.5f;
+
 		public bool AllowAutomaticGestureRecordExport
 		{
 			get;

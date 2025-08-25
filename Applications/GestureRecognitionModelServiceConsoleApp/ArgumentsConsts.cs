@@ -27,7 +27,6 @@
 
 		// Unnecessary yet, therefore no support added.
 		// public const string EXCLUDED_FEATURES_ARG = "-excludedFeat";
-		public const string USE_PCA_ARG = "-usePca";
 		public const string PCA_RANK_ARG = "-pcaRank";
 
 		public const string FAST_FOREST_ALG_ARG = "-ff";
@@ -54,7 +53,6 @@
 		public const string MULTICLASS_CLASSIFICATION_METRIC_LOGLOSS = "logLoss";
 		public const string MULTICLASS_CLASSIFICATION_METRIC_LOGGLOSSREDUCTION = "logLossReduction";
 
-		public const string TUNE_HYPERPARAMS_USE_PCA_ARG = "-tuneUsePca";
 		public const string TUNE_HYPERPARAMS_PCA_RANK_ARG = "-tunePcaRank";
 
 		public const string TUNE_HYPERPARAMS_FAST_FOREST_TREES_COUNT_ARG = "-tuneTreesCount";
