@@ -2,6 +2,7 @@
 using Microsoft.ML;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
+using System.Threading.Tasks;
 
 namespace GestureRecognition.Processing.MLNETProcUnit
 {
@@ -12,6 +13,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 		PredictParamsType, PredictResultType,
 		EvaluateParamsType, EvaluateResultType,
 		CrossValidateParamsType, CrossValidateResultType,
+		TuneHyperparamsParamsType, TuneHyperparamsResultType,
 		LoadModelParamsType,
 		SaveModelParamsType>
 		where SetDataParamsType : BaseSetDataParameters
@@ -23,6 +25,8 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 		where EvaluateResultType : BaseEvaluateResult
 		where CrossValidateParamsType : BaseCrossValidateParameters<TrainParamsType, EvaluateParamsType>
 		where CrossValidateResultType : BaseCrossValidateResult<TrainResultType, EvaluateResultType>
+		where TuneHyperparamsParamsType: BaseTuneHyperparamsParameters
+		where TuneHyperparamsResultType: BaseTuneHyperparamsResult
 		where LoadModelParamsType : BaseLoadModelParameters
 		where SaveModelParamsType : BaseSaveModelParameters
 	{
@@ -64,6 +68,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 		PredictResultType Predict(PredictParamsType parameters);
 		EvaluateResultType Evaluate(EvaluateParamsType parameters);
 		CrossValidateResultType CrossValidate(CrossValidateParamsType parameters);
+		Task<TuneHyperparamsResultType> TuneHyperparams(TuneHyperparamsParamsType parameters);
 		LoadModelResult LoadModel(LoadModelParamsType parameters);
 		SaveModelResult SaveModel(SaveModelParamsType parameters);
 		void Cleanup();
@@ -78,6 +83,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 		PredictParamsType, PredictResultType,
 		EvaluateParamsType, EvaluateResultType,
 		CrossValidateParamsType, CrossValidateResultType,
+		TuneHyperparamsParamsType, TuneHyperparamsResultType,
 		LoadModelParamsType,
 		SaveModelParamsType>: IModelWrapper<
 		SetDataParamsType,
@@ -85,6 +91,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 		PredictParamsType, PredictResultType,
 		EvaluateParamsType, EvaluateResultType,
 		CrossValidateParamsType, CrossValidateResultType,
+		TuneHyperparamsParamsType, TuneHyperparamsResultType,
 		LoadModelParamsType,
 		SaveModelParamsType>
 		where SetDataParamsType : BaseSetDataParameters
@@ -96,6 +103,8 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 		where EvaluateResultType : BaseEvaluateResult
 		where CrossValidateParamsType : BaseCrossValidateParameters<TrainParamsType, EvaluateParamsType>
 		where CrossValidateResultType : BaseCrossValidateResult<TrainResultType, EvaluateResultType>
+		where TuneHyperparamsParamsType : BaseTuneHyperparamsParameters
+		where TuneHyperparamsResultType : BaseTuneHyperparamsResult
 		where LoadModelParamsType : BaseLoadModelParameters
 		where SaveModelParamsType : BaseSaveModelParameters
 	{
@@ -165,6 +174,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit
 		public abstract PredictResultType Predict(PredictParamsType parameters);
 		public abstract EvaluateResultType Evaluate(EvaluateParamsType parameters);
 		public abstract CrossValidateResultType CrossValidate(CrossValidateParamsType parameters);
+		public abstract Task<TuneHyperparamsResultType> TuneHyperparams(TuneHyperparamsParamsType parameters);
 		public abstract LoadModelResult LoadModel(LoadModelParamsType parameters);
 		public abstract SaveModelResult SaveModel(SaveModelParamsType parameters);
 		public abstract void Cleanup();

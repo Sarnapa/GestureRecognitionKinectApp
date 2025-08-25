@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.ML;
+using Microsoft.ML.AutoML;
 using Microsoft.ML.Data;
+using Microsoft.ML.SearchSpace;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.Predictions;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition;
+using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition.Hyperparameters;
 using GestureRecognition.Processing.BaseClassLib.Utils;
 using GestureRecognition.Processing.MLNETProcUnit.Utils;
+using MLParameter = Microsoft.ML.SearchSpace.Parameter;
 using GestureRecognitionModelColumnsConsts = GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.GestureRecognitionModelColumnsConsts;
 
 namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
@@ -21,6 +26,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 		GestureRecognitionModelPredictParameters, GestureRecognitionModelPredictResult,
 		GestureRecognitionModelEvaluateParameters, GestureRecognitionModelEvaluateResult,
 		GestureRecognitionModelCrossValidateParameters, GestureRecognitionModelCrossValidateResult,
+		GestureRecognitionModelTuneHyperparamsParameters, GestureRecognitionModelTuneHyperparamsResult,
 		LoadGestureRecognitionModelParameters,
 		SaveGestureRecognitionModelParameters>
 	{
@@ -202,11 +208,11 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 				{
 					try
 					{
-						var (fastForestPipeline, featuresCol) = GetModelPipeline(parameters, fastForestParams);
-						this.model = fastForestPipeline.Fit(this.trainData);						
+						var modelPipeline = GetModelPipeline(parameters, fastForestParams);
+						this.model = modelPipeline.Fit(this.trainData);						
 						CreatePredictionEngine();
 
-						result = GetModelTrainResult(this.model, parameters, featuresCol);
+						result = GetModelTrainResult(this.model, parameters);
 					}
 					catch (Exception ex)
 					{
@@ -368,8 +374,8 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 					{
 						try
 						{
-							var (fastForestPipeline, featuresCol) = GetModelPipeline(parameters.TrainParams, fastForestParams);
-							var cvFoldsResults = this.mlContext.MulticlassClassification.CrossValidate(this.trainData, fastForestPipeline, parameters.FoldsCount,
+							var modelPipeline = GetModelPipeline(parameters.TrainParams, fastForestParams);
+							var cvFoldsResults = this.mlContext.MulticlassClassification.CrossValidate(this.trainData, modelPipeline, parameters.FoldsCount,
 								labelColumnName: GestureRecognitionModelColumnsConsts.LABEL_KEY_COL, seed: this.seed);
 							if (cvFoldsResults != null)
 							{
@@ -381,7 +387,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 										var foldResult = new CrossValidationFoldResult<GestureRecognitionModelTrainResult, GestureRecognitionModelEvaluateResult>()
 										{
 											FoldIdx = cvFoldResult.Fold,
-											TrainResult = GetModelTrainResult(cvFoldResult.Model, parameters.TrainParams, featuresCol),
+											TrainResult = GetModelTrainResult(cvFoldResult.Model, parameters.TrainParams),
 											EvaluateResult = GetModelEvaluateResult(cvFoldResult.ScoredHoldOutSet, cvFoldResult.Metrics)
 										};
 										foldsResults.Add(foldResult);
@@ -443,6 +449,103 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 				{
 					ErrorKind = CrossValidateErrorKind.InvalidParameters,
 					ErrorMessage = $"Invalid parameters for gesture recognition model cross validation process - no training data."
+				};
+			}
+
+			return result;
+		}
+
+		public override async Task<GestureRecognitionModelTuneHyperparamsResult> TuneHyperparams(GestureRecognitionModelTuneHyperparamsParameters parameters)
+		{
+			if (parameters == null)
+				throw new ArgumentNullException(nameof(parameters));
+
+			GestureRecognitionModelTuneHyperparamsResult result;
+			if (this.IsTrainData)
+			{
+				if (parameters.PrepareDataSearchSpace != null)
+				{
+					if (parameters.FastForestSearchSpace != null)
+					{
+						try
+						{
+							var modelPipeline = GetModelSweepablePipeline(parameters);
+							var experiment = this.mlContext.Auto().CreateExperiment()
+								.SetPipeline(modelPipeline)
+								.SetMulticlassClassificationMetric(parameters.MainMetric.Map(),
+									labelColumn: GestureRecognitionModelColumnsConsts.LABEL_KEY_COL,
+									predictedColumn: GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_KEY_COL)
+								.SetDataset(this.trainData, fold: parameters.FoldsCount);
+
+							switch (parameters.HyperparamsTuner)
+							{
+								case HyperparamsTunerKind.GridSearch:
+									experiment.SetGridSearchTuner(parameters.GridSearchStepSize);
+									break;
+								case HyperparamsTunerKind.RandomSearch:
+									experiment.SetRandomSearchTuner(this.seed);
+									break;
+								case HyperparamsTunerKind.CostFrugal:
+									experiment.SetCostFrugalTuner();
+									break;
+								case HyperparamsTunerKind.EciCostFrugal:
+									experiment.SetEciCostFrugalTuner();
+									break;
+							}
+
+							if (parameters.TrainingTimeInSeconds.HasValue)
+								experiment.SetTrainingTimeInSeconds(parameters.TrainingTimeInSeconds.Value);
+
+							int? targetModelsCount = null;
+							if (parameters.MaxModelToExploreCount.HasValue)
+							{
+								experiment.SetMaxModelToExplore(parameters.MaxModelToExploreCount.Value);
+								targetModelsCount = parameters.MaxModelToExploreCount.Value;
+							}
+							else if (parameters.HyperparamsTuner == HyperparamsTunerKind.GridSearch)
+							{
+								// TODO: Generalize more
+								targetModelsCount = (int)Math.Pow(parameters.GridSearchStepSize, 5) * (parameters.PrepareDataSearchSpace.PcaValues?.Values.Length ?? 1);
+							}
+
+							experiment.SetMonitor(new ConsoleAutoMLMonitor(parameters.MainMetric, targetModelsCount));
+
+							var experimentResult = await experiment.RunAsync().ConfigureAwait(false);
+							return GetHyperParamsResult(experimentResult, parameters.MainMetric);
+						}
+						catch (Exception ex)
+						{
+							result = new GestureRecognitionModelTuneHyperparamsResult()
+							{
+								ErrorKind = TuneHyperparamsErrorKind.UnexpectedError,
+								ErrorMessage = $"Unexpected error during gesture recognition model hyperparameters tuning process, error message - {ex.Message}."
+							};
+						}
+					}
+					else
+					{
+						result = new GestureRecognitionModelTuneHyperparamsResult()
+						{
+							ErrorKind = TuneHyperparamsErrorKind.InvalidParameters,
+							ErrorMessage = $"Invalid parameters for gesture recognition model hyperparameters tuning process - no search space for classification algorithm pipeline."
+						};
+					}
+				}
+				else
+				{
+					result = new GestureRecognitionModelTuneHyperparamsResult()
+					{
+						ErrorKind = TuneHyperparamsErrorKind.InvalidParameters,
+						ErrorMessage = $"Invalid parameters for gesture recognition model hyperparameters tuning process - no search space for preparing data pipeline."
+					};
+				}
+			}
+			else
+			{
+				result = new GestureRecognitionModelTuneHyperparamsResult()
+				{
+					ErrorKind = TuneHyperparamsErrorKind.InvalidParameters,
+					ErrorMessage = $"Invalid parameters for gesture recognition model hyperparameters tuning process - no training data."
 				};
 			}
 
@@ -556,22 +659,46 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 		#region Private methods
 
 		#region Model pipeline methods
-		private (IEstimator<ITransformer> pipeline, string featuresCol) GetModelPipeline(GestureRecognitionModelTrainParameters parameters, FastForestParams fastForestParams)
+		private IEstimator<ITransformer> GetModelPipeline(GestureRecognitionModelTrainParameters parameters, FastForestParams fastForestParams)
 		{
 			IEstimator<ITransformer> prepareDataPipeline;
-			string featuresCol;
 			if (this.IsKinectGestureDataView)
-				(prepareDataPipeline, featuresCol) = GestureRecognitionModelsPipelines.GetPrepareDataPipeline<KinectGestureDataView>(this.mlContext, this.seed, parameters);
+			{
+				prepareDataPipeline = GestureRecognitionModelsPipelines.GetPrepareDataPipeline<KinectGestureDataView>(this.mlContext, this.seed,
+					parameters?.PrepareDataHyperparams, parameters?.ExcludedFeatures);
+			}
 			else
-				(prepareDataPipeline, featuresCol) = GestureRecognitionModelsPipelines.GetPrepareDataPipeline<MediaPipeHandLandmarksGestureDataView>(this.mlContext, this.seed, parameters);
+			{
+				prepareDataPipeline = GestureRecognitionModelsPipelines.GetPrepareDataPipeline<MediaPipeHandLandmarksGestureDataView>(this.mlContext, this.seed,
+					parameters?.PrepareDataHyperparams, parameters?.ExcludedFeatures);
+			}
 
-			var fastForestPipeline = GestureRecognitionModelsPipelines.GetFastForestPipeline(this.mlContext, this.seed, prepareDataPipeline, featuresCol, fastForestParams);
-			return (fastForestPipeline, featuresCol);
+			var fastForestPipeline = GestureRecognitionModelsPipelines.GetFastForestPipeline(this.mlContext, this.seed, fastForestParams.Hyperparams);
+			return prepareDataPipeline.Append(fastForestPipeline);
+		}
+
+		private SweepablePipeline GetModelSweepablePipeline(GestureRecognitionModelTuneHyperparamsParameters parameters)
+		{
+			SweepableEstimator prepareDataEstimator;
+			if (this.IsKinectGestureDataView)
+			{
+				prepareDataEstimator = GestureRecognitionModelsPipelines.GetPrepareDataSweepableEstimator<KinectGestureDataView>(this.mlContext, this.seed,
+					parameters?.PrepareDataSearchSpace, parameters?.ExcludedFeatures);
+			}
+			else
+			{
+				prepareDataEstimator = GestureRecognitionModelsPipelines.GetPrepareDataSweepableEstimator<MediaPipeHandLandmarksGestureDataView>(this.mlContext, this.seed,
+					parameters?.PrepareDataSearchSpace, parameters?.ExcludedFeatures);
+			}
+
+			var fastForestEstimator = GestureRecognitionModelsPipelines.GetFastForestSweepableEstimator(this.mlContext, this.seed, parameters.FastForestSearchSpace);
+
+			return prepareDataEstimator.Append(fastForestEstimator);
 		}
 		#endregion
 
 		#region Training methods
-		private GestureRecognitionModelTrainResult GetModelTrainResult(ITransformer model, GestureRecognitionModelTrainParameters parameters, string featuresCol)
+		private GestureRecognitionModelTrainResult GetModelTrainResult(ITransformer model, GestureRecognitionModelTrainParameters parameters)
 		{
 			if (model == null)
 			{
@@ -582,7 +709,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 				};
 			}
 
-			int? pcaComponentsCount = GetPcaComponentsCount(model, parameters, featuresCol);
+			int? pcaComponentsCount = GetPcaComponentsCount(model, parameters);
 			return new GestureRecognitionModelTrainResult()
 			{
 				PcaComponentsCount = pcaComponentsCount
@@ -645,6 +772,144 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 			}
 
 			return result;
+		}
+		#endregion
+
+		#region Tuning hyperparameters methods
+		private GestureRecognitionModelTuneHyperparamsResult GetHyperParamsResult(TrialResult experimentResult, MulticlassClassificationMetricKind metricKind)
+		{
+			if (experimentResult == null)
+			{
+				return new GestureRecognitionModelTuneHyperparamsResult()
+				{
+					ErrorKind = TuneHyperparamsErrorKind.InvalidOutput,
+					ErrorMessage = $"Gesture recognition model hyperparameters tuning process failed."
+				};
+			}
+
+			if (experimentResult.TrialSettings?.Parameter == null)
+			{
+				return new GestureRecognitionModelTuneHyperparamsResult()
+				{
+					ErrorKind = TuneHyperparamsErrorKind.InvalidOutput,
+					ErrorMessage = $"Gesture recognition model hyperparameters tuning process failed - received empty data concerning hyperparameters."
+				};
+			}
+
+			var prepareDataHyperparams = GetPrepareDataHyperparams(experimentResult.TrialSettings.Parameter);
+			if (prepareDataHyperparams == null)
+			{
+				return new GestureRecognitionModelTuneHyperparamsResult()
+				{
+					ErrorKind = TuneHyperparamsErrorKind.InvalidOutput,
+					ErrorMessage = $"Gesture recognition model hyperparameters tuning process failed - received incomplete data concerning preparing data process hyperparams."
+				};
+			}
+
+			var algorithmParams = GetAlgorithmParams(experimentResult.TrialSettings.Parameter);
+			if (algorithmParams == null)
+			{
+				return new GestureRecognitionModelTuneHyperparamsResult()
+				{
+					ErrorKind = TuneHyperparamsErrorKind.InvalidOutput,
+					ErrorMessage = $"Gesture recognition model hyperparameters tuning process failed - received incomplete data concerning classification algorithm hyperparams."
+				};
+			}
+
+			return new GestureRecognitionModelTuneHyperparamsResult()
+			{
+				MainMetric = metricKind,
+				MainMetricValue = experimentResult.Metric,
+				LossValue = experimentResult.Loss,
+				Duration = TimeSpan.FromMilliseconds(experimentResult.DurationInMilliseconds),
+				PeakCpu = experimentResult.PeakCpu ?? double.NaN,
+				PeakMemoryInMegaByte = experimentResult.PeakMemoryInMegaByte ?? double.NaN,
+				PrepareDataHyperparams = prepareDataHyperparams,
+				AlgorithmParams = algorithmParams
+			};
+		}
+
+		private static PrepareDataHyperparams GetPrepareDataHyperparams(MLParameter parameter)
+		{
+			var prepareDataHyperparamsDict = HyperparamsUtils.TryGetParams(parameter, [nameof(PrepareDataHyperparams.Pca)]);
+
+			PcaChoice pca = null;
+			if (prepareDataHyperparamsDict.TryGetValue(nameof(PrepareDataHyperparams.Pca), out MLParameter pcaParameter)
+				&& pcaParameter.ParameterType == ParameterType.Object)
+			{
+				pca = pcaParameter.AsType<PcaChoice>();
+			}
+
+			if (pca == null)
+				return null;
+
+			return new PrepareDataHyperparams()
+			{
+				Pca = pca
+			};
+		}
+
+		private static FastForestParams GetAlgorithmParams(MLParameter parameter)
+		{
+			var fastForestHyperparamsDict = HyperparamsUtils.TryGetParams(parameter, [
+				nameof(FastForestHyperparams.TreesCount),
+				nameof(FastForestHyperparams.LeavesCount),
+				nameof(FastForestHyperparams.MinimumExampleCountPerLeaf),
+				nameof(FastForestHyperparams.FeatureFraction),
+				nameof(FastForestHyperparams.BaggingExampleFraction)]);
+
+			int? treesCount = null;
+			if (fastForestHyperparamsDict.TryGetValue(nameof(FastForestHyperparams.TreesCount), out MLParameter treesCountParameter)
+				&& treesCountParameter.ParameterType == ParameterType.Integer)
+			{
+				treesCount = treesCountParameter.AsType<int>();
+			}
+
+			int? leavesCount = null;
+			if (fastForestHyperparamsDict.TryGetValue(nameof(FastForestHyperparams.LeavesCount), out MLParameter leavesCountParameter)
+				&& leavesCountParameter.ParameterType == ParameterType.Integer)
+			{
+				leavesCount = leavesCountParameter.AsType<int>();
+			}
+
+			int? minimumExampleCountPerLeaf = null;
+			if (fastForestHyperparamsDict.TryGetValue(nameof(FastForestHyperparams.MinimumExampleCountPerLeaf), out MLParameter minimumExampleCountPerLeafParameter)
+				&& minimumExampleCountPerLeafParameter.ParameterType == ParameterType.Integer)
+			{
+				minimumExampleCountPerLeaf = minimumExampleCountPerLeafParameter.AsType<int>();
+			}
+
+			double? featureFraction = null;
+			if (fastForestHyperparamsDict.TryGetValue(nameof(FastForestHyperparams.FeatureFraction), out MLParameter featureFractionParameter)
+				&& featureFractionParameter.ParameterType == ParameterType.Number)
+			{
+				featureFraction = featureFractionParameter.AsType<double>();
+			}
+
+			double? baggingExampleFraction = null;
+			if (fastForestHyperparamsDict.TryGetValue(nameof(FastForestHyperparams.BaggingExampleFraction), out MLParameter baggingExampleFractionParameter)
+				&& baggingExampleFractionParameter.ParameterType == ParameterType.Number)
+			{
+				baggingExampleFraction = baggingExampleFractionParameter.AsType<double>();
+			}
+
+			if (!treesCount.HasValue || !leavesCount.HasValue || !minimumExampleCountPerLeaf.HasValue
+				|| !featureFraction.HasValue || !baggingExampleFraction.HasValue)
+				return null;
+
+			var hyperparams = new FastForestHyperparams()
+			{
+				TreesCount = treesCount.Value,
+				LeavesCount = leavesCount.Value,
+				MinimumExampleCountPerLeaf = minimumExampleCountPerLeaf.Value,
+				FeatureFraction = featureFraction.Value,
+				BaggingExampleFraction = baggingExampleFraction.Value,
+			};
+
+			return new FastForestParams()
+			{
+				Hyperparams = hyperparams
+			};
 		}
 		#endregion
 
@@ -783,15 +1048,15 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 			return result;
 		}
 
-		private int? GetPcaComponentsCount(ITransformer model, GestureRecognitionModelTrainParameters parameters, string featuresCol)
+		private int? GetPcaComponentsCount(ITransformer model, GestureRecognitionModelTrainParameters parameters)
 		{
 			int? pcaComponentsCount = null;
-			if (parameters.UsePca && featuresCol == GestureRecognitionModelColumnsConsts.FEATURES_PCA_COL)
+			if (parameters.PrepareDataHyperparams.UsePca)
 			{
 				var dataView = model.Transform(this.trainData);
 				if (dataView.Schema != null)
 				{
-					var pcaComponentsCol = dataView.Schema.GetColumnOrNull(featuresCol);
+					var pcaComponentsCol = dataView.Schema.GetColumnOrNull(GestureRecognitionModelColumnsConsts.FEATURES_COL);
 					if (pcaComponentsCol.HasValue && pcaComponentsCol.Value.Type is VectorDataViewType vectorType)
 						pcaComponentsCount = vectorType.Size;
 				}

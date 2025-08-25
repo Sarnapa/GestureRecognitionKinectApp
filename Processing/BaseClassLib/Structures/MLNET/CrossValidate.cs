@@ -10,7 +10,7 @@
 		{
 			get;
 			set;
-		}
+		} = 5;
 
 		public TrainParamsType TrainParams
 		{

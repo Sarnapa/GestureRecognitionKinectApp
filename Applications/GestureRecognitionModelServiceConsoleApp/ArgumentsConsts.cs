@@ -2,6 +2,7 @@
 {
 	internal static class ArgumentsConsts
 	{
+		public const string MODEL_TUNEHYPERPARAMS_TRAINING_AND_EVALUATION = "modelTuneHyperparamsTrainAndEval";
 		public const string MODEL_TRAINING_AND_EVALUATION = "modelTrainAndEval";
 		public const string MODEL_EVALUATION = "modelEval";
 	
@@ -35,6 +36,32 @@
 		public const string FAST_FOREST_MIN_EXAMPLE_COUNT_PER_LEAF_ARG = "-minExCountPerLeaf";
 		public const string FAST_FOREST_FEATURE_FRACTION_ARG = "-featFrac";
 		public const string FAST_FOREST_BAGGING_EXAMPLE_FRACTION_ARG = "-bagExFrac";
+
+		public const string TUNE_HYPERPARAMS_MAX_MODEL_TO_EXPLORE_COUNT_ARG = "-maxModelsCount";
+		public const string TUNE_HYPERPARAMS_TRAINING_TIME_IN_SECONDS_ARG = "-trainTimeInSec";
+		public const string TUNE_HYPERPARAMS_GRID_SEARCH_STEP_SIZE_ARG = "-gridSearchStepSize";
+		public const string TUNE_HYPERPARAMS_FOLDS_COUNT_ARG = "-tuneFoldsCount";
+
+		public const string TUNE_HYPERPARAMS_TUNER_ARG = "-tuner";
+		public const string HYPERPARAMS_TUNER_GRIDSEARCH = "gridSearch";
+		public const string HYPERPARAMS_TUNER_RANDOMSEARCH = "randomSearch";
+		public const string HYPERPARAMS_TUNER_COSTFRUGAL = "costFrugal";
+		public const string HYPERPARAMS_TUNER_ECICOSTFRUGAL = "eciCostFrugal";
+
+		public const string TUNE_HYPERPARAMS_MAIN_METRIC_ARG = "-mainMetric";
+		public const string MULTICLASS_CLASSIFICATION_METRIC_MICROACCURACY = "microAccuracy";
+		public const string MULTICLASS_CLASSIFICATION_METRIC_MACROACCURACY = "macroAccuracy";
+		public const string MULTICLASS_CLASSIFICATION_METRIC_LOGLOSS = "logLoss";
+		public const string MULTICLASS_CLASSIFICATION_METRIC_LOGGLOSSREDUCTION = "logLossReduction";
+
+		public const string TUNE_HYPERPARAMS_USE_PCA_ARG = "-tuneUsePca";
+		public const string TUNE_HYPERPARAMS_PCA_RANK_ARG = "-tunePcaRank";
+
+		public const string TUNE_HYPERPARAMS_FAST_FOREST_TREES_COUNT_ARG = "-tuneTreesCount";
+		public const string TUNE_HYPERPARAMS_FAST_FOREST_LEAVES_COUNT_ARG = "-tuneLeavesCount";
+		public const string TUNE_HYPERPARAMS_FAST_FOREST_MIN_EXAMPLE_COUNT_PER_LEAF_ARG = "-tuneMinExCountPerLeaf";
+		public const string TUNE_HYPERPARAMS_FAST_FOREST_FEATURE_FRACTION_ARG = "-tuneFeatFrac";
+		public const string TUNE_HYPERPARAMS_FAST_FOREST_BAGGING_EXAMPLE_FRACTION_ARG = "-tuneBagExFrac";
 
 		public const string MODEL_PROCESS_RESULT_FILE_PATH = "-resultFilePath";
 	}

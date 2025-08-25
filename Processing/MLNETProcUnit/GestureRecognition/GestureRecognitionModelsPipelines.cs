@@ -1,26 +1,29 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.ML;
+using Microsoft.ML.AutoML;
+using Microsoft.ML.SearchSpace;
+using Microsoft.ML.SearchSpace.Option;
 using Microsoft.ML.Trainers.FastTree;
 using Microsoft.ML.Transforms;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
-using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
-using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition;
+using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition.Hyperparameters;
 using GestureRecognition.Processing.BaseClassLib.Utils;
+using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition.SearchSpace;
 
 namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 {
 	public static class GestureRecognitionModelsPipelines
 	{
 		#region Prepare data pipeline
-		public static (IEstimator<ITransformer> pipeline, string featuresCol) GetPrepareDataPipeline<T>(MLContext context, int? seed, GestureRecognitionModelTrainParameters parameters)
+		public static IEstimator<ITransformer> GetPrepareDataPipeline<T>(MLContext context, int? seed, PrepareDataHyperparams hyperparams, string[] excludedFeatures)
 			where T : GestureDataView
 		{
 			if (context == null)
 				throw new ArgumentNullException(nameof(context));
-			if (parameters == null)
-				throw new ArgumentNullException(nameof(parameters));
+			if (hyperparams == null)
+				throw new ArgumentNullException(nameof(hyperparams));
 
 			string[] gestureFeatureColumns = DataViewsUtils.GetGestureFeatureColumns(typeof(T));
 
@@ -28,10 +31,10 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 													inputColumnName: GestureRecognitionModelColumnsConsts.LABEL_COL, outputColumnName: GestureRecognitionModelColumnsConsts.LABEL_KEY_COL);
 
 			string[] gestureFeatureColumnsToUse;
-			if (parameters.ExcludedFeatures != null && parameters.ExcludedFeatures.Length > 0)
+			if (excludedFeatures != null && excludedFeatures.Length > 0)
 			{
-				gestureFeatureColumnsToUse = gestureFeatureColumns.Where(c => !parameters.ExcludedFeatures.Contains(c, StringComparer.OrdinalIgnoreCase)).ToArray();
-				pipeline = pipeline.Append(context.Transforms.DropColumns(parameters.ExcludedFeatures));
+				gestureFeatureColumnsToUse = gestureFeatureColumns.Where(c => !excludedFeatures.Contains(c, StringComparer.OrdinalIgnoreCase)).ToArray();
+				pipeline = pipeline.Append(context.Transforms.DropColumns(excludedFeatures));
 			}
 			else
 			{
@@ -50,56 +53,69 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 
 			pipeline = pipeline.Append(context.Transforms.NormalizeMeanVariance(GestureRecognitionModelColumnsConsts.FEATURES_COL));
 
-			string featuresCol = GestureRecognitionModelColumnsConsts.FEATURES_COL;
-			if (parameters.UsePca)
+			if (hyperparams.Pca != null && hyperparams.Pca.UsePca)
 			{
+				// For now, we don't need the original column, so we overwrite it. If the need arises, unfortunately, it will be a problem for the entire hyperparameter tuning process.
 				pipeline = pipeline.Append(
 						context.Transforms.ProjectToPrincipalComponents(
-								inputColumnName: GestureRecognitionModelColumnsConsts.FEATURES_COL,
-								outputColumnName: GestureRecognitionModelColumnsConsts.FEATURES_PCA_COL,
-								rank: parameters.PcaRank,
+								inputColumnName: null,
+								outputColumnName: GestureRecognitionModelColumnsConsts.FEATURES_COL,
+								rank: hyperparams.Pca.PcaRank,
 								seed: seed
 						)
 				);
-				featuresCol = GestureRecognitionModelColumnsConsts.FEATURES_PCA_COL;
 			}
 
-			return (pipeline, featuresCol);
+			pipeline.AppendCacheCheckpoint(context);
+
+			return pipeline;
+		}
+
+		public static SweepableEstimator GetPrepareDataSweepableEstimator<T>(MLContext context, int? seed, PrepareDataSearchSpaceValues searchSpaceValues, string[] excludedFeatures)
+			where T : GestureDataView
+		{
+			if (context == null)
+				throw new ArgumentNullException(nameof(context));
+			if (searchSpaceValues == null)
+				searchSpaceValues = new PrepareDataSearchSpaceValues();
+
+			var pcaSearchSpace = searchSpaceValues.PcaValues;
+
+			var searchSpace = new SearchSpace<PrepareDataHyperparams>
+			{
+				{ nameof(PrepareDataHyperparams.Pca), new ChoiceOption(pcaSearchSpace.Values?.ToArray() ?? [], pcaSearchSpace.Default) },
+			};
+
+			IEstimator<ITransformer> Factory(MLContext ctx, PrepareDataHyperparams hparams) { return GetPrepareDataPipeline<T>(ctx, seed, hparams, excludedFeatures); }
+
+			return context.Auto().CreateSweepableEstimator(Factory, searchSpace);
 		}
 		#endregion
 
 		#region FastForest pipeline
-		public static IEstimator<ITransformer> GetFastForestPipeline(MLContext context, int? seed, IEstimator<ITransformer> prepareDataPipeline, string featuresCol,
-			FastForestParams fastForestParams)
+		public static IEstimator<ITransformer> GetFastForestPipeline(MLContext context, int? seed, FastForestHyperparams hyperparams)
 		{
 			if (context == null)
 				throw new ArgumentNullException(nameof(context));
-			if (prepareDataPipeline == null)
-				throw new ArgumentNullException(nameof(prepareDataPipeline));
-			if (string.IsNullOrEmpty(featuresCol))
-				throw new ArgumentNullException(nameof(featuresCol));
-			if (fastForestParams == null)
-				throw new ArgumentNullException(nameof(fastForestParams));
-
-			IEstimator<ITransformer> pipeline = prepareDataPipeline.AppendCacheCheckpoint(context);
+			if (hyperparams == null)
+				throw new ArgumentNullException(nameof(hyperparams));
 
 			var ff = context.BinaryClassification.Trainers.FastForest(new FastForestBinaryTrainer.Options
 			{
-				FeatureColumnName = featuresCol,
+				FeatureColumnName = GestureRecognitionModelColumnsConsts.FEATURES_COL,
 				LabelColumnName = GestureRecognitionModelColumnsConsts.LABEL_KEY_COL,
-				NumberOfTrees = fastForestParams.TreesCount,
-				NumberOfLeaves = fastForestParams.LeavesCount,
-				MinimumExampleCountPerLeaf = fastForestParams.MinimumExampleCountPerLeaf,
-				FeatureFraction = fastForestParams.FeatureFraction,
-				BaggingExampleFraction = fastForestParams.BaggingExampleFraction,
-				Seed = seed ?? 42
+				NumberOfTrees = hyperparams.TreesCount,
+				NumberOfLeaves = hyperparams.LeavesCount,
+				MinimumExampleCountPerLeaf = hyperparams.MinimumExampleCountPerLeaf,
+				FeatureFraction = hyperparams.FeatureFraction,
+				BaggingExampleFraction = hyperparams.BaggingExampleFraction,
+				Seed = seed ?? 42,
+				NumberOfThreads = Environment.ProcessorCount,
 			});
 
-			pipeline = pipeline.Append(
-					context.MulticlassClassification.Trainers.OneVersusAll(
-							binaryEstimator: ff,
-							labelColumnName: GestureRecognitionModelColumnsConsts.LABEL_KEY_COL
-					)
+			IEstimator<ITransformer> pipeline = context.MulticlassClassification.Trainers.OneVersusAll(
+				binaryEstimator: ff,
+				labelColumnName: GestureRecognitionModelColumnsConsts.LABEL_KEY_COL
 			);
 
 			pipeline = pipeline
@@ -111,6 +127,36 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 					outputColumnName: GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_COL));
 
 			return pipeline;
+		}
+
+		public static SweepableEstimator GetFastForestSweepableEstimator(MLContext context, int? seed, FastForestSearchSpaceValues searchSpaceValues)
+		{
+			if (context == null)
+				throw new ArgumentNullException(nameof(context));
+			if (searchSpaceValues == null)
+				searchSpaceValues = new FastForestSearchSpaceValues();
+
+			var treesCountSearchSpace = searchSpaceValues.TreesCountValues;
+			var leavesCountSearchSpace = searchSpaceValues.LeavesCountValues;
+			var minExampleCountPerLeafValuesSearchSpace = searchSpaceValues.MinimumExampleCountPerLeafValues;
+			var featureFractionSearchSpace = searchSpaceValues.FeatureFractionValues;
+			var baggingExampleFractionSearchSpace = searchSpaceValues.BaggingExampleFractionValues;
+
+			var searchSpace = new SearchSpace<FastForestHyperparams>
+			{
+				{ nameof(FastForestHyperparams.TreesCount), new UniformIntOption(min: treesCountSearchSpace.Min, max: treesCountSearchSpace.Max, defaultValue: treesCountSearchSpace.Default) },
+				{ nameof(FastForestHyperparams.LeavesCount), new UniformIntOption(min: leavesCountSearchSpace.Min, max: leavesCountSearchSpace.Max, defaultValue: leavesCountSearchSpace.Default) },
+				{ nameof(FastForestHyperparams.MinimumExampleCountPerLeaf), new UniformIntOption(min: minExampleCountPerLeafValuesSearchSpace.Min, max: minExampleCountPerLeafValuesSearchSpace.Max,
+					defaultValue: minExampleCountPerLeafValuesSearchSpace.Default) },
+				{ nameof(FastForestHyperparams.FeatureFraction), new UniformDoubleOption(min: featureFractionSearchSpace.Min, max: featureFractionSearchSpace.Max, 
+					defaultValue: featureFractionSearchSpace.Default) },
+				{ nameof(FastForestHyperparams.BaggingExampleFraction), new UniformDoubleOption(min: baggingExampleFractionSearchSpace.Min, max: baggingExampleFractionSearchSpace.Max,
+					defaultValue: baggingExampleFractionSearchSpace.Default) }
+			};
+
+			IEstimator<ITransformer> Factory(MLContext ctx, FastForestHyperparams hparams) { return GetFastForestPipeline(ctx, seed, hparams); }
+
+			return context.Auto().CreateSweepableEstimator(Factory, searchSpace);
 		}
 		#endregion
 	}

@@ -1,4 +1,5 @@
 ﻿using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition;
+using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition.Hyperparameters;
 
 namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
 {
@@ -16,23 +17,17 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
 			set;
 		} = new string[0];
 
-		public bool UsePca
+		public PrepareDataHyperparams PrepareDataHyperparams
 		{
 			get;
 			set;
-		} = false;
-
-		public int PcaRank
-		{
-			get;
-			set;
-		} = 30;
+		} = new PrepareDataHyperparams();
 
 		public BaseClassificationAlgorithmParams AlgorithmParams
 		{
 			get;
 			set;
-		}
+		} = new FastForestParams();
 		#endregion
 
 		#region Public methods
@@ -41,10 +36,10 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET
 			string exclucedFeaturesText = this.ExcludedFeatures == null ? "[]" :
 				$"[{string.Join(", ", this.ExcludedFeatures)}]";
 
-			return $"Excluded features: {exclucedFeaturesText}\n" +
-				$"Use PCA: {this.UsePca}\n" +
-				$"PCA rank: {this.PcaRank}\n" +
-				$"Algorithm params: \n" +
+			return $"{nameof(this.ExcludedFeatures)}: {exclucedFeaturesText}\n\n" +
+				$"{nameof(this.PrepareDataHyperparams)}:\n" +
+				$"{this.PrepareDataHyperparams}\n\n" +
+				$"{nameof(this.AlgorithmParams)}:\n" +
 				$"{this.AlgorithmParams}";
 		}
 		#endregion

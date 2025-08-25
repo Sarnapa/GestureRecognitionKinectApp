@@ -7,6 +7,6 @@
 		public const string PREDICTED_LABEL_KEY_COL = "PredictedLabelKey";
 		public const string PREDICTED_LABEL_COL = "PredictedLabel";
 		public const string FEATURES_COL = "Features";
-		public const string FEATURES_PCA_COL = "FeaturesPca";
+		//public const string FEATURES_PCA_COL = "FeaturesPca";
 	}
 }

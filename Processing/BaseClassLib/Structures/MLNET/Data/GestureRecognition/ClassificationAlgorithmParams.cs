@@ -1,4 +1,6 @@
-﻿namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition
+﻿using GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition.Hyperparameters;
+
+namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.GestureRecognition
 {
 	#region BaseClassificationAlgorithmParams
 	public abstract class BaseClassificationAlgorithmParams
@@ -16,7 +18,7 @@
 		#region Public methods
 		public override string ToString()
 		{
-			return $"Algoritm kind: {this.AlgorithmKind}";
+			return $"{nameof(this.AlgorithmKind)}: {this.AlgorithmKind}";
 		}
 		#endregion
 	}
@@ -34,46 +36,19 @@
 			}
 		}
 
-		public int TreesCount
+		public FastForestHyperparams Hyperparams
 		{
 			get;
 			set;
-		} = 500;
-
-		public int LeavesCount
-		{
-			get;
-			set;
-		} = 32;
-
-		public int MinimumExampleCountPerLeaf
-		{
-			get;
-			set;
-		} = 10;
-
-		public double FeatureFraction
-		{
-			get;
-			set;
-		} = 0.2d;
-
-		public double BaggingExampleFraction
-		{
-			get;
-			set;
-		} = 1.0d;
+		} = new FastForestHyperparams();
 		#endregion
 
 		#region Public methods
 		public override string ToString()
 		{
-			return $"Algoritm kind: {this.AlgorithmKind}\n" +
-				$"Trees count: {this.TreesCount}\n" +
-				$"Leaves count: {this.LeavesCount}\n" +
-				$"Minimum examples count per leaf: {this.MinimumExampleCountPerLeaf}\n" +
-				$"Features fraction: {this.FeatureFraction}\n" +
-				$"Bagging examples fraction: {this.BaggingExampleFraction}";
+			return $"{nameof(this.AlgorithmKind)}: {this.AlgorithmKind}\n" +
+				$"{nameof(this.Hyperparams)}:\n" +
+				$"{this.Hyperparams}";
 		}
 		#endregion
 	}
