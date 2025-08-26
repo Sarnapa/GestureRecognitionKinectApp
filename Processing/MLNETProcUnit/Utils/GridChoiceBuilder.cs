@@ -72,7 +72,7 @@ public static class GridChoiceBuilder
 		{
 			double t = (points == 1) ? 0.0 : (double)i / (points - 1);
 			double v = min + (max - min) * t;
-			values.Add(v);
+			values.Add(Math.Round(v, 8));
 		}
 
 		// dołóż default i deduplikuj z tolerancją
