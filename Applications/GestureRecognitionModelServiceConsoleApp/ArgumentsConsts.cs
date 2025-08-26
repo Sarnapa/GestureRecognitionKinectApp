@@ -46,6 +46,7 @@
 		public const string HYPERPARAMS_TUNER_RANDOMSEARCH = "randomSearch";
 		public const string HYPERPARAMS_TUNER_COSTFRUGAL = "costFrugal";
 		public const string HYPERPARAMS_TUNER_ECICOSTFRUGAL = "eciCostFrugal";
+		public const string HYPERPARAMS_TUNER_SMAC = "smac";
 
 		public const string TUNE_HYPERPARAMS_MAIN_METRIC_ARG = "-mainMetric";
 		public const string MULTICLASS_CLASSIFICATION_METRIC_MICROACCURACY = "microAccuracy";

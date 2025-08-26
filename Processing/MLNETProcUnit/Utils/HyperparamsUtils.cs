@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.ML.SearchSpace;
+using Microsoft.ML.SearchSpace.Option;
 
 namespace GestureRecognition.Processing.MLNETProcUnit.Utils
 {
@@ -37,6 +39,75 @@ namespace GestureRecognition.Processing.MLNETProcUnit.Utils
 			}
 
 			return found;
+		}
+
+		public static int EstimateGridSize(Microsoft.ML.SearchSpace.SearchSpace space, int numericStep)
+		{
+			int Product(OptionBase o) => o switch
+			{
+				ChoiceOption ch => ch.Choices?.Length ?? 0,
+				UniformNumericOption _ => numericStep,
+				Microsoft.ML.SearchSpace.SearchSpace nested => nested.Aggregate(1, (acc, kv) => acc * Product(kv.Value)),
+				_ => 1
+			};
+			return Product(space);
+		}
+
+		public static void NormalizeFixedNumerics(Microsoft.ML.SearchSpace.SearchSpace space, double eps = 1e-9)
+		{
+			string[] keys = space.Select(kv => kv.Key).ToArray();
+			foreach (string key in keys)
+			{
+				var opt = space[key];
+				switch (opt)
+				{
+					case UniformIntOption ui when ui.Min == ui.Max:
+						space[key] = new ChoiceOption([ui.Min], defaultChoice: ui.Min);
+						break;
+
+					case UniformDoubleOption ud when Math.Abs(ud.Min - ud.Max) <= eps:
+						space[key] = new ChoiceOption([ud.Min], defaultChoice: ud.Min);
+						break;
+				}
+			}
+		}
+
+		public static int CountNumericDims(Microsoft.ML.SearchSpace.SearchSpace space)
+		{
+			int Count(OptionBase o) => o switch
+			{
+				UniformNumericOption _ => 1,
+				ChoiceOption _ => 0,
+				Microsoft.ML.SearchSpace.SearchSpace nested => nested.Sum(kv => Count(kv.Value)),
+				_ => 0
+			};
+			return Count(space);
+		}
+
+		public static void DumpSearchSpaceInfo(Microsoft.ML.SearchSpace.SearchSpace space)
+		{
+			Console.WriteLine($"=== Search space info ===");
+			foreach (var kv in space)
+			{
+				var opt = kv.Value;
+				switch (opt)
+				{
+					case UniformIntOption ui:
+						Console.WriteLine($"[Int]   {kv.Key}: [{ui.Min}, {ui.Max}] default={ui.Default?.FirstOrDefault() ?? double.NaN}");
+						break;
+					case UniformDoubleOption ud:
+						Console.WriteLine($"[Double]{kv.Key}: [{ud.Min}, {ud.Max}] default={ud.Default?.FirstOrDefault() ?? double.NaN}");
+						break;
+					case ChoiceOption ch:
+						Console.WriteLine($"[Choice]{kv.Key}: [{string.Join(", ", ch.Choices?.Select(c => c.ToString()) ?? [])}] default={ch.Default?.FirstOrDefault()}");
+						break;
+					default:
+						break;
+				}
+			}
+
+			// Console.WriteLine($"Search space dims: {CountNumericDims(space)}");
+			Console.WriteLine();
 		}
 		#endregion
 

@@ -7,6 +7,7 @@ using Microsoft.ML;
 using Microsoft.ML.AutoML;
 using Microsoft.ML.Data;
 using Microsoft.ML.SearchSpace;
+using GestureRecognition.Processing.BaseClassLib.Mappers;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
 using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.Predictions;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
@@ -469,18 +470,24 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 					{
 						try
 						{
-							var modelPipeline = GetModelSweepablePipeline(parameters);
+							var modelPipeline = GetModelSweepablePipeline(parameters, parameters.GridSearchStepSize);
 							var experiment = this.mlContext.Auto().CreateExperiment()
 								.SetPipeline(modelPipeline)
 								.SetMulticlassClassificationMetric(parameters.MainMetric.Map(),
 									labelColumn: GestureRecognitionModelColumnsConsts.LABEL_KEY_COL,
-									predictedColumn: GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_KEY_COL)
-								.SetDataset(this.trainData, fold: parameters.FoldsCount);
+									predictedColumn: GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_KEY_COL);
+
+							if (parameters.FoldsCount == 0)
+								experiment.SetDataset(this.mlContext.Data.TrainTestSplit(this.trainData, testFraction: 0.2, seed: this.seed));
+							else
+								experiment.SetDataset(this.trainData, parameters.FoldsCount);
 
 							switch (parameters.HyperparamsTuner)
 							{
 								case HyperparamsTunerKind.GridSearch:
-									experiment.SetGridSearchTuner(parameters.GridSearchStepSize);
+									// It doesn't work properly...
+									// It repeats a given set of parameters as many times as we set in the GridSearchStepSize parameter.
+									experiment.SetGridSearchTuner(step: 0);
 									break;
 								case HyperparamsTunerKind.RandomSearch:
 									experiment.SetRandomSearchTuner(this.seed);
@@ -491,6 +498,17 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 								case HyperparamsTunerKind.EciCostFrugal:
 									experiment.SetEciCostFrugalTuner();
 									break;
+								case HyperparamsTunerKind.Smac:
+									// TODO: Passing parameters to SMAC tuner
+									experiment.SetSmacTuner(
+										numberInitialPopulation: 20,
+										fitModelEveryNTrials: 10,
+										numRandomEISearchConfigurations: 4000,
+										numberOfTrees: 60,
+										nMinForSpit: 3,
+										localSearchParentCount: 5
+										);
+									break;
 							}
 
 							if (parameters.TrainingTimeInSeconds.HasValue)
@@ -499,13 +517,18 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 							int? targetModelsCount = null;
 							if (parameters.MaxModelToExploreCount.HasValue)
 							{
-								experiment.SetMaxModelToExplore(parameters.MaxModelToExploreCount.Value);
 								targetModelsCount = parameters.MaxModelToExploreCount.Value;
+								experiment.SetMaxModelToExplore(targetModelsCount.Value);
 							}
 							else if (parameters.HyperparamsTuner == HyperparamsTunerKind.GridSearch)
 							{
 								// TODO: Generalize more
-								targetModelsCount = (int)Math.Pow(parameters.GridSearchStepSize, 6);
+								//targetModelsCount = (int)Math.Pow(parameters.GridSearchStepSize, 6);
+								// This multiplication is due to an error in gridSearchTuner.
+								targetModelsCount = HyperparamsUtils.EstimateGridSize(modelPipeline.SearchSpace, parameters.GridSearchStepSize) * parameters.GridSearchStepSize;
+								//if (parameters.FoldsCount > 1)
+								//	targetModelsCount *= parameters.FoldsCount;
+								experiment.SetMaxModelToExplore(targetModelsCount.Value);
 							}
 
 							experiment.SetMonitor(new ConsoleAutoMLMonitor(parameters.MainMetric, targetModelsCount));
@@ -661,43 +684,49 @@ namespace GestureRecognition.Processing.MLNETProcUnit.GestureRecognition
 		#region Model pipeline methods
 		private IEstimator<ITransformer> GetModelPipeline(GestureRecognitionModelTrainParameters parameters, FastForestParams fastForestParams)
 		{
-			IEstimator<ITransformer> prepareDataPipeline;
+			var allHyperparams = MLNetMapper.Map(parameters?.PrepareDataHyperparams, fastForestParams?.Hyperparams);
+
+			IEstimator<ITransformer> modelPipeline;
 			if (this.IsKinectGestureDataView)
 			{
-				prepareDataPipeline = GestureRecognitionModelsPipelines.GetPrepareDataPipeline<KinectGestureDataView>(this.mlContext, this.seed,
-					parameters?.PrepareDataHyperparams, parameters?.ExcludedFeatures);
+				modelPipeline = GestureRecognitionModelsPipelines.GetModelPipeline<KinectGestureDataView>(this.mlContext, this.seed,
+					allHyperparams, parameters?.ExcludedFeatures);
 			}
 			else
 			{
-				prepareDataPipeline = GestureRecognitionModelsPipelines.GetPrepareDataPipeline<MediaPipeHandLandmarksGestureDataView>(this.mlContext, this.seed,
-					parameters?.PrepareDataHyperparams, parameters?.ExcludedFeatures);
+				modelPipeline = GestureRecognitionModelsPipelines.GetModelPipeline<MediaPipeHandLandmarksGestureDataView>(this.mlContext, this.seed,
+					allHyperparams, parameters?.ExcludedFeatures);
 			}
 
-			var fastForestPipeline = GestureRecognitionModelsPipelines.GetFastForestPipeline(this.mlContext, this.seed, fastForestParams.Hyperparams);
-			return prepareDataPipeline.Append(fastForestPipeline);
+			return modelPipeline;
 		}
 
-		private SweepablePipeline GetModelSweepablePipeline(GestureRecognitionModelTuneHyperparamsParameters parameters)
+		private SweepablePipeline GetModelSweepablePipeline(GestureRecognitionModelTuneHyperparamsParameters parameters, int choicesCount)
 		{
-			SweepableEstimator prepareDataEstimator;
+			var searchSpaceValues = MLNetMapper.Map(parameters?.PrepareDataSearchSpace, parameters?.FastForestSearchSpace);
+
+			SweepableEstimator modelEstimator;
 			if (this.IsKinectGestureDataView)
 			{
-				prepareDataEstimator = GestureRecognitionModelsPipelines.GetPrepareDataSweepableEstimator<KinectGestureDataView>(this.mlContext, this.seed,
-					parameters?.PrepareDataSearchSpace, parameters?.ExcludedFeatures);
+				modelEstimator = GestureRecognitionModelsPipelines.GetModelSweepableEstimator<KinectGestureDataView>(this.mlContext, this.seed, choicesCount,
+					searchSpaceValues, parameters?.ExcludedFeatures);
 			}
 			else
 			{
-				prepareDataEstimator = GestureRecognitionModelsPipelines.GetPrepareDataSweepableEstimator<MediaPipeHandLandmarksGestureDataView>(this.mlContext, this.seed,
-					parameters?.PrepareDataSearchSpace, parameters?.ExcludedFeatures);
+				modelEstimator = GestureRecognitionModelsPipelines.GetModelSweepableEstimator<MediaPipeHandLandmarksGestureDataView>(this.mlContext, this.seed, choicesCount,
+					searchSpaceValues, parameters?.ExcludedFeatures);
 			}
 
-			var fastForestEstimator = GestureRecognitionModelsPipelines.GetFastForestSweepableEstimator(this.mlContext, this.seed, parameters.FastForestSearchSpace);
+			// Workaround for creating SweepablePipeline with one SweepableEstimator only
+			var noop = this.mlContext.Transforms.CopyColumns(
+					outputColumnName: GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_COL,
+					inputColumnName: GestureRecognitionModelColumnsConsts.PREDICTED_LABEL_COL);
 
-			return prepareDataEstimator.Append(fastForestEstimator);
+			return modelEstimator.Append(noop);
 		}
 		#endregion
 
-		#region Training methods
+			#region Training methods
 		private GestureRecognitionModelTrainResult GetModelTrainResult(ITransformer model, GestureRecognitionModelTrainParameters parameters)
 		{
 			if (model == null)

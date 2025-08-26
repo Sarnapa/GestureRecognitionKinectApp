@@ -11,12 +11,12 @@ public sealed class ConsoleAutoMLMonitor: IMonitor
 {
 	#region Private fields
 	private readonly string[] allHyperparamsKeys = [
-		nameof(PrepareDataHyperparams.PcaRank),
-		nameof(FastForestHyperparams.TreesCount),
-		nameof(FastForestHyperparams.LeavesCount),
-		nameof(FastForestHyperparams.MinimumExampleCountPerLeaf),
-		nameof(FastForestHyperparams.FeatureFraction),
-		nameof(FastForestHyperparams.BaggingExampleFraction)
+		nameof(AllHyperparams.PcaRank),
+		nameof(AllHyperparams.TreesCount),
+		nameof(AllHyperparams.LeavesCount),
+		nameof(AllHyperparams.MinimumExampleCountPerLeaf),
+		nameof(AllHyperparams.FeatureFraction),
+		nameof(AllHyperparams.BaggingExampleFraction)
 		];
 	private readonly MulticlassClassificationMetricKind mainMetric;
 	private readonly int? targetModelsCount;
@@ -141,13 +141,7 @@ public sealed class ConsoleAutoMLMonitor: IMonitor
 				sb.Append(", ");
 			sb.Append(kv.Key);
 			sb.Append('=');
-			if (kv.Key == nameof(PrepareDataHyperparams.PcaRank) && kv.Value.ParameterType == ParameterType.Integer)
-			{
-				int pcaRank = kv.Value.AsType<int>();
-				sb.Append(pcaRank);
-			}
-			else
-				sb.Append(kv.Value.ToString());
+			sb.Append(kv.Value.ToString());
 		}
 
 		return sb.ToString();

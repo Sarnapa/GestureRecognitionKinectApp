@@ -27,9 +27,9 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp
 			//args =
 			//[
 			//	ArgumentsConsts.PREPARE_GESTURE_DATA_METHOD,
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Tests\2025_08_11_MediaPipeHandLandmarks\Data",
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Tests\2025_08_11_MediaPipeHandLandmarks\GesturesData.csv",
-			//	ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_TRACKING_MODE,
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\KinectRightOneHand\Data",
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\KinectRightOneHand\Data.csv",
+			//	ArgumentsConsts.KINECT_TRACKING_MODE,
 			//];
 
 			if (args.Length < 4 || args.Length > 6)

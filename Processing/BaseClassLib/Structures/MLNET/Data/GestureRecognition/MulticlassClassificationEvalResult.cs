@@ -42,6 +42,12 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.Gestu
 			set;
 		}
 
+		public double LogLossReduction
+		{
+			get;
+			set;
+		}
+
 		public double MacroAccuracy
 		{
 			get;
@@ -102,6 +108,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Structures.MLNET.Data.Gestu
 				$"{nameof(this.MicroRecall),-21}: {this.MicroRecall,5:F4}\n" +
 				$"{nameof(this.MicroF1),-21}: {this.MicroF1,5:F4}\n" +
 				$"{nameof(this.LogLoss),-21}: {this.LogLoss,5:F4}\n" +
+				$"{nameof(this.LogLossReduction),-21}: {this.LogLossReduction,5:F4}\n" +
 				$"{nameof(this.MacroAccuracy),-21}: {this.MacroAccuracy,5:F4}\n" +
 				$"{nameof(this.MacroPrecision),-21}: {this.MacroPrecision,5:F4}\n" +
 				$"{nameof(this.MacroRecall),-21}: {this.MacroRecall,5:F4}\n" +

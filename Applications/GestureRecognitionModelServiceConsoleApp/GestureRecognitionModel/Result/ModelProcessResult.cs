@@ -146,6 +146,12 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			set;
 		}
 
+		public double LogLossReduction
+		{
+			get;
+			set;
+		}
+
 		public double MacroAccuracy
 		{
 			get;
@@ -232,6 +238,7 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 				MicroRecall = evaluateResult.MulticlassClassificationEvalResult.MicroRecall,
 				MicroF1 = evaluateResult.MulticlassClassificationEvalResult.MicroF1,
 				LogLoss = evaluateResult.MulticlassClassificationEvalResult.LogLoss,
+				LogLossReduction = evaluateResult.MulticlassClassificationEvalResult.LogLossReduction,
 				MacroAccuracy = evaluateResult.MulticlassClassificationEvalResult.MacroAccuracy,
 				MacroPrecision = evaluateResult.MulticlassClassificationEvalResult.MacroPrecision,
 				MacroRecall = evaluateResult.MulticlassClassificationEvalResult.MacroRecall,

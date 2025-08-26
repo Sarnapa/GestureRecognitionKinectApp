@@ -5,6 +5,7 @@
 		GridSearch,
 		RandomSearch,
 		CostFrugal,
-		EciCostFrugal
+		EciCostFrugal,
+		Smac,
 	}
 }

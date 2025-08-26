@@ -17,6 +17,7 @@ namespace GestureRecognition.Processing.MLNETProcUnit.Utils
 			result.MicroAccuracy = m.MicroAccuracy;
 			result.MacroAccuracy = m.MacroAccuracy;
 			result.LogLoss = m.LogLoss;
+			result.LogLossReduction = m.LogLossReduction;
 			result.FormattedConfusionTable = m.ConfusionMatrix?.GetFormattedConfusionTable() ?? string.Empty;
 
 			var perClassEvalResults = new List<PerClassEvalResult>();
