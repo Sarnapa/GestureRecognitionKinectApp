@@ -22,26 +22,26 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			//[
 			//	ArgumentsConsts.MODEL_TUNEHYPERPARAMS_TRAINING_AND_EVALUATION,
 			//	ArgumentsConsts.GESTURE_DATA_VIEW_TYPE_ARG, ArgumentsConsts.KINECT_GESTURE_DATA_VIEW_TYPE,
-			//	ArgumentsConsts.DATA_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\KinectRightOneHand\Data.csv",
-			//	ArgumentsConsts.TEST_DATA_FRACTION_ARG, "0.2",
+			//	ArgumentsConsts.TRAIN_DATA_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\KinectOneHandTestRightHand\TrainData.csv",
+			//	ArgumentsConsts.TEST_DATA_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\KinectOneHandTestRightHand\TestData.csv",
 			//	ArgumentsConsts.SEED_ARG, "42",
 			//	ArgumentsConsts.USE_CV_ARG, "True",
 			//	ArgumentsConsts.CV_FOLDS_COUNT_ARG, "5",
-			//	ArgumentsConsts.MODEL_CV_PROCESS_RESULT_FILE_PATH, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\KinectRightOneHand\CV_KinectRightOneHandModelResult.csv",
+			//	ArgumentsConsts.MODEL_CV_PROCESS_RESULT_FILE_PATH, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\KinectOneHandTestRightHand\CV_KinectOneHandTestRightHandModelResult.csv",
 			//	ArgumentsConsts.TUNE_HYPERPARAMS_MAX_MODEL_TO_EXPLORE_COUNT_ARG, "200",
 			//	// ArgumentsConsts.TUNE_HYPERPARAMS_TRAINING_TIME_IN_SECONDS_ARG, "600",
 			//	ArgumentsConsts.TUNE_HYPERPARAMS_TUNER_ARG, ArgumentsConsts.HYPERPARAMS_TUNER_SMAC,
-			//	ArgumentsConsts.TUNE_HYPERPARAMS_GRID_SEARCH_STEP_SIZE_ARG, "3",
+			//	ArgumentsConsts.TUNE_HYPERPARAMS_GRID_SEARCH_STEP_SIZE_ARG, "5",
 			//	ArgumentsConsts.TUNE_HYPERPARAMS_FOLDS_COUNT_ARG, "0",
 			//	ArgumentsConsts.TUNE_HYPERPARAMS_MAIN_METRIC_ARG, ArgumentsConsts.MULTICLASS_CLASSIFICATION_METRIC_MACROACCURACY,
-			//	ArgumentsConsts.TUNE_HYPERPARAMS_PCA_RANK_ARG, "0", "60", "30",
-			//	ArgumentsConsts.TUNE_HYPERPARAMS_FAST_FOREST_TREES_COUNT_ARG, "300", "700", "500",
-			//	ArgumentsConsts.TUNE_HYPERPARAMS_FAST_FOREST_LEAVES_COUNT_ARG, "32", "96", "64",
-			//	ArgumentsConsts.TUNE_HYPERPARAMS_FAST_FOREST_MIN_EXAMPLE_COUNT_PER_LEAF_ARG, "2", "4", "3",
-			//	ArgumentsConsts.TUNE_HYPERPARAMS_FAST_FOREST_FEATURE_FRACTION_ARG, "0.1", "0.5", "0.3",
-			//	ArgumentsConsts.TUNE_HYPERPARAMS_FAST_FOREST_BAGGING_EXAMPLE_FRACTION_ARG, "0.94", "1.0", "0.97",
-			//	ArgumentsConsts.MODEL_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\KinectRightOneHand\KinectRightOneHandModel.zip",
-			//	ArgumentsConsts.MODEL_PROCESS_RESULT_FILE_PATH, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\KinectRightOneHand\KinectRightOneHandModelResult.csv"
+			//	ArgumentsConsts.TUNE_HYPERPARAMS_PCA_RANK_ARG, "0", "100", "0",
+			//	ArgumentsConsts.TUNE_HYPERPARAMS_FAST_FOREST_TREES_COUNT_ARG, "200", "600", "400",
+			//	ArgumentsConsts.TUNE_HYPERPARAMS_FAST_FOREST_LEAVES_COUNT_ARG, "32", "160", "96",
+			//	ArgumentsConsts.TUNE_HYPERPARAMS_FAST_FOREST_MIN_EXAMPLE_COUNT_PER_LEAF_ARG, "2", "6", "4",
+			//	ArgumentsConsts.TUNE_HYPERPARAMS_FAST_FOREST_FEATURE_FRACTION_ARG, "0.1", "0.9", "0.5",
+			//	ArgumentsConsts.TUNE_HYPERPARAMS_FAST_FOREST_BAGGING_EXAMPLE_FRACTION_ARG, "0.92", "1.0", "0.96",
+			//	ArgumentsConsts.MODEL_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\KinectOneHandTestRightHand\KinectOneHandTestRightHandModel.zip",
+			//	ArgumentsConsts.MODEL_PROCESS_RESULT_FILE_PATH, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\KinectOneHandTestRightHand\KinectOneHandTestRightHandModelResult.csv"
 			//];
 
 			//args =

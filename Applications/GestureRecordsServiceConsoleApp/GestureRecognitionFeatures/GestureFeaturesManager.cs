@@ -19,10 +19,10 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp.Gestur
 		private readonly FileProcessMode mode;
 		private readonly MessagePackSerializerOptions serializerOptions;
 		private readonly MediaPipeBodyTrackingWebSocketClient mediaPipeBodyTrackingWebSocketClient;
-		private readonly float trackedJointScoreThreshold = 0.25f;
+		private readonly float trackedJointScoreThreshold = 0.2f;
 		private readonly float inferredJointScoreThreshold = 0.15f;
 		private readonly int numHands = 2;
-		private readonly float minHandDetectionConfidence = 0.25f;
+		private readonly float minHandDetectionConfidence = 0.2f;
 		private readonly float minHandPresenceConfidence = 0.5f;
 		private readonly float handLandmarksMinTrackingConfidence = 0.5f;
 		private string inputFilePath;

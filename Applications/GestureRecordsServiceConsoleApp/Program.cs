@@ -17,8 +17,8 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp
 			//[
 			//	ArgumentsConsts.CALCULATION_FEATURES_METHOD,
 			//	ArgumentsConsts.DIRECTORY_MODE,
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\GesturesDataset\Kinect",
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\GesturesDataset\MediaPipeHandLandmarks",
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\GesturesDataset\MediaPipeHandLandmarks\ToImprove",
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Data\ASLGestures\GesturesDataset\MediaPipeHandLandmarks\ToImprove\Result",
 			//	ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_TRACKING_MODE,
 			//	//GestureLabel.goodbye.ToString(),
 			//];
@@ -27,8 +27,8 @@ namespace GestureRecognition.Applications.GestureRecordsServiceConsoleApp
 			//args =
 			//[
 			//	ArgumentsConsts.PREPARE_GESTURE_DATA_METHOD,
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\KinectRightOneHand\Data",
-			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\KinectRightOneHand\Data.csv",
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\KinectOneHandTestRightHand\TestData",
+			//	@"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\KinectOneHandTestRightHand\TestData.csv",
 			//	ArgumentsConsts.KINECT_TRACKING_MODE,
 			//];
 
