@@ -138,7 +138,7 @@
                 </DockPanel>
 
                 <DockPanel Grid.Row="4" Margin="10,0,100,0">
-                    <Label Style="{StaticResource SettingsOptionLabel}" Content="Allow body tracking lost&#x0a;for recording and recognizing&#x0a;using MediaPipe models:" />
+                    <Label Style="{StaticResource SettingsOptionLabel}" Content="Allow body tracking lost for recording&#x0a;and recognizing using MediaPipe models:" />
                     <CheckBox HorizontalAlignment="Stretch" VerticalAlignment="Center" IsChecked="{Binding Path=AllowBodyTrackingLostForRecordingAndRecognizingUsingMediaPipeModels, Mode=TwoWay}" />
                 </DockPanel>
 

@@ -31,6 +31,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		private string kinectStatusText;
 		private int trackedUsersCount;
 		private string fpsValueText;
+		private string pingValueText;	
 		private Visibility startStopGestureRecordButtonVisibility = Visibility.Hidden;
 		private Visibility stoppedBodyTrackingInfoVisibility = Visibility.Hidden;
 		private string stoppedBodyTrackingInfoText;
@@ -115,6 +116,22 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				{
 					this.fpsValueText = value;
 					RaisePropertyChanged(nameof(FPSValueText));
+				}
+			}
+		}
+
+		public string PingValueText
+		{
+			get
+			{
+				return this.pingValueText;
+			}
+			private set
+			{
+				if (this.pingValueText != value)
+				{
+					this.pingValueText = value;
+					RaisePropertyChanged(nameof(PingValueText));
 				}
 			}
 		}
@@ -426,6 +443,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			Messenger.Default.Register<KinectStatusMessage>(this, m => KinectStatusChangedMessageHandler(m));
 			Messenger.Default.Register<TrackedUsersCountChangedMessage>(this, m => TrackedUsersCountChangedMessageHandler(m));
 			Messenger.Default.Register<FPSValueMessage>(this, m => FPSValueMessageHandler(m));
+			Messenger.Default.Register<PingValueMessage>(this, m =>  PingValueMessageHandler(m));
 			Messenger.Default.Register<BodyTrackingStoppedMessage>(this, m => BodyTrackingStoppedMessageHandler(m));
 			Messenger.Default.Register<GestureRecordingFinishedMessage>(this, async m => await GestureRecordingFinishedMessageHandler(m));
 			Messenger.Default.Register<TemporaryStateStartedMessage>(this, m => TemporaryStateStartedMessageHandler(m));
@@ -556,6 +574,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				UpdateGestureRecordingBorderState(false);
 				UpdateStartStopGestureRecordButtonState(Visibility.Hidden);
 				UpdateFPSValueText(0d);
+				UpdatePingValueText(999);
 				UpdateTrackedUsersCount(0);
 			}
 		}
@@ -576,6 +595,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		private void FPSValueMessageHandler(FPSValueMessage m)
 		{
 			UpdateFPSValueText(m.Value);
+		}
+
+		private void PingValueMessageHandler(PingValueMessage m)
+		{
+			UpdatePingValueText(m.Value);
 		}
 
 		private void BodyTrackingStoppedMessageHandler(BodyTrackingStoppedMessage m)
@@ -697,6 +721,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 		private void UpdateFPSValueText(double fpsValue)
 		{
 			this.FPSValueText = $"{string.Format("{0:0.00}", fpsValue)} FPS";
+		}
+
+		private void UpdatePingValueText(int pingValue)
+		{
+			this.PingValueText = $"Ping: {pingValue} ms";
 		}
 
 		private void UpdateTrackedUsersCount(int currentTrackedUsersCount)

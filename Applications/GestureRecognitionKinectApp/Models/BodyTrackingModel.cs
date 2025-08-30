@@ -108,9 +108,10 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		/// </summary>
 		private CancellationTokenSource processingFramesTaskTokenSource;
 
-		private TimeSpan lastProcessingFramesRelativeTime;
+		private TimeSpan lastProcessingFrameRelativeTime;
 
 		private SemaphoreSlim processingFramesSemaphore;
+		private SemaphoreSlim processingCurrentFrameSemaphore;
 
 		/// <summary>
 		/// Records gesture (color and skeleton data)
@@ -605,6 +606,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			{
 				this.processingFramesTaskTokenSource = new CancellationTokenSource();
 				this.processingFramesSemaphore = new SemaphoreSlim(1, 1);
+				this.processingCurrentFrameSemaphore = new SemaphoreSlim(1, 1);
 				this.framesQueue = Channel.CreateUnboundedPrioritized(new UnboundedPrioritizedChannelOptions<FrameData>()
 				{
 					SingleReader = true,
@@ -622,7 +624,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 							while (this.framesQueue != null && await this.framesQueue.Reader.WaitToReadAsync(this.processingFramesTaskTokenSource?.Token ?? default))
 							{
 								var frameData = await this.framesQueue.Reader.ReadAsync(this.processingFramesTaskTokenSource?.Token ?? default);
-								ProcessFrameData(frameData, this.processingFramesTaskTokenSource?.Token ?? default);
+								await ProcessFrameData(frameData, this.processingFramesTaskTokenSource?.Token ?? default).ConfigureAwait(false);
 							}
 						}
 						catch (OperationCanceledException)
@@ -647,8 +649,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			this.framesQueue?.Writer.TryComplete();
 
 			this.processingFramesSemaphore?.Dispose();
+			this.processingCurrentFrameSemaphore?.Dispose();
 
-			this.lastProcessingFramesRelativeTime = default;
+			this.lastProcessingFrameRelativeTime = default;
 			this.isProcessingFramesTaskRunning = false;
 		}
 
@@ -686,12 +689,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				await this.framesQueue.Writer.WriteAsync(frameData, token).ConfigureAwait(false);
 		}
 
-		private void ProcessFrameData(FrameData frameData, CancellationToken token)
+		private async Task ProcessFrameData(FrameData frameData, CancellationToken token)
 		{
 			if (frameData?.ColorFrame == null || token.IsCancellationRequested)
 				return;
 
-			if (frameData.ColorFrame.RelativeTime < this.lastProcessingFramesRelativeTime)
+			if (frameData.ColorFrame.RelativeTime < this.lastProcessingFrameRelativeTime)
 				return;
 
 			// TODO: To consider cancelling frames with big delay
@@ -709,6 +712,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 			try
 			{
+				await this.processingCurrentFrameSemaphore.WaitAsync(token).ConfigureAwait(false);
+
 				#region Processing color frame
 				Application.Current?.Dispatcher.Invoke(() =>
 				{
@@ -718,7 +723,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					this.colorImage.Unlock();
 					colorImageLocked = false;
 				});
-				this.lastProcessingFramesRelativeTime = colorFrame.RelativeTime;
+				this.lastProcessingFrameRelativeTime = colorFrame.RelativeTime;
 				#endregion
 
 				#region Capturing color frames for testing
@@ -944,7 +949,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				SendTrackedUsersCountChangedMessage(this.currentTrackedBodiesCount);
 				#endregion
 
-				UpdateLastDisplayedColorFrameTimeAndSendMessage(colorFrame != null);
+				UpdatePingValueAndSendMessage(colorFrame?.RelativeTime);
+				// Disabled because it is somewhat confusing when tracked by MediaPipe models.
+				//UpdateLastDisplayedColorFrameTimeAndSendMessage(colorFrame != null);
+
+				this.processingCurrentFrameSemaphore.Release();
 			}
 			finally
 			{
@@ -1602,6 +1611,18 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			else
 			{
 				MessengerUtils.SendMessage(new FPSValueMessage() { Value = 0d });
+			}
+		}
+
+		private void UpdatePingValueAndSendMessage(TimeSpan? relativeTime)
+		{
+			if (relativeTime.HasValue)
+			{
+				MessengerUtils.SendMessage(new PingValueMessage() { Value = (DateTime.Now.TimeOfDay - relativeTime.Value).Milliseconds });
+			}
+			else
+			{
+				MessengerUtils.SendMessage(new PingValueMessage() { Value = 999 });
 			}
 		}
 

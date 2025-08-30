@@ -158,12 +158,14 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 			{
 				kinectColorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame();
 				kinectBodyFrame = multiSourceFrame.BodyFrameReference.AcquireFrame();
+				var relativeTime = DateTime.Now.TimeOfDay;
+
 				var kinectBodies = GetBodies(kinectBodyFrame, true);
 				int kinectBodiesCount = kinectBodies.Length;
 
 				if (!this.IsStopped && kinectColorFrame != null)
 				{
-					var colorFrame = GetColorFrame(kinectColorFrame, ColorImageFormat.Bgra);
+					var colorFrame = GetColorFrame(kinectColorFrame, relativeTime, ColorImageFormat.Bgra);
 					BodyFrame bodyFrame = null;
 					var bodiesJointsColorSpacePointsDict = new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
 					if (kinectBodyFrame != null)
@@ -178,24 +180,24 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 								if (kinectBodiesCount == 1)
 								{
 									var trackedBody = kinectBodies.FirstOrDefault();
-									bodyFrame = kinectBodyFrame.Map(new[] { trackedBody });
+									bodyFrame = kinectBodyFrame.Map(relativeTime, new[] { trackedBody });
 									var trackedBodyJointsColorSpacePointsDict = ConvertToColorSpace(trackedBody, bodyFrame.Bodies);
 									bodiesJointsColorSpacePointsDict.Add(trackedBody.TrackingId, trackedBodyJointsColorSpacePointsDict);
 								}
 								else
 								{
-									bodyFrame = kinectBodyFrame.Map(kinectBodiesCount, true);
+									bodyFrame = kinectBodyFrame.Map(relativeTime, kinectBodiesCount, true);
 								}
 							}
 							else
 							{
-								bodyFrame = kinectBodyFrame.Map(kinectBodies);
+								bodyFrame = kinectBodyFrame.Map(relativeTime, kinectBodies);
 								bodiesJointsColorSpacePointsDict = ConvertToColorSpace(kinectBodies, bodyFrame.Bodies);
 							}
 						}
 						else 
 						{
-							bodyFrame = kinectBodyFrame.Map(0, false);
+							bodyFrame = kinectBodyFrame.Map(relativeTime, 0, false);
 						}
 					}
 
@@ -232,7 +234,7 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 		#endregion
 
 		#region ColorFrame methods
-		private ColorFrame GetColorFrame(MSKinect.ColorFrame kinectColorFrame, ColorImageFormat destinationFormat)
+		private ColorFrame GetColorFrame(MSKinect.ColorFrame kinectColorFrame, TimeSpan relativeTime, ColorImageFormat destinationFormat)
 		{
 			if (kinectColorFrame == null)
 				return null;
@@ -247,7 +249,7 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 			else
 				kinectColorFrame.CopyRawFrameDataToArray(colorData);
 
-			return kinectColorFrame.Map(destinationFormat, bytesPerPixel, colorData);
+			return kinectColorFrame.Map(destinationFormat, bytesPerPixel, relativeTime, colorData);
 		}
 		#endregion
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using GestureRecognition.Processing.BaseClassLib.Structures.Body;
@@ -45,7 +46,7 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 
 		#region Kinect.ColorFrame -> ColorFrame
 		public static ColorFrame Map(this MSKinect.ColorFrame kinectColorFrame, ColorImageFormat destinationFormat,
-			uint bytesPerPixel, byte[] colorData)
+			uint bytesPerPixel, TimeSpan relativeTime, byte[] colorData)
 		{
 			if (kinectColorFrame == null || colorData == null || colorData.Length == 0)
 				return null;
@@ -56,32 +57,32 @@ namespace GestureRecognition.Processing.KinectServer.Kinect
 				destinationFormat,
 				bytesPerPixel,
 				kinectColorFrame.FrameDescription.LengthInPixels,
-				kinectColorFrame.RelativeTime,
+				relativeTime,
 				colorData
 				);
 		}
 		#endregion
 
 		#region Kinect.BodyFrame -> BodyFrame
-		public static BodyFrame Map(this MSKinect.BodyFrame kinectBodyFrame, MSKinect.Body[] bodies)
+		public static BodyFrame Map(this MSKinect.BodyFrame kinectBodyFrame, TimeSpan relativeTime, MSKinect.Body[] bodies)
 		{
 			if (kinectBodyFrame == null)
 				return null;
 
 			return new BodyFrame(
-				kinectBodyFrame.RelativeTime,
+				relativeTime,
 				bodies?.Map() ?? new BodyData[] { }
 				);
 		}
 
-		public static BodyFrame Map(this MSKinect.BodyFrame kinectBodyFrame, int bodyCount,
+		public static BodyFrame Map(this MSKinect.BodyFrame kinectBodyFrame, TimeSpan relativeTime, int bodyCount,
 			bool tooMuchUsersForOneBodyTracking)
 		{
 			if (kinectBodyFrame == null)
 				return null;
 
 			return new BodyFrame(
-				kinectBodyFrame.RelativeTime,
+				relativeTime,
 				bodyCount,
 				tooMuchUsersForOneBodyTracking
 				);

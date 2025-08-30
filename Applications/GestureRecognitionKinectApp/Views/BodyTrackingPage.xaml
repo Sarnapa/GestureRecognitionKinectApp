@@ -82,7 +82,8 @@
             <StatusBarItem Content="{Binding KinectStatusText}" />
             <StatusBarItem Content="{Binding TrackedUsersCountText}" />
             <StatusBarItem Content="{Binding GestureRecognitionModelPath}" />
-            <StatusBarItem Content="{Binding FPSValueText}" />
+            <StatusBarItem Content="{Binding PingValueText}" />
+            <!-- StatusBarItem Content="{Binding FPSValueText}" /> -->
         </StatusBar>
     </Grid>
 </Page>
