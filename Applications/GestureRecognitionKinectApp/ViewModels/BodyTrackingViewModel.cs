@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
@@ -95,12 +96,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 			}
 		}
 
-		public string GestureRecognitionModelPath
+		public string GestureRecognitionModelName
 		{
 			get
 			{
 				return string.IsNullOrEmpty(this.model.GestureRecognitionModelPath) ?
-					Properties.Resources.NoGestureRecognitionModelLoadedText : $"Gesture recognition model: {this.model.GestureRecognitionModelPath}";
+					Properties.Resources.NoGestureRecognitionModelLoadedText : $"Gesture recognition model: {Path.GetFileNameWithoutExtension(this.model.GestureRecognitionModelPath)}";
 			}
 		}
 
@@ -470,7 +471,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.ViewModels
 				var loadModelResult = this.model.LoadGestureRecognitionModel(openFileDialog.FileName);
 				if (loadModelResult?.Success == true)
 				{
-					RaisePropertyChanged(nameof(GestureRecognitionModelPath));
+					RaisePropertyChanged(nameof(GestureRecognitionModelName));
 				}
 				else
 				{

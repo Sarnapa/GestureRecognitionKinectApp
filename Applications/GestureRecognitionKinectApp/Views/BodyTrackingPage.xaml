@@ -80,8 +80,8 @@
 
         <StatusBar Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
             <StatusBarItem Content="{Binding KinectStatusText}" />
+            <StatusBarItem Content="{Binding GestureRecognitionModelName}" />
             <StatusBarItem Content="{Binding TrackedUsersCountText}" />
-            <StatusBarItem Content="{Binding GestureRecognitionModelPath}" />
             <StatusBarItem Content="{Binding PingValueText}" />
             <!-- StatusBarItem Content="{Binding FPSValueText}" /> -->
         </StatusBar>
