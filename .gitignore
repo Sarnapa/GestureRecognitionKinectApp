@@ -365,3 +365,6 @@ FodyWeavers.xsd
 /Scripts
 /Tests/Processing/MediaPipeBodyTrackingWebSocketServer.IntegrationTests/Input
 /Tests/Processing/MediaPipeBodyTrackingWebSocketServer.IntegrationTests/Output
+.vscode/
+/Docs/Diagrams/.structurizr
+/Docs/Diagrams/workspace.json
