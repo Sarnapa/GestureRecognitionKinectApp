@@ -29,6 +29,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Models\HandLandmarksDetection\hand_landmarker.task" />
     <Content Include="Models\PoseLandmarksDetection\pose_landmarker_full.task" />
     <Content Include="Models\PoseLandmarksDetection\pose_landmarker_heavy.task" />
     <Content Include="Models\PoseLandmarksDetection\pose_landmarker_lite.task" />
