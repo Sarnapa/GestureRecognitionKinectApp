@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Serilog;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Configuration;
+using GestureRecognition.Applications.GestureRecognitionKinectApp.Logging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Structures.Managers;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Utilities;
@@ -523,8 +525,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					var gestureFeatures = await this.gestureRecognitionFeaturesManager.CalculateFeatures(this.gestureToRecognizeBodyFrames.ToArray());
 					if (gestureFeatures != null && gestureFeatures.IsValid)
 					{
-						return await this.gestureRecognitionManager.RecognizeGestureAsync(new RecognizeGestureParameters(gestureFeatures, ConfigService.MainSettings.GesturePredictionScoreThreshold, 
-							this.TrackingMode, CancellationToken.None));
+						RecognizeGestureResult result;
+						using (var perf = PerfScope.Measure("RecognizeGesture", new { BodyTrackingMode = this.TrackingMode }))
+						{
+							result = await this.gestureRecognitionManager.RecognizeGestureAsync(new RecognizeGestureParameters(gestureFeatures, ConfigService.MainSettings.GesturePredictionScoreThreshold,
+								this.TrackingMode, CancellationToken.None));
+						}
+
+						return result;
 					}
 					else
 						return new RecognizeGestureResult(false, "Error during calculating features for gesture.");
@@ -1616,14 +1624,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 		private void UpdatePingValueAndSendMessage(TimeSpan? relativeTime)
 		{
+			int pingValue = 999;
 			if (relativeTime.HasValue)
-			{
-				MessengerUtils.SendMessage(new PingValueMessage() { Value = (DateTime.Now.TimeOfDay - relativeTime.Value).Milliseconds });
-			}
-			else
-			{
-				MessengerUtils.SendMessage(new PingValueMessage() { Value = 999 });
-			}
+				pingValue = (DateTime.Now.TimeOfDay - relativeTime.Value).Milliseconds;
+
+			Log.Information("{Operation} finished in {durationMs} ms {@Context}.", $"{nameof(ProcessFrameData)}", pingValue,
+				new { BodyTrackingMode = this.TrackingMode });
+
+			MessengerUtils.SendMessage(new PingValueMessage() { Value = pingValue });
 		}
 
 		private void CleanGestureToRecognizeBodyFrames()
