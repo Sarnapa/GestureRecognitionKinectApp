@@ -1626,7 +1626,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		{
 			int pingValue = 999;
 			if (relativeTime.HasValue)
-				pingValue = (DateTime.Now.TimeOfDay - relativeTime.Value).Milliseconds;
+			{
+				pingValue = (int)Math.Round((DateTime.Now.TimeOfDay - relativeTime.Value).TotalMilliseconds);
+			}
 
 			Log.Information("{Operation} finished in {durationMs} ms {@Context}.", $"{nameof(ProcessFrameData)}", pingValue,
 				new { BodyTrackingMode = this.TrackingMode });

@@ -4,6 +4,7 @@
 	{
 		ModelTuneHyperparamsTrainingAndEvaluation,
 		ModelTrainingAndEvaluation,
-		ModelEvaluation
+		ModelEvaluation,
+		ModelPredictionsPerformanceTest,
 	}
 }

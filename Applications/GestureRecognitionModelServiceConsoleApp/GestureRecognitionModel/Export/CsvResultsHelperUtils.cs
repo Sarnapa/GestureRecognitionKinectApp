@@ -68,6 +68,35 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 				}
 			}
 		}
+
+		public static void WriteModelPredictionsPerformanceTestResultToFile(ModelPredictionsPerformanceTestResult result, string resultFile)
+		{
+			if (result == null)
+				throw new ArgumentNullException(nameof(result));
+			if (string.IsNullOrEmpty(resultFile))
+				throw new ArgumentException(resultFile);
+			if (!resultFile.EndsWith(CsvFileExtension))
+				throw new ArgumentException(resultFile);
+
+			if (File.Exists(resultFile))
+			{
+				// TODO: To reconsider if appending or overwriting.
+				using (var writer = new StreamWriter(resultFile, true))
+				{
+					WritePredictionsDurationsMs(writer, result.PredictionsInfo, true);
+				}
+			}
+			else
+			{
+				using (var file = File.Create(resultFile))
+				{
+					using (var writer = new StreamWriter(file, new UTF8Encoding(encoderShouldEmitUTF8Identifier: true)))
+					{
+						WritePredictionsDurationsMs(writer, result.PredictionsInfo, false);
+					}
+				}
+			}
+		}
 		#endregion
 
 		#region Private methods
@@ -102,6 +131,24 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 				foreach (var r in perClassEvalResults)
 				{
 					csv.WriteRecord(r);
+					csv.NextRecord();
+				}
+			}
+		}
+
+		private static void WritePredictionsDurationsMs(StreamWriter writer, PredictionPerformanceInfo[] predictionsInfo, bool append)
+		{
+			using (var csv = new CsvWriter(writer, new CsvConfiguration(CultureInfo.InvariantCulture) { Delimiter = ";", HasHeaderRecord = !append }))
+			{
+				if (!append)
+				{
+					csv.WriteHeader<PredictionPerformanceInfo>();
+					csv.NextRecord();
+				}
+
+				foreach (var i in predictionsInfo)
+				{
+					csv.WriteRecord(i);
 					csv.NextRecord();
 				}
 			}

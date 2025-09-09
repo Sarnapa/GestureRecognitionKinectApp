@@ -1,6 +1,8 @@
 ﻿using GestureRecognition.Applications.GestureRecognitionModelServiceConsoleApp.GestureRecognitionModel.Data;
 using GestureRecognition.Applications.GestureRecognitionModelServiceConsoleApp.GestureRecognitionModel.Export;
 using GestureRecognition.Applications.GestureRecognitionModelServiceConsoleApp.GestureRecognitionModel.Result;
+using GestureRecognition.Processing.BaseClassLib.Structures.Body;
+using GestureRecognition.Processing.BaseClassLib.Structures.GestureRecognition.DataViews;
 using GestureRecognition.Processing.BaseClassLib.Structures.MLNET;
 using GestureRecognition.Processing.MLNETProcUnit.GestureRecognition;
 
@@ -101,6 +103,42 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			}
 
 			ConsoleOutputUtils.WriteLine(methodName, "Model evaluation process finished.");
+		}
+
+		public void ExecuteModelPredictionsPerformanceTest(ModelPredictionsPerformanceTestParameters parameters)
+		{
+			string methodName = $"{nameof(GestureRecognitionModelManager)}.{nameof(ExecuteModelPredictionsPerformanceTest)}";
+
+			ConsoleOutputUtils.WriteLine(methodName, "Model predictions performance test started.");
+
+			ConsoleOutputUtils.WriteLine(methodName, $"\n{parameters}");
+
+			var modelWrapper = InitializeModelWrapper();
+			if (LoadModel(modelWrapper, parameters.ModelFilePath))
+			{
+				var predictionsDurations = new List<int>();
+				for (int i = 0; i < parameters.TestsCount; i++)
+				{
+					for (int j = 0; j < parameters.GesturesData.Length; j++)
+					{
+						var gestureData = parameters.GesturesData[j];
+						var (_, predictDuration, isSuccess) = Predict(modelWrapper, gestureData, j);
+						if (isSuccess)
+							predictionsDurations.Add(predictDuration);
+					}
+				}
+
+				ConsoleOutputUtils.WriteLine(methodName, $"Number of successful gesture predictions: {predictionsDurations.Count}");
+				if (predictionsDurations.Count > 0)
+				{
+					ExportPredictionPerformanceTestResultToCsv(parameters.ResultFilePath, new ModelPredictionsPerformanceTestResult()
+					{
+						PredictionsInfo = predictionsDurations.Select(d => new PredictionPerformanceInfo() { DurationMicroseconds = d }).ToArray()
+					});
+				}
+			}
+
+			ConsoleOutputUtils.WriteLine(methodName, "Model predictions performance test finished.");
 		}
 		#endregion
 
@@ -276,6 +314,43 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			return (evaluateResult, evaluateResult.IsSuccess);
 		}
 
+		private (GestureRecognitionModelPredictResult result, int durationMicroseconds, bool isSuccess) Predict(GestureRecognitionModelWrapper modelWrapper, GestureDataView gestureData, int gestureIdx)
+		{
+			string methodName = $"{nameof(GestureRecognitionModelManager)}.{nameof(Predict)}";
+
+			string gestureLabel = string.Empty;
+			var trackingMode = BodyTrackingMode.Kinect;
+			if (gestureData is KinectGestureDataView kinectGestureData)
+			{
+				gestureLabel = kinectGestureData.Label ?? string.Empty;
+				trackingMode = BodyTrackingMode.Kinect;
+			}
+			else if (gestureData is MediaPipeHandLandmarksGestureDataView mediaPipeHandLandmarksGestureData)
+			{
+				gestureLabel = mediaPipeHandLandmarksGestureData.Label ?? string.Empty;
+				trackingMode = BodyTrackingMode.MediaPipeHandLandmarks;	
+			}
+
+			ConsoleOutputUtils.WriteLine(methodName, $"[Gesture label: {gestureLabel}, Tracking mode: {trackingMode}] Gesture prediction started ");
+
+			var predictStart = DateTime.Now;
+			var predictResult = modelWrapper.Predict(new GestureRecognitionModelPredictParameters()
+			{
+				GestureData = gestureData,
+			});
+			int durationMicroseconds =  (int)Math.Round((DateTime.Now - predictStart).TotalMicroseconds);
+			if (predictResult.IsSuccess)
+			{
+				ConsoleOutputUtils.WriteLine(methodName, $"[Gesture label: {gestureLabel}, Tracking mode: {trackingMode}] " +
+					$"Predicted label: {predictResult.Prediction.Label}, Score: {predictResult.Prediction.Scores.Max()}");
+			}
+			else
+				ConsoleOutputUtils.WriteLine(methodName, $"[Gesture label: {gestureLabel}, Tracking mode: {trackingMode}] {predictResult.ErrorMessage}");
+
+
+			return (predictResult, durationMicroseconds, predictResult.IsSuccess);
+		}
+
 		private bool LoadModel(GestureRecognitionModelWrapper modelWrapper, string modelFilePath)
 		{
 			string methodName = $"{nameof(GestureRecognitionModelManager)}.{nameof(LoadModel)}";
@@ -360,6 +435,31 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			{
 				if (results != null && results.Length > 0)
 					CsvResultsHelperUtils.WriteModelProcessResultsToFile(results, modelProcessResultsFilePath);
+
+				ConsoleOutputUtils.WriteLine(methodName, "Exporting results to CSV file succeded.");
+			}
+			catch (Exception ex)
+			{
+				ConsoleOutputUtils.WriteLine(methodName, $"Exporting results to CSV file failed - exception type: {ex.GetType()}, exception message: {ex.Message}.");
+			}
+		}
+
+		private void ExportPredictionPerformanceTestResultToCsv(string resultFilePath, ModelPredictionsPerformanceTestResult result)
+		{
+			string methodName = $"{nameof(GestureRecognitionModelManager)}.{nameof(ExportPredictionPerformanceTestResultToCsv)}";
+
+			ConsoleOutputUtils.WriteLine(methodName, "Exporting results to CSV file started...");
+
+			if (string.IsNullOrEmpty(resultFilePath) || !resultFilePath.EndsWith(CsvResultsHelperUtils.CsvFileExtension))
+			{
+				ConsoleOutputUtils.WriteLine(methodName, $"Exporting results to CSV file failed - invalid output file path: [{resultFilePath}].");
+				return;
+			}
+
+			try
+			{
+				if (result?.PredictionsInfo != null && result.PredictionsInfo.Length > 0)
+					CsvResultsHelperUtils.WriteModelPredictionsPerformanceTestResultToFile(result, resultFilePath);
 
 				ConsoleOutputUtils.WriteLine(methodName, "Exporting results to CSV file succeded.");
 			}

@@ -74,6 +74,17 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			//	ArgumentsConsts.MODEL_PROCESS_RESULT_FILE_PATH, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Tests\2025_08_11_MediaPipeHandLandmarks\ModelResult_onlyEval.csv"
 			//];
 
+			//args =
+			//[
+			//	ArgumentsConsts.MODEL_PREDICTIONS_PERFORMANCE_TEST,
+			//	ArgumentsConsts.MODEL_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\MediaPipeHandLandmarksTwoHands\MediaPipeHandLandmarksTwoHandsModel.zip",
+			//	ArgumentsConsts.GESTURE_DATA_VIEW_TYPE_ARG, ArgumentsConsts.MEDIAPIPE_HAND_LANDMARKS_GESTURE_DATA_VIEW_TYPE,
+			//	ArgumentsConsts.PREDICTIONS_PERFORMANCE_TEST_DATA_FILE_PATH_ARG, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\Models\Official\MediaPipeHandLandmarksTwoHands\TestData.csv",
+			//	ArgumentsConsts.SEED_ARG, "42",
+			//	ArgumentsConsts.PREDICTIONS_PERFORMANCE_TESTS_COUNT, "10",
+			//	ArgumentsConsts.PREDICTIONS_PERFORMANCE_TEST_RESULT_FILE_PATH, @"C:\Users\Michal\OneDrive\Studies\Praca_MGR\Project\PerformanceLogs\MediaPipeHandLandmarksTwoHandsGesturesPredictionsPerfTestResults.csv"
+			//];
+
 			if (args.Length < 3)
 			{
 				ConsoleOutputUtils.WriteLine(methodName, $"Invalid arguments count - got: {args.Length}, expected: at least 3.");
@@ -97,6 +108,10 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 			{
 				methodKind = MethodKind.ModelEvaluation;
 			}
+			else if (methodKindArg.Equals(ArgumentsConsts.MODEL_PREDICTIONS_PERFORMANCE_TEST, StringComparison.OrdinalIgnoreCase))
+			{
+				methodKind = MethodKind.ModelPredictionsPerformanceTest;
+			}
 			else
 			{
 				ConsoleOutputUtils.WriteLine(methodName, $"Invalid method argument - got: {methodKindArg}, " +
@@ -115,6 +130,9 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 						break;
 					case MethodKind.ModelEvaluation:
 						ExecuteModelEvaluationProcess(args); 
+						break;
+					case MethodKind.ModelPredictionsPerformanceTest:
+						ExecuteModelPredictionsPerformanceTest(args);
 						break;
 				}
 			}
@@ -457,6 +475,61 @@ namespace GestureRecognition.Applications.GestureRecognitionModelServiceConsoleA
 				SetTestDataParameters = setTestDataParameters,
 				EvaluationParams = evaluationParams,
 				ModelProcessResultFilePath = modelProcessResultFilePath,
+			});
+		}
+
+		private static void ExecuteModelPredictionsPerformanceTest(string[] args)
+		{
+			string methodName = $"{nameof(Program)}.{nameof(ExecuteModelPredictionsPerformanceTest)}";
+
+			string[] methodArgs = args.Where(a => a.StartsWith('-')).ToArray();
+			if (methodArgs.Length != methodArgs.Distinct().Count())
+			{
+				ConsoleOutputUtils.WriteLine(methodName, $"[{methodName}] Duplicates were provided among the arguments.");
+				return;
+			}
+
+			var methodArgToIdx = args.Index().Where(a => methodArgs.Contains(a.Item)).ToDictionary(a => a.Item, a => a.Index);
+
+			#region ModelFilePath
+			var (modelFilePath, getModelFilePathIsSuccess) = GetArgValue(methodName, args, methodArgToIdx, ArgumentsConsts.MODEL_FILE_PATH_ARG, true);
+			if (!getModelFilePathIsSuccess)
+				return;
+			#endregion
+
+			#region GestureDataViewType
+			var gestureDataViewType = GetGestureDataViewType(methodName, args, methodArgToIdx);
+			if (gestureDataViewType == null)
+				return;
+			#endregion
+
+			#region GesturesData 
+			var (gesturesData, _, getGesturesDataIsSuccess) = GetGesturesData(methodName, args, methodArgToIdx, ArgumentsConsts.PREDICTIONS_PERFORMANCE_TEST_DATA_FILE_PATH_ARG, gestureDataViewType, true);
+			if (!getGesturesDataIsSuccess)
+				return;
+			#endregion
+
+			#region TestsCount
+			var (testsCount, getTestsCountIsSuccess) = GetArgIntValue(methodName, args, methodArgToIdx, ArgumentsConsts.PREDICTIONS_PERFORMANCE_TESTS_COUNT, false);
+			#endregion
+
+			#region Seed
+			int seed = GetSeed(methodName, args, methodArgToIdx);
+			#endregion
+
+			#region ResultFilePath
+			var (resultFilePath, getResultFilePathIsSuccess) = GetArgValue(methodName, args, methodArgToIdx, ArgumentsConsts.PREDICTIONS_PERFORMANCE_TEST_RESULT_FILE_PATH, true);
+			if (!getResultFilePathIsSuccess)
+				return;
+			#endregion
+
+			var gestureRecognitionModelManager = new GestureRecognitionModelManager(seed);
+			gestureRecognitionModelManager.ExecuteModelPredictionsPerformanceTest(new ModelPredictionsPerformanceTestParameters()
+			{
+				ModelFilePath = modelFilePath,
+				GesturesData = gesturesData,
+				TestsCount = testsCount ?? 1,
+				ResultFilePath = resultFilePath
 			});
 		}
 		#endregion
