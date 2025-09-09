@@ -526,7 +526,8 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 					if (gestureFeatures != null && gestureFeatures.IsValid)
 					{
 						RecognizeGestureResult result;
-						using (var perf = PerfScope.Measure("RecognizeGesture", new { BodyTrackingMode = this.TrackingMode }))
+						// Only for tests performance.
+						// using (var perf = PerfScope.Measure("RecognizeGesture", new { BodyTrackingMode = this.TrackingMode }))
 						{
 							result = await this.gestureRecognitionManager.RecognizeGestureAsync(new RecognizeGestureParameters(gestureFeatures, ConfigService.MainSettings.GesturePredictionScoreThreshold,
 								this.TrackingMode, CancellationToken.None));
@@ -1630,8 +1631,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				pingValue = (int)Math.Round((DateTime.Now.TimeOfDay - relativeTime.Value).TotalMilliseconds);
 			}
 
-			Log.Information("{Operation} finished in {durationMs} ms {@Context}.", $"{nameof(ProcessFrameData)}", pingValue,
-				new { BodyTrackingMode = this.TrackingMode });
+			// Only for performance tests.
+			//Log.Information("{Operation} finished in {durationMs} ms {@Context}.", $"{nameof(ProcessFrameData)}", pingValue,
+			//	new { BodyTrackingMode = this.TrackingMode });
 
 			MessengerUtils.SendMessage(new PingValueMessage() { Value = pingValue });
 		}
