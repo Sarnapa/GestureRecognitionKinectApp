@@ -38,7 +38,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 				}
 			}
 
-			var results = await Task.WhenAll(tasks).ConfigureAwait(false);
+			var results = await Task.WhenAll(tasks);
 			results = results.OrderBy(r => r.TrackingId).ToArray();
 
 			return results;
@@ -48,7 +48,7 @@ namespace GestureRecognition.Processing.BaseClassLib.Mappers
 			HandState handLeftState, HandState handRightState, float trackedJointVisibilityThreshold, float inferredJointVisibilityThreshold)
 		{
 			return await Task.Run(() => Map(trackingId, poseLandmarks, worldPoseLandmarks, handLeftState, handRightState,
-				trackedJointVisibilityThreshold, inferredJointVisibilityThreshold)).ConfigureAwait(false);
+				trackedJointVisibilityThreshold, inferredJointVisibilityThreshold));
 		}
 
 		private static BodyDataWithColorSpacePoints Map(ulong trackingId, List<PoseLandmark> poseLandmarks, List<PoseLandmark> worldPoseLandmarks,

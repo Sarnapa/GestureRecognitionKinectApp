@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -10,9 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Serilog;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Configuration;
-using GestureRecognition.Applications.GestureRecognitionKinectApp.Logging;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Managers;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Structures.Managers;
 using GestureRecognition.Applications.GestureRecognitionKinectApp.Models.Presentation.Utilities;
@@ -96,11 +94,6 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		private int displayImageHeight;
 
 		/// <summary>
-		/// To queue received frames in chronological order
-		/// </summary>
-		private Channel<FrameData> framesQueue;
-
-		/// <summary>
 		/// Is the task that passes frames for processing running?
 		/// </summary>
 		private bool isProcessingFramesTaskRunning;
@@ -114,6 +107,11 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 		private SemaphoreSlim processingFramesSemaphore;
 		private SemaphoreSlim processingCurrentFrameSemaphore;
+		/// <summary>
+		/// Tracks ongoing frame processing tasks by frame Id
+		/// </summary>
+		private ConcurrentDictionary<long, Task<FrameData>> processingFramesTasksDict;
+		private long nextFrameId = 0;
 
 		/// <summary>
 		/// Records gesture (color and skeleton data)
@@ -603,8 +601,35 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			if (!this.isProcessingFramesTaskRunning)
 				return Task.CompletedTask;
 
-			Task.Run(() => StartProcessFrameData(e.Data, this.processingFramesTaskTokenSource.Token));
+			var frameData = e.Data;
+			long frameId = Interlocked.Increment(ref this.nextFrameId);
+			var token = this.processingFramesTaskTokenSource.Token;
 
+			Task<FrameData> processingFrameTask;
+			if (this.IsMediaPipeBodyTrackingMode)
+			{
+				// Process frame in parallel (e.g., via external MediaPipe server) with concurrency limit
+				processingFrameTask = Task.Run(async () =>
+				{
+					bool isNewBodyData = false;
+					this.skippingFramesCounter++;
+					isNewBodyData = this.skippingFramesCounter == skippingFramesFactor;
+					if (isNewBodyData)
+					{
+						this.skippingFramesCounter = 0;
+					}
+					var result = await GetFrameData(frameData.ColorFrame, isNewBodyData, token);
+					return result;
+				}, token);
+			}
+			else
+			{
+				// Kinect mode: no external processing needed, use the frame directly
+				processingFrameTask = Task.FromResult(frameData);
+			}
+
+			// Register the task in the dictionary for ordered emission
+			this.processingFramesTasksDict[frameId] = processingFrameTask;
 			return Task.CompletedTask;
 		}
 
@@ -614,14 +639,9 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				|| (this.IsMediaPipeBodyTrackingMode && this.IsExternalBodyTrackingModelClientReadyToUseToTrackUserMovement)))
 			{
 				this.processingFramesTaskTokenSource = new CancellationTokenSource();
-				this.processingFramesSemaphore = new SemaphoreSlim(1, 1);
 				this.processingCurrentFrameSemaphore = new SemaphoreSlim(1, 1);
-				this.framesQueue = Channel.CreateUnboundedPrioritized(new UnboundedPrioritizedChannelOptions<FrameData>()
-				{
-					SingleReader = true,
-					SingleWriter = false,
-					Comparer = new FrameDataRelativeTimeComparer()
-				});
+				this.processingFramesTasksDict = new ConcurrentDictionary<long, Task<FrameData>>();
+				this.nextFrameId = 0;
 
 				try
 				{
@@ -630,10 +650,47 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 						try
 						{
 							this.isProcessingFramesTaskRunning = true;
-							while (this.framesQueue != null && await this.framesQueue.Reader.WaitToReadAsync(this.processingFramesTaskTokenSource?.Token ?? default))
+							long nextSeqToEmit = 1;
+							var token = this.processingFramesTaskTokenSource.Token;
+							while (!token.IsCancellationRequested)
 							{
-								var frameData = await this.framesQueue.Reader.ReadAsync(this.processingFramesTaskTokenSource?.Token ?? default);
-								await ProcessFrameData(frameData, this.processingFramesTaskTokenSource?.Token ?? default).ConfigureAwait(false);
+								// Check if the next frame in sequence has completed processing
+								if (this.processingFramesTasksDict.TryGetValue(nextSeqToEmit, out Task<FrameData> nextTask))
+								{
+									FrameData frameResult = null;
+									bool completed = false;
+									try
+									{
+										frameResult = await nextTask.ConfigureAwait(false);
+										completed = true;
+									}
+									catch (OperationCanceledException)
+									{
+										// Processing was canceled for this frame (e.g., on application shutdown)
+										completed = true;
+									}
+									catch (Exception ex)
+									{
+										// Processing error (e.g., external model failure or timeout)
+										// TODO: Log the error
+										completed = true;
+									}
+									if (completed)
+									{
+										// Remove the task from the dictionary now that it's finished
+										this.processingFramesTasksDict.TryRemove(nextSeqToEmit, out _);
+										// If we have a valid result and not canceled, emit it in order
+										if (frameResult != null && !token.IsCancellationRequested)
+										{
+											// Process the frame data on the UI/rendering pipeline (sequentially)
+											await ProcessFrameData(frameResult, token).ConfigureAwait(false);
+										}
+										nextSeqToEmit++;
+										continue;  // check for the next sequence number
+									}
+								}
+								// If the next sequence frame is not yet available or not completed, wait a moment
+								await Task.Delay(10, token).ConfigureAwait(false);
 							}
 						}
 						catch (OperationCanceledException)
@@ -655,47 +712,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 		{
 			this.processingFramesTaskTokenSource?.Cancel();
 
-			this.framesQueue?.Writer.TryComplete();
-
 			this.processingFramesSemaphore?.Dispose();
 			this.processingCurrentFrameSemaphore?.Dispose();
 
 			this.lastProcessingFrameRelativeTime = default;
 			this.isProcessingFramesTaskRunning = false;
-		}
 
-		private async Task StartProcessFrameData(FrameData frameData, CancellationToken token)
-		{
-			if (frameData?.ColorFrame == null || token.IsCancellationRequested)
-				return;
-
-			// TODO: To consider cancelling frames with big delay
-			//if ((this.Now - frameData.ColorFrame.RelativeTime).Milliseconds > NEXT_FRAME_MAX_DELAY_MILLISECONDS)
-			//	return;
-
-			if (this.IsMediaPipeBodyTrackingMode)
-			{
-				bool isNewBodyData = false;
-				await this.processingFramesSemaphore.WaitAsync(token);
-				this.skippingFramesCounter++;
-				isNewBodyData = this.skippingFramesCounter == skippingFramesFactor;
-				if (isNewBodyData)
-				{
-					this.skippingFramesCounter = 0;
-				}
-				frameData = await GetFrameData(frameData.ColorFrame, isNewBodyData, token);
-				this.processingFramesSemaphore.Release();
-			}
-
-			// TODO: To consider cancelling frames with big delay
-			//if ((this.Now - frameData.ColorFrame.RelativeTime).Milliseconds > NEXT_FRAME_MAX_DELAY_MILLISECONDS)
-			//	return;
-
-			if (token.IsCancellationRequested)
-				return;
-
-			if (this.framesQueue != null)
-				await this.framesQueue.Writer.WriteAsync(frameData, token);
+			this.nextFrameId = 0;
+			this.processingFramesTasksDict?.Clear();
 		}
 
 		private async Task ProcessFrameData(FrameData frameData, CancellationToken token)
@@ -721,7 +745,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 			try
 			{
-				await this.processingCurrentFrameSemaphore.WaitAsync(token).ConfigureAwait(false);
+				await this.processingCurrentFrameSemaphore.WaitAsync(token);
 
 				#region Processing color frame
 				Application.Current?.Dispatcher.Invoke(() =>
@@ -1173,7 +1197,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			var bodiesJointsColorSpacePointsDict = new Dictionary<ulong, BodyJointsColorSpacePointsDict>();
 			if (this.IsExternalBodyTrackingModelClientReadyToUseToTrackUserMovement && isNewBodyData)
 			{
-				var (bodiesData, bodiesCount) = await GetBodiesData(colorFrame, token).ConfigureAwait(false);
+				var (bodiesData, bodiesCount) = await GetBodiesData(colorFrame, token);
 				if (bodiesCount > 1)
 				{
 					bodyFrame = new BodyFrame(colorFrame.RelativeTime, bodiesCount, true);
@@ -1207,7 +1231,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 
 			if (isMediaPipePoseLandmark)
 			{
-				var response = await DetectPoseLandmark(colorData, scaledImageWidth, scaledImageHeight, colorFrame.Width, colorFrame.Height, token).ConfigureAwait(false);
+				var response = await DetectPoseLandmark(colorData, scaledImageWidth, scaledImageHeight, colorFrame.Width, colorFrame.Height, token);
 
 				if (response.Status == DetectPoseLandmarksResponseStatus.NoPose)
 					return ([], 0);
@@ -1215,12 +1239,12 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				if (response.Status == DetectPoseLandmarksResponseStatus.TooMuchUsersForOneBodyTracking)
 					return ([], response.BodiesCount);
 
-				var bodyData = await response.Map(this.MainSettings.TrackedJointScoreThreshold, this.MainSettings.InferredJointScoreThreshold).ConfigureAwait(false);
+				var bodyData = await response.Map(this.MainSettings.TrackedJointScoreThreshold, this.MainSettings.InferredJointScoreThreshold);
 				return (bodyData, 1);
 			}
 			else
 			{
-				var response = await DetectHandLandmark(colorData, scaledImageWidth, scaledImageHeight, colorFrame.Width, colorFrame.Height, token).ConfigureAwait(false);
+				var response = await DetectHandLandmark(colorData, scaledImageWidth, scaledImageHeight, colorFrame.Width, colorFrame.Height, token);
 
 				if (response.Status == DetectHandLandmarksResponseStatus.NoHand)
 					return ([], 0);
@@ -1245,7 +1269,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				ImageTargetHeight = imageTargetHeight,
 				IsOneBodyTrackingEnabled = true
 			};
-			return await this.externalBodyTrackingModelClient.DetectPoseLandmarksAsync(request, token).ConfigureAwait(false);
+			return await this.externalBodyTrackingModelClient.DetectPoseLandmarksAsync(request, token);
 		}
 
 		private async Task<DetectHandLandmarksResponse> DetectHandLandmark(byte[] image, int imageWidth, int imageHeight,
@@ -1260,7 +1284,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				ImageTargetHeight = imageTargetHeight,
 				IsOneBodyTrackingEnabled = true
 			};
-			return await this.externalBodyTrackingModelClient.DetectHandLandmarksAsync(request, token).ConfigureAwait(false);
+			return await this.externalBodyTrackingModelClient.DetectHandLandmarksAsync(request, token);
 		}
 
 		// Code archived - failed attempt with mediapipe model in ONNX format
