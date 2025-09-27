@@ -130,7 +130,7 @@ namespace GestureRecognition.Tests.Processing.MediaPipeBodyTrackingWebSocketServ
 			var start = DateTime.Now;
 			var response = await this.client.DetectHandLandmarksAsync(request, CancellationToken.None).ConfigureAwait(false);
 			var finish = DateTime.Now;
-			Debug.WriteLine($"[{DateTime.Now}] Detects duration: {(finish - start).Milliseconds}");
+			Debug.WriteLine($"[{DateTime.Now}] Detects duration: {(finish - start).TotalMilliseconds}");
 			Assert.IsNotNull(response);
 			Assert.AreNotEqual(DetectHandLandmarksResponseStatus.Error, response.Status);
 

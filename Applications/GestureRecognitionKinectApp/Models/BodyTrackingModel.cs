@@ -676,14 +676,14 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 			if (this.IsMediaPipeBodyTrackingMode)
 			{
 				bool isNewBodyData = false;
-				await this.processingFramesSemaphore.WaitAsync(token).ConfigureAwait(false);
+				await this.processingFramesSemaphore.WaitAsync(token);
 				this.skippingFramesCounter++;
 				isNewBodyData = this.skippingFramesCounter == skippingFramesFactor;
 				if (isNewBodyData)
 				{
 					this.skippingFramesCounter = 0;
 				}
-				frameData = await GetFrameData(frameData.ColorFrame, isNewBodyData, token).ConfigureAwait(false);
+				frameData = await GetFrameData(frameData.ColorFrame, isNewBodyData, token);
 				this.processingFramesSemaphore.Release();
 			}
 
@@ -695,7 +695,7 @@ namespace GestureRecognition.Applications.GestureRecognitionKinectApp.Models
 				return;
 
 			if (this.framesQueue != null)
-				await this.framesQueue.Writer.WriteAsync(frameData, token).ConfigureAwait(false);
+				await this.framesQueue.Writer.WriteAsync(frameData, token);
 		}
 
 		private async Task ProcessFrameData(FrameData frameData, CancellationToken token)
